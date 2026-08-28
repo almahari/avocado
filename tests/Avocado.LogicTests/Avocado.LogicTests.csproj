@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\TodoListLogic.cs" Link="TodoListLogic.cs" />
+    <Compile Include="..\..\TodoItem.cs" Link="TodoItem.cs" />
+    <Compile Include="..\..\AppStateStore.cs" Link="AppStateStore.cs" />
+    <Compile Include="..\..\LinkParser.cs" Link="LinkParser.cs" />
+    <Compile Include="..\..\AppSizeLogic.cs" Link="AppSizeLogic.cs" />
+    <Compile Include="..\..\InactivitySettings.cs" Link="InactivitySettings.cs" />
+  </ItemGroup>
+</Project>
