@@ -12,5 +12,6 @@
     <Compile Include="..\..\LinkParser.cs" Link="LinkParser.cs" />
     <Compile Include="..\..\AppSizeLogic.cs" Link="AppSizeLogic.cs" />
     <Compile Include="..\..\InactivitySettings.cs" Link="InactivitySettings.cs" />
+    <Compile Include="..\..\TaskTimerLogic.cs" Link="TaskTimerLogic.cs" />
   </ItemGroup>
 </Project>

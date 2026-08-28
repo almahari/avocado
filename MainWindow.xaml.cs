@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,6 +20,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private readonly AppStateStore _store = new();
     private readonly DispatcherTimer _locationSaveTimer;
     private readonly DispatcherTimer _inactivityTimer;
+    private readonly DispatcherTimer _taskTimer;
     private AppState _state;
     private bool _allowClose;
     private string _overflowLabel = string.Empty;
@@ -30,12 +32,21 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private TodoItem? _expandedTask;
     private bool _isSleeping;
     private int _sizeAnimationVersion;
+    private TodoItem? _activeTimerTask;
+    private long _activeTimerBaseTicks;
+    private long _activeTimerStartedAt;
+    private string _headerText = "AVOCADO";
 
     public ObservableCollection<TodoItem> Tasks => _tasks;
     public string OverflowLabel
     {
         get => _overflowLabel;
         private set { _overflowLabel = value; OnPropertyChanged(); }
+    }
+    public string HeaderText
+    {
+        get => _headerText;
+        private set { _headerText = value; OnPropertyChanged(); }
     }
     public bool IsAlwaysOnTop => _state.AlwaysOnTop;
     public bool IsSmallSize => _state.SmallSize;
@@ -52,6 +63,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _locationSaveTimer.Tick += (_, _) => SaveLocationNow();
         _inactivityTimer = new DispatcherTimer { Interval = InactivitySettings.Timeout };
         _inactivityTimer.Tick += (_, _) => EnterSleepMode();
+        _taskTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(200) };
+        _taskTimer.Tick += (_, _) => RefreshActiveTimer();
         InitializeComponent();
         DataContext = this;
         RefreshOverflow();
@@ -186,6 +199,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             HideRequested?.Invoke(this, EventArgs.Empty);
             return;
         }
+        PauseActiveTimer(persist: false);
         SaveLocationNow();
         base.OnClosing(e);
     }
@@ -334,10 +348,50 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         SaveState();
     }
 
+    private void TaskTimerButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not System.Windows.Controls.Button { Tag: TodoItem task }) return;
+
+        if (ReferenceEquals(_activeTimerTask, task))
+        {
+            PauseActiveTimer();
+            return;
+        }
+
+        PauseActiveTimer(persist: false);
+        _activeTimerTask = task;
+        _activeTimerBaseTicks = task.ElapsedTicks;
+        _activeTimerStartedAt = Stopwatch.GetTimestamp();
+        task.IsTimerRunning = true;
+        _taskTimer.Start();
+        RefreshActiveTimer();
+        SaveState();
+    }
+
+    private void RefreshActiveTimer()
+    {
+        if (_activeTimerTask is not TodoItem task) return;
+        var sessionElapsed = Stopwatch.GetElapsedTime(_activeTimerStartedAt);
+        task.ElapsedTicks = _activeTimerBaseTicks + sessionElapsed.Ticks;
+        HeaderText = TaskTimerLogic.Format(TimeSpan.FromTicks(task.ElapsedTicks));
+    }
+
+    private void PauseActiveTimer(bool persist = true)
+    {
+        if (_activeTimerTask is not TodoItem task) return;
+        RefreshActiveTimer();
+        _taskTimer.Stop();
+        task.IsTimerRunning = false;
+        _activeTimerTask = null;
+        HeaderText = "AVOCADO";
+        if (persist) SaveState();
+    }
+
     private void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
     {
         if (sender is System.Windows.Controls.Button { Tag: TodoItem item })
         {
+            if (ReferenceEquals(_activeTimerTask, item)) PauseActiveTimer(persist: false);
             if (ReferenceEquals(_expandedTask, item)) _expandedTask = null;
             _tasks.Remove(item);
             RefreshOverflow();

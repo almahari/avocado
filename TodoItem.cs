@@ -10,6 +10,8 @@ public sealed class TodoItem : INotifyPropertyChanged
     private bool _isCompleted;
     private bool _isDragging;
     private bool _isExpanded;
+    private long _elapsedTicks;
+    private bool _isTimerRunning;
 
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Text
@@ -21,6 +23,16 @@ public sealed class TodoItem : INotifyPropertyChanged
     {
         get => _isCompleted;
         set { _isCompleted = value; OnPropertyChanged(); }
+    }
+    public long ElapsedTicks
+    {
+        get => _elapsedTicks;
+        set
+        {
+            _elapsedTicks = Math.Max(0, value);
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(TimerToolTip));
+        }
     }
     [JsonIgnore]
     public bool IsDragging
@@ -34,6 +46,24 @@ public sealed class TodoItem : INotifyPropertyChanged
         get => _isExpanded;
         set { _isExpanded = value; OnPropertyChanged(); }
     }
+    [JsonIgnore]
+    public bool IsTimerRunning
+    {
+        get => _isTimerRunning;
+        set
+        {
+            _isTimerRunning = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(TimerIcon));
+            OnPropertyChanged(nameof(TimerToolTip));
+        }
+    }
+    [JsonIgnore]
+    public string TimerIcon => IsTimerRunning ? "Ⅱ" : "◷";
+    [JsonIgnore]
+    public string TimerToolTip =>
+        $"Task time: {TaskTimerLogic.Format(TimeSpan.FromTicks(ElapsedTicks))} • " +
+        (IsTimerRunning ? "Pause timer" : "Start timer");
 
     public event PropertyChangedEventHandler? PropertyChanged;
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>

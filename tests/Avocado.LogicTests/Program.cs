@@ -43,7 +43,13 @@ var originalState = new AppState
     ResizeWhenInactive = true,
     Left = 123,
     Top = 456,
-    Tasks = [new TodoItem { Text = "Persist me", IsCompleted = true, IsExpanded = true }]
+    Tasks = [new TodoItem
+    {
+        Text = "Persist me",
+        IsCompleted = true,
+        IsExpanded = true,
+        ElapsedTicks = TimeSpan.FromMinutes(12).Ticks
+    }]
 };
 store.Save(originalState);
 var loadedState = store.Load();
@@ -53,6 +59,8 @@ Assert(loadedState.ResizeWhenInactive, "The resize-when-inactive option must per
 Assert(loadedState.Left == 123 && loadedState.Top == 456, "Window position must persist.");
 Assert(loadedState.Tasks.Count == 1 && loadedState.Tasks[0].Text == "Persist me" && loadedState.Tasks[0].IsCompleted,
     "Tasks and completion state must persist.");
+Assert(loadedState.Tasks[0].ElapsedTicks == TimeSpan.FromMinutes(12).Ticks,
+    "A task's accumulated timer duration must persist.");
 Assert(!loadedState.Tasks[0].IsExpanded, "Temporary task expansion state must not persist.");
 Directory.Delete(Path.GetDirectoryName(statePath)!, recursive: true);
 
@@ -61,6 +69,9 @@ var smallSize = AppSizeLogic.Get(small: true);
 Assert(normalSize == new AppSize(420, 540, 1), "Normal size must preserve the current window dimensions.");
 Assert(smallSize == new AppSize(210, 270, 0.5), "Small size must be exactly half of normal size.");
 Assert(InactivitySettings.Timeout == TimeSpan.FromMinutes(2), "The sleep timeout must be exactly two minutes.");
+Assert(TaskTimerLogic.Format(TimeSpan.Zero) == "00:00:00", "A new task timer must start at zero.");
+Assert(TaskTimerLogic.Format(new TimeSpan(1, 2, 3, 4)) == "26:03:04",
+    "Task timer formatting must preserve total hours beyond one day.");
 
 Console.WriteLine("All Avocado logic checks passed.");
 return;

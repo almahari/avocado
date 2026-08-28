@@ -62,13 +62,9 @@
         <Rectangle Fill="#9A5C32" Width="48" Height="16" Margin="186,394,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
         <Grid x:Name="AwakeContent">
-        <TextBlock Text="AVOCADO" Margin="0,105,0,0" VerticalAlignment="Top"
+        <TextBlock Text="{Binding HeaderText}" Margin="0,105,0,0" VerticalAlignment="Top"
                    HorizontalAlignment="Center" FontFamily="Consolas" FontSize="22"
                    FontWeight="Bold" Foreground="#173D2B" />
-        <TextBlock Text="drag me anywhere" Margin="0,133,0,0" VerticalAlignment="Top"
-                   HorizontalAlignment="Center" FontFamily="Consolas" FontSize="10"
-                   Foreground="#315A2D" />
-
         <Button x:Name="CloseButton" Content="×" ToolTip="Hide to tray"
                 Style="{StaticResource PixelButton}" Width="26" Height="26"
                 Margin="82,116,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -129,6 +125,7 @@
                                         <ColumnDefinition Width="30" />
                                         <ColumnDefinition />
                                         <ColumnDefinition Width="28" />
+                                        <ColumnDefinition Width="28" />
                                     </Grid.ColumnDefinitions>
                                     <CheckBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                                               IsChecked="{Binding IsCompleted}" Click="TaskCheckBox_Click" />
@@ -152,7 +149,12 @@
                                             </Style>
                                         </local:LinkTextBlock.Style>
                                     </local:LinkTextBlock>
-                                    <Button Grid.Column="2" Content="×" ToolTip="Delete task"
+                                    <Button Grid.Column="2" Content="{Binding TimerIcon}"
+                                            ToolTip="{Binding TimerToolTip}"
+                                            Background="Transparent" BorderThickness="0" Foreground="#173D2B"
+                                            FontFamily="Consolas" FontSize="15" FontWeight="Bold" Cursor="Hand"
+                                            Tag="{Binding}" Click="TaskTimerButton_Click" />
+                                    <Button Grid.Column="3" Content="×" ToolTip="Delete task"
                                             Background="Transparent" BorderThickness="0" Foreground="#713F25"
                                             FontFamily="Consolas" FontSize="18" Cursor="Hand"
                                             Tag="{Binding}" Click="DeleteTaskButton_Click" />
