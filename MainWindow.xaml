@@ -19,12 +19,24 @@
     <Window.Resources>
         <SolidColorBrush x:Key="InkBrush" Color="#173D2B" />
         <SolidColorBrush x:Key="CreamBrush" Color="#FFF8D9" />
+        <SolidColorBrush x:Key="ButtonBrush" Color="#214F34" />
+        <SolidColorBrush x:Key="ButtonBorderBrush" Color="#102A1E" />
+        <SolidColorBrush x:Key="ButtonHoverBrush" Color="#2E6842" />
+        <SolidColorBrush x:Key="ButtonPressedBrush" Color="#153522" />
+        <SolidColorBrush x:Key="OuterBrush" Color="#173D2B" />
+        <SolidColorBrush x:Key="MiddleBrush" Color="#4F872D" />
+        <SolidColorBrush x:Key="FleshBrush" Color="#9BC63E" />
+        <SolidColorBrush x:Key="HighlightBrush" Color="#B9DA58" />
+        <SolidColorBrush x:Key="SeedBrush" Color="#713F25" />
+        <SolidColorBrush x:Key="SeedHighlightBrush" Color="#9A5C32" />
+        <SolidColorBrush x:Key="MutedInkBrush" Color="#315A2D" />
+        <SolidColorBrush x:Key="TaskBrush" Color="#DFF08A" />
         <Style x:Key="PixelButton" TargetType="Button">
             <Setter Property="FontFamily" Value="Consolas" />
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Foreground" Value="#FFF8D9" />
-            <Setter Property="Background" Value="#214F34" />
-            <Setter Property="BorderBrush" Value="#102A1E" />
+            <Setter Property="Foreground" Value="{DynamicResource CreamBrush}" />
+            <Setter Property="Background" Value="{DynamicResource ButtonBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrush}" />
             <Setter Property="BorderThickness" Value="3" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
@@ -37,10 +49,10 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#2E6842" />
+                                <Setter Property="Background" Value="{DynamicResource ButtonHoverBrush}" />
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#153522" />
+                                <Setter Property="Background" Value="{DynamicResource ButtonPressedBrush}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -51,20 +63,20 @@
 
     <Grid x:Name="Root" Background="Transparent">
         <!-- Pixel-stepped avocado silhouette -->
-        <Polygon Fill="#173D2B" Points="194,4 226,4 226,52 274,52 274,68 306,68 306,84 322,84 322,100 338,100 338,132 354,132 354,164 370,164 370,212 386,212 386,356 370,356 370,404 354,404 354,436 338,436 338,468 306,468 306,484 274,484 274,500 146,500 146,484 114,484 114,468 82,468 82,436 66,436 66,404 50,404 50,356 34,356 34,212 50,212 50,164 66,164 66,132 82,132 82,100 98,100 98,84 114,84 114,68 146,68 146,52 194,52" />
-        <Polygon Fill="#4F872D" Points="194,20 210,20 210,68 274,68 274,84 306,84 306,100 322,100 322,132 338,132 338,164 354,164 354,228 370,228 370,340 354,340 354,404 338,404 338,436 306,436 306,452 274,452 274,468 146,468 146,452 114,452 114,436 82,436 82,404 66,404 66,340 50,340 50,228 66,228 66,164 82,164 82,132 98,132 98,100 114,100 114,84 146,84 146,68 194,68" />
-        <Polygon Fill="#9BC63E" Points="178,84 242,84 242,100 274,100 274,116 306,116 306,148 322,148 322,196 338,196 338,340 322,340 322,388 306,388 306,420 274,420 274,436 146,436 146,420 114,420 114,388 98,388 98,340 82,340 82,196 98,196 98,148 114,148 114,116 146,116 146,100 178,100" />
-        <Rectangle Fill="#B9DA58" Width="16" Height="32" Margin="130,124,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <Rectangle Fill="#B9DA58" Width="16" Height="16" Margin="114,156,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Polygon Fill="{DynamicResource OuterBrush}" Points="194,4 226,4 226,52 274,52 274,68 306,68 306,84 322,84 322,100 338,100 338,132 354,132 354,164 370,164 370,212 386,212 386,356 370,356 370,404 354,404 354,436 338,436 338,468 306,468 306,484 274,484 274,500 146,500 146,484 114,484 114,468 82,468 82,436 66,436 66,404 50,404 50,356 34,356 34,212 50,212 50,164 66,164 66,132 82,132 82,100 98,100 98,84 114,84 114,68 146,68 146,52 194,52" />
+        <Polygon Fill="{DynamicResource MiddleBrush}" Points="194,20 210,20 210,68 274,68 274,84 306,84 306,100 322,100 322,132 338,132 338,164 354,164 354,228 370,228 370,340 354,340 354,404 338,404 338,436 306,436 306,452 274,452 274,468 146,468 146,452 114,452 114,436 82,436 82,404 66,404 66,340 50,340 50,228 66,228 66,164 82,164 82,132 98,132 98,100 114,100 114,84 146,84 146,68 194,68" />
+        <Polygon Fill="{DynamicResource FleshBrush}" Points="178,84 242,84 242,100 274,100 274,116 306,116 306,148 322,148 322,196 338,196 338,340 322,340 322,388 306,388 306,420 274,420 274,436 146,436 146,420 114,420 114,388 98,388 98,340 82,340 82,196 98,196 98,148 114,148 114,116 146,116 146,100 178,100" />
+        <Rectangle Fill="{DynamicResource HighlightBrush}" Width="16" Height="32" Margin="130,124,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Rectangle Fill="{DynamicResource HighlightBrush}" Width="16" Height="16" Margin="114,156,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
         <!-- Seed -->
-        <Polygon Fill="#713F25" Points="178,386 194,386 194,370 226,370 226,386 242,386 242,402 258,402 258,434 242,434 242,450 226,450 226,466 194,466 194,450 178,450 178,434 162,434 162,402 178,402" />
-        <Rectangle Fill="#9A5C32" Width="48" Height="16" Margin="186,394,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Polygon Fill="{DynamicResource SeedBrush}" Points="178,386 194,386 194,370 226,370 226,386 242,386 242,402 258,402 258,434 242,434 242,450 226,450 226,466 194,466 194,450 178,450 178,434 162,434 162,402 178,402" />
+        <Rectangle Fill="{DynamicResource SeedHighlightBrush}" Width="48" Height="16" Margin="186,394,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
         <Grid x:Name="AwakeContent">
         <TextBlock Text="{Binding HeaderText}" Margin="0,105,0,0" VerticalAlignment="Top"
                    HorizontalAlignment="Center" FontFamily="Consolas" FontSize="22"
-                   FontWeight="Bold" Foreground="#173D2B" />
+                   FontWeight="Bold" Foreground="{DynamicResource InkBrush}" />
         <Button x:Name="CloseButton" Content="×" ToolTip="Hide to tray"
                 Style="{StaticResource PixelButton}" Width="26" Height="26"
                 Margin="82,116,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -77,7 +89,7 @@
         <!-- Input editor -->
         <Border x:Name="AddPanel" Width="262" Height="42" Margin="0,157,0,0"
                 VerticalAlignment="Top" HorizontalAlignment="Center"
-                Background="#FFF8D9" BorderBrush="#173D2B" BorderThickness="3"
+                Background="{DynamicResource CreamBrush}" BorderBrush="{DynamicResource InkBrush}" BorderThickness="3"
                 Panel.ZIndex="10"
                 Visibility="Collapsed">
             <Grid Margin="5,3">
@@ -87,7 +99,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBox x:Name="TaskInput" Grid.Column="0" MaxLength="500"
                          Background="Transparent" BorderThickness="0"
-                         FontFamily="Consolas" FontSize="14" Foreground="#173D2B"
+                         FontFamily="Consolas" FontSize="14" Foreground="{DynamicResource InkBrush}"
                          VerticalContentAlignment="Center" KeyDown="TaskInput_KeyDown" />
                 <Button Grid.Column="1" Content="✓" Style="{StaticResource PixelButton}"
                         Margin="3,0,0,0" Click="ConfirmAddButton_Click" />
@@ -103,8 +115,8 @@
                 <ItemsControl x:Name="TaskItemsControl" ItemsSource="{Binding Tasks}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border x:Name="TaskRow" Height="33" MinHeight="33" Margin="0,0,0,3" Background="#DFF08A"
-                                    BorderBrush="#4F872D" BorderThickness="0,0,0,2"
+                            <Border x:Name="TaskRow" Height="33" MinHeight="33" Margin="0,0,0,3" Background="{DynamicResource TaskBrush}"
+                                    BorderBrush="{DynamicResource MiddleBrush}" BorderThickness="0,0,0,2"
                                     AllowDrop="True" Cursor="Hand" ToolTip="Click to expand • drag to reorder"
                                     PreviewMouseLeftButtonDown="TaskRow_PreviewMouseLeftButtonDown"
                                     PreviewMouseLeftButtonUp="TaskRow_PreviewMouseLeftButtonUp"
@@ -130,7 +142,7 @@
                                     <CheckBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                                               IsChecked="{Binding IsCompleted}" Click="TaskCheckBox_Click" />
                                     <local:LinkTextBlock Grid.Column="1" LinkText="{Binding Text}"
-                                               FontFamily="Consolas" FontSize="14" Foreground="#173D2B"
+                                               FontFamily="Consolas" FontSize="14" Foreground="{DynamicResource InkBrush}"
                                                Margin="0,3" VerticalAlignment="Center">
                                         <local:LinkTextBlock.Style>
                                             <Style TargetType="local:LinkTextBlock">
@@ -151,11 +163,11 @@
                                     </local:LinkTextBlock>
                                     <Button Grid.Column="2" Content="{Binding TimerIcon}"
                                             ToolTip="{Binding TimerToolTip}"
-                                            Background="Transparent" BorderThickness="0" Foreground="#173D2B"
+                                            Background="Transparent" BorderThickness="0" Foreground="{DynamicResource InkBrush}"
                                             FontFamily="Consolas" FontSize="15" FontWeight="Bold" Cursor="Hand"
                                             Tag="{Binding}" Click="TaskTimerButton_Click" />
                                     <Button Grid.Column="3" Content="×" ToolTip="Delete task"
-                                            Background="Transparent" BorderThickness="0" Foreground="#713F25"
+                                            Background="Transparent" BorderThickness="0" Foreground="{DynamicResource SeedBrush}"
                                             FontFamily="Consolas" FontSize="18" Cursor="Hand"
                                             Tag="{Binding}" Click="DeleteTaskButton_Click" />
                                 </Grid>
@@ -168,7 +180,7 @@
 
         <TextBlock Text="{Binding OverflowLabel}" Margin="0,350,0,0" VerticalAlignment="Top"
                    HorizontalAlignment="Center" FontFamily="Consolas" FontSize="12"
-                   FontWeight="Bold" Foreground="#315A2D"
+                   FontWeight="Bold" Foreground="{DynamicResource MutedInkBrush}"
                    ToolTip="Use the mouse wheel to see hidden tasks" />
         </Grid>
 
@@ -176,19 +188,19 @@
               Opacity="0" IsHitTestVisible="False">
             <TextBlock Text="z" Margin="0,150,108,0" VerticalAlignment="Top"
                        HorizontalAlignment="Right" FontFamily="Consolas" FontSize="18"
-                       FontWeight="Bold" Foreground="#315A2D" />
+                       FontWeight="Bold" Foreground="{DynamicResource MutedInkBrush}" />
             <TextBlock Text="Z" Margin="0,125,78,0" VerticalAlignment="Top"
                        HorizontalAlignment="Right" FontFamily="Consolas" FontSize="25"
-                       FontWeight="Bold" Foreground="#173D2B" />
+                       FontWeight="Bold" Foreground="{DynamicResource InkBrush}" />
             <Rectangle Width="42" Height="5" Margin="132,224,0,0"
-                       HorizontalAlignment="Left" VerticalAlignment="Top" Fill="#173D2B" />
+                       HorizontalAlignment="Left" VerticalAlignment="Top" Fill="{DynamicResource InkBrush}" />
             <Rectangle Width="42" Height="5" Margin="246,224,0,0"
-                       HorizontalAlignment="Left" VerticalAlignment="Top" Fill="#173D2B" />
+                       HorizontalAlignment="Left" VerticalAlignment="Top" Fill="{DynamicResource InkBrush}" />
             <Rectangle Width="24" Height="5" Margin="198,270,0,0"
-                       HorizontalAlignment="Left" VerticalAlignment="Top" Fill="#315A2D" />
+                       HorizontalAlignment="Left" VerticalAlignment="Top" Fill="{DynamicResource MutedInkBrush}" />
             <TextBlock Text="sleeping..." Margin="0,305,0,0" VerticalAlignment="Top"
                        HorizontalAlignment="Center" FontFamily="Consolas" FontSize="14"
-                       FontWeight="Bold" Foreground="#315A2D" />
+                       FontWeight="Bold" Foreground="{DynamicResource MutedInkBrush}" />
         </Grid>
     </Grid>
 </Window>

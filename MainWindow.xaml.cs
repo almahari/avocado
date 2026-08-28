@@ -36,6 +36,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private long _activeTimerBaseTicks;
     private long _activeTimerStartedAt;
     private string _headerText = "AVOCADO";
+    private FruitThemePalette _currentTheme = FruitThemes.Default;
 
     public ObservableCollection<TodoItem> Tasks => _tasks;
     public string OverflowLabel
@@ -51,6 +52,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public bool IsAlwaysOnTop => _state.AlwaysOnTop;
     public bool IsSmallSize => _state.SmallSize;
     public bool IsResizeWhenInactive => _state.ResizeWhenInactive;
+    public FruitThemeKind CurrentTheme => _currentTheme.Kind;
 
     public event EventHandler? HideRequested;
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -67,6 +69,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _taskTimer.Tick += (_, _) => RefreshActiveTimer();
         InitializeComponent();
         DataContext = this;
+        SetTheme(_state.Theme, persist: false);
         RefreshOverflow();
     }
 
@@ -96,6 +99,36 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             WakeFromInactivity();
         }
         if (persist) SaveState();
+    }
+
+    public void SetTheme(FruitThemeKind kind, bool persist = true)
+    {
+        _currentTheme = FruitThemes.Get(kind);
+        _state.Theme = _currentTheme.Kind;
+        SetThemeBrush("InkBrush", _currentTheme.Ink);
+        SetThemeBrush("CreamBrush", _currentTheme.Cream);
+        SetThemeBrush("ButtonBrush", _currentTheme.Button);
+        SetThemeBrush("ButtonBorderBrush", _currentTheme.ButtonBorder);
+        SetThemeBrush("ButtonHoverBrush", _currentTheme.ButtonHover);
+        SetThemeBrush("ButtonPressedBrush", _currentTheme.ButtonPressed);
+        SetThemeBrush("OuterBrush", _currentTheme.Outer);
+        SetThemeBrush("MiddleBrush", _currentTheme.Middle);
+        SetThemeBrush("FleshBrush", _currentTheme.Flesh);
+        SetThemeBrush("HighlightBrush", _currentTheme.Highlight);
+        SetThemeBrush("SeedBrush", _currentTheme.Seed);
+        SetThemeBrush("SeedHighlightBrush", _currentTheme.SeedHighlight);
+        SetThemeBrush("MutedInkBrush", _currentTheme.MutedInk);
+        SetThemeBrush("TaskBrush", _currentTheme.Task);
+        if (_activeTimerTask is null) HeaderText = _currentTheme.DisplayName.ToUpperInvariant();
+        if (persist) SaveState();
+    }
+
+    private void SetThemeBrush(string resourceKey, string colorValue)
+    {
+        var brush = new SolidColorBrush(
+            (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(colorValue));
+        brush.Freeze();
+        Resources[resourceKey] = brush;
     }
 
     public void NotifyInteraction()
@@ -383,7 +416,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _taskTimer.Stop();
         task.IsTimerRunning = false;
         _activeTimerTask = null;
-        HeaderText = "AVOCADO";
+        HeaderText = _currentTheme.DisplayName.ToUpperInvariant();
         if (persist) SaveState();
     }
 

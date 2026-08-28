@@ -13,7 +13,9 @@ public partial class App : System.Windows.Application
     private Forms.ToolStripMenuItem? _normalSizeItem;
     private Forms.ToolStripMenuItem? _smallSizeItem;
     private Forms.ToolStripMenuItem? _resizeWhenInactiveItem;
+    private readonly Dictionary<FruitThemeKind, Forms.ToolStripMenuItem> _themeItems = [];
     private MainWindow? _window;
+    private Icon? _trayThemeIcon;
     private bool _isExiting;
 
     protected override void OnStartup(StartupEventArgs e)
@@ -28,6 +30,7 @@ public partial class App : System.Windows.Application
         SetWindowMode(_window.IsAlwaysOnTop, persist: false);
         SetSizeMode(_window.IsSmallSize, persist: false);
         SetResizeWhenInactive(_window.IsResizeWhenInactive, persist: false);
+        SetTheme(_window.CurrentTheme, persist: false);
         ShowWindow();
     }
 
@@ -45,6 +48,14 @@ public partial class App : System.Windows.Application
         _resizeWhenInactiveItem = new Forms.ToolStripMenuItem(
             "Resize when inactive", null,
             (_, _) => SetResizeWhenInactive(!_window!.IsResizeWhenInactive));
+        var themesItem = new Forms.ToolStripMenuItem("Themes");
+        foreach (var theme in FruitThemes.All)
+        {
+            var themeItem = new Forms.ToolStripMenuItem(
+                theme.DisplayName, null, (_, _) => SetTheme(theme.Kind));
+            _themeItems[theme.Kind] = themeItem;
+            themesItem.DropDownItems.Add(themeItem);
+        }
         var exitItem = new Forms.ToolStripMenuItem("Exit", null, (_, _) => ExitApplication());
 
         menu.Items.Add(showItem);
@@ -53,12 +64,14 @@ public partial class App : System.Windows.Application
         menu.Items.Add(_alwaysOnTopItem);
         menu.Items.Add(sizeItem);
         menu.Items.Add(_resizeWhenInactiveItem);
+        menu.Items.Add(themesItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(exitItem);
 
+        _trayThemeIcon = CreateFruitIcon(FruitThemes.Get(_window!.CurrentTheme));
         _trayIcon = new Forms.NotifyIcon
         {
-            Icon = CreateAvocadoIcon(),
+            Icon = _trayThemeIcon,
             Text = "Avocado todo list",
             ContextMenuStrip = menu,
             Visible = true
@@ -66,14 +79,14 @@ public partial class App : System.Windows.Application
         _trayIcon.DoubleClick += (_, _) => ToggleWindow();
     }
 
-    private static Icon CreateAvocadoIcon()
+    private static Icon CreateFruitIcon(FruitThemePalette theme)
     {
         using var bitmap = new Bitmap(32, 32);
         using var graphics = Graphics.FromImage(bitmap);
         graphics.Clear(Color.Transparent);
-        using var skin = new SolidBrush(Color.FromArgb(33, 79, 52));
-        using var flesh = new SolidBrush(Color.FromArgb(149, 194, 65));
-        using var seed = new SolidBrush(Color.FromArgb(121, 72, 38));
+        using var skin = new SolidBrush(ColorTranslator.FromHtml(theme.Outer));
+        using var flesh = new SolidBrush(ColorTranslator.FromHtml(theme.Flesh));
+        using var seed = new SolidBrush(ColorTranslator.FromHtml(theme.Seed));
         graphics.FillRectangle(skin, 13, 1, 6, 5);
         graphics.FillRectangle(skin, 9, 5, 14, 4);
         graphics.FillRectangle(skin, 6, 9, 20, 6);
@@ -117,6 +130,20 @@ public partial class App : System.Windows.Application
         if (_resizeWhenInactiveItem is not null) _resizeWhenInactiveItem.Checked = enabled;
     }
 
+    private void SetTheme(FruitThemeKind kind, bool persist = true)
+    {
+        if (_window is null) return;
+        _window.SetTheme(kind, persist);
+        foreach (var (themeKind, menuItem) in _themeItems)
+            menuItem.Checked = themeKind == _window.CurrentTheme;
+
+        if (_trayIcon is null) return;
+        var nextIcon = CreateFruitIcon(FruitThemes.Get(_window.CurrentTheme));
+        _trayIcon.Icon = nextIcon;
+        _trayThemeIcon?.Dispose();
+        _trayThemeIcon = nextIcon;
+    }
+
     private void ToggleWindow()
     {
         if (_window?.IsVisible == true) HideWindow();
@@ -144,12 +171,18 @@ public partial class App : System.Windows.Application
             _trayIcon.Visible = false;
             _trayIcon.Dispose();
         }
+        _trayThemeIcon?.Dispose();
+        _trayThemeIcon = null;
         Shutdown();
     }
 
     protected override void OnExit(ExitEventArgs e)
     {
-        if (!_isExiting) _trayIcon?.Dispose();
+        if (!_isExiting)
+        {
+            _trayIcon?.Dispose();
+            _trayThemeIcon?.Dispose();
+        }
         base.OnExit(e);
     }
 }

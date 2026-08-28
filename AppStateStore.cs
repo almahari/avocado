@@ -9,6 +9,7 @@ public sealed class AppState
     public bool AlwaysOnTop { get; set; }
     public bool SmallSize { get; set; }
     public bool ResizeWhenInactive { get; set; }
+    public FruitThemeKind Theme { get; set; } = FruitThemeKind.Avocado;
     public double? Left { get; set; }
     public double? Top { get; set; }
 }

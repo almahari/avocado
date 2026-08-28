@@ -41,6 +41,7 @@ var originalState = new AppState
     AlwaysOnTop = true,
     SmallSize = true,
     ResizeWhenInactive = true,
+    Theme = FruitThemeKind.Blueberry,
     Left = 123,
     Top = 456,
     Tasks = [new TodoItem
@@ -56,6 +57,7 @@ var loadedState = store.Load();
 Assert(loadedState.AlwaysOnTop, "The selected window mode must persist.");
 Assert(loadedState.SmallSize, "The selected app size must persist.");
 Assert(loadedState.ResizeWhenInactive, "The resize-when-inactive option must persist.");
+Assert(loadedState.Theme == FruitThemeKind.Blueberry, "The selected fruit theme must persist.");
 Assert(loadedState.Left == 123 && loadedState.Top == 456, "Window position must persist.");
 Assert(loadedState.Tasks.Count == 1 && loadedState.Tasks[0].Text == "Persist me" && loadedState.Tasks[0].IsCompleted,
     "Tasks and completion state must persist.");
@@ -72,6 +74,12 @@ Assert(InactivitySettings.Timeout == TimeSpan.FromMinutes(2), "The sleep timeout
 Assert(TaskTimerLogic.Format(TimeSpan.Zero) == "00:00:00", "A new task timer must start at zero.");
 Assert(TaskTimerLogic.Format(new TimeSpan(1, 2, 3, 4)) == "26:03:04",
     "Task timer formatting must preserve total hours beyond one day.");
+Assert(FruitThemes.All.Count == 5, "The tray must offer exactly five fruit themes.");
+Assert(FruitThemes.Default.Kind == FruitThemeKind.Avocado, "Avocado must remain the default theme.");
+Assert(FruitThemes.All.Select(theme => theme.Kind).Distinct().Count() == FruitThemes.All.Count,
+    "Every fruit theme must have a unique selection value.");
+Assert(FruitThemes.Get((FruitThemeKind)999) == FruitThemes.Default,
+    "Unknown saved themes must safely fall back to Avocado.");
 
 Console.WriteLine("All Avocado logic checks passed.");
 return;

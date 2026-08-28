@@ -13,5 +13,6 @@
     <Compile Include="..\..\AppSizeLogic.cs" Link="AppSizeLogic.cs" />
     <Compile Include="..\..\InactivitySettings.cs" Link="InactivitySettings.cs" />
     <Compile Include="..\..\TaskTimerLogic.cs" Link="TaskTimerLogic.cs" />
+    <Compile Include="..\..\FruitThemes.cs" Link="FruitThemes.cs" />
   </ItemGroup>
 </Project>
