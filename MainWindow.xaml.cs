@@ -52,7 +52,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private string _alertTaskLabel = string.Empty;
     private string _taskSearchText = string.Empty;
     private TaskFilterMode _taskFilterMode = TaskFilterMode.Active;
-    private readonly HashSet<Guid> _celebratingTaskIds = [];
     private string _sleepEyes = "─";
     private string _sleepMouth = "ᴗ";
 
@@ -90,6 +89,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public SleepTimeOption CurrentSleepTime => InactivitySettings.Get(_state.SleepTime).Option;
     public SleepResizeAnchor CurrentSleepResizeAnchor => SleepResizeLogic.Normalize(_state.SleepResizeAnchor);
     public ReminderSoundMode CurrentReminderSound => ReminderSoundSettings.Normalize(_state.ReminderSound);
+    public DoNotDisturbMode CurrentDoNotDisturb => DoNotDisturbSettings.Normalize(_state.DoNotDisturb);
     public FruitThemeKind CurrentTheme => _currentTheme.Kind;
 
     public event EventHandler? HideRequested;
@@ -178,6 +178,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (persist) SaveState();
     }
 
+    public void SetDoNotDisturb(DoNotDisturbMode mode, bool persist = true)
+    {
+        _state.DoNotDisturb = DoNotDisturbSettings.Normalize(mode);
+        if (persist) SaveState();
+    }
+
     public void SetTheme(FruitThemeKind kind, bool persist = true)
     {
         _currentTheme = FruitThemes.Get(kind);
@@ -215,7 +221,54 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         SleepEyes = personality.Eyes;
         SleepMouth = personality.Mouth;
         if (_activeTimerTask is null) HeaderText = _currentTheme.DisplayName.ToUpperInvariant();
+        UpdateFruitGrowth(animate: false);
         if (persist) SaveState();
+    }
+
+    private FrameworkElement CurrentFruitShape() => _currentTheme.Kind switch
+    {
+        FruitThemeKind.Strawberry => StrawberryShape,
+        FruitThemeKind.Orange => OrangeShape,
+        FruitThemeKind.Blueberry => BlueberryShape,
+        FruitThemeKind.Watermelon => WatermelonShape,
+        FruitThemeKind.Kiwi => KiwiShape,
+        FruitThemeKind.Papaya => PapayaShape,
+        FruitThemeKind.Apple => AppleShape,
+        FruitThemeKind.Mango => MangoShape,
+        FruitThemeKind.Lemon => LemonShape,
+        FruitThemeKind.Tomato => TomatoShape,
+        FruitThemeKind.Pumpkin => PumpkinShape,
+        FruitThemeKind.Potato => PotatoShape,
+        FruitThemeKind.Onion => OnionShape,
+        _ => AvocadoShape
+    };
+
+    private void UpdateFruitGrowth(bool animate = true)
+    {
+        var today = DateTime.Today;
+        var completedToday = _archivedTasks.Count(task => task.CompletedAt?.Date == today);
+        var targetScale = FruitGrowthLogic.Scale(_tasks.Count, completedToday);
+        var shape = CurrentFruitShape();
+        shape.RenderTransformOrigin = new System.Windows.Point(0.5, 0.58);
+        var transform = shape.RenderTransform as ScaleTransform ?? new ScaleTransform(1, 1);
+        shape.RenderTransform = transform;
+
+        var currentScale = transform.ScaleX;
+        transform.BeginAnimation(ScaleTransform.ScaleXProperty, null);
+        transform.BeginAnimation(ScaleTransform.ScaleYProperty, null);
+        transform.ScaleX = targetScale;
+        transform.ScaleY = targetScale;
+        if (!animate)
+            return;
+
+        var duration = TimeSpan.FromMilliseconds(360);
+        var easing = new BackEase { Amplitude = 0.25, EasingMode = EasingMode.EaseOut };
+        transform.BeginAnimation(ScaleTransform.ScaleXProperty,
+            new DoubleAnimation(currentScale, targetScale, duration)
+            { EasingFunction = easing, FillBehavior = FillBehavior.Stop });
+        transform.BeginAnimation(ScaleTransform.ScaleYProperty,
+            new DoubleAnimation(currentScale, targetScale, duration)
+            { EasingFunction = easing, FillBehavior = FillBehavior.Stop });
     }
 
     private void SetThemeBrush(string resourceKey, string colorValue)
@@ -454,6 +507,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (!IsWithinTaskRow(e.OriginalSource as DependencyObject)) CollapseExpandedTask();
     }
 
+    private void Window_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e) =>
+        StopShaking();
+
     private void Window_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
     {
         var wasSleeping = _isSleeping;
@@ -493,6 +549,31 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void AddButton_Click(object sender, RoutedEventArgs e)
         => OpenTaskEditor();
+
+    private void SortButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (SortButton.ContextMenu is null) return;
+        SortButton.ContextMenu.PlacementTarget = SortButton;
+        SortButton.ContextMenu.IsOpen = true;
+    }
+
+    private void SortByPriorityMenuItem_Click(object sender, RoutedEventArgs e) =>
+        ApplySortedTaskOrder(TaskSortLogic.ByPriority(_tasks));
+
+    private void SortByTimeMenuItem_Click(object sender, RoutedEventArgs e) =>
+        ApplySortedTaskOrder(TaskSortLogic.ByTime(_tasks));
+
+    private void ApplySortedTaskOrder(IReadOnlyList<TodoItem> sortedTasks)
+    {
+        if (_tasks.SequenceEqual(sortedTasks)) return;
+        var previousPositions = CaptureTaskRowPositions();
+        _tasks.Clear();
+        foreach (var task in sortedTasks) _tasks.Add(task);
+        Dispatcher.BeginInvoke(
+            () => AnimateTaskRows(previousPositions),
+            DispatcherPriority.Render);
+        SaveState();
+    }
 
     private void SearchButton_Click(object sender, RoutedEventArgs e)
     {
@@ -546,12 +627,15 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void OpenTaskEditor(TodoItem? task = null)
     {
         _editingTask = task;
-        TaskInput.Text = task?.ReminderTime is TimeSpan reminderTime
-            ? $"{TaskReminderLogic.Prefix(task.Recurrence)} {reminderTime:hh\\:mm} " +
-              $"{TaskReminderLogic.PriorityPrefix(task.Priority)} {task.Text}".TrimStart()
-            : task is null
-                ? string.Empty
-                : $"{TaskReminderLogic.PriorityPrefix(task.Priority)} {task.Text}".TrimStart();
+        var priorityPrefix = task is null ? string.Empty : TaskReminderLogic.PriorityPrefix(task.Priority);
+        var taskText = task is null
+            ? string.Empty
+            : priorityPrefix.Length == 0 ? task.Text : $"{priorityPrefix} {task.Text}";
+        TaskInput.Text = task?.DueAt is DateTime dueAt
+            ? $"{dueAt:yyyy-MM-dd HH:mm} {taskText}"
+            : task?.ReminderTime is TimeSpan reminderTime
+                ? $"{TaskReminderLogic.Prefix(task.Recurrence)} {reminderTime:hh\\:mm} {taskText}".TrimStart()
+                : taskText;
         AddPanel.Visibility = Visibility.Visible;
         TaskInput.Focus();
         TaskInput.SelectAll();
@@ -579,6 +663,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             editingTask.ReminderTime = parsed.ReminderTime;
             editingTask.Recurrence = parsed.Recurrence;
             editingTask.Priority = parsed.Priority;
+            editingTask.DueAt = parsed.DueAt;
             _editingTask = null;
             AddPanel.Visibility = Visibility.Collapsed;
             SaveState();
@@ -589,11 +674,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             Text = parsed.Text,
             ReminderTime = parsed.ReminderTime,
             Recurrence = parsed.Recurrence,
-            Priority = parsed.Priority
+            Priority = parsed.Priority,
+            DueAt = parsed.DueAt
         });
         AddPanel.Visibility = Visibility.Collapsed;
         RefreshOverflow();
         SaveState();
+        UpdateFruitGrowth();
         Dispatcher.BeginInvoke(TaskScrollViewer.ScrollToEnd, DispatcherPriority.Loaded);
     }
 
@@ -601,56 +688,22 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         if (sender is System.Windows.Controls.CheckBox { DataContext: TodoItem task, IsChecked: true })
         {
-            BeginTaskCelebration(task);
+            ArchiveCompletedTask(task);
             return;
         }
         SaveState();
-    }
-
-    private void BeginTaskCelebration(TodoItem task)
-    {
-        if (!_celebratingTaskIds.Add(task.Id)) return;
-        CelebrationOverlay.Visibility = Visibility.Visible;
-        CelebrationOverlay.BeginAnimation(OpacityProperty, null);
-        CelebrationScale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
-        CelebrationScale.BeginAnimation(ScaleTransform.ScaleYProperty, null);
-
-        var fade = new DoubleAnimationUsingKeyFrames
-        {
-            Duration = TaskCelebrationSettings.Duration
-        };
-        fade.KeyFrames.Add(new LinearDoubleKeyFrame(0, KeyTime.FromPercent(0)));
-        fade.KeyFrames.Add(new EasingDoubleKeyFrame(1, KeyTime.FromPercent(0.25)));
-        fade.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromPercent(0.65)));
-        fade.KeyFrames.Add(new LinearDoubleKeyFrame(0, KeyTime.FromPercent(1)));
-        fade.Completed += (_, _) => CelebrationOverlay.Visibility = Visibility.Collapsed;
-        CelebrationOverlay.BeginAnimation(OpacityProperty, fade);
-
-        var scale = new DoubleAnimation(0.65, 1.2, TaskCelebrationSettings.Duration)
-        {
-            EasingFunction = new BackEase { Amplitude = 0.35, EasingMode = EasingMode.EaseOut }
-        };
-        CelebrationScale.BeginAnimation(ScaleTransform.ScaleXProperty, scale);
-        CelebrationScale.BeginAnimation(ScaleTransform.ScaleYProperty, scale);
-
-        var archiveTimer = new DispatcherTimer { Interval = TaskCelebrationSettings.Duration };
-        archiveTimer.Tick += (_, _) =>
-        {
-            archiveTimer.Stop();
-            _celebratingTaskIds.Remove(task.Id);
-            if (task.IsCompleted) ArchiveCompletedTask(task);
-        };
-        archiveTimer.Start();
     }
 
     private void ArchiveCompletedTask(TodoItem task)
     {
         if (ReferenceEquals(_activeTimerTask, task)) PauseActiveTimer(persist: false);
         if (ReferenceEquals(_expandedTask, task)) _expandedTask = null;
+        task.CompletedAt = DateTime.Now;
         _tasks.Remove(task);
         _archivedTasks.Insert(0, task);
         RefreshOverflow();
         SaveState();
+        UpdateFruitGrowth();
     }
 
     public void ShowArchive()
@@ -666,11 +719,14 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         if (sender is not System.Windows.Controls.Button { Tag: TodoItem task }) return;
         task.IsCompleted = false;
+        task.CompletedAt = null;
         _archivedTasks.Remove(task);
-        _tasks.Add(task);
+        if (task.IsPinned) _tasks.Insert(0, task);
+        else _tasks.Add(task);
         ArchivePanel.Visibility = _archivedTasks.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
         RefreshOverflow();
         SaveState();
+        UpdateFruitGrowth();
     }
 
     private void DeleteArchivedTaskButton_Click(object sender, RoutedEventArgs e)
@@ -679,6 +735,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _archivedTasks.Remove(task);
         ArchivePanel.Visibility = _archivedTasks.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
         SaveState();
+        UpdateFruitGrowth();
     }
 
     private void TaskTimerButton_Click(object sender, RoutedEventArgs e)
@@ -709,6 +766,19 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         OpenTaskEditor(task);
     }
 
+    private void PinTaskButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not System.Windows.Controls.Button { Tag: TodoItem task }) return;
+        var previousPositions = CaptureTaskRowPositions();
+        var oldIndex = _tasks.IndexOf(task);
+        task.IsPinned = !task.IsPinned;
+        _tasks.RemoveAt(oldIndex);
+        var targetIndex = task.IsPinned ? 0 : _tasks.Count(item => item.IsPinned);
+        _tasks.Insert(targetIndex, task);
+        Dispatcher.BeginInvoke(() => AnimateTaskRows(previousPositions), DispatcherPriority.Render);
+        SaveState();
+    }
+
     private void RefreshActiveTimer()
     {
         if (_activeTimerTask is not TodoItem task) return;
@@ -735,9 +805,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         var dueTasks = _tasks
             .Where(task => !task.IsCompleted &&
                            (TaskReminderLogic.IsSnoozeDue(task.SnoozedUntil, now) ||
+                            task.DueAt is DateTime dueAt &&
+                            TaskReminderLogic.IsDue(dueAt, now, task.LastReminderDate) ||
                             task.ReminderTime is TimeSpan reminderTime &&
                             TaskReminderLogic.MatchesDay(task.Recurrence, now.DayOfWeek) &&
-                            TaskReminderLogic.IsDue(reminderTime, now, task.LastReminderDate)))
+                            TaskReminderLogic.IsDue(
+                                reminderTime, now, task.LastReminderDate, task.Recurrence)))
             .ToList();
         if (dueTasks.Count == 0) return;
 
@@ -754,6 +827,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             : $"{dueTasks.Count} tasks are due";
         SnoozePanel.Visibility = Visibility.Visible;
         SaveState();
+        if (DoNotDisturbSettings.IsActive(CurrentDoNotDisturb, now)) return;
         var wasSleeping = _isSleeping;
         NotifyInteraction();
         if (!IsVisible) Show();
@@ -878,6 +952,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             _tasks.Remove(item);
             RefreshOverflow();
             SaveState();
+            UpdateFruitGrowth();
         }
     }
 
@@ -977,6 +1052,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private bool ReorderTaskWithAnimation(TodoItem moving, TodoItem target, bool insertAfter)
     {
+        if (moving.IsPinned != target.IsPinned) return false;
         var previousPositions = CaptureTaskRowPositions();
         if (!TodoListLogic.Reorder(_tasks, moving, target, insertAfter)) return false;
 

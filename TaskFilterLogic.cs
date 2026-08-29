@@ -16,7 +16,7 @@ public static class TaskFilterLogic
 
         return mode switch
         {
-            TaskFilterMode.Scheduled => task.ReminderTime is not null,
+            TaskFilterMode.Scheduled => task.ReminderTime is not null || task.DueAt is not null,
             TaskFilterMode.RunningTimer => task.IsTimerRunning,
             _ => true
         };

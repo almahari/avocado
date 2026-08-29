@@ -17,6 +17,7 @@ public partial class App : System.Windows.Application
     private readonly Dictionary<SleepTimeOption, Forms.ToolStripMenuItem> _sleepTimeItems = [];
     private readonly Dictionary<SleepResizeAnchor, Forms.ToolStripMenuItem> _sleepResizeAnchorItems = [];
     private readonly Dictionary<ReminderSoundMode, Forms.ToolStripMenuItem> _reminderSoundItems = [];
+    private readonly Dictionary<DoNotDisturbMode, Forms.ToolStripMenuItem> _doNotDisturbItems = [];
     private readonly Dictionary<FruitThemeKind, Forms.ToolStripMenuItem> _themeItems = [];
     private MainWindow? _window;
     private Icon? _trayThemeIcon;
@@ -37,6 +38,7 @@ public partial class App : System.Windows.Application
         SetSleepTime(_window.CurrentSleepTime, persist: false);
         SetSleepResizeAnchor(_window.CurrentSleepResizeAnchor, persist: false);
         SetReminderSound(_window.CurrentReminderSound, persist: false);
+        SetDoNotDisturb(_window.CurrentDoNotDisturb, persist: false);
         SetResizeWhenInactive(_window.IsResizeWhenInactive, persist: false);
         SetTheme(_window.CurrentTheme, persist: false);
         ShowWindow();
@@ -89,6 +91,14 @@ public partial class App : System.Windows.Application
             _reminderSoundItems[choice.Mode] = choiceItem;
             reminderSoundItem.DropDownItems.Add(choiceItem);
         }
+        var doNotDisturbItem = new Forms.ToolStripMenuItem("Do not disturb");
+        foreach (var choice in DoNotDisturbSettings.Choices)
+        {
+            var choiceItem = new Forms.ToolStripMenuItem(
+                choice.DisplayName, null, (_, _) => SetDoNotDisturb(choice.Mode));
+            _doNotDisturbItems[choice.Mode] = choiceItem;
+            doNotDisturbItem.DropDownItems.Add(choiceItem);
+        }
         _openOnStartupItem = new Forms.ToolStripMenuItem(
             "Open on Windows startup", null,
             (_, _) => SetOpenOnStartup(!_startupRegistration.IsEnabled()))
@@ -108,6 +118,7 @@ public partial class App : System.Windows.Application
         menu.Items.Add(sleepResizeAnchorItem);
         menu.Items.Add(themesItem);
         menu.Items.Add(reminderSoundItem);
+        menu.Items.Add(doNotDisturbItem);
         menu.Items.Add(_openOnStartupItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(exitItem);
@@ -416,6 +427,14 @@ public partial class App : System.Windows.Application
         _window.SetReminderSound(mode, persist);
         foreach (var (soundMode, menuItem) in _reminderSoundItems)
             menuItem.Checked = soundMode == _window.CurrentReminderSound;
+    }
+
+    private void SetDoNotDisturb(DoNotDisturbMode mode, bool persist = true)
+    {
+        if (_window is null) return;
+        _window.SetDoNotDisturb(mode, persist);
+        foreach (var (doNotDisturbMode, menuItem) in _doNotDisturbItems)
+            menuItem.Checked = doNotDisturbMode == _window.CurrentDoNotDisturb;
     }
 
     private void SetTheme(FruitThemeKind kind, bool persist = true)

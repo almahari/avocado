@@ -44,6 +44,7 @@ var originalState = new AppState
     SleepTime = SleepTimeOption.OneMinute,
     SleepResizeAnchor = SleepResizeAnchor.BottomRight,
     ReminderSound = ReminderSoundMode.FruitSpecific,
+    DoNotDisturb = DoNotDisturbMode.TenPmToSevenAm,
     Theme = FruitThemeKind.Blueberry,
     Left = 123,
     Top = 456,
@@ -60,6 +61,8 @@ var originalState = new AppState
         ReminderTime = new TimeSpan(17, 50, 0),
         Recurrence = TaskRecurrence.Monday,
         Priority = TaskPriority.High,
+        IsPinned = true,
+        DueAt = new DateTime(2026, 8, 31, 9, 30, 0),
         LastReminderDate = new DateOnly(2026, 8, 28),
         SnoozedUntil = new DateTime(2026, 8, 29, 18, 0, 0),
         ElapsedTicks = TimeSpan.FromMinutes(12).Ticks
@@ -76,6 +79,8 @@ Assert(loadedState.SleepResizeAnchor == SleepResizeAnchor.BottomRight,
     "The selected sleep resize anchor must persist.");
 Assert(loadedState.ReminderSound == ReminderSoundMode.FruitSpecific,
     "The selected reminder sound mode must persist.");
+Assert(loadedState.DoNotDisturb == DoNotDisturbMode.TenPmToSevenAm,
+    "The selected Do Not Disturb schedule must persist.");
 Assert(loadedState.Theme == FruitThemeKind.Blueberry, "The selected fruit theme must persist.");
 Assert(loadedState.Left == 123 && loadedState.Top == 456, "Window position must persist.");
 Assert(loadedState.LastMonitor == "DISPLAY1" &&
@@ -93,6 +98,9 @@ Assert(loadedState.Tasks[0].ReminderTime == new TimeSpan(17, 50, 0),
 Assert(loadedState.Tasks[0].Recurrence == TaskRecurrence.Monday,
     "A task's recurrence must persist.");
 Assert(loadedState.Tasks[0].Priority == TaskPriority.High, "A task's priority must persist.");
+Assert(loadedState.Tasks[0].IsPinned, "A task's pinned state must persist.");
+Assert(loadedState.Tasks[0].DueAt == new DateTime(2026, 8, 31, 9, 30, 0),
+    "A task's natural-language due date must persist.");
 Assert(loadedState.Tasks[0].LastReminderDate == new DateOnly(2026, 8, 28),
     "A task's last reminder date must persist to prevent duplicate alerts after a restart.");
 Assert(loadedState.Tasks[0].SnoozedUntil == new DateTime(2026, 8, 29, 18, 0, 0),
@@ -144,8 +152,8 @@ Assert(FruitPersonalities.Get((FruitThemeKind)999) == FruitPersonalities.Get(Fru
 var timedTask = TaskReminderLogic.Parse("17:50 task 1");
 Assert(timedTask.Text == "task 1" && timedTask.ReminderTime == new TimeSpan(17, 50, 0),
     "A leading 24-hour time must be separated from the task text.");
-Assert(timedTask.Recurrence == TaskRecurrence.Daily,
-    "A plain timed task must retain the existing daily reminder behavior.");
+Assert(timedTask.Recurrence == TaskRecurrence.None,
+    "A plain timed task must be a one-time reminder.");
 var weeklyTask = TaskReminderLogic.Parse("monday 18:00 Gym");
 Assert(weeklyTask.Text == "Gym" && weeklyTask.ReminderTime == new TimeSpan(18, 0, 0) &&
        weeklyTask.Recurrence == TaskRecurrence.Monday,
@@ -165,31 +173,62 @@ Assert(TaskReminderLogic.Parse("!! Review").Priority == TaskPriority.Medium &&
 var untimedTask = TaskReminderLogic.Parse("25:50 task 1");
 Assert(untimedTask.Text == "25:50 task 1" && untimedTask.ReminderTime is null,
     "An invalid time prefix must remain ordinary task text.");
+var parsingReference = new DateTime(2026, 8, 29, 12, 0, 0);
+var tomorrowTask = TaskReminderLogic.Parse("tomorrow 9am Call Ali", parsingReference);
+Assert(tomorrowTask.Text == "Call Ali" && tomorrowTask.DueAt == new DateTime(2026, 8, 30, 9, 0, 0),
+    "Tomorrow plus a 12-hour time must create a one-time dated reminder.");
+var fridayTask = TaskReminderLogic.Parse("Friday Submit report", parsingReference);
+Assert(fridayTask.Text == "Submit report" && fridayTask.DueAt == new DateTime(2026, 9, 4, 9, 0, 0),
+    "A natural weekday must target its next occurrence and default to 09:00.");
+var exactDateTask = TaskReminderLogic.Parse("2026-09-03 08:15 !! Release build", parsingReference);
+Assert(exactDateTask.Text == "Release build" && exactDateTask.Priority == TaskPriority.Medium &&
+       exactDateTask.DueAt == new DateTime(2026, 9, 3, 8, 15, 0),
+    "An exact date, time, and priority must parse together.");
 var reminderMoment = new DateTime(2026, 8, 29, 17, 50, 30);
 Assert(TaskReminderLogic.IsDue(new TimeSpan(17, 50, 0), reminderMoment, null),
     "A reminder must become due during its matching minute.");
 Assert(!TaskReminderLogic.IsDue(new TimeSpan(17, 50, 0), reminderMoment, new DateOnly(2026, 8, 29)),
     "A reminder must fire only once per day.");
+Assert(!TaskReminderLogic.IsDue(new TimeSpan(17, 50, 0), reminderMoment, new DateOnly(2026, 8, 28)),
+    "A one-time reminder must not fire again on a later day.");
+Assert(TaskReminderLogic.IsDue(
+        new TimeSpan(17, 50, 0), reminderMoment, new DateOnly(2026, 8, 28), TaskRecurrence.Daily),
+    "An explicit daily reminder must become eligible again on a later day.");
 Assert(TaskReminderLogic.ShakeDuration == TimeSpan.FromSeconds(10),
     "A due reminder must shake the app for exactly ten seconds.");
 Assert(TaskReminderLogic.IsSnoozeDue(reminderMoment.AddMinutes(-1), reminderMoment),
     "A reminder must fire when its snooze time is reached.");
 Assert(!TaskReminderLogic.IsSnoozeDue(reminderMoment.AddMinutes(1), reminderMoment),
     "A future snooze time must not fire early.");
+Assert(TaskReminderLogic.IsDue(reminderMoment.AddMinutes(-1), reminderMoment, null) &&
+       !TaskReminderLogic.IsDue(reminderMoment.AddMinutes(-1), reminderMoment, new DateOnly(2026, 8, 29)),
+    "A dated reminder must fire once when its due moment arrives.");
 Assert(StartupRegistration.BuildCommand(@"C:\Apps\Avocado.exe") == "\"C:\\Apps\\Avocado.exe\"",
     "The Windows startup command must quote the executable path.");
 Assert(ReminderSoundSettings.Choices.Count == 3 &&
        ReminderSoundSettings.Default == ReminderSoundMode.Soft,
     "Reminder sounds must offer Silent, Soft, and Fruit-specific modes with Soft as default.");
+Assert(DoNotDisturbSettings.IsActive(DoNotDisturbMode.TenPmToSevenAm, new DateTime(2026, 8, 29, 23, 0, 0)) &&
+       DoNotDisturbSettings.IsActive(DoNotDisturbMode.TenPmToSevenAm, new DateTime(2026, 8, 29, 6, 30, 0)) &&
+       !DoNotDisturbSettings.IsActive(DoNotDisturbMode.TenPmToSevenAm, new DateTime(2026, 8, 29, 12, 0, 0)),
+    "Do Not Disturb quiet hours must work across midnight.");
+Assert(DoNotDisturbSettings.IsActive(DoNotDisturbMode.Always, DateTime.Now) &&
+       !DoNotDisturbSettings.IsActive(DoNotDisturbMode.Off, DateTime.Now),
+    "Do Not Disturb must support both Always and Off.");
+Assert(FruitGrowthLogic.Scale(4, 0) == FruitGrowthLogic.MinimumScale &&
+       Math.Abs(FruitGrowthLogic.Scale(2, 2) - 0.93) < 0.0001 &&
+       FruitGrowthLogic.Scale(0, 4) == 1,
+    "Fruit growth must progress smoothly from its minimum to full size.");
 var filterTask = new TodoItem { Text = "Write release notes", ReminderTime = TimeSpan.FromHours(9) };
 Assert(TaskFilterLogic.Matches(filterTask, "release", TaskFilterMode.Active),
     "Task search must be case-insensitive and match text fragments.");
 Assert(TaskFilterLogic.Matches(filterTask, string.Empty, TaskFilterMode.Scheduled),
     "The scheduled filter must include tasks with reminder times.");
+Assert(TaskFilterLogic.Matches(new TodoItem { DueAt = DateTime.Now.AddDays(1) }, string.Empty,
+        TaskFilterMode.Scheduled),
+    "The scheduled filter must include naturally dated tasks.");
 Assert(!TaskFilterLogic.Matches(filterTask, string.Empty, TaskFilterMode.RunningTimer),
     "The running-timer filter must exclude tasks without an active timer.");
-Assert(TaskCelebrationSettings.Duration == TimeSpan.FromMilliseconds(650),
-    "Task completion celebration must remain brief and responsive.");
 var workArea = new WorkArea(0, 0, 1920, 1080);
 Assert(EdgeSnapLogic.Snap(12, 11, 420, 540, workArea) == new AppPosition(0, 0),
     "Dragging near the top-left must snap to both edges.");
@@ -197,6 +236,19 @@ Assert(EdgeSnapLogic.Snap(1490, 535, 420, 540, workArea) == new AppPosition(1500
     "Dragging near the bottom-right must snap to both edges.");
 Assert(EdgeSnapLogic.Snap(500, 300, 420, 540, workArea) == new AppPosition(500, 300),
     "Dragging away from an edge must preserve the position.");
+var sortableTasks = new List<TodoItem>
+{
+    new() { Text = "Plain" },
+    new() { Text = "Later", Priority = TaskPriority.Low, ReminderTime = TimeSpan.FromHours(18) },
+    new() { Text = "Urgent", Priority = TaskPriority.High, ReminderTime = TimeSpan.FromHours(9) },
+    new() { Text = "Pinned", IsPinned = true }
+};
+Assert(TaskSortLogic.ByPriority(sortableTasks).Select(task => task.Text)
+        .SequenceEqual(["Pinned", "Urgent", "Later", "Plain"]),
+    "Priority sorting must keep pinned tasks first, then place high-priority tasks first.");
+Assert(TaskSortLogic.ByTime(sortableTasks).Select(task => task.Text)
+        .SequenceEqual(["Pinned", "Urgent", "Later", "Plain"]),
+    "Time sorting must keep pinned tasks first, then order scheduled tasks.");
 
 Console.WriteLine("All Avocado logic checks passed.");
 return;

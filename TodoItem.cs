@@ -17,6 +17,9 @@ public sealed class TodoItem : INotifyPropertyChanged
     private DateTime? _snoozedUntil;
     private TaskRecurrence _recurrence;
     private TaskPriority _priority;
+    private DateTime? _dueAt;
+    private bool _isPinned;
+    private DateTime? _completedAt;
 
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Text
@@ -71,12 +74,45 @@ public sealed class TodoItem : INotifyPropertyChanged
             OnPropertyChanged(nameof(PriorityLabel));
         }
     }
+    public DateTime? DueAt
+    {
+        get => _dueAt;
+        set
+        {
+            _dueAt = value;
+            _lastReminderDate = null;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(ReminderLabel));
+        }
+    }
+    public bool IsPinned
+    {
+        get => _isPinned;
+        set
+        {
+            _isPinned = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(PinIcon));
+            OnPropertyChanged(nameof(PinToolTip));
+        }
+    }
+    public DateTime? CompletedAt
+    {
+        get => _completedAt;
+        set { _completedAt = value; OnPropertyChanged(); }
+    }
     [JsonIgnore]
     public string PriorityLabel => TaskReminderLogic.PriorityPrefix(Priority);
     [JsonIgnore]
-    public string ReminderLabel => ReminderTime is TimeSpan time
-        ? $"{TaskReminderLogic.Label(Recurrence)} {time:hh\\:mm}".TrimStart()
-        : string.Empty;
+    public string ReminderLabel => DueAt is DateTime dueAt
+        ? TaskReminderLogic.FormatDueLabel(dueAt)
+        : ReminderTime is TimeSpan time
+            ? $"{TaskReminderLogic.Label(Recurrence)} {time:hh\\:mm}".TrimStart()
+            : string.Empty;
+    [JsonIgnore]
+    public string PinIcon => IsPinned ? "◆" : "◇";
+    [JsonIgnore]
+    public string PinToolTip => IsPinned ? "Unpin task" : "Pin task";
     public DateOnly? LastReminderDate
     {
         get => _lastReminderDate;

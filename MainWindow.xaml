@@ -15,6 +15,7 @@
         PreviewKeyDown="Window_PreviewKeyDown"
         PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown"
         PreviewMouseWheel="Window_PreviewMouseWheel"
+        MouseEnter="Window_MouseEnter"
         MouseLeftButtonDown="Window_MouseLeftButtonDown">
     <Window.Resources>
         <SolidColorBrush x:Key="InkBrush" Color="#173D2B" />
@@ -193,6 +194,17 @@
                 Style="{StaticResource PixelButton}" Width="26" Height="26"
                 Margin="82,116,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                 Click="CloseButton_Click" />
+        <Button x:Name="SortButton" Content="↕" ToolTip="Sort tasks"
+                Style="{StaticResource PixelButton}" Width="26" Height="26"
+                Margin="112,116,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                FontSize="15" Click="SortButton_Click">
+            <Button.ContextMenu>
+                <ContextMenu FontFamily="Consolas">
+                    <MenuItem Header="Sort by priority" Click="SortByPriorityMenuItem_Click" />
+                    <MenuItem Header="Sort by time" Click="SortByTimeMenuItem_Click" />
+                </ContextMenu>
+            </Button.ContextMenu>
+        </Button>
         <Button x:Name="AddButton" Content="+" ToolTip="Add task (Ctrl+N or global Ctrl+Alt+N)"
                 Style="{StaticResource PixelButton}" Width="30" Height="30"
                 Margin="0,114,84,0" HorizontalAlignment="Right" VerticalAlignment="Top"
@@ -290,6 +302,7 @@
                                         <ColumnDefinition Width="28" />
                                         <ColumnDefinition Width="28" />
                                         <ColumnDefinition Width="28" />
+                                        <ColumnDefinition Width="28" />
                                     </Grid.ColumnDefinitions>
                                     <CheckBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                                               IsChecked="{Binding IsCompleted}" Click="TaskCheckBox_Click" />
@@ -326,11 +339,15 @@
                                             Background="Transparent" BorderThickness="0" Foreground="{DynamicResource InkBrush}"
                                             FontFamily="Consolas" FontSize="15" FontWeight="Bold" Cursor="Hand"
                                             Tag="{Binding}" Click="TaskTimerButton_Click" />
-                                    <Button Grid.Column="5" Content="✎" ToolTip="Edit task"
+                                    <Button Grid.Column="5" Content="{Binding PinIcon}" ToolTip="{Binding PinToolTip}"
+                                            Background="Transparent" BorderThickness="0" Foreground="{DynamicResource SeedBrush}"
+                                            FontFamily="Consolas" FontSize="13" FontWeight="Bold" Cursor="Hand"
+                                            Tag="{Binding}" Click="PinTaskButton_Click" />
+                                    <Button Grid.Column="6" Content="✎" ToolTip="Edit task"
                                             Background="Transparent" BorderThickness="0" Foreground="{DynamicResource InkBrush}"
                                             FontFamily="Consolas" FontSize="15" FontWeight="Bold" Cursor="Hand"
                                             Tag="{Binding}" Click="EditTaskButton_Click" />
-                                    <Button Grid.Column="6" Content="×" ToolTip="Delete task"
+                                    <Button Grid.Column="7" Content="×" ToolTip="Delete task"
                                             Background="Transparent" BorderThickness="0" Foreground="{DynamicResource SeedBrush}"
                                             FontFamily="Consolas" FontSize="18" Cursor="Hand"
                                             Tag="{Binding}" Click="DeleteTaskButton_Click" />
@@ -434,22 +451,5 @@
                        Foreground="{DynamicResource MutedInkBrush}" />
         </Grid>
 
-        <Grid x:Name="CelebrationOverlay" Panel.ZIndex="60" Visibility="Collapsed"
-              Opacity="0" IsHitTestVisible="False" RenderTransformOrigin="0.5,0.5">
-            <Grid.RenderTransform>
-                <ScaleTransform x:Name="CelebrationScale" ScaleX="1" ScaleY="1" />
-            </Grid.RenderTransform>
-            <Border Width="190" Height="82" Background="{DynamicResource CreamBrush}"
-                    BorderBrush="{DynamicResource InkBrush}" BorderThickness="4">
-                <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="✦  ✓  ✦" HorizontalAlignment="Center"
-                               FontFamily="Consolas" FontSize="28" FontWeight="Bold"
-                               Foreground="{DynamicResource AccentBrush}" />
-                    <TextBlock Text="NICE!" HorizontalAlignment="Center"
-                               FontFamily="Consolas" FontSize="13" FontWeight="Bold"
-                               Foreground="{DynamicResource InkBrush}" />
-                </StackPanel>
-            </Border>
-        </Grid>
     </Grid>
 </Window>
