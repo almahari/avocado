@@ -197,6 +197,10 @@
                 Style="{StaticResource PixelButton}" Width="30" Height="30"
                 Margin="0,114,84,0" HorizontalAlignment="Right" VerticalAlignment="Top"
                 FontSize="20" Click="AddButton_Click" />
+        <Button x:Name="SearchButton" Content="⌕" ToolTip="Search and filter tasks"
+                Style="{StaticResource PixelButton}" Width="28" Height="28"
+                Margin="0,115,118,0" HorizontalAlignment="Right" VerticalAlignment="Top"
+                FontSize="16" Click="SearchButton_Click" />
 
         <!-- Input editor -->
         <Border x:Name="AddPanel" Width="262" Height="42" Margin="0,157,0,0"
@@ -218,13 +222,46 @@
             </Grid>
         </Border>
 
+        <Border x:Name="FilterPanel" Width="278" Height="76" Margin="0,157,0,0"
+                VerticalAlignment="Top" HorizontalAlignment="Center" Panel.ZIndex="20"
+                Background="{DynamicResource CreamBrush}" BorderBrush="{DynamicResource InkBrush}"
+                BorderThickness="3" Visibility="Collapsed">
+            <Grid Margin="5,4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="29" />
+                    <RowDefinition Height="31" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="30" />
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="TaskSearchBox" Grid.Row="0" Grid.Column="0"
+                         FontFamily="Consolas" FontSize="13" VerticalContentAlignment="Center"
+                         TextChanged="TaskSearchBox_TextChanged" />
+                <Button Grid.Row="0" Grid.Column="1" Content="×" ToolTip="Close filters"
+                        Style="{StaticResource PixelButton}" Margin="3,0,0,0"
+                        Click="CloseFilterButton_Click" />
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal"
+                            HorizontalAlignment="Center" Margin="0,4,0,0">
+                    <Button Content="Active" Tag="Active" Width="55" Margin="2,0"
+                            Style="{StaticResource PixelButton}" Click="TaskFilterButton_Click" />
+                    <Button Content="Due" Tag="Scheduled" Width="45" Margin="2,0"
+                            Style="{StaticResource PixelButton}" Click="TaskFilterButton_Click" />
+                    <Button Content="Timer" Tag="RunningTimer" Width="50" Margin="2,0"
+                            Style="{StaticResource PixelButton}" Click="TaskFilterButton_Click" />
+                    <Button Content="Done" Tag="Completed" Width="48" Margin="2,0"
+                            Style="{StaticResource PixelButton}" Click="TaskFilterButton_Click" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
         <!-- Five rows fit at once; the mouse wheel reveals the remaining tasks. -->
         <Border Width="278" Height="180" Margin="0,166,0,0" VerticalAlignment="Top"
                 HorizontalAlignment="Center" ClipToBounds="True">
             <ScrollViewer x:Name="TaskScrollViewer"
                           VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled"
                           CanContentScroll="False" PanningMode="VerticalOnly">
-                <ItemsControl x:Name="TaskItemsControl" ItemsSource="{Binding Tasks}">
+                <ItemsControl x:Name="TaskItemsControl" ItemsSource="{Binding TasksView}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border x:Name="TaskRow" Height="33" MinHeight="33" Margin="0,0,0,3" Background="{DynamicResource TaskBrush}"

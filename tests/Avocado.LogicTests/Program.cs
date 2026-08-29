@@ -169,6 +169,13 @@ Assert(StartupRegistration.BuildCommand(@"C:\Apps\Avocado.exe") == "\"C:\\Apps\\
 Assert(ReminderSoundSettings.Choices.Count == 3 &&
        ReminderSoundSettings.Default == ReminderSoundMode.Soft,
     "Reminder sounds must offer Silent, Soft, and Fruit-specific modes with Soft as default.");
+var filterTask = new TodoItem { Text = "Write release notes", ReminderTime = TimeSpan.FromHours(9) };
+Assert(TaskFilterLogic.Matches(filterTask, "release", TaskFilterMode.Active),
+    "Task search must be case-insensitive and match text fragments.");
+Assert(TaskFilterLogic.Matches(filterTask, string.Empty, TaskFilterMode.Scheduled),
+    "The scheduled filter must include tasks with reminder times.");
+Assert(!TaskFilterLogic.Matches(filterTask, string.Empty, TaskFilterMode.RunningTimer),
+    "The running-timer filter must exclude tasks without an active timer.");
 
 Console.WriteLine("All Avocado logic checks passed.");
 return;

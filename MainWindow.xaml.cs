@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -19,6 +20,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private const double CollapsedTaskHeight = 33;
     private readonly ObservableCollection<TodoItem> _tasks = [];
     private readonly ObservableCollection<TodoItem> _archivedTasks = [];
+    private readonly ICollectionView _tasksView;
     private readonly AppStateStore _store = new();
     private readonly DispatcherTimer _locationSaveTimer;
     private readonly DispatcherTimer _inactivityTimer;
@@ -47,8 +49,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private GlobalQuickAddHotkey? _globalQuickAddHotkey;
     private readonly List<TodoItem> _alertingTasks = [];
     private string _alertTaskLabel = string.Empty;
+    private string _taskSearchText = string.Empty;
+    private TaskFilterMode _taskFilterMode = TaskFilterMode.Active;
 
     public ObservableCollection<TodoItem> Tasks => _tasks;
+    public ICollectionView TasksView => _tasksView;
     public ObservableCollection<TodoItem> ArchivedTasks => _archivedTasks;
     public string OverflowLabel
     {
@@ -81,6 +86,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _state = _store.Load();
         foreach (var item in _state.Tasks) _tasks.Add(item);
         foreach (var item in _state.ArchivedTasks) _archivedTasks.Add(item);
+        _tasksView = CollectionViewSource.GetDefaultView(_tasks);
+        _tasksView.Filter = item => item is TodoItem task &&
+                                    TaskFilterLogic.Matches(task, _taskSearchText, _taskFilterMode);
         _locationSaveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(350) };
         _locationSaveTimer.Tick += (_, _) => SaveLocationNow();
         _inactivityTimer = new DispatcherTimer();
@@ -441,6 +449,41 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void AddButton_Click(object sender, RoutedEventArgs e)
         => OpenTaskEditor();
 
+    private void SearchButton_Click(object sender, RoutedEventArgs e)
+    {
+        FilterPanel.Visibility = FilterPanel.Visibility == Visibility.Visible
+            ? Visibility.Collapsed
+            : Visibility.Visible;
+        if (FilterPanel.Visibility == Visibility.Visible) TaskSearchBox.Focus();
+    }
+
+    private void CloseFilterButton_Click(object sender, RoutedEventArgs e) =>
+        FilterPanel.Visibility = Visibility.Collapsed;
+
+    private void TaskSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        _taskSearchText = TaskSearchBox.Text;
+        RefreshTaskView();
+    }
+
+    private void TaskFilterButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not System.Windows.Controls.Button { Tag: string filterName }) return;
+        if (filterName == "Completed")
+        {
+            ShowArchive();
+            return;
+        }
+        _taskFilterMode = Enum.Parse<TaskFilterMode>(filterName);
+        RefreshTaskView();
+    }
+
+    private void RefreshTaskView()
+    {
+        _tasksView.Refresh();
+        RefreshOverflow();
+    }
+
     private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
         var wasSleeping = _isSleeping;
@@ -567,6 +610,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         task.IsTimerRunning = true;
         _taskTimer.Start();
         RefreshActiveTimer();
+        RefreshTaskView();
         SaveState();
     }
 
@@ -593,6 +637,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         task.IsTimerRunning = false;
         _activeTimerTask = null;
         HeaderText = _currentTheme.DisplayName.ToUpperInvariant();
+        RefreshTaskView();
         if (persist) SaveState();
     }
 
@@ -969,7 +1014,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void RefreshOverflow()
     {
-        var hidden = TodoListLogic.HiddenCount(_tasks.Count, VisibleTaskLimit);
+        var hidden = TodoListLogic.HiddenCount(_tasksView.Cast<object>().Count(), VisibleTaskLimit);
         OverflowLabel = hidden > 0 ? $"+{hidden} more" : string.Empty;
     }
 
