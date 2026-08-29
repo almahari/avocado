@@ -46,6 +46,7 @@ public partial class App : System.Windows.Application
     {
         var menu = new Forms.ContextMenuStrip();
         var showItem = new Forms.ToolStripMenuItem("Show avocado", null, (_, _) => ToggleWindow());
+        var archiveItem = new Forms.ToolStripMenuItem("Completed archive", null, (_, _) => ShowArchive());
         _normalItem = new Forms.ToolStripMenuItem("Normal window", null, (_, _) => SetWindowMode(false));
         _alwaysOnTopItem = new Forms.ToolStripMenuItem("Always on top", null, (_, _) => SetWindowMode(true));
         var sizeItem = new Forms.ToolStripMenuItem("Size");
@@ -97,6 +98,7 @@ public partial class App : System.Windows.Application
         var exitItem = new Forms.ToolStripMenuItem("Exit", null, (_, _) => ExitApplication());
 
         menu.Items.Add(showItem);
+        menu.Items.Add(archiveItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(_normalItem);
         menu.Items.Add(_alwaysOnTopItem);
@@ -448,6 +450,12 @@ public partial class App : System.Windows.Application
     {
         if (_window?.IsVisible == true) HideWindow();
         else ShowWindow();
+    }
+
+    private void ShowArchive()
+    {
+        ShowWindow();
+        _window?.ShowArchive();
     }
 
     private void ShowWindow()

@@ -18,6 +18,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private const int VisibleTaskLimit = 5;
     private const double CollapsedTaskHeight = 33;
     private readonly ObservableCollection<TodoItem> _tasks = [];
+    private readonly ObservableCollection<TodoItem> _archivedTasks = [];
     private readonly AppStateStore _store = new();
     private readonly DispatcherTimer _locationSaveTimer;
     private readonly DispatcherTimer _inactivityTimer;
@@ -48,6 +49,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private string _alertTaskLabel = string.Empty;
 
     public ObservableCollection<TodoItem> Tasks => _tasks;
+    public ObservableCollection<TodoItem> ArchivedTasks => _archivedTasks;
     public string OverflowLabel
     {
         get => _overflowLabel;
@@ -78,6 +80,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         _state = _store.Load();
         foreach (var item in _state.Tasks) _tasks.Add(item);
+        foreach (var item in _state.ArchivedTasks) _archivedTasks.Add(item);
         _locationSaveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(350) };
         _locationSaveTimer.Tick += (_, _) => SaveLocationNow();
         _inactivityTimer = new DispatcherTimer();
@@ -503,6 +506,42 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void TaskCheckBox_Click(object sender, RoutedEventArgs e)
     {
+        if (sender is System.Windows.Controls.CheckBox { DataContext: TodoItem task, IsChecked: true })
+        {
+            if (ReferenceEquals(_activeTimerTask, task)) PauseActiveTimer(persist: false);
+            if (ReferenceEquals(_expandedTask, task)) _expandedTask = null;
+            _tasks.Remove(task);
+            _archivedTasks.Insert(0, task);
+            RefreshOverflow();
+        }
+        SaveState();
+    }
+
+    public void ShowArchive()
+    {
+        NotifyInteraction();
+        ArchivePanel.Visibility = Visibility.Visible;
+    }
+
+    private void CloseArchiveButton_Click(object sender, RoutedEventArgs e) =>
+        ArchivePanel.Visibility = Visibility.Collapsed;
+
+    private void RestoreArchivedTaskButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not System.Windows.Controls.Button { Tag: TodoItem task }) return;
+        task.IsCompleted = false;
+        _archivedTasks.Remove(task);
+        _tasks.Add(task);
+        ArchivePanel.Visibility = _archivedTasks.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
+        RefreshOverflow();
+        SaveState();
+    }
+
+    private void DeleteArchivedTaskButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not System.Windows.Controls.Button { Tag: TodoItem task }) return;
+        _archivedTasks.Remove(task);
+        ArchivePanel.Visibility = _archivedTasks.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
         SaveState();
     }
 
@@ -932,6 +971,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void SaveState()
     {
         _state.Tasks = _tasks.ToList();
+        _state.ArchivedTasks = _archivedTasks.ToList();
         _store.Save(_state);
     }
 

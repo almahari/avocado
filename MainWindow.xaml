@@ -325,6 +325,49 @@
                 </StackPanel>
             </StackPanel>
         </Border>
+
+        <Border x:Name="ArchivePanel" Width="286" Height="226" Margin="0,148,0,0"
+                VerticalAlignment="Top" HorizontalAlignment="Center" Panel.ZIndex="40"
+                Background="{DynamicResource CreamBrush}" BorderBrush="{DynamicResource InkBrush}"
+                BorderThickness="3" Visibility="Collapsed">
+            <Grid Margin="6">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock Text="COMPLETED" FontFamily="Consolas" FontSize="15" FontWeight="Bold"
+                           Foreground="{DynamicResource InkBrush}" VerticalAlignment="Center" />
+                <Button Grid.Row="0" Content="×" ToolTip="Close archive" Width="26" Height="26"
+                        HorizontalAlignment="Right" Style="{StaticResource PixelButton}"
+                        Click="CloseArchiveButton_Click" />
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding ArchivedTasks}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Height="32" Background="{DynamicResource TaskBrush}" Margin="0,0,0,3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="30" />
+                                        <ColumnDefinition Width="30" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Text}" FontFamily="Consolas" FontSize="13"
+                                               Foreground="{DynamicResource InkBrush}" TextTrimming="CharacterEllipsis"
+                                               VerticalAlignment="Center" Margin="5,0" />
+                                    <Button Grid.Column="1" Content="↶" ToolTip="Restore task" Tag="{Binding}"
+                                            Background="Transparent" BorderThickness="0" Cursor="Hand"
+                                            Foreground="{DynamicResource InkBrush}" FontSize="16"
+                                            Click="RestoreArchivedTaskButton_Click" />
+                                    <Button Grid.Column="2" Content="×" ToolTip="Delete permanently" Tag="{Binding}"
+                                            Background="Transparent" BorderThickness="0" Cursor="Hand"
+                                            Foreground="{DynamicResource SeedBrush}" FontSize="17"
+                                            Click="DeleteArchivedTaskButton_Click" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
         </Grid>
 
         <Grid x:Name="SleepOverlay" Panel.ZIndex="20" Visibility="Collapsed"

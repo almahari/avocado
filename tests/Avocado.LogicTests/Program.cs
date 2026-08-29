@@ -57,7 +57,8 @@ var originalState = new AppState
         LastReminderDate = new DateOnly(2026, 8, 28),
         SnoozedUntil = new DateTime(2026, 8, 29, 18, 0, 0),
         ElapsedTicks = TimeSpan.FromMinutes(12).Ticks
-    }]
+    }],
+    ArchivedTasks = [new TodoItem { Text = "Finished task", IsCompleted = true }]
 };
 store.Save(originalState);
 var loadedState = store.Load();
@@ -73,6 +74,9 @@ Assert(loadedState.Theme == FruitThemeKind.Blueberry, "The selected fruit theme 
 Assert(loadedState.Left == 123 && loadedState.Top == 456, "Window position must persist.");
 Assert(loadedState.Tasks.Count == 1 && loadedState.Tasks[0].Text == "Persist me" && loadedState.Tasks[0].IsCompleted,
     "Tasks and completion state must persist.");
+Assert(loadedState.ArchivedTasks.Count == 1 && loadedState.ArchivedTasks[0].Text == "Finished task" &&
+       loadedState.ArchivedTasks[0].IsCompleted,
+    "Completed task history must persist.");
 Assert(loadedState.Tasks[0].ElapsedTicks == TimeSpan.FromMinutes(12).Ticks,
     "A task's accumulated timer duration must persist.");
 Assert(loadedState.Tasks[0].ReminderTime == new TimeSpan(17, 50, 0),
