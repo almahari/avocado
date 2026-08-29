@@ -17,16 +17,27 @@ dotnet run --project .\Avocado.csproj
 - Select the avocado's `×` to hide it to the notification tray.
 - Double-click the tray icon to show or hide the avocado.
 - Open the tray icon menu to choose **Normal window**, **Always on top**, themes, reminder sounds, Do Not Disturb hours, startup behavior, or **Exit**.
+- Toggle **Adaptive personality** in the tray menu to show or hide the fruit’s reactive face. The choice is saved.
 - From the tray menu, choose **Size → Normal** or **Size → Small**; Small is exactly half-size.
 - Enable **Resize when inactive** and choose a **Sleep time** to show a compact sleeping fruit after inactivity; choose **Never** to disable sleeping. Hover or click to wake it.
 - Scroll the task area to reveal tasks beyond the first five; `+N more` shows how many start below the viewport.
 - Drag a task row up or down to change its saved order; nearby tasks animate aside while you drag.
 - Use the `↕` button beside `×` to sort tasks by priority or reminder time.
 - Use the `◇` button on a task to pin it above unpinned tasks. Pinned and unpinned tasks can each be reordered by dragging.
+- Select a task’s `•••` button to reveal its timer, pin, edit, and delete actions.
 - Select an `http://`, `https://`, or `www.` link inside a task to open it in the default browser.
 - Enter `https://example.com : Display text` to hide the URL and show only a clickable label.
 - Select truncated task text to animate it open; select it again or click elsewhere to collapse it.
-- Completing today’s tasks gradually grows the selected fruit from 86% to full size.
+
+## Adaptive personality
+
+When enabled, the fruit reacts to the current task state:
+
+- Happy for a few seconds after a task is completed.
+- Focused while a task timer is running.
+- Worried while naturally dated tasks are overdue.
+- Tired whenever more than five tasks remain.
+- Calm, using the selected fruit theme’s own face, at other times.
 
 ## Do Not Disturb
 

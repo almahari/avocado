@@ -22,6 +22,6 @@
     <Compile Include="..\..\EdgeSnapLogic.cs" Link="EdgeSnapLogic.cs" />
     <Compile Include="..\..\TaskSortLogic.cs" Link="TaskSortLogic.cs" />
     <Compile Include="..\..\DoNotDisturbSettings.cs" Link="DoNotDisturbSettings.cs" />
-    <Compile Include="..\..\FruitGrowthLogic.cs" Link="FruitGrowthLogic.cs" />
+    <Compile Include="..\..\AdaptivePersonalityLogic.cs" Link="AdaptivePersonalityLogic.cs" />
   </ItemGroup>
 </Project>

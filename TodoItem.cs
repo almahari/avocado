@@ -10,6 +10,7 @@ public sealed class TodoItem : INotifyPropertyChanged
     private bool _isCompleted;
     private bool _isDragging;
     private bool _isExpanded;
+    private bool _isActionsOpen;
     private long _elapsedTicks;
     private bool _isTimerRunning;
     private TimeSpan? _reminderTime;
@@ -134,6 +135,12 @@ public sealed class TodoItem : INotifyPropertyChanged
     {
         get => _isExpanded;
         set { _isExpanded = value; OnPropertyChanged(); }
+    }
+    [JsonIgnore]
+    public bool IsActionsOpen
+    {
+        get => _isActionsOpen;
+        set { _isActionsOpen = value; OnPropertyChanged(); }
     }
     [JsonIgnore]
     public bool IsTimerRunning

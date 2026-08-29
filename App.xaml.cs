@@ -14,6 +14,7 @@ public partial class App : System.Windows.Application
     private Forms.ToolStripMenuItem? _smallSizeItem;
     private Forms.ToolStripMenuItem? _resizeWhenInactiveItem;
     private Forms.ToolStripMenuItem? _openOnStartupItem;
+    private Forms.ToolStripMenuItem? _adaptivePersonalityItem;
     private readonly Dictionary<SleepTimeOption, Forms.ToolStripMenuItem> _sleepTimeItems = [];
     private readonly Dictionary<SleepResizeAnchor, Forms.ToolStripMenuItem> _sleepResizeAnchorItems = [];
     private readonly Dictionary<ReminderSoundMode, Forms.ToolStripMenuItem> _reminderSoundItems = [];
@@ -39,6 +40,7 @@ public partial class App : System.Windows.Application
         SetSleepResizeAnchor(_window.CurrentSleepResizeAnchor, persist: false);
         SetReminderSound(_window.CurrentReminderSound, persist: false);
         SetDoNotDisturb(_window.CurrentDoNotDisturb, persist: false);
+        SetAdaptivePersonality(_window.IsAdaptivePersonalityEnabled, persist: false);
         SetResizeWhenInactive(_window.IsResizeWhenInactive, persist: false);
         SetTheme(_window.CurrentTheme, persist: false);
         ShowWindow();
@@ -99,6 +101,9 @@ public partial class App : System.Windows.Application
             _doNotDisturbItems[choice.Mode] = choiceItem;
             doNotDisturbItem.DropDownItems.Add(choiceItem);
         }
+        _adaptivePersonalityItem = new Forms.ToolStripMenuItem(
+            "Adaptive personality", null,
+            (_, _) => SetAdaptivePersonality(!_window!.IsAdaptivePersonalityEnabled));
         _openOnStartupItem = new Forms.ToolStripMenuItem(
             "Open on Windows startup", null,
             (_, _) => SetOpenOnStartup(!_startupRegistration.IsEnabled()))
@@ -113,13 +118,17 @@ public partial class App : System.Windows.Application
         menu.Items.Add(_normalItem);
         menu.Items.Add(_alwaysOnTopItem);
         menu.Items.Add(sizeItem);
+        menu.Items.Add(_openOnStartupItem);
+        menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(_resizeWhenInactiveItem);
         menu.Items.Add(sleepTimeItem);
         menu.Items.Add(sleepResizeAnchorItem);
+        menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(themesItem);
+        menu.Items.Add(_adaptivePersonalityItem);
+        menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(reminderSoundItem);
         menu.Items.Add(doNotDisturbItem);
-        menu.Items.Add(_openOnStartupItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(exitItem);
 
@@ -435,6 +444,14 @@ public partial class App : System.Windows.Application
         _window.SetDoNotDisturb(mode, persist);
         foreach (var (doNotDisturbMode, menuItem) in _doNotDisturbItems)
             menuItem.Checked = doNotDisturbMode == _window.CurrentDoNotDisturb;
+    }
+
+    private void SetAdaptivePersonality(bool enabled, bool persist = true)
+    {
+        if (_window is null) return;
+        _window.SetAdaptivePersonality(enabled, persist);
+        if (_adaptivePersonalityItem is not null)
+            _adaptivePersonalityItem.Checked = _window.IsAdaptivePersonalityEnabled;
     }
 
     private void SetTheme(FruitThemeKind kind, bool persist = true)

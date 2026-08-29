@@ -14,6 +14,7 @@ public sealed class AppState
     public SleepResizeAnchor SleepResizeAnchor { get; set; } = SleepResizeAnchor.TopLeft;
     public ReminderSoundMode ReminderSound { get; set; } = ReminderSoundSettings.Default;
     public DoNotDisturbMode DoNotDisturb { get; set; } = DoNotDisturbMode.Off;
+    public bool AdaptivePersonalityEnabled { get; set; } = true;
     public FruitThemeKind Theme { get; set; } = FruitThemeKind.Avocado;
     public double? Left { get; set; }
     public double? Top { get; set; }

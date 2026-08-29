@@ -54,6 +54,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private TaskFilterMode _taskFilterMode = TaskFilterMode.Active;
     private string _sleepEyes = "─";
     private string _sleepMouth = "ᴗ";
+    private string _sleepTimerText = string.Empty;
+    private string _adaptiveEyes = string.Empty;
+    private string _adaptiveMouth = string.Empty;
+    private string _adaptiveStatus = string.Empty;
+    private DateTime _happyUntil = DateTime.MinValue;
+    private AdaptiveMood? _adaptiveMood;
 
     public ObservableCollection<TodoItem> Tasks => _tasks;
     public ICollectionView TasksView => _tasksView;
@@ -83,6 +89,26 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         get => _sleepMouth;
         private set { _sleepMouth = value; OnPropertyChanged(); }
     }
+    public string SleepTimerText
+    {
+        get => _sleepTimerText;
+        private set { _sleepTimerText = value; OnPropertyChanged(); }
+    }
+    public string AdaptiveEyes
+    {
+        get => _adaptiveEyes;
+        private set { _adaptiveEyes = value; OnPropertyChanged(); }
+    }
+    public string AdaptiveMouth
+    {
+        get => _adaptiveMouth;
+        private set { _adaptiveMouth = value; OnPropertyChanged(); }
+    }
+    public string AdaptiveStatus
+    {
+        get => _adaptiveStatus;
+        private set { _adaptiveStatus = value; OnPropertyChanged(); }
+    }
     public bool IsAlwaysOnTop => _state.AlwaysOnTop;
     public bool IsSmallSize => _state.SmallSize;
     public bool IsResizeWhenInactive => _state.ResizeWhenInactive;
@@ -90,6 +116,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public SleepResizeAnchor CurrentSleepResizeAnchor => SleepResizeLogic.Normalize(_state.SleepResizeAnchor);
     public ReminderSoundMode CurrentReminderSound => ReminderSoundSettings.Normalize(_state.ReminderSound);
     public DoNotDisturbMode CurrentDoNotDisturb => DoNotDisturbSettings.Normalize(_state.DoNotDisturb);
+    public bool IsAdaptivePersonalityEnabled => _state.AdaptivePersonalityEnabled;
     public FruitThemeKind CurrentTheme => _currentTheme.Kind;
 
     public event EventHandler? HideRequested;
@@ -113,6 +140,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _reminderTimer.Tick += (_, _) => CheckTaskReminders();
         InitializeComponent();
         DataContext = this;
+        SetAdaptivePersonality(_state.AdaptivePersonalityEnabled, persist: false);
         SetSleepTime(_state.SleepTime, persist: false);
         SetSleepResizeAnchor(_state.SleepResizeAnchor, persist: false);
         SetReminderSound(_state.ReminderSound, persist: false);
@@ -184,6 +212,14 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (persist) SaveState();
     }
 
+    public void SetAdaptivePersonality(bool enabled, bool persist = true)
+    {
+        _state.AdaptivePersonalityEnabled = enabled;
+        AdaptiveFacePanel.Visibility = enabled ? Visibility.Visible : Visibility.Collapsed;
+        RefreshAdaptivePersonality();
+        if (persist) SaveState();
+    }
+
     public void SetTheme(FruitThemeKind kind, bool persist = true)
     {
         _currentTheme = FruitThemes.Get(kind);
@@ -220,55 +256,37 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         var personality = FruitPersonalities.Get(_currentTheme.Kind);
         SleepEyes = personality.Eyes;
         SleepMouth = personality.Mouth;
+        RefreshAdaptivePersonality();
         if (_activeTimerTask is null) HeaderText = _currentTheme.DisplayName.ToUpperInvariant();
-        UpdateFruitGrowth(animate: false);
         if (persist) SaveState();
     }
 
-    private FrameworkElement CurrentFruitShape() => _currentTheme.Kind switch
+    private void RefreshAdaptivePersonality()
     {
-        FruitThemeKind.Strawberry => StrawberryShape,
-        FruitThemeKind.Orange => OrangeShape,
-        FruitThemeKind.Blueberry => BlueberryShape,
-        FruitThemeKind.Watermelon => WatermelonShape,
-        FruitThemeKind.Kiwi => KiwiShape,
-        FruitThemeKind.Papaya => PapayaShape,
-        FruitThemeKind.Apple => AppleShape,
-        FruitThemeKind.Mango => MangoShape,
-        FruitThemeKind.Lemon => LemonShape,
-        FruitThemeKind.Tomato => TomatoShape,
-        FruitThemeKind.Pumpkin => PumpkinShape,
-        FruitThemeKind.Potato => PotatoShape,
-        FruitThemeKind.Onion => OnionShape,
-        _ => AvocadoShape
-    };
-
-    private void UpdateFruitGrowth(bool animate = true)
-    {
-        var today = DateTime.Today;
-        var completedToday = _archivedTasks.Count(task => task.CompletedAt?.Date == today);
-        var targetScale = FruitGrowthLogic.Scale(_tasks.Count, completedToday);
-        var shape = CurrentFruitShape();
-        shape.RenderTransformOrigin = new System.Windows.Point(0.5, 0.58);
-        var transform = shape.RenderTransform as ScaleTransform ?? new ScaleTransform(1, 1);
-        shape.RenderTransform = transform;
-
-        var currentScale = transform.ScaleX;
-        transform.BeginAnimation(ScaleTransform.ScaleXProperty, null);
-        transform.BeginAnimation(ScaleTransform.ScaleYProperty, null);
-        transform.ScaleX = targetScale;
-        transform.ScaleY = targetScale;
-        if (!animate)
-            return;
-
-        var duration = TimeSpan.FromMilliseconds(360);
-        var easing = new BackEase { Amplitude = 0.25, EasingMode = EasingMode.EaseOut };
-        transform.BeginAnimation(ScaleTransform.ScaleXProperty,
-            new DoubleAnimation(currentScale, targetScale, duration)
-            { EasingFunction = easing, FillBehavior = FillBehavior.Stop });
-        transform.BeginAnimation(ScaleTransform.ScaleYProperty,
-            new DoubleAnimation(currentScale, targetScale, duration)
-            { EasingFunction = easing, FillBehavior = FillBehavior.Stop });
+        if (!_state.AdaptivePersonalityEnabled) return;
+        var now = DateTime.Now;
+        var overdueCount = _tasks.Count(task =>
+            !task.IsCompleted && task.DueAt is DateTime dueAt && dueAt < now);
+        var mood = AdaptivePersonalityLogic.DetermineMood(
+            _tasks.Count, overdueCount, _activeTimerTask is not null, now < _happyUntil);
+        if (mood == AdaptiveMood.Calm)
+        {
+            var personality = FruitPersonalities.Get(_currentTheme.Kind);
+            AdaptiveEyes = $"{personality.Eyes}     {personality.Eyes}";
+            AdaptiveMouth = personality.Mouth;
+            AdaptiveStatus = "Calm";
+        }
+        else
+        {
+            var expression = AdaptivePersonalityLogic.GetExpression(mood);
+            AdaptiveEyes = expression.Eyes;
+            AdaptiveMouth = expression.Mouth;
+            AdaptiveStatus = expression.Label;
+        }
+        if (_adaptiveMood == mood) return;
+        _adaptiveMood = mood;
+        AdaptiveFacePanel.BeginAnimation(OpacityProperty,
+            new DoubleAnimation(0.35, 1, TimeSpan.FromMilliseconds(180)));
     }
 
     private void SetThemeBrush(string resourceKey, string colorValue)
@@ -517,7 +535,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (wasSleeping) e.Handled = true;
     }
 
-    private void Window_Deactivated(object? sender, EventArgs e) => CollapseExpandedTask();
+    private void Window_Deactivated(object? sender, EventArgs e)
+    {
+        CollapseExpandedTask();
+        CloseTaskActions();
+    }
 
     private static bool HasActionControlAncestor(DependencyObject? source)
     {
@@ -667,6 +689,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             _editingTask = null;
             AddPanel.Visibility = Visibility.Collapsed;
             SaveState();
+            RefreshAdaptivePersonality();
             return;
         }
         _tasks.Add(new TodoItem
@@ -680,7 +703,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         AddPanel.Visibility = Visibility.Collapsed;
         RefreshOverflow();
         SaveState();
-        UpdateFruitGrowth();
+        RefreshAdaptivePersonality();
         Dispatcher.BeginInvoke(TaskScrollViewer.ScrollToEnd, DispatcherPriority.Loaded);
     }
 
@@ -699,11 +722,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (ReferenceEquals(_activeTimerTask, task)) PauseActiveTimer(persist: false);
         if (ReferenceEquals(_expandedTask, task)) _expandedTask = null;
         task.CompletedAt = DateTime.Now;
+        _happyUntil = DateTime.Now.AddSeconds(4);
         _tasks.Remove(task);
         _archivedTasks.Insert(0, task);
         RefreshOverflow();
         SaveState();
-        UpdateFruitGrowth();
+        RefreshAdaptivePersonality();
     }
 
     public void ShowArchive()
@@ -726,7 +750,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         ArchivePanel.Visibility = _archivedTasks.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
         RefreshOverflow();
         SaveState();
-        UpdateFruitGrowth();
+        RefreshAdaptivePersonality();
     }
 
     private void DeleteArchivedTaskButton_Click(object sender, RoutedEventArgs e)
@@ -735,12 +759,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _archivedTasks.Remove(task);
         ArchivePanel.Visibility = _archivedTasks.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
         SaveState();
-        UpdateFruitGrowth();
+        RefreshAdaptivePersonality();
     }
 
     private void TaskTimerButton_Click(object sender, RoutedEventArgs e)
     {
         if (sender is not System.Windows.Controls.Button { Tag: TodoItem task }) return;
+        task.IsActionsOpen = false;
 
         if (ReferenceEquals(_activeTimerTask, task))
         {
@@ -755,6 +780,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         task.IsTimerRunning = true;
         _taskTimer.Start();
         RefreshActiveTimer();
+        RefreshAdaptivePersonality();
         RefreshTaskView();
         SaveState();
     }
@@ -762,13 +788,30 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void EditTaskButton_Click(object sender, RoutedEventArgs e)
     {
         if (sender is not System.Windows.Controls.Button { Tag: TodoItem task }) return;
+        task.IsActionsOpen = false;
         CollapseExpandedTask();
         OpenTaskEditor(task);
+    }
+
+    private void TaskActionsButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not System.Windows.Controls.Button { Tag: TodoItem task }) return;
+        var open = !task.IsActionsOpen;
+        CloseTaskActions();
+        task.IsActionsOpen = open;
+        e.Handled = true;
+    }
+
+    private void CloseTaskActions()
+    {
+        foreach (var task in _tasks.Where(task => task.IsActionsOpen))
+            task.IsActionsOpen = false;
     }
 
     private void PinTaskButton_Click(object sender, RoutedEventArgs e)
     {
         if (sender is not System.Windows.Controls.Button { Tag: TodoItem task }) return;
+        task.IsActionsOpen = false;
         var previousPositions = CaptureTaskRowPositions();
         var oldIndex = _tasks.IndexOf(task);
         task.IsPinned = !task.IsPinned;
@@ -784,7 +827,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (_activeTimerTask is not TodoItem task) return;
         var sessionElapsed = Stopwatch.GetElapsedTime(_activeTimerStartedAt);
         task.ElapsedTicks = _activeTimerBaseTicks + sessionElapsed.Ticks;
-        HeaderText = TaskTimerLogic.Format(TimeSpan.FromTicks(task.ElapsedTicks));
+        var timerText = TaskTimerLogic.Format(TimeSpan.FromTicks(task.ElapsedTicks));
+        HeaderText = timerText;
+        SleepTimerText = timerText;
     }
 
     private void PauseActiveTimer(bool persist = true)
@@ -794,7 +839,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _taskTimer.Stop();
         task.IsTimerRunning = false;
         _activeTimerTask = null;
+        SleepTimerText = string.Empty;
         HeaderText = _currentTheme.DisplayName.ToUpperInvariant();
+        RefreshAdaptivePersonality();
         RefreshTaskView();
         if (persist) SaveState();
     }
@@ -802,6 +849,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void CheckTaskReminders()
     {
         var now = DateTime.Now;
+        RefreshAdaptivePersonality();
         var dueTasks = _tasks
             .Where(task => !task.IsCompleted &&
                            (TaskReminderLogic.IsSnoozeDue(task.SnoozedUntil, now) ||
@@ -942,6 +990,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         if (sender is System.Windows.Controls.Button { Tag: TodoItem item })
         {
+            item.IsActionsOpen = false;
             if (ReferenceEquals(_editingTask, item))
             {
                 _editingTask = null;
@@ -952,7 +1001,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             _tasks.Remove(item);
             RefreshOverflow();
             SaveState();
-            UpdateFruitGrowth();
+            RefreshAdaptivePersonality();
         }
     }
 

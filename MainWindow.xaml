@@ -299,10 +299,7 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition />
-                                        <ColumnDefinition Width="28" />
-                                        <ColumnDefinition Width="28" />
-                                        <ColumnDefinition Width="28" />
-                                        <ColumnDefinition Width="28" />
+                                        <ColumnDefinition Width="32" />
                                     </Grid.ColumnDefinitions>
                                     <CheckBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                                               IsChecked="{Binding IsCompleted}" Click="TaskCheckBox_Click" />
@@ -334,23 +331,42 @@
                                             </Style>
                                         </local:LinkTextBlock.Style>
                                     </local:LinkTextBlock>
-                                    <Button Grid.Column="4" Content="{Binding TimerIcon}"
-                                            ToolTip="{Binding TimerToolTip}"
-                                            Background="Transparent" BorderThickness="0" Foreground="{DynamicResource InkBrush}"
-                                            FontFamily="Consolas" FontSize="15" FontWeight="Bold" Cursor="Hand"
-                                            Tag="{Binding}" Click="TaskTimerButton_Click" />
-                                    <Button Grid.Column="5" Content="{Binding PinIcon}" ToolTip="{Binding PinToolTip}"
-                                            Background="Transparent" BorderThickness="0" Foreground="{DynamicResource SeedBrush}"
-                                            FontFamily="Consolas" FontSize="13" FontWeight="Bold" Cursor="Hand"
-                                            Tag="{Binding}" Click="PinTaskButton_Click" />
-                                    <Button Grid.Column="6" Content="✎" ToolTip="Edit task"
-                                            Background="Transparent" BorderThickness="0" Foreground="{DynamicResource InkBrush}"
-                                            FontFamily="Consolas" FontSize="15" FontWeight="Bold" Cursor="Hand"
-                                            Tag="{Binding}" Click="EditTaskButton_Click" />
-                                    <Button Grid.Column="7" Content="×" ToolTip="Delete task"
-                                            Background="Transparent" BorderThickness="0" Foreground="{DynamicResource SeedBrush}"
-                                            FontFamily="Consolas" FontSize="18" Cursor="Hand"
-                                            Tag="{Binding}" Click="DeleteTaskButton_Click" />
+                                    <Button x:Name="TaskActionsButton" Grid.Column="4" Content="•••"
+                                            ToolTip="Task actions" Background="Transparent" BorderThickness="0"
+                                            Foreground="{DynamicResource InkBrush}" FontFamily="Consolas"
+                                            FontSize="13" FontWeight="Bold" Cursor="Hand"
+                                            Tag="{Binding}" Click="TaskActionsButton_Click" />
+                                    <Popup Grid.Column="4" IsOpen="{Binding IsActionsOpen, Mode=TwoWay}"
+                                           PlacementTarget="{Binding ElementName=TaskActionsButton}"
+                                           Placement="Left" StaysOpen="False" AllowsTransparency="True"
+                                           PopupAnimation="Fade">
+                                        <Border Background="{DynamicResource CreamBrush}"
+                                                BorderBrush="{DynamicResource InkBrush}" BorderThickness="2"
+                                                Padding="2">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Content="{Binding TimerIcon}" ToolTip="{Binding TimerToolTip}"
+                                                        Width="30" Height="28" Background="Transparent" BorderThickness="0"
+                                                        Foreground="{DynamicResource InkBrush}" FontFamily="Consolas"
+                                                        FontSize="15" FontWeight="Bold" Cursor="Hand"
+                                                        Tag="{Binding}" Click="TaskTimerButton_Click" />
+                                                <Button Content="{Binding PinIcon}" ToolTip="{Binding PinToolTip}"
+                                                        Width="30" Height="28" Background="Transparent" BorderThickness="0"
+                                                        Foreground="{DynamicResource SeedBrush}" FontFamily="Consolas"
+                                                        FontSize="13" FontWeight="Bold" Cursor="Hand"
+                                                        Tag="{Binding}" Click="PinTaskButton_Click" />
+                                                <Button Content="✎" ToolTip="Edit task" Width="30" Height="28"
+                                                        Background="Transparent" BorderThickness="0"
+                                                        Foreground="{DynamicResource InkBrush}" FontFamily="Consolas"
+                                                        FontSize="15" FontWeight="Bold" Cursor="Hand"
+                                                        Tag="{Binding}" Click="EditTaskButton_Click" />
+                                                <Button Content="×" ToolTip="Delete task" Width="30" Height="28"
+                                                        Background="Transparent" BorderThickness="0"
+                                                        Foreground="{DynamicResource SeedBrush}" FontFamily="Consolas"
+                                                        FontSize="18" Cursor="Hand"
+                                                        Tag="{Binding}" Click="DeleteTaskButton_Click" />
+                                            </StackPanel>
+                                        </Border>
+                                    </Popup>
                                 </Grid>
                             </Border>
                         </DataTemplate>
@@ -363,6 +379,17 @@
                    HorizontalAlignment="Center" FontFamily="Consolas" FontSize="12"
                    FontWeight="Bold" Foreground="{DynamicResource MutedInkBrush}"
                    ToolTip="Use the mouse wheel to see hidden tasks" />
+
+        <Grid x:Name="AdaptiveFacePanel" Width="118" Height="58" Margin="0,378,0,0"
+              VerticalAlignment="Top" HorizontalAlignment="Center" Panel.ZIndex="2"
+              IsHitTestVisible="False" ToolTip="{Binding AdaptiveStatus}">
+            <TextBlock Text="{Binding AdaptiveEyes}" HorizontalAlignment="Center" VerticalAlignment="Top"
+                       FontFamily="Consolas" FontSize="18" FontWeight="Bold"
+                       Foreground="{DynamicResource InkBrush}" />
+            <TextBlock Text="{Binding AdaptiveMouth}" HorizontalAlignment="Center" VerticalAlignment="Top"
+                       Margin="0,22,0,0" FontFamily="Consolas" FontSize="18" FontWeight="Bold"
+                       Foreground="{DynamicResource MutedInkBrush}" />
+        </Grid>
 
         <Border x:Name="SnoozePanel" Width="278" Height="78" Margin="0,366,0,0"
                 VerticalAlignment="Top" HorizontalAlignment="Center" Panel.ZIndex="30"
@@ -449,6 +476,10 @@
                        HorizontalAlignment="Left" VerticalAlignment="Top" TextAlignment="Center"
                        FontFamily="Consolas" FontSize="24" FontWeight="Bold"
                        Foreground="{DynamicResource MutedInkBrush}" />
+            <TextBlock Text="{Binding SleepTimerText}" Margin="0,306,0,0"
+                       HorizontalAlignment="Center" VerticalAlignment="Top" TextAlignment="Center"
+                       FontFamily="Consolas" FontSize="34" FontWeight="Bold"
+                       Foreground="{DynamicResource InkBrush}" />
         </Grid>
 
     </Grid>

@@ -45,6 +45,7 @@ var originalState = new AppState
     SleepResizeAnchor = SleepResizeAnchor.BottomRight,
     ReminderSound = ReminderSoundMode.FruitSpecific,
     DoNotDisturb = DoNotDisturbMode.TenPmToSevenAm,
+    AdaptivePersonalityEnabled = false,
     Theme = FruitThemeKind.Blueberry,
     Left = 123,
     Top = 456,
@@ -58,6 +59,7 @@ var originalState = new AppState
         Text = "Persist me",
         IsCompleted = true,
         IsExpanded = true,
+        IsActionsOpen = true,
         ReminderTime = new TimeSpan(17, 50, 0),
         Recurrence = TaskRecurrence.Monday,
         Priority = TaskPriority.High,
@@ -81,6 +83,8 @@ Assert(loadedState.ReminderSound == ReminderSoundMode.FruitSpecific,
     "The selected reminder sound mode must persist.");
 Assert(loadedState.DoNotDisturb == DoNotDisturbMode.TenPmToSevenAm,
     "The selected Do Not Disturb schedule must persist.");
+Assert(!loadedState.AdaptivePersonalityEnabled,
+    "The Adaptive personality tray option must persist.");
 Assert(loadedState.Theme == FruitThemeKind.Blueberry, "The selected fruit theme must persist.");
 Assert(loadedState.Left == 123 && loadedState.Top == 456, "Window position must persist.");
 Assert(loadedState.LastMonitor == "DISPLAY1" &&
@@ -106,6 +110,7 @@ Assert(loadedState.Tasks[0].LastReminderDate == new DateOnly(2026, 8, 28),
 Assert(loadedState.Tasks[0].SnoozedUntil == new DateTime(2026, 8, 29, 18, 0, 0),
     "A snoozed reminder must persist across restarts.");
 Assert(!loadedState.Tasks[0].IsExpanded, "Temporary task expansion state must not persist.");
+Assert(!loadedState.Tasks[0].IsActionsOpen, "The temporary task action palette must not persist.");
 Directory.Delete(Path.GetDirectoryName(statePath)!, recursive: true);
 
 var normalSize = AppSizeLogic.Get(small: false);
@@ -215,10 +220,20 @@ Assert(DoNotDisturbSettings.IsActive(DoNotDisturbMode.TenPmToSevenAm, new DateTi
 Assert(DoNotDisturbSettings.IsActive(DoNotDisturbMode.Always, DateTime.Now) &&
        !DoNotDisturbSettings.IsActive(DoNotDisturbMode.Off, DateTime.Now),
     "Do Not Disturb must support both Always and Off.");
-Assert(FruitGrowthLogic.Scale(4, 0) == FruitGrowthLogic.MinimumScale &&
-       Math.Abs(FruitGrowthLogic.Scale(2, 2) - 0.93) < 0.0001 &&
-       FruitGrowthLogic.Scale(0, 4) == 1,
-    "Fruit growth must progress smoothly from its minimum to full size.");
+Assert(AdaptivePersonalityLogic.DetermineMood(3, 0, false, true)
+       == AdaptiveMood.Happy, "A recent completion must make the fruit happy.");
+Assert(AdaptivePersonalityLogic.DetermineMood(3, 1, true, false)
+       == AdaptiveMood.Focused, "An active timer must take the focused expression.");
+Assert(AdaptivePersonalityLogic.DetermineMood(3, 1, false, false)
+       == AdaptiveMood.Worried, "An overdue task must make the fruit worried.");
+Assert(AdaptivePersonalityLogic.DetermineMood(6, 0, false, false)
+       == AdaptiveMood.Tired, "More than five active tasks must make the fruit tired at any time.");
+Assert(AdaptivePersonalityLogic.DetermineMood(5, 0, false, false)
+       == AdaptiveMood.Calm, "Exactly five active tasks must not make the fruit tired.");
+Assert(AdaptivePersonalityLogic.DetermineMood(2, 0, false, false)
+       == AdaptiveMood.Calm, "The fruit must remain calm when no adaptive condition applies.");
+Assert(AdaptivePersonalityLogic.GetExpression(AdaptiveMood.Worried).Label.Contains("overdue"),
+    "Adaptive expressions must explain why the fruit changed mood.");
 var filterTask = new TodoItem { Text = "Write release notes", ReminderTime = TimeSpan.FromHours(9) };
 Assert(TaskFilterLogic.Matches(filterTask, "release", TaskFilterMode.Active),
     "Task search must be case-insensitive and match text fragments.");
