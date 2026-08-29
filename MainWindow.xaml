@@ -433,5 +433,23 @@
                        FontFamily="Consolas" FontSize="24" FontWeight="Bold"
                        Foreground="{DynamicResource MutedInkBrush}" />
         </Grid>
+
+        <Grid x:Name="CelebrationOverlay" Panel.ZIndex="60" Visibility="Collapsed"
+              Opacity="0" IsHitTestVisible="False" RenderTransformOrigin="0.5,0.5">
+            <Grid.RenderTransform>
+                <ScaleTransform x:Name="CelebrationScale" ScaleX="1" ScaleY="1" />
+            </Grid.RenderTransform>
+            <Border Width="190" Height="82" Background="{DynamicResource CreamBrush}"
+                    BorderBrush="{DynamicResource InkBrush}" BorderThickness="4">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="✦  ✓  ✦" HorizontalAlignment="Center"
+                               FontFamily="Consolas" FontSize="28" FontWeight="Bold"
+                               Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock Text="NICE!" HorizontalAlignment="Center"
+                               FontFamily="Consolas" FontSize="13" FontWeight="Bold"
+                               Foreground="{DynamicResource InkBrush}" />
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

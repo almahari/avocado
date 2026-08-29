@@ -180,6 +180,8 @@ Assert(TaskFilterLogic.Matches(filterTask, string.Empty, TaskFilterMode.Schedule
     "The scheduled filter must include tasks with reminder times.");
 Assert(!TaskFilterLogic.Matches(filterTask, string.Empty, TaskFilterMode.RunningTimer),
     "The running-timer filter must exclude tasks without an active timer.");
+Assert(TaskCelebrationSettings.Duration == TimeSpan.FromMilliseconds(650),
+    "Task completion celebration must remain brief and responsive.");
 
 Console.WriteLine("All Avocado logic checks passed.");
 return;

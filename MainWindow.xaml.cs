@@ -52,6 +52,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private string _alertTaskLabel = string.Empty;
     private string _taskSearchText = string.Empty;
     private TaskFilterMode _taskFilterMode = TaskFilterMode.Active;
+    private readonly HashSet<Guid> _celebratingTaskIds = [];
     private string _sleepEyes = "─";
     private string _sleepMouth = "ᴗ";
 
@@ -572,12 +573,55 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         if (sender is System.Windows.Controls.CheckBox { DataContext: TodoItem task, IsChecked: true })
         {
-            if (ReferenceEquals(_activeTimerTask, task)) PauseActiveTimer(persist: false);
-            if (ReferenceEquals(_expandedTask, task)) _expandedTask = null;
-            _tasks.Remove(task);
-            _archivedTasks.Insert(0, task);
-            RefreshOverflow();
+            BeginTaskCelebration(task);
+            return;
         }
+        SaveState();
+    }
+
+    private void BeginTaskCelebration(TodoItem task)
+    {
+        if (!_celebratingTaskIds.Add(task.Id)) return;
+        CelebrationOverlay.Visibility = Visibility.Visible;
+        CelebrationOverlay.BeginAnimation(OpacityProperty, null);
+        CelebrationScale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
+        CelebrationScale.BeginAnimation(ScaleTransform.ScaleYProperty, null);
+
+        var fade = new DoubleAnimationUsingKeyFrames
+        {
+            Duration = TaskCelebrationSettings.Duration
+        };
+        fade.KeyFrames.Add(new LinearDoubleKeyFrame(0, KeyTime.FromPercent(0)));
+        fade.KeyFrames.Add(new EasingDoubleKeyFrame(1, KeyTime.FromPercent(0.25)));
+        fade.KeyFrames.Add(new LinearDoubleKeyFrame(1, KeyTime.FromPercent(0.65)));
+        fade.KeyFrames.Add(new LinearDoubleKeyFrame(0, KeyTime.FromPercent(1)));
+        fade.Completed += (_, _) => CelebrationOverlay.Visibility = Visibility.Collapsed;
+        CelebrationOverlay.BeginAnimation(OpacityProperty, fade);
+
+        var scale = new DoubleAnimation(0.65, 1.2, TaskCelebrationSettings.Duration)
+        {
+            EasingFunction = new BackEase { Amplitude = 0.35, EasingMode = EasingMode.EaseOut }
+        };
+        CelebrationScale.BeginAnimation(ScaleTransform.ScaleXProperty, scale);
+        CelebrationScale.BeginAnimation(ScaleTransform.ScaleYProperty, scale);
+
+        var archiveTimer = new DispatcherTimer { Interval = TaskCelebrationSettings.Duration };
+        archiveTimer.Tick += (_, _) =>
+        {
+            archiveTimer.Stop();
+            _celebratingTaskIds.Remove(task.Id);
+            if (task.IsCompleted) ArchiveCompletedTask(task);
+        };
+        archiveTimer.Start();
+    }
+
+    private void ArchiveCompletedTask(TodoItem task)
+    {
+        if (ReferenceEquals(_activeTimerTask, task)) PauseActiveTimer(persist: false);
+        if (ReferenceEquals(_expandedTask, task)) _expandedTask = null;
+        _tasks.Remove(task);
+        _archivedTasks.Insert(0, task);
+        RefreshOverflow();
         SaveState();
     }
 
