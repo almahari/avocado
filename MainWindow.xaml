@@ -193,7 +193,7 @@
                 Style="{StaticResource PixelButton}" Width="26" Height="26"
                 Margin="82,116,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                 Click="CloseButton_Click" />
-        <Button x:Name="AddButton" Content="+" ToolTip="Add task (Ctrl+N)"
+        <Button x:Name="AddButton" Content="+" ToolTip="Add task (Ctrl+N or global Ctrl+Alt+N)"
                 Style="{StaticResource PixelButton}" Width="30" Height="30"
                 Margin="0,114,84,0" HorizontalAlignment="Right" VerticalAlignment="Top"
                 FontSize="20" Click="AddButton_Click" />

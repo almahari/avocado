@@ -42,6 +42,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private bool _isShaking;
     private double _shakeOriginalLeft;
     private DispatcherTimer? _pendingShakeTimer;
+    private GlobalQuickAddHotkey? _globalQuickAddHotkey;
     private readonly List<TodoItem> _alertingTasks = [];
     private string _alertTaskLabel = string.Empty;
 
@@ -295,6 +296,28 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     }
 
     public void AllowClose() => _allowClose = true;
+
+    protected override void OnSourceInitialized(EventArgs e)
+    {
+        base.OnSourceInitialized(e);
+        _globalQuickAddHotkey = new GlobalQuickAddHotkey(this, OpenFromGlobalQuickAdd);
+    }
+
+    protected override void OnClosed(EventArgs e)
+    {
+        _globalQuickAddHotkey?.Dispose();
+        _globalQuickAddHotkey = null;
+        base.OnClosed(e);
+    }
+
+    private void OpenFromGlobalQuickAdd()
+    {
+        NotifyInteraction();
+        if (!IsVisible) Show();
+        if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
+        Activate();
+        OpenTaskEditor();
+    }
 
     protected override void OnClosing(CancelEventArgs e)
     {
