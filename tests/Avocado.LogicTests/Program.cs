@@ -43,6 +43,7 @@ var originalState = new AppState
     ResizeWhenInactive = true,
     SleepTime = SleepTimeOption.OneMinute,
     SleepResizeAnchor = SleepResizeAnchor.BottomRight,
+    ReminderSound = ReminderSoundMode.FruitSpecific,
     Theme = FruitThemeKind.Blueberry,
     Left = 123,
     Top = 456,
@@ -66,6 +67,8 @@ Assert(loadedState.ResizeWhenInactive, "The resize-when-inactive option must per
 Assert(loadedState.SleepTime == SleepTimeOption.OneMinute, "The selected sleep time must persist.");
 Assert(loadedState.SleepResizeAnchor == SleepResizeAnchor.BottomRight,
     "The selected sleep resize anchor must persist.");
+Assert(loadedState.ReminderSound == ReminderSoundMode.FruitSpecific,
+    "The selected reminder sound mode must persist.");
 Assert(loadedState.Theme == FruitThemeKind.Blueberry, "The selected fruit theme must persist.");
 Assert(loadedState.Left == 123 && loadedState.Top == 456, "Window position must persist.");
 Assert(loadedState.Tasks.Count == 1 && loadedState.Tasks[0].Text == "Persist me" && loadedState.Tasks[0].IsCompleted,
@@ -151,6 +154,9 @@ Assert(!TaskReminderLogic.IsSnoozeDue(reminderMoment.AddMinutes(1), reminderMome
     "A future snooze time must not fire early.");
 Assert(StartupRegistration.BuildCommand(@"C:\Apps\Avocado.exe") == "\"C:\\Apps\\Avocado.exe\"",
     "The Windows startup command must quote the executable path.");
+Assert(ReminderSoundSettings.Choices.Count == 3 &&
+       ReminderSoundSettings.Default == ReminderSoundMode.Soft,
+    "Reminder sounds must offer Silent, Soft, and Fruit-specific modes with Soft as default.");
 
 Console.WriteLine("All Avocado logic checks passed.");
 return;

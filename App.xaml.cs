@@ -16,6 +16,7 @@ public partial class App : System.Windows.Application
     private Forms.ToolStripMenuItem? _openOnStartupItem;
     private readonly Dictionary<SleepTimeOption, Forms.ToolStripMenuItem> _sleepTimeItems = [];
     private readonly Dictionary<SleepResizeAnchor, Forms.ToolStripMenuItem> _sleepResizeAnchorItems = [];
+    private readonly Dictionary<ReminderSoundMode, Forms.ToolStripMenuItem> _reminderSoundItems = [];
     private readonly Dictionary<FruitThemeKind, Forms.ToolStripMenuItem> _themeItems = [];
     private MainWindow? _window;
     private Icon? _trayThemeIcon;
@@ -35,6 +36,7 @@ public partial class App : System.Windows.Application
         SetSizeMode(_window.IsSmallSize, persist: false);
         SetSleepTime(_window.CurrentSleepTime, persist: false);
         SetSleepResizeAnchor(_window.CurrentSleepResizeAnchor, persist: false);
+        SetReminderSound(_window.CurrentReminderSound, persist: false);
         SetResizeWhenInactive(_window.IsResizeWhenInactive, persist: false);
         SetTheme(_window.CurrentTheme, persist: false);
         ShowWindow();
@@ -78,6 +80,14 @@ public partial class App : System.Windows.Application
             _themeItems[theme.Kind] = themeItem;
             themesItem.DropDownItems.Add(themeItem);
         }
+        var reminderSoundItem = new Forms.ToolStripMenuItem("Reminder sound");
+        foreach (var choice in ReminderSoundSettings.Choices)
+        {
+            var choiceItem = new Forms.ToolStripMenuItem(
+                choice.DisplayName, null, (_, _) => SetReminderSound(choice.Mode));
+            _reminderSoundItems[choice.Mode] = choiceItem;
+            reminderSoundItem.DropDownItems.Add(choiceItem);
+        }
         _openOnStartupItem = new Forms.ToolStripMenuItem(
             "Open on Windows startup", null,
             (_, _) => SetOpenOnStartup(!_startupRegistration.IsEnabled()))
@@ -95,6 +105,7 @@ public partial class App : System.Windows.Application
         menu.Items.Add(sleepTimeItem);
         menu.Items.Add(sleepResizeAnchorItem);
         menu.Items.Add(themesItem);
+        menu.Items.Add(reminderSoundItem);
         menu.Items.Add(_openOnStartupItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(exitItem);
@@ -395,6 +406,14 @@ public partial class App : System.Windows.Application
         _window.SetSleepResizeAnchor(anchor, persist);
         foreach (var (resizeAnchor, menuItem) in _sleepResizeAnchorItems)
             menuItem.Checked = resizeAnchor == _window.CurrentSleepResizeAnchor;
+    }
+
+    private void SetReminderSound(ReminderSoundMode mode, bool persist = true)
+    {
+        if (_window is null) return;
+        _window.SetReminderSound(mode, persist);
+        foreach (var (soundMode, menuItem) in _reminderSoundItems)
+            menuItem.Checked = soundMode == _window.CurrentReminderSound;
     }
 
     private void SetTheme(FruitThemeKind kind, bool persist = true)

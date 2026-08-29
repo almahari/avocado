@@ -11,6 +11,7 @@ public sealed class AppState
     public bool ResizeWhenInactive { get; set; }
     public SleepTimeOption SleepTime { get; set; } = InactivitySettings.Default;
     public SleepResizeAnchor SleepResizeAnchor { get; set; } = SleepResizeAnchor.TopLeft;
+    public ReminderSoundMode ReminderSound { get; set; } = ReminderSoundSettings.Default;
     public FruitThemeKind Theme { get; set; } = FruitThemeKind.Avocado;
     public double? Left { get; set; }
     public double? Top { get; set; }

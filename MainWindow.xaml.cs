@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Media;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -67,6 +68,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public bool IsResizeWhenInactive => _state.ResizeWhenInactive;
     public SleepTimeOption CurrentSleepTime => InactivitySettings.Get(_state.SleepTime).Option;
     public SleepResizeAnchor CurrentSleepResizeAnchor => SleepResizeLogic.Normalize(_state.SleepResizeAnchor);
+    public ReminderSoundMode CurrentReminderSound => ReminderSoundSettings.Normalize(_state.ReminderSound);
     public FruitThemeKind CurrentTheme => _currentTheme.Kind;
 
     public event EventHandler? HideRequested;
@@ -88,6 +90,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         DataContext = this;
         SetSleepTime(_state.SleepTime, persist: false);
         SetSleepResizeAnchor(_state.SleepResizeAnchor, persist: false);
+        SetReminderSound(_state.ReminderSound, persist: false);
         SetTheme(_state.Theme, persist: false);
         RefreshOverflow();
         _reminderTimer.Start();
@@ -141,6 +144,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public void SetSleepResizeAnchor(SleepResizeAnchor anchor, bool persist = true)
     {
         _state.SleepResizeAnchor = SleepResizeLogic.Normalize(anchor);
+        if (persist) SaveState();
+    }
+
+    public void SetReminderSound(ReminderSoundMode mode, bool persist = true)
+    {
+        _state.ReminderSound = ReminderSoundSettings.Normalize(mode);
         if (persist) SaveState();
     }
 
@@ -575,6 +584,29 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         Activate();
         if (wasSleeping) ScheduleShakeAfterWake();
         else ShakeWindow();
+        PlayReminderSound();
+    }
+
+    private void PlayReminderSound()
+    {
+        switch (CurrentReminderSound)
+        {
+            case ReminderSoundMode.Silent:
+                return;
+            case ReminderSoundMode.Soft:
+                SystemSounds.Beep.Play();
+                return;
+            default:
+                var sound = ((int)_currentTheme.Kind % 4) switch
+                {
+                    0 => SystemSounds.Asterisk,
+                    1 => SystemSounds.Exclamation,
+                    2 => SystemSounds.Question,
+                    _ => SystemSounds.Hand
+                };
+                sound.Play();
+                return;
+        }
     }
 
     private void SnoozeButton_Click(object sender, RoutedEventArgs e)
