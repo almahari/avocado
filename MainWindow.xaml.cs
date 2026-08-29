@@ -408,7 +408,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     protected override void OnSourceInitialized(EventArgs e)
     {
         base.OnSourceInitialized(e);
-        _globalQuickAddHotkey = new GlobalQuickAddHotkey(this, OpenFromGlobalQuickAdd);
+        _globalQuickAddHotkey = new GlobalQuickAddHotkey(
+            this,
+            OpenFromGlobalQuickAdd,
+            CreateTaskFromClipboard);
     }
 
     protected override void OnClosed(EventArgs e)
@@ -425,6 +428,25 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
         Activate();
         OpenTaskEditor();
+    }
+
+    private void CreateTaskFromClipboard()
+    {
+        string clipboardText;
+        try
+        {
+            clipboardText = System.Windows.Clipboard.ContainsText(System.Windows.TextDataFormat.UnicodeText)
+                ? System.Windows.Clipboard.GetText(System.Windows.TextDataFormat.UnicodeText).Trim()
+                : string.Empty;
+        }
+        catch (System.Runtime.InteropServices.ExternalException)
+        {
+            return;
+        }
+
+        if (clipboardText.Length == 0) return;
+        if (clipboardText.Length > 500) clipboardText = clipboardText[..500];
+        AddNewTasks(TaskReminderLogic.ParseMany(clipboardText));
     }
 
     protected override void OnClosing(CancelEventArgs e)
@@ -522,7 +544,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             e.Handled = true;
             return;
         }
-        if (!IsWithinTaskRow(e.OriginalSource as DependencyObject)) CollapseExpandedTask();
+        var source = e.OriginalSource as DependencyObject;
+        if (!IsWithinElement(source, SortPanel) && !IsWithinElement(source, SortButton))
+            SortPanel.Visibility = Visibility.Collapsed;
+        if (!IsWithinTaskRow(source)) CollapseExpandedTask();
     }
 
     private void Window_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e) =>
@@ -539,6 +564,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         CollapseExpandedTask();
         CloseTaskActions();
+        SortPanel.Visibility = Visibility.Collapsed;
     }
 
     private static bool HasActionControlAncestor(DependencyObject? source)
@@ -562,6 +588,16 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         return false;
     }
 
+    private static bool IsWithinElement(DependencyObject? source, DependencyObject target)
+    {
+        while (source is not null)
+        {
+            if (ReferenceEquals(source, target)) return true;
+            source = GetUiParent(source);
+        }
+        return false;
+    }
+
     private static DependencyObject? GetUiParent(DependencyObject source)
     {
         if (source is ContentElement content)
@@ -574,16 +610,24 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void SortButton_Click(object sender, RoutedEventArgs e)
     {
-        if (SortButton.ContextMenu is null) return;
-        SortButton.ContextMenu.PlacementTarget = SortButton;
-        SortButton.ContextMenu.IsOpen = true;
+        var shouldOpen = SortPanel.Visibility != Visibility.Visible;
+        SortPanel.Visibility = shouldOpen ? Visibility.Visible : Visibility.Collapsed;
+        if (!shouldOpen) return;
+        AddPanel.Visibility = Visibility.Collapsed;
+        FilterPanel.Visibility = Visibility.Collapsed;
     }
 
-    private void SortByPriorityMenuItem_Click(object sender, RoutedEventArgs e) =>
+    private void SortByPriorityMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        SortPanel.Visibility = Visibility.Collapsed;
         ApplySortedTaskOrder(TaskSortLogic.ByPriority(_tasks));
+    }
 
-    private void SortByTimeMenuItem_Click(object sender, RoutedEventArgs e) =>
+    private void SortByTimeMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        SortPanel.Visibility = Visibility.Collapsed;
         ApplySortedTaskOrder(TaskSortLogic.ByTime(_tasks));
+    }
 
     private void ApplySortedTaskOrder(IReadOnlyList<TodoItem> sortedTasks)
     {
@@ -599,6 +643,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void SearchButton_Click(object sender, RoutedEventArgs e)
     {
+        SortPanel.Visibility = Visibility.Collapsed;
         FilterPanel.Visibility = FilterPanel.Visibility == Visibility.Visible
             ? Visibility.Collapsed
             : Visibility.Visible;
@@ -648,6 +693,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void OpenTaskEditor(TodoItem? task = null)
     {
+        SortPanel.Visibility = Visibility.Collapsed;
+        FilterPanel.Visibility = Visibility.Collapsed;
         _editingTask = task;
         var priorityPrefix = task is null ? string.Empty : TaskReminderLogic.PriorityPrefix(task.Priority);
         var taskText = task is null
@@ -677,10 +724,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void AddTaskFromInput()
     {
-        var parsed = TaskReminderLogic.Parse(TaskInput.Text);
-        if (parsed.Text.Length == 0) return;
         if (_editingTask is TodoItem editingTask)
         {
+            var parsed = TaskReminderLogic.Parse(TaskInput.Text);
+            if (parsed.Text.Length == 0) return;
             editingTask.Text = parsed.Text;
             editingTask.ReminderTime = parsed.ReminderTime;
             editingTask.Recurrence = parsed.Recurrence;
@@ -692,14 +739,26 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             RefreshAdaptivePersonality();
             return;
         }
-        _tasks.Add(new TodoItem
+        AddNewTasks(TaskReminderLogic.ParseMany(TaskInput.Text));
+    }
+
+    private void AddNewTasks(IEnumerable<ParsedTaskInput> parsedTasks)
+    {
+        var addedAny = false;
+        foreach (var parsed in parsedTasks)
         {
-            Text = parsed.Text,
-            ReminderTime = parsed.ReminderTime,
-            Recurrence = parsed.Recurrence,
-            Priority = parsed.Priority,
-            DueAt = parsed.DueAt
-        });
+            if (parsed.Text.Length == 0) continue;
+            _tasks.Add(new TodoItem
+            {
+                Text = parsed.Text,
+                ReminderTime = parsed.ReminderTime,
+                Recurrence = parsed.Recurrence,
+                Priority = parsed.Priority,
+                DueAt = parsed.DueAt
+            });
+            addedAny = true;
+        }
+        if (!addedAny) return;
         AddPanel.Visibility = Visibility.Collapsed;
         RefreshOverflow();
         SaveState();

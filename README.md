@@ -14,6 +14,8 @@ dotnet run --project .\Avocado.csproj
 
 - Drag any non-control part of the fruit to move it.
 - Select `+`, press `Ctrl+N` while focused, or press the global `Ctrl+Alt+N` shortcut to add a task. Press Enter to save or Escape to cancel.
+- Separate multiple new tasks with `;`, for example `task 1; 12:00 task 2`. Each task is parsed independently.
+- Press the global `Ctrl+Alt+V` shortcut to immediately create a task from clipboard text. Normal task syntax for links, priorities, and reminders is supported.
 - Select the avocado's `×` to hide it to the notification tray.
 - Double-click the tray icon to show or hide the avocado.
 - Open the tray icon menu to choose **Normal window**, **Always on top**, themes, reminder sounds, Do Not Disturb hours, startup behavior, or **Exit**.
@@ -24,7 +26,7 @@ dotnet run --project .\Avocado.csproj
 - Drag a task row up or down to change its saved order; nearby tasks animate aside while you drag.
 - Use the `↕` button beside `×` to sort tasks by priority or reminder time.
 - Use the `◇` button on a task to pin it above unpinned tasks. Pinned and unpinned tasks can each be reordered by dragging.
-- Select a task’s `•••` button to reveal its timer, pin, edit, and delete actions.
+- Each task keeps its timer and pin controls visible. Select `•••` to reveal Edit and Delete.
 - Select an `http://`, `https://`, or `www.` link inside a task to open it in the default browser.
 - Enter `https://example.com : Display text` to hide the URL and show only a clickable label.
 - Select truncated task text to animate it open; select it again or click elsewhere to collapse it.
@@ -50,6 +52,7 @@ Task times use the 24-hour `HH:mm` format. Recurrence names are case-insensitive
 | Input | Result |
 | --- | --- |
 | `Buy groceries` | Plain task without a reminder |
+| `task 1; 12:00 task 2` | Two tasks; the second has a 12:00 reminder |
 | `17:50 Submit report` | One-time reminder at 17:50 |
 | `today 3pm Call Ali` | One-time reminder today at 15:00 |
 | `tomorrow 9am Call Ali` | One-time reminder tomorrow at 09:00 |

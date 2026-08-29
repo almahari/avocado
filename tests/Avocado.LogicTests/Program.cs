@@ -159,6 +159,10 @@ Assert(timedTask.Text == "task 1" && timedTask.ReminderTime == new TimeSpan(17, 
     "A leading 24-hour time must be separated from the task text.");
 Assert(timedTask.Recurrence == TaskRecurrence.None,
     "A plain timed task must be a one-time reminder.");
+var batchTasks = TaskReminderLogic.ParseMany(" task 1 ; 12:00 task 2 ;; ");
+Assert(batchTasks.Count == 2 && batchTasks[0].Text == "task 1" &&
+       batchTasks[1].Text == "task 2" && batchTasks[1].ReminderTime == new TimeSpan(12, 0, 0),
+    "Semicolon-separated input must create independently parsed tasks and ignore empty segments.");
 var weeklyTask = TaskReminderLogic.Parse("monday 18:00 Gym");
 Assert(weeklyTask.Text == "Gym" && weeklyTask.ReminderTime == new TimeSpan(18, 0, 0) &&
        weeklyTask.Recurrence == TaskRecurrence.Monday,

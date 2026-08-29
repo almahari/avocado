@@ -197,15 +197,8 @@
         <Button x:Name="SortButton" Content="↕" ToolTip="Sort tasks"
                 Style="{StaticResource PixelButton}" Width="26" Height="26"
                 Margin="112,116,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-                FontSize="15" Click="SortButton_Click">
-            <Button.ContextMenu>
-                <ContextMenu FontFamily="Consolas">
-                    <MenuItem Header="Sort by priority" Click="SortByPriorityMenuItem_Click" />
-                    <MenuItem Header="Sort by time" Click="SortByTimeMenuItem_Click" />
-                </ContextMenu>
-            </Button.ContextMenu>
-        </Button>
-        <Button x:Name="AddButton" Content="+" ToolTip="Add task (Ctrl+N or global Ctrl+Alt+N)"
+                FontSize="15" Click="SortButton_Click" />
+        <Button x:Name="AddButton" Content="+" ToolTip="Add task (Ctrl+N / Ctrl+Alt+N) • Clipboard task (Ctrl+Alt+V)"
                 Style="{StaticResource PixelButton}" Width="30" Height="30"
                 Margin="0,114,84,0" HorizontalAlignment="Right" VerticalAlignment="Top"
                 FontSize="20" Click="AddButton_Click" />
@@ -228,7 +221,8 @@
                 <TextBox x:Name="TaskInput" Grid.Column="0" MaxLength="500"
                          Background="Transparent" BorderThickness="0"
                          FontFamily="Consolas" FontSize="14" Foreground="{DynamicResource InkBrush}"
-                         VerticalContentAlignment="Center" KeyDown="TaskInput_KeyDown" />
+                         VerticalContentAlignment="Center" KeyDown="TaskInput_KeyDown"
+                         ToolTip="Separate multiple tasks with ;" />
                 <Button Grid.Column="1" Content="✓" Style="{StaticResource PixelButton}"
                         Margin="3,0,0,0" Click="ConfirmAddButton_Click" />
             </Grid>
@@ -267,6 +261,18 @@
             </Grid>
         </Border>
 
+        <Border x:Name="SortPanel" Width="166" Height="43" Margin="112,151,0,0"
+                VerticalAlignment="Top" HorizontalAlignment="Left" Panel.ZIndex="25"
+                Background="{DynamicResource CreamBrush}" BorderBrush="{DynamicResource InkBrush}"
+                BorderThickness="3" Visibility="Collapsed">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="4">
+                <Button Content="Priority" ToolTip="Sort by priority" Width="82"
+                        Style="{StaticResource PixelButton}" Click="SortByPriorityMenuItem_Click" />
+                <Button Content="Time" ToolTip="Sort by time" Width="66" Margin="4,0,0,0"
+                        Style="{StaticResource PixelButton}" Click="SortByTimeMenuItem_Click" />
+            </StackPanel>
+        </Border>
+
         <!-- Five rows fit at once; the mouse wheel reveals the remaining tasks. -->
         <Border Width="278" Height="180" Margin="0,166,0,0" VerticalAlignment="Top"
                 HorizontalAlignment="Center" ClipToBounds="True">
@@ -299,6 +305,8 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition />
+                                        <ColumnDefinition Width="28" />
+                                        <ColumnDefinition Width="28" />
                                         <ColumnDefinition Width="32" />
                                     </Grid.ColumnDefinitions>
                                     <CheckBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -331,12 +339,23 @@
                                             </Style>
                                         </local:LinkTextBlock.Style>
                                     </local:LinkTextBlock>
-                                    <Button x:Name="TaskActionsButton" Grid.Column="4" Content="•••"
+                                    <Button Grid.Column="4" Content="{Binding TimerIcon}"
+                                            ToolTip="{Binding TimerToolTip}"
+                                            Background="Transparent" BorderThickness="0"
+                                            Foreground="{DynamicResource InkBrush}" FontFamily="Consolas"
+                                            FontSize="15" FontWeight="Bold" Cursor="Hand"
+                                            Tag="{Binding}" Click="TaskTimerButton_Click" />
+                                    <Button Grid.Column="5" Content="{Binding PinIcon}" ToolTip="{Binding PinToolTip}"
+                                            Background="Transparent" BorderThickness="0"
+                                            Foreground="{DynamicResource SeedBrush}" FontFamily="Consolas"
+                                            FontSize="13" FontWeight="Bold" Cursor="Hand"
+                                            Tag="{Binding}" Click="PinTaskButton_Click" />
+                                    <Button x:Name="TaskActionsButton" Grid.Column="6" Content="•••"
                                             ToolTip="Task actions" Background="Transparent" BorderThickness="0"
                                             Foreground="{DynamicResource InkBrush}" FontFamily="Consolas"
                                             FontSize="13" FontWeight="Bold" Cursor="Hand"
                                             Tag="{Binding}" Click="TaskActionsButton_Click" />
-                                    <Popup Grid.Column="4" IsOpen="{Binding IsActionsOpen, Mode=TwoWay}"
+                                    <Popup Grid.Column="6" IsOpen="{Binding IsActionsOpen, Mode=TwoWay}"
                                            PlacementTarget="{Binding ElementName=TaskActionsButton}"
                                            Placement="Left" StaysOpen="False" AllowsTransparency="True"
                                            PopupAnimation="Fade">
@@ -344,16 +363,6 @@
                                                 BorderBrush="{DynamicResource InkBrush}" BorderThickness="2"
                                                 Padding="2">
                                             <StackPanel Orientation="Horizontal">
-                                                <Button Content="{Binding TimerIcon}" ToolTip="{Binding TimerToolTip}"
-                                                        Width="30" Height="28" Background="Transparent" BorderThickness="0"
-                                                        Foreground="{DynamicResource InkBrush}" FontFamily="Consolas"
-                                                        FontSize="15" FontWeight="Bold" Cursor="Hand"
-                                                        Tag="{Binding}" Click="TaskTimerButton_Click" />
-                                                <Button Content="{Binding PinIcon}" ToolTip="{Binding PinToolTip}"
-                                                        Width="30" Height="28" Background="Transparent" BorderThickness="0"
-                                                        Foreground="{DynamicResource SeedBrush}" FontFamily="Consolas"
-                                                        FontSize="13" FontWeight="Bold" Cursor="Hand"
-                                                        Tag="{Binding}" Click="PinTaskButton_Click" />
                                                 <Button Content="✎" ToolTip="Edit task" Width="30" Height="28"
                                                         Background="Transparent" BorderThickness="0"
                                                         Foreground="{DynamicResource InkBrush}" FontFamily="Consolas"

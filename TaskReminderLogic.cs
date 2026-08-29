@@ -35,6 +35,17 @@ public static partial class TaskReminderLogic
 {
     public static readonly TimeSpan ShakeDuration = TimeSpan.FromSeconds(10);
 
+    public static IReadOnlyList<ParsedTaskInput> ParseMany(string input, DateTime? referenceTime = null)
+    {
+        var tasks = new List<ParsedTaskInput>();
+        foreach (var segment in input.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+        {
+            var parsed = Parse(segment, referenceTime);
+            if (parsed.Text.Length > 0) tasks.Add(parsed);
+        }
+        return tasks;
+    }
+
     public static ParsedTaskInput Parse(string input, DateTime? referenceTime = null)
     {
         var trimmed = input.Trim();
