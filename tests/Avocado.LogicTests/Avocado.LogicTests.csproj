@@ -15,5 +15,6 @@
     <Compile Include="..\..\TaskTimerLogic.cs" Link="TaskTimerLogic.cs" />
     <Compile Include="..\..\FruitThemes.cs" Link="FruitThemes.cs" />
     <Compile Include="..\..\TaskReminderLogic.cs" Link="TaskReminderLogic.cs" />
+    <Compile Include="..\..\StartupRegistration.cs" Link="StartupRegistration.cs" />
   </ItemGroup>
 </Project>

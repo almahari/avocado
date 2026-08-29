@@ -42,6 +42,7 @@ var originalState = new AppState
     SmallSize = true,
     ResizeWhenInactive = true,
     SleepTime = SleepTimeOption.OneMinute,
+    SleepResizeAnchor = SleepResizeAnchor.BottomRight,
     Theme = FruitThemeKind.Blueberry,
     Left = 123,
     Top = 456,
@@ -61,6 +62,8 @@ Assert(loadedState.AlwaysOnTop, "The selected window mode must persist.");
 Assert(loadedState.SmallSize, "The selected app size must persist.");
 Assert(loadedState.ResizeWhenInactive, "The resize-when-inactive option must persist.");
 Assert(loadedState.SleepTime == SleepTimeOption.OneMinute, "The selected sleep time must persist.");
+Assert(loadedState.SleepResizeAnchor == SleepResizeAnchor.BottomRight,
+    "The selected sleep resize anchor must persist.");
 Assert(loadedState.Theme == FruitThemeKind.Blueberry, "The selected fruit theme must persist.");
 Assert(loadedState.Left == 123 && loadedState.Top == 456, "Window position must persist.");
 Assert(loadedState.Tasks.Count == 1 && loadedState.Tasks[0].Text == "Persist me" && loadedState.Tasks[0].IsCompleted,
@@ -82,6 +85,17 @@ Assert(smallSize == new AppSize(210, 270, 0.5), "Small size must be exactly half
 Assert(sleepingSize == new AppSize(126, 162, 0.3), "Sleeping size must be 30% of normal size.");
 Assert(sleepingSize.Width < smallSize.Width && sleepingSize.Height < smallSize.Height,
     "The sleeping app must be smaller than the user-selected Small size.");
+Assert(SleepResizeLogic.Choices.Count == 4, "All four sleep resize anchors must be available.");
+Assert(SleepResizeLogic.Normalize((SleepResizeAnchor)999) == SleepResizeAnchor.TopLeft,
+    "Unknown saved resize anchors must safely fall back to Top left.");
+Assert(SleepResizeLogic.GetTargetPosition(100, 200, normalSize, sleepingSize, SleepResizeAnchor.TopLeft)
+       == new AppPosition(100, 200), "Top-left resizing must keep the top-left corner fixed.");
+Assert(SleepResizeLogic.GetTargetPosition(100, 200, normalSize, sleepingSize, SleepResizeAnchor.TopRight)
+       == new AppPosition(394, 200), "Top-right resizing must keep the top-right corner fixed.");
+Assert(SleepResizeLogic.GetTargetPosition(100, 200, normalSize, sleepingSize, SleepResizeAnchor.BottomLeft)
+       == new AppPosition(100, 578), "Bottom-left resizing must keep the bottom-left corner fixed.");
+Assert(SleepResizeLogic.GetTargetPosition(100, 200, normalSize, sleepingSize, SleepResizeAnchor.BottomRight)
+       == new AppPosition(394, 578), "Bottom-right resizing must keep the bottom-right corner fixed.");
 Assert(InactivitySettings.Default == SleepTimeOption.TwoMinutes, "The default sleep time must remain two minutes.");
 Assert(InactivitySettings.Choices.Select(choice => choice.Duration).SequenceEqual(
         [null, TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2)]),
@@ -93,7 +107,7 @@ Assert(InactivitySettings.Get((SleepTimeOption)999).Option == SleepTimeOption.Tw
 Assert(TaskTimerLogic.Format(TimeSpan.Zero) == "00:00:00", "A new task timer must start at zero.");
 Assert(TaskTimerLogic.Format(new TimeSpan(1, 2, 3, 4)) == "26:03:04",
     "Task timer formatting must preserve total hours beyond one day.");
-Assert(FruitThemes.All.Count == 5, "The tray must offer exactly five fruit themes.");
+Assert(FruitThemes.All.Count == 14, "The tray must offer all fourteen fruit themes.");
 Assert(FruitThemes.Default.Kind == FruitThemeKind.Avocado, "Avocado must remain the default theme.");
 Assert(FruitThemes.All.Select(theme => theme.Kind).Distinct().Count() == FruitThemes.All.Count,
     "Every fruit theme must have a unique selection value.");
@@ -113,6 +127,8 @@ Assert(!TaskReminderLogic.IsDue(new TimeSpan(17, 50, 0), reminderMoment, new Dat
     "A reminder must fire only once per day.");
 Assert(TaskReminderLogic.ShakeDuration == TimeSpan.FromSeconds(10),
     "A due reminder must shake the app for exactly ten seconds.");
+Assert(StartupRegistration.BuildCommand(@"C:\Apps\Avocado.exe") == "\"C:\\Apps\\Avocado.exe\"",
+    "The Windows startup command must quote the executable path.");
 
 Console.WriteLine("All Avocado logic checks passed.");
 return;

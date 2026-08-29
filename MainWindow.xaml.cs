@@ -41,6 +41,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private FruitThemePalette _currentTheme = FruitThemes.Default;
     private bool _isShaking;
     private double _shakeOriginalLeft;
+    private DispatcherTimer? _pendingShakeTimer;
 
     public ObservableCollection<TodoItem> Tasks => _tasks;
     public string OverflowLabel
@@ -57,6 +58,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public bool IsSmallSize => _state.SmallSize;
     public bool IsResizeWhenInactive => _state.ResizeWhenInactive;
     public SleepTimeOption CurrentSleepTime => InactivitySettings.Get(_state.SleepTime).Option;
+    public SleepResizeAnchor CurrentSleepResizeAnchor => SleepResizeLogic.Normalize(_state.SleepResizeAnchor);
     public FruitThemeKind CurrentTheme => _currentTheme.Kind;
 
     public event EventHandler? HideRequested;
@@ -77,6 +79,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         InitializeComponent();
         DataContext = this;
         SetSleepTime(_state.SleepTime, persist: false);
+        SetSleepResizeAnchor(_state.SleepResizeAnchor, persist: false);
         SetTheme(_state.Theme, persist: false);
         RefreshOverflow();
         _reminderTimer.Start();
@@ -127,6 +130,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (persist) SaveState();
     }
 
+    public void SetSleepResizeAnchor(SleepResizeAnchor anchor, bool persist = true)
+    {
+        _state.SleepResizeAnchor = SleepResizeLogic.Normalize(anchor);
+        if (persist) SaveState();
+    }
+
     public void SetTheme(FruitThemeKind kind, bool persist = true)
     {
         _currentTheme = FruitThemes.Get(kind);
@@ -151,6 +160,15 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         OrangeShape.Visibility = _currentTheme.Kind == FruitThemeKind.Orange ? Visibility.Visible : Visibility.Collapsed;
         BlueberryShape.Visibility = _currentTheme.Kind == FruitThemeKind.Blueberry ? Visibility.Visible : Visibility.Collapsed;
         WatermelonShape.Visibility = _currentTheme.Kind == FruitThemeKind.Watermelon ? Visibility.Visible : Visibility.Collapsed;
+        KiwiShape.Visibility = _currentTheme.Kind == FruitThemeKind.Kiwi ? Visibility.Visible : Visibility.Collapsed;
+        PapayaShape.Visibility = _currentTheme.Kind == FruitThemeKind.Papaya ? Visibility.Visible : Visibility.Collapsed;
+        AppleShape.Visibility = _currentTheme.Kind == FruitThemeKind.Apple ? Visibility.Visible : Visibility.Collapsed;
+        MangoShape.Visibility = _currentTheme.Kind == FruitThemeKind.Mango ? Visibility.Visible : Visibility.Collapsed;
+        LemonShape.Visibility = _currentTheme.Kind == FruitThemeKind.Lemon ? Visibility.Visible : Visibility.Collapsed;
+        TomatoShape.Visibility = _currentTheme.Kind == FruitThemeKind.Tomato ? Visibility.Visible : Visibility.Collapsed;
+        PumpkinShape.Visibility = _currentTheme.Kind == FruitThemeKind.Pumpkin ? Visibility.Visible : Visibility.Collapsed;
+        PotatoShape.Visibility = _currentTheme.Kind == FruitThemeKind.Potato ? Visibility.Visible : Visibility.Collapsed;
+        OnionShape.Visibility = _currentTheme.Kind == FruitThemeKind.Onion ? Visibility.Visible : Visibility.Collapsed;
         if (_activeTimerTask is null) HeaderText = _currentTheme.DisplayName.ToUpperInvariant();
         if (persist) SaveState();
     }
@@ -205,6 +223,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _sizeAnimationVersion++;
         BeginAnimation(WidthProperty, null);
         BeginAnimation(HeightProperty, null);
+        BeginAnimation(LeftProperty, null);
+        BeginAnimation(TopProperty, null);
         Root.LayoutTransform = size.Scale == 1
             ? Transform.Identity
             : new ScaleTransform(size.Scale, size.Scale);
@@ -220,6 +240,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         BeginAnimation(HeightProperty, null);
         var startingWidth = ActualWidth > 0 ? ActualWidth : Width;
         var startingHeight = ActualHeight > 0 ? ActualHeight : Height;
+        var startingSize = new AppSize(startingWidth, startingHeight, 1);
+        var targetPosition = SleepResizeLogic.GetTargetPosition(
+            Left, Top, startingSize, target, _state.SleepResizeAnchor);
         var startingScale = Root.LayoutTransform is ScaleTransform currentScale
             ? currentScale.ScaleX
             : startingWidth / AppSizeLogic.Get(small: false).Width;
@@ -230,12 +253,21 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         BeginAnimation(WidthProperty,
             new DoubleAnimation(startingWidth, target.Width, InactivitySettings.ResizeAnimationDuration)
             { EasingFunction = easing });
+        BeginAnimation(LeftProperty,
+            new DoubleAnimation(Left, targetPosition.Left, InactivitySettings.ResizeAnimationDuration)
+            { EasingFunction = easing });
+        BeginAnimation(TopProperty,
+            new DoubleAnimation(Top, targetPosition.Top, InactivitySettings.ResizeAnimationDuration)
+            { EasingFunction = easing });
         var heightAnimation = new DoubleAnimation(startingHeight, target.Height, InactivitySettings.ResizeAnimationDuration)
             { EasingFunction = easing };
         heightAnimation.Completed += (_, _) =>
         {
             if (version != _sizeAnimationVersion) return;
             ApplySizeImmediately(target);
+            Left = targetPosition.Left;
+            Top = targetPosition.Top;
+            KeepWindowOnVirtualScreen();
         };
         BeginAnimation(HeightProperty, heightAnimation);
         scale.BeginAnimation(ScaleTransform.ScaleXProperty,
@@ -488,11 +520,31 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         var today = DateOnly.FromDateTime(now);
         foreach (var task in dueTasks) task.LastReminderDate = today;
         SaveState();
+        var wasSleeping = _isSleeping;
         NotifyInteraction();
         if (!IsVisible) Show();
         if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
         Activate();
-        ShakeWindow();
+        if (wasSleeping) ScheduleShakeAfterWake();
+        else ShakeWindow();
+    }
+
+    private void ScheduleShakeAfterWake()
+    {
+        StopShaking();
+        var timer = new DispatcherTimer
+        {
+            Interval = InactivitySettings.ResizeAnimationDuration + TimeSpan.FromMilliseconds(25)
+        };
+        _pendingShakeTimer = timer;
+        timer.Tick += (_, _) =>
+        {
+            timer.Stop();
+            if (!ReferenceEquals(_pendingShakeTimer, timer)) return;
+            _pendingShakeTimer = null;
+            ShakeWindow();
+        };
+        timer.Start();
     }
 
     private void ShakeWindow()
@@ -511,6 +563,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void StopShaking()
     {
+        _pendingShakeTimer?.Stop();
+        _pendingShakeTimer = null;
         if (!_isShaking) return;
         _isShaking = false;
         BeginAnimation(LeftProperty, null);

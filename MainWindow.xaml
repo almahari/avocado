@@ -112,6 +112,79 @@
             <Rectangle Fill="{DynamicResource SeedBrush}" Width="12" Height="22" Margin="282,346,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
         </Grid>
 
+        <Grid x:Name="KiwiShape" Visibility="Collapsed">
+            <Polygon Fill="{DynamicResource OuterBrush}" Points="114,52 306,52 306,68 338,68 338,100 354,100 354,132 370,132 370,180 386,180 386,372 370,372 370,420 338,420 338,452 306,452 306,484 114,484 114,468 82,468 82,436 66,436 66,404 50,404 50,356 34,356 34,180 50,180 50,132 66,132 66,100 82,100 82,68 114,68" />
+            <Polygon Fill="{DynamicResource MiddleBrush}" Points="130,68 290,68 290,84 322,84 322,116 338,116 338,148 354,148 354,388 338,388 338,420 306,420 306,452 274,452 274,468 146,468 146,452 114,452 114,420 82,420 82,388 66,388 66,148 82,148 82,116 98,116 98,84 130,84" />
+            <Polygon Fill="{DynamicResource FleshBrush}" Points="146,84 274,84 274,100 306,100 306,132 322,132 322,164 338,164 338,372 322,372 322,404 290,404 290,436 258,436 258,452 162,452 162,436 130,436 130,404 98,404 98,372 82,372 82,164 98,164 98,132 114,132 114,100 146,100" />
+            <Rectangle Fill="{DynamicResource SeedBrush}" Width="10" Height="20" Margin="112,190,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeedBrush}" Width="10" Height="20" Margin="298,190,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeedBrush}" Width="10" Height="20" Margin="112,340,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeedBrush}" Width="10" Height="20" Margin="298,340,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Grid>
+
+        <Grid x:Name="PapayaShape" Visibility="Collapsed">
+            <Polygon Fill="{DynamicResource OuterBrush}" Points="162,20 258,20 258,52 290,52 290,84 322,84 322,132 338,132 338,196 354,196 354,356 338,356 338,420 306,420 306,452 274,452 274,484 146,484 146,468 114,468 114,436 82,436 82,388 66,388 66,196 82,196 82,132 98,132 98,84 130,84 130,52 162,52" />
+            <Polygon Fill="{DynamicResource FleshBrush}" Points="162,52 258,52 258,68 290,68 290,100 306,100 306,148 322,148 322,388 306,388 306,420 274,420 274,452 242,452 242,468 178,468 178,452 146,452 146,420 114,420 114,388 98,388 98,148 114,148 114,100 130,100 130,68 162,68" />
+            <Polygon Fill="{DynamicResource SeedBrush}" Points="178,132 242,132 242,148 258,148 258,388 242,388 242,404 178,404 178,388 162,388 162,148 178,148" />
+            <Rectangle Fill="{DynamicResource SeedHighlightBrush}" Width="14" Height="20" Margin="186,174,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeedHighlightBrush}" Width="14" Height="20" Margin="220,326,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Grid>
+
+        <Grid x:Name="AppleShape" Visibility="Collapsed">
+            <Polygon Fill="{DynamicResource OuterBrush}" Points="98,100 162,100 162,84 194,84 194,100 226,100 226,84 258,84 258,100 322,100 322,116 354,116 354,148 370,148 370,196 386,196 386,356 370,356 370,404 338,404 338,436 306,436 306,468 242,468 242,452 178,452 178,468 114,468 114,436 82,436 82,404 50,404 50,356 34,356 34,196 50,196 50,148 66,148 66,116 98,116" />
+            <Polygon Fill="{DynamicResource FleshBrush}" Points="114,116 162,116 162,100 194,116 226,116 258,100 258,116 306,116 306,132 338,132 338,164 354,164 354,388 322,388 322,420 290,420 290,436 242,436 242,420 178,420 178,436 130,436 130,420 98,420 98,388 66,388 66,164 82,164 82,132 114,132" />
+            <Rectangle Fill="{DynamicResource SeedBrush}" Width="16" Height="64" Margin="202,36,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Polygon Fill="{DynamicResource AccentBrush}" Points="218,52 250,20 314,20 314,52 282,84 234,84" />
+            <Rectangle Fill="{DynamicResource HighlightBrush}" Width="16" Height="48" Margin="82,180,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Grid>
+
+        <Grid x:Name="MangoShape" Visibility="Collapsed">
+            <Polygon Fill="{DynamicResource OuterBrush}" Points="98,68 210,68 210,52 258,52 258,68 306,68 306,100 338,100 338,148 354,148 354,212 370,212 370,356 354,356 354,404 322,404 322,436 274,436 274,468 210,468 210,484 146,484 146,468 114,468 114,436 82,436 82,388 66,388 66,308 50,308 50,180 66,180 66,116 82,116 82,84 98,84" />
+            <Polygon Fill="{DynamicResource FleshBrush}" Points="114,84 210,84 210,68 258,68 258,84 290,84 290,116 322,116 322,164 338,164 338,228 354,228 354,340 338,340 338,388 306,388 306,420 258,420 258,452 194,452 194,468 146,468 146,436 114,436 114,404 98,404 98,372 82,372 82,292 66,292 66,196 82,196 82,132 98,132 98,100 114,100" />
+            <Polygon Fill="{DynamicResource AccentBrush}" Points="98,84 130,52 178,52 162,84 130,116 98,116" />
+            <Rectangle Fill="{DynamicResource HighlightBrush}" Width="16" Height="48" Margin="92,166,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Grid>
+
+        <Grid x:Name="LemonShape" Visibility="Collapsed">
+            <Polygon Fill="{DynamicResource OuterBrush}" Points="18,244 50,196 50,148 82,148 82,116 114,116 114,84 162,84 162,68 258,68 258,84 306,84 306,116 338,116 338,148 370,148 370,196 402,244 370,292 370,340 338,340 338,372 306,372 306,404 258,404 258,420 162,420 162,404 114,404 114,372 82,372 82,340 50,340 50,292" />
+            <Polygon Fill="{DynamicResource FleshBrush}" Points="50,244 66,196 82,196 82,148 114,148 114,116 162,116 162,100 258,100 258,116 306,116 306,148 338,148 338,196 370,244 338,292 338,340 306,340 306,372 258,372 258,388 162,388 162,372 114,372 114,340 82,340 82,292" />
+            <Rectangle Fill="{DynamicResource HighlightBrush}" Width="16" Height="48" Margin="98,156,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Grid>
+
+        <Grid x:Name="TomatoShape" Visibility="Collapsed">
+            <Polygon Fill="{DynamicResource OuterBrush}" Points="98,100 322,100 322,116 354,116 354,148 370,148 370,196 386,196 386,356 370,356 370,404 338,404 338,436 290,436 290,452 130,452 130,436 82,436 82,404 50,404 50,356 34,356 34,196 50,196 50,148 66,148 66,116 98,116" />
+            <Polygon Fill="{DynamicResource FleshBrush}" Points="114,116 306,116 306,132 338,132 338,164 354,164 354,388 322,388 322,420 274,420 274,436 146,436 146,420 98,420 98,388 66,388 66,164 82,164 82,132 114,132" />
+            <Polygon Fill="{DynamicResource AccentBrush}" Points="98,116 146,84 178,100 210,52 242,100 274,84 322,116 258,116 258,132 162,132 162,116" />
+            <Rectangle Fill="{DynamicResource HighlightBrush}" Width="16" Height="48" Margin="82,180,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Grid>
+
+        <Grid x:Name="PumpkinShape" Visibility="Collapsed">
+            <Polygon Fill="{DynamicResource OuterBrush}" Points="66,132 114,132 114,100 178,100 178,84 242,84 242,100 306,100 306,132 354,132 354,164 386,164 386,388 354,388 354,420 306,420 306,452 114,452 114,420 66,420 66,388 34,388 34,164 66,164" />
+            <Polygon Fill="{DynamicResource FleshBrush}" Points="82,148 130,148 130,116 178,116 178,100 242,100 242,116 290,116 290,148 338,148 338,180 370,180 370,372 338,372 338,404 290,404 290,436 130,436 130,404 82,404 82,372 50,372 50,180 82,180" />
+            <Rectangle Fill="{DynamicResource MiddleBrush}" Width="20" Height="288" Margin="132,132,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource MiddleBrush}" Width="20" Height="304" Margin="200,116,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource MiddleBrush}" Width="20" Height="288" Margin="268,132,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource AccentBrush}" Width="32" Height="84" Margin="194,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Grid>
+
+        <Grid x:Name="PotatoShape" Visibility="Collapsed">
+            <Polygon Fill="{DynamicResource OuterBrush}" Points="98,84 274,84 274,100 322,100 322,132 354,132 354,164 370,164 370,244 386,244 386,356 370,356 370,404 338,404 338,436 290,436 290,468 130,468 130,452 82,452 82,420 50,420 50,372 34,372 34,212 50,212 50,148 66,148 66,116 98,116" />
+            <Polygon Fill="{DynamicResource FleshBrush}" Points="114,100 274,100 274,116 306,116 306,148 338,148 338,180 354,180 354,260 370,260 370,340 354,340 354,388 322,388 322,420 274,420 274,452 146,452 146,436 98,436 98,404 66,404 66,356 50,356 50,228 66,228 66,164 82,164 82,132 114,132" />
+            <Rectangle Fill="{DynamicResource SeedBrush}" Width="18" Height="12" Margin="96,190,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeedBrush}" Width="18" Height="12" Margin="302,224,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeedBrush}" Width="18" Height="12" Margin="124,362,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeedBrush}" Width="18" Height="12" Margin="274,386,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Grid>
+
+        <Grid x:Name="OnionShape" Visibility="Collapsed">
+            <Polygon Fill="{DynamicResource OuterBrush}" Points="194,20 226,20 226,68 258,68 258,84 290,84 290,100 322,100 322,132 338,132 338,164 354,164 354,212 370,212 370,356 354,356 354,404 322,404 322,436 274,436 274,468 146,468 146,452 98,452 98,420 66,420 66,388 50,388 50,212 66,212 66,164 82,164 82,132 98,132 98,100 130,100 130,84 162,84 162,68 194,68" />
+            <Polygon Fill="{DynamicResource FleshBrush}" Points="194,68 226,68 226,84 258,84 258,100 290,100 290,116 306,116 306,148 322,148 322,180 338,180 338,388 306,388 306,420 258,420 258,452 162,452 162,436 114,436 114,404 82,404 82,372 66,372 66,228 82,228 82,180 98,180 98,148 114,148 114,116 130,116 130,100 162,100 162,84 194,84" />
+            <Polygon Fill="{DynamicResource AccentBrush}" Points="178,84 178,36 194,36 194,4 210,36 226,4 226,36 242,36 242,84" />
+            <Rectangle Fill="{DynamicResource MiddleBrush}" Width="16" Height="320" Margin="130,116,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.35" />
+            <Rectangle Fill="{DynamicResource MiddleBrush}" Width="16" Height="352" Margin="202,84,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.35" />
+            <Rectangle Fill="{DynamicResource MiddleBrush}" Width="16" Height="320" Margin="274,116,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.35" />
+        </Grid>
+
         <Grid x:Name="AwakeContent">
         <TextBlock Text="{Binding HeaderText}" Margin="0,105,0,0" VerticalAlignment="Top"
                    HorizontalAlignment="Center" FontFamily="Consolas" FontSize="22"
