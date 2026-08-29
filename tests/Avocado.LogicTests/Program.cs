@@ -54,6 +54,7 @@ var originalState = new AppState
         IsExpanded = true,
         ReminderTime = new TimeSpan(17, 50, 0),
         Recurrence = TaskRecurrence.Monday,
+        Priority = TaskPriority.High,
         LastReminderDate = new DateOnly(2026, 8, 28),
         SnoozedUntil = new DateTime(2026, 8, 29, 18, 0, 0),
         ElapsedTicks = TimeSpan.FromMinutes(12).Ticks
@@ -83,6 +84,7 @@ Assert(loadedState.Tasks[0].ReminderTime == new TimeSpan(17, 50, 0),
     "A task's reminder time must persist.");
 Assert(loadedState.Tasks[0].Recurrence == TaskRecurrence.Monday,
     "A task's recurrence must persist.");
+Assert(loadedState.Tasks[0].Priority == TaskPriority.High, "A task's priority must persist.");
 Assert(loadedState.Tasks[0].LastReminderDate == new DateOnly(2026, 8, 28),
     "A task's last reminder date must persist to prevent duplicate alerts after a restart.");
 Assert(loadedState.Tasks[0].SnoozedUntil == new DateTime(2026, 8, 29, 18, 0, 0),
@@ -142,6 +144,12 @@ Assert(dailyTask.Text == "Drink water" && dailyTask.Recurrence == TaskRecurrence
 Assert(TaskReminderLogic.MatchesDay(TaskRecurrence.Monday, DayOfWeek.Monday) &&
        !TaskReminderLogic.MatchesDay(TaskRecurrence.Monday, DayOfWeek.Tuesday),
     "A weekly reminder must only match its selected weekday.");
+var priorityTask = TaskReminderLogic.Parse("daily 09:00 !!! Ship release");
+Assert(priorityTask.Text == "Ship release" && priorityTask.Priority == TaskPriority.High,
+    "Three exclamation marks must create a high-priority task.");
+Assert(TaskReminderLogic.Parse("!! Review").Priority == TaskPriority.Medium &&
+       TaskReminderLogic.Parse("! Later").Priority == TaskPriority.Low,
+    "One and two exclamation marks must create low- and medium-priority tasks.");
 var untimedTask = TaskReminderLogic.Parse("25:50 task 1");
 Assert(untimedTask.Text == "25:50 task 1" && untimedTask.ReminderTime is null,
     "An invalid time prefix must remain ordinary task text.");

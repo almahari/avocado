@@ -16,10 +16,19 @@ public enum TaskRecurrence
     Sunday
 }
 
+public enum TaskPriority
+{
+    None,
+    Low,
+    Medium,
+    High
+}
+
 public readonly record struct ParsedTaskInput(
     string Text,
     TimeSpan? ReminderTime,
-    TaskRecurrence Recurrence = TaskRecurrence.None);
+    TaskRecurrence Recurrence = TaskRecurrence.None,
+    TaskPriority Priority = TaskPriority.None);
 
 public static partial class TaskReminderLogic
 {
@@ -32,14 +41,14 @@ public static partial class TaskReminderLogic
         if (recurringMatch.Success)
         {
             var recurrence = ParseRecurrence(recurringMatch.Groups["recurrence"].Value);
-            return new ParsedTaskInput(
+            return WithPriority(
                 recurringMatch.Groups["text"].Value.Trim(),
                 ParseTime(recurringMatch.Groups["time"].Value),
                 recurrence);
         }
         var match = ReminderPrefix().Match(trimmed);
-        if (!match.Success) return new ParsedTaskInput(trimmed, null);
-        return new ParsedTaskInput(
+        if (!match.Success) return WithPriority(trimmed, null, TaskRecurrence.None);
+        return WithPriority(
             match.Groups["text"].Value.Trim(),
             ParseTime(match.Groups["time"].Value),
             TaskRecurrence.Daily);
@@ -71,6 +80,27 @@ public static partial class TaskReminderLogic
         _ => recurrence.ToString()[..3].ToUpperInvariant()
     };
 
+    public static string PriorityPrefix(TaskPriority priority) => priority switch
+    {
+        TaskPriority.Low => "!",
+        TaskPriority.Medium => "!!",
+        TaskPriority.High => "!!!",
+        _ => string.Empty
+    };
+
+    private static ParsedTaskInput WithPriority(string text, TimeSpan? time, TaskRecurrence recurrence)
+    {
+        var match = PriorityPrefixPattern().Match(text);
+        if (!match.Success) return new ParsedTaskInput(text, time, recurrence);
+        var priority = match.Groups["priority"].Value.Length switch
+        {
+            1 => TaskPriority.Low,
+            2 => TaskPriority.Medium,
+            _ => TaskPriority.High
+        };
+        return new ParsedTaskInput(match.Groups["text"].Value.Trim(), time, recurrence, priority);
+    }
+
     private static TimeSpan ParseTime(string value) =>
         TimeSpan.ParseExact(value, @"hh\:mm", CultureInfo.InvariantCulture);
 
@@ -82,4 +112,7 @@ public static partial class TaskReminderLogic
 
     [GeneratedRegex(@"^(?<recurrence>daily|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\s+(?<time>(?:[01]\d|2[0-3]):[0-5]\d)\s+(?<text>.+)$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
     private static partial Regex RecurringPrefix();
+
+    [GeneratedRegex(@"^(?<priority>!{1,3})\s+(?<text>.+)$", RegexOptions.CultureInvariant)]
+    private static partial Regex PriorityPrefixPattern();
 }

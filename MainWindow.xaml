@@ -248,6 +248,7 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="30" />
                                         <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition />
                                         <ColumnDefinition Width="28" />
                                         <ColumnDefinition Width="28" />
@@ -255,11 +256,15 @@
                                     </Grid.ColumnDefinitions>
                                     <CheckBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                                               IsChecked="{Binding IsCompleted}" Click="TaskCheckBox_Click" />
-                                    <TextBlock Grid.Column="1" Text="{Binding ReminderLabel}"
+                                    <TextBlock Grid.Column="1" Text="{Binding PriorityLabel}"
+                                               FontFamily="Consolas" FontSize="11" FontWeight="Bold"
+                                               Foreground="{DynamicResource SeedBrush}" Margin="0,0,4,0"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="2" Text="{Binding ReminderLabel}"
                                                FontFamily="Consolas" FontSize="11" FontWeight="Bold"
                                                Foreground="{DynamicResource MutedInkBrush}" Margin="0,0,6,0"
                                                VerticalAlignment="Center" />
-                                    <local:LinkTextBlock Grid.Column="2" LinkText="{Binding Text}"
+                                    <local:LinkTextBlock Grid.Column="3" LinkText="{Binding Text}"
                                                FontFamily="Consolas" FontSize="14" Foreground="{DynamicResource InkBrush}"
                                                Margin="0,3" VerticalAlignment="Center">
                                         <local:LinkTextBlock.Style>
@@ -279,16 +284,16 @@
                                             </Style>
                                         </local:LinkTextBlock.Style>
                                     </local:LinkTextBlock>
-                                    <Button Grid.Column="3" Content="{Binding TimerIcon}"
+                                    <Button Grid.Column="4" Content="{Binding TimerIcon}"
                                             ToolTip="{Binding TimerToolTip}"
                                             Background="Transparent" BorderThickness="0" Foreground="{DynamicResource InkBrush}"
                                             FontFamily="Consolas" FontSize="15" FontWeight="Bold" Cursor="Hand"
                                             Tag="{Binding}" Click="TaskTimerButton_Click" />
-                                    <Button Grid.Column="4" Content="✎" ToolTip="Edit task"
+                                    <Button Grid.Column="5" Content="✎" ToolTip="Edit task"
                                             Background="Transparent" BorderThickness="0" Foreground="{DynamicResource InkBrush}"
                                             FontFamily="Consolas" FontSize="15" FontWeight="Bold" Cursor="Hand"
                                             Tag="{Binding}" Click="EditTaskButton_Click" />
-                                    <Button Grid.Column="5" Content="×" ToolTip="Delete task"
+                                    <Button Grid.Column="6" Content="×" ToolTip="Delete task"
                                             Background="Transparent" BorderThickness="0" Foreground="{DynamicResource SeedBrush}"
                                             FontFamily="Consolas" FontSize="18" Cursor="Hand"
                                             Tag="{Binding}" Click="DeleteTaskButton_Click" />

@@ -16,6 +16,7 @@ public sealed class TodoItem : INotifyPropertyChanged
     private DateOnly? _lastReminderDate;
     private DateTime? _snoozedUntil;
     private TaskRecurrence _recurrence;
+    private TaskPriority _priority;
 
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Text
@@ -60,6 +61,18 @@ public sealed class TodoItem : INotifyPropertyChanged
             OnPropertyChanged(nameof(ReminderLabel));
         }
     }
+    public TaskPriority Priority
+    {
+        get => _priority;
+        set
+        {
+            _priority = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(PriorityLabel));
+        }
+    }
+    [JsonIgnore]
+    public string PriorityLabel => TaskReminderLogic.PriorityPrefix(Priority);
     [JsonIgnore]
     public string ReminderLabel => ReminderTime is TimeSpan time
         ? $"{TaskReminderLogic.Label(Recurrence)} {time:hh\\:mm}".TrimStart()

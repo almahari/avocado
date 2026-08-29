@@ -459,8 +459,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         _editingTask = task;
         TaskInput.Text = task?.ReminderTime is TimeSpan reminderTime
-            ? $"{TaskReminderLogic.Prefix(task.Recurrence)} {reminderTime:hh\\:mm} {task.Text}".TrimStart()
-            : task?.Text ?? string.Empty;
+            ? $"{TaskReminderLogic.Prefix(task.Recurrence)} {reminderTime:hh\\:mm} " +
+              $"{TaskReminderLogic.PriorityPrefix(task.Priority)} {task.Text}".TrimStart()
+            : task is null
+                ? string.Empty
+                : $"{TaskReminderLogic.PriorityPrefix(task.Priority)} {task.Text}".TrimStart();
         AddPanel.Visibility = Visibility.Visible;
         TaskInput.Focus();
         TaskInput.SelectAll();
@@ -487,6 +490,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             editingTask.Text = parsed.Text;
             editingTask.ReminderTime = parsed.ReminderTime;
             editingTask.Recurrence = parsed.Recurrence;
+            editingTask.Priority = parsed.Priority;
             _editingTask = null;
             AddPanel.Visibility = Visibility.Collapsed;
             SaveState();
@@ -496,7 +500,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         {
             Text = parsed.Text,
             ReminderTime = parsed.ReminderTime,
-            Recurrence = parsed.Recurrence
+            Recurrence = parsed.Recurrence,
+            Priority = parsed.Priority
         });
         AddPanel.Visibility = Visibility.Collapsed;
         RefreshOverflow();
