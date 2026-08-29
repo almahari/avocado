@@ -27,6 +27,7 @@
         <SolidColorBrush x:Key="MiddleBrush" Color="#4F872D" />
         <SolidColorBrush x:Key="FleshBrush" Color="#9BC63E" />
         <SolidColorBrush x:Key="HighlightBrush" Color="#B9DA58" />
+        <SolidColorBrush x:Key="AccentBrush" Color="#4F872D" />
         <SolidColorBrush x:Key="SeedBrush" Color="#713F25" />
         <SolidColorBrush x:Key="SeedHighlightBrush" Color="#9A5C32" />
         <SolidColorBrush x:Key="MutedInkBrush" Color="#315A2D" />
@@ -62,16 +63,54 @@
     </Window.Resources>
 
     <Grid x:Name="Root" Background="Transparent">
-        <!-- Pixel-stepped avocado silhouette -->
-        <Polygon Fill="{DynamicResource OuterBrush}" Points="194,4 226,4 226,52 274,52 274,68 306,68 306,84 322,84 322,100 338,100 338,132 354,132 354,164 370,164 370,212 386,212 386,356 370,356 370,404 354,404 354,436 338,436 338,468 306,468 306,484 274,484 274,500 146,500 146,484 114,484 114,468 82,468 82,436 66,436 66,404 50,404 50,356 34,356 34,212 50,212 50,164 66,164 66,132 82,132 82,100 98,100 98,84 114,84 114,68 146,68 146,52 194,52" />
-        <Polygon Fill="{DynamicResource MiddleBrush}" Points="194,20 210,20 210,68 274,68 274,84 306,84 306,100 322,100 322,132 338,132 338,164 354,164 354,228 370,228 370,340 354,340 354,404 338,404 338,436 306,436 306,452 274,452 274,468 146,468 146,452 114,452 114,436 82,436 82,404 66,404 66,340 50,340 50,228 66,228 66,164 82,164 82,132 98,132 98,100 114,100 114,84 146,84 146,68 194,68" />
-        <Polygon Fill="{DynamicResource FleshBrush}" Points="178,84 242,84 242,100 274,100 274,116 306,116 306,148 322,148 322,196 338,196 338,340 322,340 322,388 306,388 306,420 274,420 274,436 146,436 146,420 114,420 114,388 98,388 98,340 82,340 82,196 98,196 98,148 114,148 114,116 146,116 146,100 178,100" />
-        <Rectangle Fill="{DynamicResource HighlightBrush}" Width="16" Height="32" Margin="130,124,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <Rectangle Fill="{DynamicResource HighlightBrush}" Width="16" Height="16" Margin="114,156,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <!-- Fruit-specific pixel silhouettes -->
+        <Grid x:Name="AvocadoShape">
+            <Polygon Fill="{DynamicResource OuterBrush}" Points="194,4 226,4 226,52 274,52 274,68 306,68 306,84 322,84 322,100 338,100 338,132 354,132 354,164 370,164 370,212 386,212 386,356 370,356 370,404 354,404 354,436 338,436 338,468 306,468 306,484 274,484 274,500 146,500 146,484 114,484 114,468 82,468 82,436 66,436 66,404 50,404 50,356 34,356 34,212 50,212 50,164 66,164 66,132 82,132 82,100 98,100 98,84 114,84 114,68 146,68 146,52 194,52" />
+            <Polygon Fill="{DynamicResource MiddleBrush}" Points="194,20 210,20 210,68 274,68 274,84 306,84 306,100 322,100 322,132 338,132 338,164 354,164 354,228 370,228 370,340 354,340 354,404 338,404 338,436 306,436 306,452 274,452 274,468 146,468 146,452 114,452 114,436 82,436 82,404 66,404 66,340 50,340 50,228 66,228 66,164 82,164 82,132 98,132 98,100 114,100 114,84 146,84 146,68 194,68" />
+            <Polygon Fill="{DynamicResource FleshBrush}" Points="178,84 242,84 242,100 274,100 274,116 306,116 306,148 322,148 322,196 338,196 338,340 322,340 322,388 306,388 306,420 274,420 274,436 146,436 146,420 114,420 114,388 98,388 98,340 82,340 82,196 98,196 98,148 114,148 114,116 146,116 146,100 178,100" />
+            <Rectangle Fill="{DynamicResource HighlightBrush}" Width="16" Height="32" Margin="130,124,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource HighlightBrush}" Width="16" Height="16" Margin="114,156,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Polygon Fill="{DynamicResource SeedBrush}" Points="178,386 194,386 194,370 226,370 226,386 242,386 242,402 258,402 258,434 242,434 242,450 226,450 226,466 194,466 194,450 178,450 178,434 162,434 162,402 178,402" />
+            <Rectangle Fill="{DynamicResource SeedHighlightBrush}" Width="48" Height="16" Margin="186,394,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Grid>
 
-        <!-- Seed -->
-        <Polygon Fill="{DynamicResource SeedBrush}" Points="178,386 194,386 194,370 226,370 226,386 242,386 242,402 258,402 258,434 242,434 242,450 226,450 226,466 194,466 194,450 178,450 178,434 162,434 162,402 178,402" />
-        <Rectangle Fill="{DynamicResource SeedHighlightBrush}" Width="48" Height="16" Margin="186,394,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Grid x:Name="StrawberryShape" Visibility="Collapsed">
+            <Polygon Fill="{DynamicResource OuterBrush}" Points="130,100 290,100 290,116 322,116 322,148 338,148 338,180 354,180 354,308 338,308 338,356 322,356 322,388 290,388 290,420 258,420 258,452 226,452 226,484 194,484 194,452 162,452 162,420 130,420 130,388 98,388 98,356 82,356 82,308 66,308 66,180 82,180 82,148 98,148 98,116 130,116" />
+            <Polygon Fill="{DynamicResource MiddleBrush}" Points="130,116 290,116 290,132 306,132 306,164 322,164 322,196 338,196 338,292 322,292 322,340 306,340 306,372 274,372 274,404 242,404 242,436 226,436 226,468 194,468 194,436 178,436 178,404 146,404 146,372 114,372 114,340 98,340 98,292 82,292 82,196 98,196 98,164 114,164 114,132 130,132" />
+            <Polygon Fill="{DynamicResource FleshBrush}" Points="130,132 290,132 290,148 306,148 306,180 322,180 322,308 306,308 306,356 274,356 274,388 242,388 242,420 226,420 226,452 194,452 194,420 178,420 178,388 146,388 146,356 114,356 114,308 98,308 98,180 114,180 114,148 130,148" />
+            <Polygon Fill="{DynamicResource AccentBrush}" Points="114,100 146,100 146,68 178,68 178,36 210,68 242,36 242,68 274,68 274,100 306,100 306,116 242,116 242,132 178,132 178,116 114,116" />
+            <Rectangle Fill="{DynamicResource HighlightBrush}" Width="12" Height="18" Margin="118,206,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource HighlightBrush}" Width="12" Height="18" Margin="286,222,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeedBrush}" Width="10" Height="14" Margin="134,330,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeedBrush}" Width="10" Height="14" Margin="276,346,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Grid>
+
+        <Grid x:Name="OrangeShape" Visibility="Collapsed">
+            <Polygon Fill="{DynamicResource OuterBrush}" Points="146,52 274,52 274,68 306,68 306,84 338,84 338,116 354,116 354,148 370,148 370,196 386,196 386,356 370,356 370,404 354,404 354,436 322,436 322,468 290,468 290,484 130,484 130,468 98,468 98,436 66,436 66,404 50,404 50,356 34,356 34,196 50,196 50,148 66,148 66,116 82,116 82,84 114,84 114,68 146,68" />
+            <Polygon Fill="{DynamicResource MiddleBrush}" Points="146,68 274,68 274,84 306,84 306,100 322,100 322,132 338,132 338,164 354,164 354,388 338,388 338,420 306,420 306,452 274,452 274,468 146,468 146,452 114,452 114,420 82,420 82,388 66,388 66,164 82,164 82,132 98,132 98,100 114,100 114,84 146,84" />
+            <Polygon Fill="{DynamicResource FleshBrush}" Points="146,84 274,84 274,100 306,100 306,116 322,116 322,148 338,148 338,180 354,180 354,372 338,372 338,404 306,404 306,436 274,436 274,452 146,452 146,436 114,436 114,404 82,404 82,372 66,372 66,180 82,180 82,148 98,148 98,116 114,116 114,100 146,100" />
+            <Polygon Fill="{DynamicResource AccentBrush}" Points="194,68 194,36 210,36 210,20 226,20 226,52 258,20 306,20 306,52 290,52 290,68 226,68" />
+            <Rectangle Fill="{DynamicResource HighlightBrush}" Width="16" Height="48" Margin="98,166,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Grid>
+
+        <Grid x:Name="BlueberryShape" Visibility="Collapsed">
+            <Polygon Fill="{DynamicResource OuterBrush}" Points="130,68 290,68 290,84 322,84 322,100 338,100 338,132 354,132 354,164 370,164 370,212 386,212 386,356 370,356 370,404 354,404 354,436 322,436 322,468 290,468 290,484 130,484 130,468 98,468 98,436 66,436 66,404 50,404 50,356 34,356 34,212 50,212 50,164 66,164 66,132 82,132 82,100 98,100 98,84 130,84" />
+            <Polygon Fill="{DynamicResource MiddleBrush}" Points="130,84 290,84 290,100 322,100 322,116 338,116 338,148 354,148 354,196 370,196 370,372 354,372 354,420 322,420 322,452 290,452 290,468 130,468 130,452 98,452 98,420 66,420 66,372 50,372 50,196 66,196 66,148 82,148 82,116 98,116 98,100 130,100" />
+            <Polygon Fill="{DynamicResource FleshBrush}" Points="146,100 274,100 274,116 306,116 306,132 322,132 322,164 338,164 338,212 354,212 354,356 338,356 338,404 306,404 306,436 274,436 274,452 146,452 146,436 114,436 114,404 82,404 82,356 66,356 66,212 82,212 82,164 98,164 98,132 114,132 114,116 146,116" />
+            <Polygon Fill="{DynamicResource AccentBrush}" Points="146,100 162,68 194,84 210,36 226,84 258,68 274,100 242,116 178,116" />
+            <Rectangle Fill="{DynamicResource HighlightBrush}" Width="16" Height="32" Margin="98,180,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Grid>
+
+        <Grid x:Name="WatermelonShape" Visibility="Collapsed">
+            <Polygon Fill="{DynamicResource OuterBrush}" Points="34,68 386,68 386,292 370,292 370,356 354,356 354,404 322,404 322,436 290,436 290,468 258,468 258,484 162,484 162,468 130,468 130,436 98,436 98,404 66,404 66,356 50,356 50,292 34,292" />
+            <Polygon Fill="{DynamicResource MiddleBrush}" Points="50,84 370,84 370,292 354,292 354,356 338,356 338,388 306,388 306,420 274,420 274,452 242,452 242,468 178,468 178,452 146,452 146,420 114,420 114,388 82,388 82,356 66,356 66,292 50,292" />
+            <Polygon Fill="{DynamicResource FleshBrush}" Points="66,116 354,116 354,292 338,292 338,340 322,340 322,372 290,372 290,404 258,404 258,436 226,436 226,452 194,452 194,436 162,436 162,404 130,404 130,372 98,372 98,340 82,340 82,292 66,292" />
+            <Rectangle Fill="{DynamicResource HighlightBrush}" Width="288" Height="16" Margin="66,116,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeedBrush}" Width="12" Height="22" Margin="104,178,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeedBrush}" Width="12" Height="22" Margin="304,194,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeedBrush}" Width="12" Height="22" Margin="126,346,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeedBrush}" Width="12" Height="22" Margin="282,346,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Grid>
 
         <Grid x:Name="AwakeContent">
         <TextBlock Text="{Binding HeaderText}" Margin="0,105,0,0" VerticalAlignment="Top"
@@ -135,13 +174,19 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="30" />
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition />
+                                        <ColumnDefinition Width="28" />
                                         <ColumnDefinition Width="28" />
                                         <ColumnDefinition Width="28" />
                                     </Grid.ColumnDefinitions>
                                     <CheckBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                                               IsChecked="{Binding IsCompleted}" Click="TaskCheckBox_Click" />
-                                    <local:LinkTextBlock Grid.Column="1" LinkText="{Binding Text}"
+                                    <TextBlock Grid.Column="1" Text="{Binding ReminderLabel}"
+                                               FontFamily="Consolas" FontSize="11" FontWeight="Bold"
+                                               Foreground="{DynamicResource MutedInkBrush}" Margin="0,0,6,0"
+                                               VerticalAlignment="Center" />
+                                    <local:LinkTextBlock Grid.Column="2" LinkText="{Binding Text}"
                                                FontFamily="Consolas" FontSize="14" Foreground="{DynamicResource InkBrush}"
                                                Margin="0,3" VerticalAlignment="Center">
                                         <local:LinkTextBlock.Style>
@@ -161,12 +206,16 @@
                                             </Style>
                                         </local:LinkTextBlock.Style>
                                     </local:LinkTextBlock>
-                                    <Button Grid.Column="2" Content="{Binding TimerIcon}"
+                                    <Button Grid.Column="3" Content="{Binding TimerIcon}"
                                             ToolTip="{Binding TimerToolTip}"
                                             Background="Transparent" BorderThickness="0" Foreground="{DynamicResource InkBrush}"
                                             FontFamily="Consolas" FontSize="15" FontWeight="Bold" Cursor="Hand"
                                             Tag="{Binding}" Click="TaskTimerButton_Click" />
-                                    <Button Grid.Column="3" Content="×" ToolTip="Delete task"
+                                    <Button Grid.Column="4" Content="✎" ToolTip="Edit task"
+                                            Background="Transparent" BorderThickness="0" Foreground="{DynamicResource InkBrush}"
+                                            FontFamily="Consolas" FontSize="15" FontWeight="Bold" Cursor="Hand"
+                                            Tag="{Binding}" Click="EditTaskButton_Click" />
+                                    <Button Grid.Column="5" Content="×" ToolTip="Delete task"
                                             Background="Transparent" BorderThickness="0" Foreground="{DynamicResource SeedBrush}"
                                             FontFamily="Consolas" FontSize="18" Cursor="Hand"
                                             Tag="{Binding}" Click="DeleteTaskButton_Click" />
@@ -198,9 +247,6 @@
                        HorizontalAlignment="Left" VerticalAlignment="Top" Fill="{DynamicResource InkBrush}" />
             <Rectangle Width="24" Height="5" Margin="198,270,0,0"
                        HorizontalAlignment="Left" VerticalAlignment="Top" Fill="{DynamicResource MutedInkBrush}" />
-            <TextBlock Text="sleeping..." Margin="0,305,0,0" VerticalAlignment="Top"
-                       HorizontalAlignment="Center" FontFamily="Consolas" FontSize="14"
-                       FontWeight="Bold" Foreground="{DynamicResource MutedInkBrush}" />
         </Grid>
     </Grid>
 </Window>

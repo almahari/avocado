@@ -12,6 +12,8 @@ public sealed class TodoItem : INotifyPropertyChanged
     private bool _isExpanded;
     private long _elapsedTicks;
     private bool _isTimerRunning;
+    private TimeSpan? _reminderTime;
+    private DateOnly? _lastReminderDate;
 
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Text
@@ -33,6 +35,24 @@ public sealed class TodoItem : INotifyPropertyChanged
             OnPropertyChanged();
             OnPropertyChanged(nameof(TimerToolTip));
         }
+    }
+    public TimeSpan? ReminderTime
+    {
+        get => _reminderTime;
+        set
+        {
+            _reminderTime = value;
+            _lastReminderDate = null;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(ReminderLabel));
+        }
+    }
+    [JsonIgnore]
+    public string ReminderLabel => ReminderTime is TimeSpan time ? $"{time:hh\\:mm}" : string.Empty;
+    public DateOnly? LastReminderDate
+    {
+        get => _lastReminderDate;
+        set => _lastReminderDate = value;
     }
     [JsonIgnore]
     public bool IsDragging

@@ -13,6 +13,7 @@ public partial class App : System.Windows.Application
     private Forms.ToolStripMenuItem? _normalSizeItem;
     private Forms.ToolStripMenuItem? _smallSizeItem;
     private Forms.ToolStripMenuItem? _resizeWhenInactiveItem;
+    private readonly Dictionary<SleepTimeOption, Forms.ToolStripMenuItem> _sleepTimeItems = [];
     private readonly Dictionary<FruitThemeKind, Forms.ToolStripMenuItem> _themeItems = [];
     private MainWindow? _window;
     private Icon? _trayThemeIcon;
@@ -29,6 +30,7 @@ public partial class App : System.Windows.Application
         CreateTrayIcon();
         SetWindowMode(_window.IsAlwaysOnTop, persist: false);
         SetSizeMode(_window.IsSmallSize, persist: false);
+        SetSleepTime(_window.CurrentSleepTime, persist: false);
         SetResizeWhenInactive(_window.IsResizeWhenInactive, persist: false);
         SetTheme(_window.CurrentTheme, persist: false);
         ShowWindow();
@@ -48,6 +50,14 @@ public partial class App : System.Windows.Application
         _resizeWhenInactiveItem = new Forms.ToolStripMenuItem(
             "Resize when inactive", null,
             (_, _) => SetResizeWhenInactive(!_window!.IsResizeWhenInactive));
+        var sleepTimeItem = new Forms.ToolStripMenuItem("Sleep time");
+        foreach (var choice in InactivitySettings.Choices)
+        {
+            var choiceItem = new Forms.ToolStripMenuItem(
+                choice.DisplayName, null, (_, _) => SetSleepTime(choice.Option));
+            _sleepTimeItems[choice.Option] = choiceItem;
+            sleepTimeItem.DropDownItems.Add(choiceItem);
+        }
         var themesItem = new Forms.ToolStripMenuItem("Themes");
         foreach (var theme in FruitThemes.All)
         {
@@ -64,6 +74,7 @@ public partial class App : System.Windows.Application
         menu.Items.Add(_alwaysOnTopItem);
         menu.Items.Add(sizeItem);
         menu.Items.Add(_resizeWhenInactiveItem);
+        menu.Items.Add(sleepTimeItem);
         menu.Items.Add(themesItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(exitItem);
@@ -87,6 +98,34 @@ public partial class App : System.Windows.Application
         using var skin = new SolidBrush(ColorTranslator.FromHtml(theme.Outer));
         using var flesh = new SolidBrush(ColorTranslator.FromHtml(theme.Flesh));
         using var seed = new SolidBrush(ColorTranslator.FromHtml(theme.Seed));
+        using var accent = new SolidBrush(ColorTranslator.FromHtml(theme.Accent));
+        switch (theme.Kind)
+        {
+            case FruitThemeKind.Strawberry:
+                DrawStrawberryIcon(graphics, skin, flesh, seed, accent);
+                break;
+            case FruitThemeKind.Orange:
+                DrawOrangeIcon(graphics, skin, flesh, accent);
+                break;
+            case FruitThemeKind.Blueberry:
+                DrawBlueberryIcon(graphics, skin, flesh, accent);
+                break;
+            case FruitThemeKind.Watermelon:
+                DrawWatermelonIcon(graphics, skin, flesh, seed, accent);
+                break;
+            default:
+                DrawAvocadoIcon(graphics, skin, flesh, seed);
+                break;
+        }
+        var handle = bitmap.GetHicon();
+        using var temporary = Icon.FromHandle(handle);
+        var icon = (Icon)temporary.Clone();
+        DestroyIcon(handle);
+        return icon;
+    }
+
+    private static void DrawAvocadoIcon(Graphics graphics, Brush skin, Brush flesh, Brush seed)
+    {
         graphics.FillRectangle(skin, 13, 1, 6, 5);
         graphics.FillRectangle(skin, 9, 5, 14, 4);
         graphics.FillRectangle(skin, 6, 9, 20, 6);
@@ -97,11 +136,64 @@ public partial class App : System.Windows.Application
         graphics.FillRectangle(flesh, 7, 12, 18, 11);
         graphics.FillRectangle(flesh, 10, 23, 12, 4);
         graphics.FillRectangle(seed, 12, 17, 9, 9);
-        var handle = bitmap.GetHicon();
-        using var temporary = Icon.FromHandle(handle);
-        var icon = (Icon)temporary.Clone();
-        DestroyIcon(handle);
-        return icon;
+    }
+
+    private static void DrawStrawberryIcon(Graphics graphics, Brush skin, Brush flesh, Brush seed, Brush leaf)
+    {
+        graphics.FillRectangle(leaf, 8, 2, 16, 5);
+        graphics.FillRectangle(leaf, 12, 0, 4, 9);
+        graphics.FillRectangle(leaf, 20, 0, 4, 9);
+        graphics.FillRectangle(skin, 5, 7, 22, 13);
+        graphics.FillRectangle(skin, 8, 20, 16, 5);
+        graphics.FillRectangle(skin, 11, 25, 10, 4);
+        graphics.FillRectangle(skin, 14, 29, 4, 2);
+        graphics.FillRectangle(flesh, 7, 9, 18, 10);
+        graphics.FillRectangle(flesh, 10, 19, 12, 5);
+        graphics.FillRectangle(seed, 9, 12, 2, 2);
+        graphics.FillRectangle(seed, 20, 14, 2, 2);
+        graphics.FillRectangle(seed, 14, 21, 2, 2);
+    }
+
+    private static void DrawOrangeIcon(Graphics graphics, Brush skin, Brush flesh, Brush leaf)
+    {
+        graphics.FillRectangle(leaf, 16, 1, 4, 6);
+        graphics.FillRectangle(leaf, 20, 1, 7, 3);
+        graphics.FillRectangle(skin, 9, 5, 14, 3);
+        graphics.FillRectangle(skin, 5, 8, 22, 4);
+        graphics.FillRectangle(skin, 2, 12, 28, 12);
+        graphics.FillRectangle(skin, 5, 24, 22, 4);
+        graphics.FillRectangle(skin, 9, 28, 14, 3);
+        graphics.FillRectangle(flesh, 7, 10, 18, 16);
+        graphics.FillRectangle(flesh, 4, 14, 24, 8);
+    }
+
+    private static void DrawBlueberryIcon(Graphics graphics, Brush skin, Brush flesh, Brush crown)
+    {
+        graphics.FillRectangle(crown, 10, 2, 4, 7);
+        graphics.FillRectangle(crown, 18, 2, 4, 7);
+        graphics.FillRectangle(crown, 14, 5, 4, 5);
+        graphics.FillRectangle(skin, 8, 7, 16, 3);
+        graphics.FillRectangle(skin, 4, 10, 24, 5);
+        graphics.FillRectangle(skin, 2, 15, 28, 10);
+        graphics.FillRectangle(skin, 6, 25, 20, 4);
+        graphics.FillRectangle(skin, 10, 29, 12, 2);
+        graphics.FillRectangle(flesh, 6, 12, 20, 14);
+        graphics.FillRectangle(flesh, 4, 16, 24, 7);
+    }
+
+    private static void DrawWatermelonIcon(Graphics graphics, Brush skin, Brush flesh, Brush seed, Brush rind)
+    {
+        graphics.FillRectangle(skin, 1, 7, 30, 10);
+        graphics.FillRectangle(skin, 4, 17, 24, 5);
+        graphics.FillRectangle(skin, 7, 22, 18, 4);
+        graphics.FillRectangle(skin, 11, 26, 10, 3);
+        graphics.FillRectangle(rind, 3, 9, 26, 4);
+        graphics.FillRectangle(flesh, 4, 13, 24, 4);
+        graphics.FillRectangle(flesh, 7, 17, 18, 4);
+        graphics.FillRectangle(flesh, 10, 21, 12, 4);
+        graphics.FillRectangle(seed, 8, 14, 2, 3);
+        graphics.FillRectangle(seed, 22, 14, 2, 3);
+        graphics.FillRectangle(seed, 15, 19, 2, 3);
     }
 
     [DllImport("user32.dll")]
@@ -128,6 +220,14 @@ public partial class App : System.Windows.Application
         if (_window is null) return;
         _window.SetResizeWhenInactive(enabled, persist);
         if (_resizeWhenInactiveItem is not null) _resizeWhenInactiveItem.Checked = enabled;
+    }
+
+    private void SetSleepTime(SleepTimeOption option, bool persist = true)
+    {
+        if (_window is null) return;
+        _window.SetSleepTime(option, persist);
+        foreach (var (sleepTime, menuItem) in _sleepTimeItems)
+            menuItem.Checked = sleepTime == _window.CurrentSleepTime;
     }
 
     private void SetTheme(FruitThemeKind kind, bool persist = true)

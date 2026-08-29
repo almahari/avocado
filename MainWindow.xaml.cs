@@ -21,6 +21,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private readonly DispatcherTimer _locationSaveTimer;
     private readonly DispatcherTimer _inactivityTimer;
     private readonly DispatcherTimer _taskTimer;
+    private readonly DispatcherTimer _reminderTimer;
     private AppState _state;
     private bool _allowClose;
     private string _overflowLabel = string.Empty;
@@ -30,6 +31,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private bool _taskOrderChangedDuringDrag;
     private bool _taskDragStarted;
     private TodoItem? _expandedTask;
+    private TodoItem? _editingTask;
     private bool _isSleeping;
     private int _sizeAnimationVersion;
     private TodoItem? _activeTimerTask;
@@ -37,6 +39,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private long _activeTimerStartedAt;
     private string _headerText = "AVOCADO";
     private FruitThemePalette _currentTheme = FruitThemes.Default;
+    private bool _isShaking;
+    private double _shakeOriginalLeft;
 
     public ObservableCollection<TodoItem> Tasks => _tasks;
     public string OverflowLabel
@@ -52,6 +56,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public bool IsAlwaysOnTop => _state.AlwaysOnTop;
     public bool IsSmallSize => _state.SmallSize;
     public bool IsResizeWhenInactive => _state.ResizeWhenInactive;
+    public SleepTimeOption CurrentSleepTime => InactivitySettings.Get(_state.SleepTime).Option;
     public FruitThemeKind CurrentTheme => _currentTheme.Kind;
 
     public event EventHandler? HideRequested;
@@ -63,14 +68,18 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         foreach (var item in _state.Tasks) _tasks.Add(item);
         _locationSaveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(350) };
         _locationSaveTimer.Tick += (_, _) => SaveLocationNow();
-        _inactivityTimer = new DispatcherTimer { Interval = InactivitySettings.Timeout };
+        _inactivityTimer = new DispatcherTimer();
         _inactivityTimer.Tick += (_, _) => EnterSleepMode();
         _taskTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(200) };
         _taskTimer.Tick += (_, _) => RefreshActiveTimer();
+        _reminderTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        _reminderTimer.Tick += (_, _) => CheckTaskReminders();
         InitializeComponent();
         DataContext = this;
+        SetSleepTime(_state.SleepTime, persist: false);
         SetTheme(_state.Theme, persist: false);
         RefreshOverflow();
+        _reminderTimer.Start();
     }
 
     public void SetAlwaysOnTop(bool value, bool persist = true)
@@ -101,6 +110,23 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (persist) SaveState();
     }
 
+    public void SetSleepTime(SleepTimeOption option, bool persist = true)
+    {
+        var choice = InactivitySettings.Get(option);
+        _state.SleepTime = choice.Option;
+        if (choice.Duration is TimeSpan duration)
+        {
+            _inactivityTimer.Interval = duration;
+            if (_state.ResizeWhenInactive) RestartInactivityTimer();
+        }
+        else
+        {
+            _inactivityTimer.Stop();
+            WakeFromInactivity();
+        }
+        if (persist) SaveState();
+    }
+
     public void SetTheme(FruitThemeKind kind, bool persist = true)
     {
         _currentTheme = FruitThemes.Get(kind);
@@ -115,10 +141,16 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         SetThemeBrush("MiddleBrush", _currentTheme.Middle);
         SetThemeBrush("FleshBrush", _currentTheme.Flesh);
         SetThemeBrush("HighlightBrush", _currentTheme.Highlight);
+        SetThemeBrush("AccentBrush", _currentTheme.Accent);
         SetThemeBrush("SeedBrush", _currentTheme.Seed);
         SetThemeBrush("SeedHighlightBrush", _currentTheme.SeedHighlight);
         SetThemeBrush("MutedInkBrush", _currentTheme.MutedInk);
         SetThemeBrush("TaskBrush", _currentTheme.Task);
+        AvocadoShape.Visibility = _currentTheme.Kind == FruitThemeKind.Avocado ? Visibility.Visible : Visibility.Collapsed;
+        StrawberryShape.Visibility = _currentTheme.Kind == FruitThemeKind.Strawberry ? Visibility.Visible : Visibility.Collapsed;
+        OrangeShape.Visibility = _currentTheme.Kind == FruitThemeKind.Orange ? Visibility.Visible : Visibility.Collapsed;
+        BlueberryShape.Visibility = _currentTheme.Kind == FruitThemeKind.Blueberry ? Visibility.Visible : Visibility.Collapsed;
+        WatermelonShape.Visibility = _currentTheme.Kind == FruitThemeKind.Watermelon ? Visibility.Visible : Visibility.Collapsed;
         if (_activeTimerTask is null) HeaderText = _currentTheme.DisplayName.ToUpperInvariant();
         if (persist) SaveState();
     }
@@ -139,8 +171,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void RestartInactivityTimer()
     {
-        if (!_state.ResizeWhenInactive) return;
         _inactivityTimer.Stop();
+        if (!_state.ResizeWhenInactive ||
+            InactivitySettings.Get(_state.SleepTime).Duration is null) return;
         _inactivityTimer.Start();
     }
 
@@ -153,7 +186,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         AwakeContent.Visibility = Visibility.Collapsed;
         SleepOverlay.Visibility = Visibility.Visible;
         SleepOverlay.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(180)));
-        AnimateToSize(AppSizeLogic.Get(small: true));
+        AnimateToSize(AppSizeLogic.Sleeping);
     }
 
     private void WakeFromInactivity()
@@ -283,6 +316,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void Window_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
+        StopShaking();
         var wasSleeping = _isSleeping;
         NotifyInteraction();
         if (wasSleeping)
@@ -347,14 +381,15 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         e.Handled = true;
     }
 
-    private void OpenTaskEditor()
+    private void OpenTaskEditor(TodoItem? task = null)
     {
-        if (AddPanel.Visibility != Visibility.Visible)
-        {
-            TaskInput.Clear();
-            AddPanel.Visibility = Visibility.Visible;
-        }
+        _editingTask = task;
+        TaskInput.Text = task?.ReminderTime is TimeSpan reminderTime
+            ? $"{reminderTime:hh\\:mm} {task.Text}"
+            : task?.Text ?? string.Empty;
+        AddPanel.Visibility = Visibility.Visible;
         TaskInput.Focus();
+        TaskInput.SelectAll();
     }
 
     private void ConfirmAddButton_Click(object sender, RoutedEventArgs e) => AddTaskFromInput();
@@ -362,14 +397,27 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void TaskInput_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
         if (e.Key == Key.Enter) AddTaskFromInput();
-        else if (e.Key == Key.Escape) AddPanel.Visibility = Visibility.Collapsed;
+        else if (e.Key == Key.Escape)
+        {
+            _editingTask = null;
+            AddPanel.Visibility = Visibility.Collapsed;
+        }
     }
 
     private void AddTaskFromInput()
     {
-        var text = TaskInput.Text.Trim();
-        if (text.Length == 0) return;
-        _tasks.Add(new TodoItem { Text = text });
+        var parsed = TaskReminderLogic.Parse(TaskInput.Text);
+        if (parsed.Text.Length == 0) return;
+        if (_editingTask is TodoItem editingTask)
+        {
+            editingTask.Text = parsed.Text;
+            editingTask.ReminderTime = parsed.ReminderTime;
+            _editingTask = null;
+            AddPanel.Visibility = Visibility.Collapsed;
+            SaveState();
+            return;
+        }
+        _tasks.Add(new TodoItem { Text = parsed.Text, ReminderTime = parsed.ReminderTime });
         AddPanel.Visibility = Visibility.Collapsed;
         RefreshOverflow();
         SaveState();
@@ -401,6 +449,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         SaveState();
     }
 
+    private void EditTaskButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not System.Windows.Controls.Button { Tag: TodoItem task }) return;
+        CollapseExpandedTask();
+        OpenTaskEditor(task);
+    }
+
     private void RefreshActiveTimer()
     {
         if (_activeTimerTask is not TodoItem task) return;
@@ -420,10 +475,57 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (persist) SaveState();
     }
 
+    private void CheckTaskReminders()
+    {
+        var now = DateTime.Now;
+        var dueTasks = _tasks
+            .Where(task => !task.IsCompleted &&
+                           task.ReminderTime is TimeSpan reminderTime &&
+                           TaskReminderLogic.IsDue(reminderTime, now, task.LastReminderDate))
+            .ToList();
+        if (dueTasks.Count == 0) return;
+
+        var today = DateOnly.FromDateTime(now);
+        foreach (var task in dueTasks) task.LastReminderDate = today;
+        SaveState();
+        NotifyInteraction();
+        if (!IsVisible) Show();
+        if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
+        Activate();
+        ShakeWindow();
+    }
+
+    private void ShakeWindow()
+    {
+        StopShaking();
+        _shakeOriginalLeft = Left;
+        _isShaking = true;
+        var animation = new DoubleAnimation(_shakeOriginalLeft - 6, _shakeOriginalLeft + 6, TimeSpan.FromMilliseconds(80))
+        {
+            AutoReverse = true,
+            RepeatBehavior = new RepeatBehavior(TaskReminderLogic.ShakeDuration)
+        };
+        animation.Completed += (_, _) => StopShaking();
+        BeginAnimation(LeftProperty, animation, HandoffBehavior.SnapshotAndReplace);
+    }
+
+    private void StopShaking()
+    {
+        if (!_isShaking) return;
+        _isShaking = false;
+        BeginAnimation(LeftProperty, null);
+        Left = _shakeOriginalLeft;
+    }
+
     private void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
     {
         if (sender is System.Windows.Controls.Button { Tag: TodoItem item })
         {
+            if (ReferenceEquals(_editingTask, item))
+            {
+                _editingTask = null;
+                AddPanel.Visibility = Visibility.Collapsed;
+            }
             if (ReferenceEquals(_activeTimerTask, item)) PauseActiveTimer(persist: false);
             if (ReferenceEquals(_expandedTask, item)) _expandedTask = null;
             _tasks.Remove(item);
