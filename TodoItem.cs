@@ -15,6 +15,7 @@ public sealed class TodoItem : INotifyPropertyChanged
     private TimeSpan? _reminderTime;
     private DateOnly? _lastReminderDate;
     private DateTime? _snoozedUntil;
+    private TaskRecurrence _recurrence;
 
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Text
@@ -48,8 +49,21 @@ public sealed class TodoItem : INotifyPropertyChanged
             OnPropertyChanged(nameof(ReminderLabel));
         }
     }
+    public TaskRecurrence Recurrence
+    {
+        get => _recurrence;
+        set
+        {
+            _recurrence = value;
+            _lastReminderDate = null;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(ReminderLabel));
+        }
+    }
     [JsonIgnore]
-    public string ReminderLabel => ReminderTime is TimeSpan time ? $"{time:hh\\:mm}" : string.Empty;
+    public string ReminderLabel => ReminderTime is TimeSpan time
+        ? $"{TaskReminderLogic.Label(Recurrence)} {time:hh\\:mm}".TrimStart()
+        : string.Empty;
     public DateOnly? LastReminderDate
     {
         get => _lastReminderDate;

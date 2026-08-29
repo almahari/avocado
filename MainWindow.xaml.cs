@@ -424,7 +424,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         _editingTask = task;
         TaskInput.Text = task?.ReminderTime is TimeSpan reminderTime
-            ? $"{reminderTime:hh\\:mm} {task.Text}"
+            ? $"{TaskReminderLogic.Prefix(task.Recurrence)} {reminderTime:hh\\:mm} {task.Text}".TrimStart()
             : task?.Text ?? string.Empty;
         AddPanel.Visibility = Visibility.Visible;
         TaskInput.Focus();
@@ -451,12 +451,18 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         {
             editingTask.Text = parsed.Text;
             editingTask.ReminderTime = parsed.ReminderTime;
+            editingTask.Recurrence = parsed.Recurrence;
             _editingTask = null;
             AddPanel.Visibility = Visibility.Collapsed;
             SaveState();
             return;
         }
-        _tasks.Add(new TodoItem { Text = parsed.Text, ReminderTime = parsed.ReminderTime });
+        _tasks.Add(new TodoItem
+        {
+            Text = parsed.Text,
+            ReminderTime = parsed.ReminderTime,
+            Recurrence = parsed.Recurrence
+        });
         AddPanel.Visibility = Visibility.Collapsed;
         RefreshOverflow();
         SaveState();
@@ -521,6 +527,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             .Where(task => !task.IsCompleted &&
                            (TaskReminderLogic.IsSnoozeDue(task.SnoozedUntil, now) ||
                             task.ReminderTime is TimeSpan reminderTime &&
+                            TaskReminderLogic.MatchesDay(task.Recurrence, now.DayOfWeek) &&
                             TaskReminderLogic.IsDue(reminderTime, now, task.LastReminderDate)))
             .ToList();
         if (dueTasks.Count == 0) return;

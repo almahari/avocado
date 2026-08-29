@@ -52,6 +52,7 @@ var originalState = new AppState
         IsCompleted = true,
         IsExpanded = true,
         ReminderTime = new TimeSpan(17, 50, 0),
+        Recurrence = TaskRecurrence.Monday,
         LastReminderDate = new DateOnly(2026, 8, 28),
         SnoozedUntil = new DateTime(2026, 8, 29, 18, 0, 0),
         ElapsedTicks = TimeSpan.FromMinutes(12).Ticks
@@ -73,6 +74,8 @@ Assert(loadedState.Tasks[0].ElapsedTicks == TimeSpan.FromMinutes(12).Ticks,
     "A task's accumulated timer duration must persist.");
 Assert(loadedState.Tasks[0].ReminderTime == new TimeSpan(17, 50, 0),
     "A task's reminder time must persist.");
+Assert(loadedState.Tasks[0].Recurrence == TaskRecurrence.Monday,
+    "A task's recurrence must persist.");
 Assert(loadedState.Tasks[0].LastReminderDate == new DateOnly(2026, 8, 28),
     "A task's last reminder date must persist to prevent duplicate alerts after a restart.");
 Assert(loadedState.Tasks[0].SnoozedUntil == new DateTime(2026, 8, 29, 18, 0, 0),
@@ -120,6 +123,18 @@ Assert(FruitThemes.Get((FruitThemeKind)999) == FruitThemes.Default,
 var timedTask = TaskReminderLogic.Parse("17:50 task 1");
 Assert(timedTask.Text == "task 1" && timedTask.ReminderTime == new TimeSpan(17, 50, 0),
     "A leading 24-hour time must be separated from the task text.");
+Assert(timedTask.Recurrence == TaskRecurrence.Daily,
+    "A plain timed task must retain the existing daily reminder behavior.");
+var weeklyTask = TaskReminderLogic.Parse("monday 18:00 Gym");
+Assert(weeklyTask.Text == "Gym" && weeklyTask.ReminderTime == new TimeSpan(18, 0, 0) &&
+       weeklyTask.Recurrence == TaskRecurrence.Monday,
+    "A weekday prefix must create a weekly recurring reminder.");
+var dailyTask = TaskReminderLogic.Parse("daily 09:00 Drink water");
+Assert(dailyTask.Text == "Drink water" && dailyTask.Recurrence == TaskRecurrence.Daily,
+    "The daily prefix must create a daily recurring reminder.");
+Assert(TaskReminderLogic.MatchesDay(TaskRecurrence.Monday, DayOfWeek.Monday) &&
+       !TaskReminderLogic.MatchesDay(TaskRecurrence.Monday, DayOfWeek.Tuesday),
+    "A weekly reminder must only match its selected weekday.");
 var untimedTask = TaskReminderLogic.Parse("25:50 task 1");
 Assert(untimedTask.Text == "25:50 task 1" && untimedTask.ReminderTime is null,
     "An invalid time prefix must remain ordinary task text.");
