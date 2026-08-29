@@ -20,5 +20,6 @@
     <Compile Include="..\..\TaskFilterLogic.cs" Link="TaskFilterLogic.cs" />
     <Compile Include="..\..\FruitPersonalities.cs" Link="FruitPersonalities.cs" />
     <Compile Include="..\..\TaskCelebrationSettings.cs" Link="TaskCelebrationSettings.cs" />
+    <Compile Include="..\..\EdgeSnapLogic.cs" Link="EdgeSnapLogic.cs" />
   </ItemGroup>
 </Project>

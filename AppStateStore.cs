@@ -16,7 +16,11 @@ public sealed class AppState
     public FruitThemeKind Theme { get; set; } = FruitThemeKind.Avocado;
     public double? Left { get; set; }
     public double? Top { get; set; }
+    public string? LastMonitor { get; set; }
+    public Dictionary<string, SavedWindowPosition> MonitorPositions { get; set; } = [];
 }
+
+public sealed record SavedWindowPosition(double Left, double Top);
 
 public sealed class AppStateStore
 {

@@ -372,10 +372,16 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
         Topmost = _state.AlwaysOnTop;
-        if (_state.Left is double left && _state.Top is double top && IsOnVirtualScreen(left, top))
+        var savedPosition = _state.LastMonitor is string monitor &&
+                            _state.MonitorPositions.TryGetValue(monitor, out var monitorPosition)
+            ? monitorPosition
+            : _state.Left is double savedLeft && _state.Top is double savedTop
+                ? new SavedWindowPosition(savedLeft, savedTop)
+                : null;
+        if (savedPosition is not null && IsOnVirtualScreen(savedPosition.Left, savedPosition.Top))
         {
-            Left = left;
-            Top = top;
+            Left = savedPosition.Left;
+            Top = savedPosition.Top;
         }
         else
         {
@@ -402,6 +408,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _locationSaveTimer.Stop();
         _state.Left = Left;
         _state.Top = Top;
+        var screen = System.Windows.Forms.Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(this).Handle);
+        _state.LastMonitor = screen.DeviceName;
+        _state.MonitorPositions[screen.DeviceName] = new SavedWindowPosition(Left, Top);
         SaveState();
     }
 
@@ -410,7 +419,26 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         var source = e.OriginalSource as DependencyObject;
         if (e.ButtonState != MouseButtonState.Pressed ||
             HasActionControlAncestor(source) || IsWithinTaskRow(source)) return;
-        try { DragMove(); } catch (InvalidOperationException) { }
+        try
+        {
+            DragMove();
+            SnapToScreenEdges();
+        }
+        catch (InvalidOperationException) { }
+    }
+
+    private void SnapToScreenEdges()
+    {
+        var screen = System.Windows.Forms.Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(this).Handle);
+        var dpi = VisualTreeHelper.GetDpi(this);
+        var workArea = new WorkArea(
+            screen.WorkingArea.Left / dpi.DpiScaleX,
+            screen.WorkingArea.Top / dpi.DpiScaleY,
+            screen.WorkingArea.Width / dpi.DpiScaleX,
+            screen.WorkingArea.Height / dpi.DpiScaleY);
+        var position = EdgeSnapLogic.Snap(Left, Top, ActualWidth, ActualHeight, workArea);
+        Left = position.Left;
+        Top = position.Top;
     }
 
     private void Window_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

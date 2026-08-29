@@ -47,6 +47,11 @@ var originalState = new AppState
     Theme = FruitThemeKind.Blueberry,
     Left = 123,
     Top = 456,
+    LastMonitor = "DISPLAY1",
+    MonitorPositions = new Dictionary<string, SavedWindowPosition>
+    {
+        ["DISPLAY1"] = new SavedWindowPosition(123, 456)
+    },
     Tasks = [new TodoItem
     {
         Text = "Persist me",
@@ -73,6 +78,9 @@ Assert(loadedState.ReminderSound == ReminderSoundMode.FruitSpecific,
     "The selected reminder sound mode must persist.");
 Assert(loadedState.Theme == FruitThemeKind.Blueberry, "The selected fruit theme must persist.");
 Assert(loadedState.Left == 123 && loadedState.Top == 456, "Window position must persist.");
+Assert(loadedState.LastMonitor == "DISPLAY1" &&
+       loadedState.MonitorPositions["DISPLAY1"] == new SavedWindowPosition(123, 456),
+    "Window positions must persist per monitor.");
 Assert(loadedState.Tasks.Count == 1 && loadedState.Tasks[0].Text == "Persist me" && loadedState.Tasks[0].IsCompleted,
     "Tasks and completion state must persist.");
 Assert(loadedState.ArchivedTasks.Count == 1 && loadedState.ArchivedTasks[0].Text == "Finished task" &&
@@ -182,6 +190,13 @@ Assert(!TaskFilterLogic.Matches(filterTask, string.Empty, TaskFilterMode.Running
     "The running-timer filter must exclude tasks without an active timer.");
 Assert(TaskCelebrationSettings.Duration == TimeSpan.FromMilliseconds(650),
     "Task completion celebration must remain brief and responsive.");
+var workArea = new WorkArea(0, 0, 1920, 1080);
+Assert(EdgeSnapLogic.Snap(12, 11, 420, 540, workArea) == new AppPosition(0, 0),
+    "Dragging near the top-left must snap to both edges.");
+Assert(EdgeSnapLogic.Snap(1490, 535, 420, 540, workArea) == new AppPosition(1500, 540),
+    "Dragging near the bottom-right must snap to both edges.");
+Assert(EdgeSnapLogic.Snap(500, 300, 420, 540, workArea) == new AppPosition(500, 300),
+    "Dragging away from an edge must preserve the position.");
 
 Console.WriteLine("All Avocado logic checks passed.");
 return;
