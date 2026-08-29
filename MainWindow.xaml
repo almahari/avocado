@@ -304,6 +304,27 @@
                    HorizontalAlignment="Center" FontFamily="Consolas" FontSize="12"
                    FontWeight="Bold" Foreground="{DynamicResource MutedInkBrush}"
                    ToolTip="Use the mouse wheel to see hidden tasks" />
+
+        <Border x:Name="SnoozePanel" Width="278" Height="78" Margin="0,366,0,0"
+                VerticalAlignment="Top" HorizontalAlignment="Center" Panel.ZIndex="30"
+                Background="{DynamicResource CreamBrush}" BorderBrush="{DynamicResource InkBrush}"
+                BorderThickness="3" Visibility="Collapsed">
+            <StackPanel Margin="6,4">
+                <TextBlock Text="{Binding AlertTaskLabel}" FontFamily="Consolas" FontSize="12"
+                           FontWeight="Bold" Foreground="{DynamicResource InkBrush}"
+                           TextTrimming="CharacterEllipsis" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+                    <Button Content="5m" Tag="5" ToolTip="Snooze 5 minutes" Style="{StaticResource PixelButton}"
+                            Width="42" Height="28" Margin="2,0" Click="SnoozeButton_Click" />
+                    <Button Content="10m" Tag="10" ToolTip="Snooze 10 minutes" Style="{StaticResource PixelButton}"
+                            Width="45" Height="28" Margin="2,0" Click="SnoozeButton_Click" />
+                    <Button Content="30m" Tag="30" ToolTip="Snooze 30 minutes" Style="{StaticResource PixelButton}"
+                            Width="45" Height="28" Margin="2,0" Click="SnoozeButton_Click" />
+                    <Button Content="OK" ToolTip="Dismiss reminder" Style="{StaticResource PixelButton}"
+                            Width="42" Height="28" Margin="2,0" Click="DismissReminderButton_Click" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
         </Grid>
 
         <Grid x:Name="SleepOverlay" Panel.ZIndex="20" Visibility="Collapsed"

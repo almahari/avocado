@@ -14,6 +14,7 @@ public sealed class TodoItem : INotifyPropertyChanged
     private bool _isTimerRunning;
     private TimeSpan? _reminderTime;
     private DateOnly? _lastReminderDate;
+    private DateTime? _snoozedUntil;
 
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Text
@@ -53,6 +54,11 @@ public sealed class TodoItem : INotifyPropertyChanged
     {
         get => _lastReminderDate;
         set => _lastReminderDate = value;
+    }
+    public DateTime? SnoozedUntil
+    {
+        get => _snoozedUntil;
+        set => _snoozedUntil = value;
     }
     [JsonIgnore]
     public bool IsDragging

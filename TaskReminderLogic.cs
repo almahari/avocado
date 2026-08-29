@@ -27,6 +27,9 @@ public static partial class TaskReminderLogic
         reminderTime.Minutes == now.Minute &&
         lastTriggeredDate != DateOnly.FromDateTime(now);
 
+    public static bool IsSnoozeDue(DateTime? snoozedUntil, DateTime now) =>
+        snoozedUntil is DateTime due && now >= due;
+
     [GeneratedRegex(@"^(?<time>(?:[01]\d|2[0-3]):[0-5]\d)\s+(?<text>.+)$", RegexOptions.CultureInvariant)]
     private static partial Regex ReminderPrefix();
 }

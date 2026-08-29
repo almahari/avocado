@@ -53,6 +53,7 @@ var originalState = new AppState
         IsExpanded = true,
         ReminderTime = new TimeSpan(17, 50, 0),
         LastReminderDate = new DateOnly(2026, 8, 28),
+        SnoozedUntil = new DateTime(2026, 8, 29, 18, 0, 0),
         ElapsedTicks = TimeSpan.FromMinutes(12).Ticks
     }]
 };
@@ -74,6 +75,8 @@ Assert(loadedState.Tasks[0].ReminderTime == new TimeSpan(17, 50, 0),
     "A task's reminder time must persist.");
 Assert(loadedState.Tasks[0].LastReminderDate == new DateOnly(2026, 8, 28),
     "A task's last reminder date must persist to prevent duplicate alerts after a restart.");
+Assert(loadedState.Tasks[0].SnoozedUntil == new DateTime(2026, 8, 29, 18, 0, 0),
+    "A snoozed reminder must persist across restarts.");
 Assert(!loadedState.Tasks[0].IsExpanded, "Temporary task expansion state must not persist.");
 Directory.Delete(Path.GetDirectoryName(statePath)!, recursive: true);
 
@@ -127,6 +130,10 @@ Assert(!TaskReminderLogic.IsDue(new TimeSpan(17, 50, 0), reminderMoment, new Dat
     "A reminder must fire only once per day.");
 Assert(TaskReminderLogic.ShakeDuration == TimeSpan.FromSeconds(10),
     "A due reminder must shake the app for exactly ten seconds.");
+Assert(TaskReminderLogic.IsSnoozeDue(reminderMoment.AddMinutes(-1), reminderMoment),
+    "A reminder must fire when its snooze time is reached.");
+Assert(!TaskReminderLogic.IsSnoozeDue(reminderMoment.AddMinutes(1), reminderMoment),
+    "A future snooze time must not fire early.");
 Assert(StartupRegistration.BuildCommand(@"C:\Apps\Avocado.exe") == "\"C:\\Apps\\Avocado.exe\"",
     "The Windows startup command must quote the executable path.");
 

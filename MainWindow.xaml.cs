@@ -42,6 +42,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private bool _isShaking;
     private double _shakeOriginalLeft;
     private DispatcherTimer? _pendingShakeTimer;
+    private readonly List<TodoItem> _alertingTasks = [];
+    private string _alertTaskLabel = string.Empty;
 
     public ObservableCollection<TodoItem> Tasks => _tasks;
     public string OverflowLabel
@@ -53,6 +55,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         get => _headerText;
         private set { _headerText = value; OnPropertyChanged(); }
+    }
+    public string AlertTaskLabel
+    {
+        get => _alertTaskLabel;
+        private set { _alertTaskLabel = value; OnPropertyChanged(); }
     }
     public bool IsAlwaysOnTop => _state.AlwaysOnTop;
     public bool IsSmallSize => _state.SmallSize;
@@ -512,13 +519,24 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         var now = DateTime.Now;
         var dueTasks = _tasks
             .Where(task => !task.IsCompleted &&
-                           task.ReminderTime is TimeSpan reminderTime &&
-                           TaskReminderLogic.IsDue(reminderTime, now, task.LastReminderDate))
+                           (TaskReminderLogic.IsSnoozeDue(task.SnoozedUntil, now) ||
+                            task.ReminderTime is TimeSpan reminderTime &&
+                            TaskReminderLogic.IsDue(reminderTime, now, task.LastReminderDate)))
             .ToList();
         if (dueTasks.Count == 0) return;
 
         var today = DateOnly.FromDateTime(now);
-        foreach (var task in dueTasks) task.LastReminderDate = today;
+        foreach (var task in dueTasks)
+        {
+            task.LastReminderDate = today;
+            task.SnoozedUntil = null;
+        }
+        _alertingTasks.Clear();
+        _alertingTasks.AddRange(dueTasks);
+        AlertTaskLabel = dueTasks.Count == 1
+            ? dueTasks[0].Text
+            : $"{dueTasks.Count} tasks are due";
+        SnoozePanel.Visibility = Visibility.Visible;
         SaveState();
         var wasSleeping = _isSleeping;
         NotifyInteraction();
@@ -527,6 +545,29 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         Activate();
         if (wasSleeping) ScheduleShakeAfterWake();
         else ShakeWindow();
+    }
+
+    private void SnoozeButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not System.Windows.Controls.Button { Tag: string minutesText } ||
+            !int.TryParse(minutesText, out var minutes)) return;
+        var snoozedUntil = DateTime.Now.AddMinutes(minutes);
+        foreach (var task in _alertingTasks) task.SnoozedUntil = snoozedUntil;
+        CloseReminderPanel();
+        SaveState();
+    }
+
+    private void DismissReminderButton_Click(object sender, RoutedEventArgs e)
+    {
+        CloseReminderPanel();
+        SaveState();
+    }
+
+    private void CloseReminderPanel()
+    {
+        StopShaking();
+        _alertingTasks.Clear();
+        SnoozePanel.Visibility = Visibility.Collapsed;
     }
 
     private void ScheduleShakeAfterWake()
