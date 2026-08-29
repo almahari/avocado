@@ -228,13 +228,14 @@
             </Grid>
         </Border>
 
-        <Border x:Name="FilterPanel" Width="278" Height="76" Margin="0,157,0,0"
+        <Border x:Name="FilterPanel" Width="278" Height="108" Margin="0,157,0,0"
                 VerticalAlignment="Top" HorizontalAlignment="Center" Panel.ZIndex="20"
                 Background="{DynamicResource CreamBrush}" BorderBrush="{DynamicResource InkBrush}"
                 BorderThickness="3" Visibility="Collapsed">
             <Grid Margin="5,4">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="29" />
+                    <RowDefinition Height="31" />
                     <RowDefinition Height="31" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -258,6 +259,53 @@
                     <Button Content="Done" Tag="Completed" Width="48" Margin="2,0"
                             Style="{StaticResource PixelButton}" Click="TaskFilterButton_Click" />
                 </StackPanel>
+                <ListBox Grid.Row="2" Grid.ColumnSpan="2"
+                         ItemsSource="{Binding AvailableCategoryFilters}"
+                         SelectedItem="{Binding SelectedCategoryFilter, Mode=TwoWay}"
+                         Background="Transparent" BorderThickness="0" Height="27"
+                         ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="FontFamily" Value="Consolas" />
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="FontSize" Value="11" />
+                            <Setter Property="Foreground" Value="{DynamicResource CreamBrush}" />
+                            <Setter Property="Background" Value="{DynamicResource ButtonBrush}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderBrush}" />
+                            <Setter Property="BorderThickness" Value="2" />
+                            <Setter Property="Padding" Value="7,2" />
+                            <Setter Property="Margin" Value="2,2,2,0" />
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource ButtonHoverBrush}" />
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
+                                                <Setter Property="BorderBrush" Value="{DynamicResource InkBrush}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
             </Grid>
         </Border>
 
@@ -363,6 +411,11 @@
                                                 BorderBrush="{DynamicResource InkBrush}" BorderThickness="2"
                                                 Padding="2">
                                             <StackPanel Orientation="Horizontal">
+                                                <Button Content="⧉" ToolTip="Duplicate task" Width="30" Height="28"
+                                                        Background="Transparent" BorderThickness="0"
+                                                        Foreground="{DynamicResource InkBrush}" FontFamily="Consolas"
+                                                        FontSize="15" FontWeight="Bold" Cursor="Hand"
+                                                        Tag="{Binding}" Click="DuplicateTaskButton_Click" />
                                                 <Button Content="✎" ToolTip="Edit task" Width="30" Height="28"
                                                         Background="Transparent" BorderThickness="0"
                                                         Foreground="{DynamicResource InkBrush}" FontFamily="Consolas"

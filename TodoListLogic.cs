@@ -29,4 +29,14 @@ public static class TodoListLogic
         items.Insert(Math.Clamp(insertionIndex, 0, items.Count), moving);
         return true;
     }
+
+    public static TodoItem Duplicate(TodoItem source) => new()
+    {
+        Text = source.Text,
+        ReminderTime = source.ReminderTime,
+        Recurrence = source.Recurrence,
+        Priority = source.Priority,
+        DueAt = source.DueAt,
+        IsPinned = source.IsPinned
+    };
 }

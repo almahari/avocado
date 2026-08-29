@@ -18,6 +18,7 @@
     <Compile Include="..\..\StartupRegistration.cs" Link="StartupRegistration.cs" />
     <Compile Include="..\..\ReminderSoundSettings.cs" Link="ReminderSoundSettings.cs" />
     <Compile Include="..\..\TaskFilterLogic.cs" Link="TaskFilterLogic.cs" />
+    <Compile Include="..\..\TaskCategoryLogic.cs" Link="TaskCategoryLogic.cs" />
     <Compile Include="..\..\FruitPersonalities.cs" Link="FruitPersonalities.cs" />
     <Compile Include="..\..\EdgeSnapLogic.cs" Link="EdgeSnapLogic.cs" />
     <Compile Include="..\..\TaskSortLogic.cs" Link="TaskSortLogic.cs" />

@@ -248,6 +248,12 @@ Assert(TaskFilterLogic.Matches(new TodoItem { DueAt = DateTime.Now.AddDays(1) },
     "The scheduled filter must include naturally dated tasks.");
 Assert(!TaskFilterLogic.Matches(filterTask, string.Empty, TaskFilterMode.RunningTimer),
     "The running-timer filter must exclude tasks without an active timer.");
+var categorizedTask = new TodoItem { Text = "Prepare report #Work #urgent" };
+Assert(TaskCategoryLogic.Extract(categorizedTask.Text).SequenceEqual(["#urgent", "#work"]),
+    "Task categories must be extracted uniquely and case-insensitively.");
+Assert(TaskFilterLogic.Matches(categorizedTask, string.Empty, TaskFilterMode.Active, "#work") &&
+       !TaskFilterLogic.Matches(categorizedTask, string.Empty, TaskFilterMode.Active, "#personal"),
+    "Category filtering must include only tasks with the selected hashtag.");
 var workArea = new WorkArea(0, 0, 1920, 1080);
 Assert(EdgeSnapLogic.Snap(12, 11, 420, 540, workArea) == new AppPosition(0, 0),
     "Dragging near the top-left must snap to both edges.");
@@ -262,6 +268,21 @@ var sortableTasks = new List<TodoItem>
     new() { Text = "Urgent", Priority = TaskPriority.High, ReminderTime = TimeSpan.FromHours(9) },
     new() { Text = "Pinned", IsPinned = true }
 };
+var duplicateSource = new TodoItem
+{
+    Text = "Copy me #work",
+    ReminderTime = TimeSpan.FromHours(12),
+    Priority = TaskPriority.High,
+    IsPinned = true,
+    IsCompleted = true,
+    ElapsedTicks = TimeSpan.FromMinutes(4).Ticks
+};
+var duplicatedTask = TodoListLogic.Duplicate(duplicateSource);
+Assert(duplicatedTask.Id != duplicateSource.Id && duplicatedTask.Text == duplicateSource.Text &&
+       duplicatedTask.ReminderTime == duplicateSource.ReminderTime &&
+       duplicatedTask.Priority == duplicateSource.Priority && duplicatedTask.IsPinned &&
+       !duplicatedTask.IsCompleted && duplicatedTask.ElapsedTicks == 0,
+    "Duplicating must copy task details into a fresh, incomplete task without timer history.");
 Assert(TaskSortLogic.ByPriority(sortableTasks).Select(task => task.Text)
         .SequenceEqual(["Pinned", "Urgent", "Later", "Plain"]),
     "Priority sorting must keep pinned tasks first, then place high-priority tasks first.");

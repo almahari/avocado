@@ -26,7 +26,9 @@ dotnet run --project .\Avocado.csproj
 - Drag a task row up or down to change its saved order; nearby tasks animate aside while you drag.
 - Use the `↕` button beside `×` to sort tasks by priority or reminder time.
 - Use the `◇` button on a task to pin it above unpinned tasks. Pinned and unpinned tasks can each be reordered by dragging.
-- Each task keeps its timer and pin controls visible. Select `•••` to reveal Edit and Delete.
+- Each task keeps its timer and pin controls visible. Select `•••` to reveal Duplicate, Edit, and Delete.
+- Select `⧉` inside a task’s `•••` menu to duplicate it without copying completion or timer history.
+- Add hashtags such as `#work` or `#personal` to categorize tasks, then choose a hashtag in the filter panel.
 - Select an `http://`, `https://`, or `www.` link inside a task to open it in the default browser.
 - Enter `https://example.com : Display text` to hide the URL and show only a clickable label.
 - Select truncated task text to animate it open; select it again or click elsewhere to collapse it.

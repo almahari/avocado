@@ -52,6 +52,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private string _alertTaskLabel = string.Empty;
     private string _taskSearchText = string.Empty;
     private TaskFilterMode _taskFilterMode = TaskFilterMode.Active;
+    private string _selectedCategoryFilter = "All";
+    private bool _refreshingCategoryFilters;
     private string _sleepEyes = "─";
     private string _sleepMouth = "ᴗ";
     private string _sleepTimerText = string.Empty;
@@ -64,6 +66,20 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public ObservableCollection<TodoItem> Tasks => _tasks;
     public ICollectionView TasksView => _tasksView;
     public ObservableCollection<TodoItem> ArchivedTasks => _archivedTasks;
+    public ObservableCollection<string> AvailableCategoryFilters { get; } = ["All"];
+    public string SelectedCategoryFilter
+    {
+        get => _selectedCategoryFilter;
+        set
+        {
+            if (_refreshingCategoryFilters) return;
+            var normalized = string.IsNullOrWhiteSpace(value) ? "All" : value;
+            if (_selectedCategoryFilter == normalized) return;
+            _selectedCategoryFilter = normalized;
+            OnPropertyChanged();
+            RefreshTaskView();
+        }
+    }
     public string OverflowLabel
     {
         get => _overflowLabel;
@@ -129,7 +145,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         foreach (var item in _state.ArchivedTasks) _archivedTasks.Add(item);
         _tasksView = CollectionViewSource.GetDefaultView(_tasks);
         _tasksView.Filter = item => item is TodoItem task &&
-                                    TaskFilterLogic.Matches(task, _taskSearchText, _taskFilterMode);
+                                    TaskFilterLogic.Matches(task, _taskSearchText, _taskFilterMode,
+                                        _selectedCategoryFilter);
         _locationSaveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(350) };
         _locationSaveTimer.Tick += (_, _) => SaveLocationNow();
         _inactivityTimer = new DispatcherTimer();
@@ -140,6 +157,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _reminderTimer.Tick += (_, _) => CheckTaskReminders();
         InitializeComponent();
         DataContext = this;
+        RefreshCategoryFilters();
         SetAdaptivePersonality(_state.AdaptivePersonalityEnabled, persist: false);
         SetSleepTime(_state.SleepTime, persist: false);
         SetSleepResizeAnchor(_state.SleepResizeAnchor, persist: false);
@@ -673,8 +691,35 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void RefreshTaskView()
     {
+        RefreshCategoryFilters();
         _tasksView.Refresh();
         RefreshOverflow();
+    }
+
+    private void RefreshCategoryFilters()
+    {
+        var categories = _tasks
+            .SelectMany(task => TaskCategoryLogic.Extract(task.Text))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(category => category, StringComparer.OrdinalIgnoreCase)
+            .Prepend("All")
+            .ToList();
+        _refreshingCategoryFilters = true;
+        try
+        {
+            if (!categories.Contains(_selectedCategoryFilter, StringComparer.OrdinalIgnoreCase))
+                _selectedCategoryFilter = "All";
+            if (!AvailableCategoryFilters.SequenceEqual(categories, StringComparer.OrdinalIgnoreCase))
+            {
+                AvailableCategoryFilters.Clear();
+                foreach (var category in categories) AvailableCategoryFilters.Add(category);
+            }
+        }
+        finally
+        {
+            _refreshingCategoryFilters = false;
+        }
+        OnPropertyChanged(nameof(SelectedCategoryFilter));
     }
 
     private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -737,6 +782,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             AddPanel.Visibility = Visibility.Collapsed;
             SaveState();
             RefreshAdaptivePersonality();
+            RefreshTaskView();
             return;
         }
         AddNewTasks(TaskReminderLogic.ParseMany(TaskInput.Text));
@@ -760,7 +806,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
         if (!addedAny) return;
         AddPanel.Visibility = Visibility.Collapsed;
-        RefreshOverflow();
+        RefreshTaskView();
         SaveState();
         RefreshAdaptivePersonality();
         Dispatcher.BeginInvoke(TaskScrollViewer.ScrollToEnd, DispatcherPriority.Loaded);
@@ -784,7 +830,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _happyUntil = DateTime.Now.AddSeconds(4);
         _tasks.Remove(task);
         _archivedTasks.Insert(0, task);
-        RefreshOverflow();
+        RefreshTaskView();
         SaveState();
         RefreshAdaptivePersonality();
     }
@@ -807,7 +853,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (task.IsPinned) _tasks.Insert(0, task);
         else _tasks.Add(task);
         ArchivePanel.Visibility = _archivedTasks.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
-        RefreshOverflow();
+        RefreshTaskView();
         SaveState();
         RefreshAdaptivePersonality();
     }
@@ -850,6 +896,18 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         task.IsActionsOpen = false;
         CollapseExpandedTask();
         OpenTaskEditor(task);
+    }
+
+    private void DuplicateTaskButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not System.Windows.Controls.Button { Tag: TodoItem task }) return;
+        task.IsActionsOpen = false;
+        var duplicate = TodoListLogic.Duplicate(task);
+        var sourceIndex = _tasks.IndexOf(task);
+        _tasks.Insert(sourceIndex < 0 ? _tasks.Count : sourceIndex + 1, duplicate);
+        RefreshTaskView();
+        SaveState();
+        RefreshAdaptivePersonality();
     }
 
     private void TaskActionsButton_Click(object sender, RoutedEventArgs e)
@@ -1058,7 +1116,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             if (ReferenceEquals(_activeTimerTask, item)) PauseActiveTimer(persist: false);
             if (ReferenceEquals(_expandedTask, item)) _expandedTask = null;
             _tasks.Remove(item);
-            RefreshOverflow();
+            RefreshTaskView();
             SaveState();
             RefreshAdaptivePersonality();
         }
