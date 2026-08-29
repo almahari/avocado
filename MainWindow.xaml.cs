@@ -45,12 +45,15 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private FruitThemePalette _currentTheme = FruitThemes.Default;
     private bool _isShaking;
     private double _shakeOriginalLeft;
+    private double _shakeOriginalTop;
     private DispatcherTimer? _pendingShakeTimer;
     private GlobalQuickAddHotkey? _globalQuickAddHotkey;
     private readonly List<TodoItem> _alertingTasks = [];
     private string _alertTaskLabel = string.Empty;
     private string _taskSearchText = string.Empty;
     private TaskFilterMode _taskFilterMode = TaskFilterMode.Active;
+    private string _sleepEyes = "─";
+    private string _sleepMouth = "ᴗ";
 
     public ObservableCollection<TodoItem> Tasks => _tasks;
     public ICollectionView TasksView => _tasksView;
@@ -69,6 +72,16 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         get => _alertTaskLabel;
         private set { _alertTaskLabel = value; OnPropertyChanged(); }
+    }
+    public string SleepEyes
+    {
+        get => _sleepEyes;
+        private set { _sleepEyes = value; OnPropertyChanged(); }
+    }
+    public string SleepMouth
+    {
+        get => _sleepMouth;
+        private set { _sleepMouth = value; OnPropertyChanged(); }
     }
     public bool IsAlwaysOnTop => _state.AlwaysOnTop;
     public bool IsSmallSize => _state.SmallSize;
@@ -197,6 +210,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         PumpkinShape.Visibility = _currentTheme.Kind == FruitThemeKind.Pumpkin ? Visibility.Visible : Visibility.Collapsed;
         PotatoShape.Visibility = _currentTheme.Kind == FruitThemeKind.Potato ? Visibility.Visible : Visibility.Collapsed;
         OnionShape.Visibility = _currentTheme.Kind == FruitThemeKind.Onion ? Visibility.Visible : Visibility.Collapsed;
+        var personality = FruitPersonalities.Get(_currentTheme.Kind);
+        SleepEyes = personality.Eyes;
+        SleepMouth = personality.Mouth;
         if (_activeTimerTask is null) HeaderText = _currentTheme.DisplayName.ToUpperInvariant();
         if (persist) SaveState();
     }
@@ -743,14 +759,25 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         StopShaking();
         _shakeOriginalLeft = Left;
+        _shakeOriginalTop = Top;
         _isShaking = true;
-        var animation = new DoubleAnimation(_shakeOriginalLeft - 6, _shakeOriginalLeft + 6, TimeSpan.FromMilliseconds(80))
+        var personality = FruitPersonalities.Get(_currentTheme.Kind);
+        var horizontalAnimation = new DoubleAnimation(_shakeOriginalLeft - 6, _shakeOriginalLeft + 6, TimeSpan.FromMilliseconds(80))
         {
             AutoReverse = true,
             RepeatBehavior = new RepeatBehavior(TaskReminderLogic.ShakeDuration)
         };
-        animation.Completed += (_, _) => StopShaking();
-        BeginAnimation(LeftProperty, animation, HandoffBehavior.SnapshotAndReplace);
+        horizontalAnimation.Completed += (_, _) => StopShaking();
+        var verticalAnimation = new DoubleAnimation(_shakeOriginalTop - 6, _shakeOriginalTop + 6, TimeSpan.FromMilliseconds(80))
+        {
+            AutoReverse = true,
+            RepeatBehavior = new RepeatBehavior(TaskReminderLogic.ShakeDuration)
+        };
+        verticalAnimation.Completed += (_, _) => StopShaking();
+        if (personality.ReminderMotion is ReminderMotion.Horizontal or ReminderMotion.Diagonal)
+            BeginAnimation(LeftProperty, horizontalAnimation, HandoffBehavior.SnapshotAndReplace);
+        if (personality.ReminderMotion is ReminderMotion.Vertical or ReminderMotion.Diagonal)
+            BeginAnimation(TopProperty, verticalAnimation, HandoffBehavior.SnapshotAndReplace);
     }
 
     private void StopShaking()
@@ -760,7 +787,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (!_isShaking) return;
         _isShaking = false;
         BeginAnimation(LeftProperty, null);
+        BeginAnimation(TopProperty, null);
         Left = _shakeOriginalLeft;
+        Top = _shakeOriginalTop;
     }
 
     private void DeleteTaskButton_Click(object sender, RoutedEventArgs e)

@@ -128,6 +128,10 @@ Assert(FruitThemes.All.Select(theme => theme.Kind).Distinct().Count() == FruitTh
     "Every fruit theme must have a unique selection value.");
 Assert(FruitThemes.Get((FruitThemeKind)999) == FruitThemes.Default,
     "Unknown saved themes must safely fall back to Avocado.");
+Assert(FruitThemes.All.Select(theme => FruitPersonalities.Get(theme.Kind)).Distinct().Count() >= 10,
+    "Fruit themes must provide varied sleeping faces and reminder motions.");
+Assert(FruitPersonalities.Get((FruitThemeKind)999) == FruitPersonalities.Get(FruitThemeKind.Avocado),
+    "Unknown personality values must safely fall back to Avocado.");
 
 var timedTask = TaskReminderLogic.Parse("17:50 task 1");
 Assert(timedTask.Text == "task 1" && timedTask.ReminderTime == new TimeSpan(17, 50, 0),

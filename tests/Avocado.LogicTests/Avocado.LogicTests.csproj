@@ -18,5 +18,6 @@
     <Compile Include="..\..\StartupRegistration.cs" Link="StartupRegistration.cs" />
     <Compile Include="..\..\ReminderSoundSettings.cs" Link="ReminderSoundSettings.cs" />
     <Compile Include="..\..\TaskFilterLogic.cs" Link="TaskFilterLogic.cs" />
+    <Compile Include="..\..\FruitPersonalities.cs" Link="FruitPersonalities.cs" />
   </ItemGroup>
 </Project>

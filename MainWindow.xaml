@@ -420,12 +420,18 @@
             <TextBlock Text="Z" Margin="0,125,78,0" VerticalAlignment="Top"
                        HorizontalAlignment="Right" FontFamily="Consolas" FontSize="25"
                        FontWeight="Bold" Foreground="{DynamicResource InkBrush}" />
-            <Rectangle Width="42" Height="5" Margin="132,224,0,0"
-                       HorizontalAlignment="Left" VerticalAlignment="Top" Fill="{DynamicResource InkBrush}" />
-            <Rectangle Width="42" Height="5" Margin="246,224,0,0"
-                       HorizontalAlignment="Left" VerticalAlignment="Top" Fill="{DynamicResource InkBrush}" />
-            <Rectangle Width="24" Height="5" Margin="198,270,0,0"
-                       HorizontalAlignment="Left" VerticalAlignment="Top" Fill="{DynamicResource MutedInkBrush}" />
+            <TextBlock Text="{Binding SleepEyes}" Width="48" Margin="128,204,0,0"
+                       HorizontalAlignment="Left" VerticalAlignment="Top" TextAlignment="Center"
+                       FontFamily="Consolas" FontSize="30" FontWeight="Bold"
+                       Foreground="{DynamicResource InkBrush}" />
+            <TextBlock Text="{Binding SleepEyes}" Width="48" Margin="242,204,0,0"
+                       HorizontalAlignment="Left" VerticalAlignment="Top" TextAlignment="Center"
+                       FontFamily="Consolas" FontSize="30" FontWeight="Bold"
+                       Foreground="{DynamicResource InkBrush}" />
+            <TextBlock Text="{Binding SleepMouth}" Width="52" Margin="184,254,0,0"
+                       HorizontalAlignment="Left" VerticalAlignment="Top" TextAlignment="Center"
+                       FontFamily="Consolas" FontSize="24" FontWeight="Bold"
+                       Foreground="{DynamicResource MutedInkBrush}" />
         </Grid>
     </Grid>
 </Window>
