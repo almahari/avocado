@@ -21,7 +21,7 @@ dotnet run --project .\Avocado.csproj
 - Open the tray icon menu to choose **Normal window**, **Always on top**, themes, reminder sounds, Do Not Disturb hours, startup behavior, or **Exit**.
 - Toggle **Adaptive personality** in the tray menu to show or hide the fruit’s reactive face. The choice is saved.
 - From the tray menu, choose **Size → Normal** or **Size → Small**; Small is exactly half-size.
-- Enable **Resize when inactive** and choose a **Sleep time** to show a compact sleeping fruit after inactivity; choose **Never** to disable sleeping. Hover or click to wake it.
+- Enable **Resize when inactive** and choose a **Sleep time** to show a compact sleeping fruit with the active task count after inactivity; choose **Never** to disable sleeping. Hover or click to wake it.
 - Scroll the task area to reveal tasks beyond the first five; `+N more` shows how many start below the viewport.
 - Drag a task row up or down to change its saved order; nearby tasks animate aside while you drag.
 - Use the `↕` button beside `×` to sort tasks by priority or reminder time.
@@ -29,6 +29,8 @@ dotnet run --project .\Avocado.csproj
 - Each task keeps its timer and pin controls visible. Select `•••` to reveal Duplicate, Edit, and Delete.
 - Select `⧉` inside a task’s `•••` menu to duplicate it without copying completion or timer history.
 - Add hashtags such as `#work` or `#personal` to categorize tasks, then choose a hashtag in the filter panel.
+- Hover a task to see when it was created; creation timestamps are saved with task data.
+- Choose **Archive cleanup** in the tray menu to retain completed tasks forever or remove them after 7, 30, or 90 days.
 - Select an `http://`, `https://`, or `www.` link inside a task to open it in the default browser.
 - Enter `https://example.com : Display text` to hide the URL and show only a clickable label.
 - Select truncated task text to animate it open; select it again or click elsewhere to collapse it.

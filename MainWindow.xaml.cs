@@ -62,6 +62,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private string _adaptiveStatus = string.Empty;
     private DateTime _happyUntil = DateTime.MinValue;
     private AdaptiveMood? _adaptiveMood;
+    private DateOnly? _lastArchiveCleanupDate;
 
     public ObservableCollection<TodoItem> Tasks => _tasks;
     public ICollectionView TasksView => _tasksView;
@@ -110,6 +111,14 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         get => _sleepTimerText;
         private set { _sleepTimerText = value; OnPropertyChanged(); }
     }
+    public string SleepTaskCountText
+    {
+        get
+        {
+            var count = _tasks.Count(task => !task.IsCompleted);
+            return count == 1 ? "1 task" : $"{count} tasks";
+        }
+    }
     public string AdaptiveEyes
     {
         get => _adaptiveEyes;
@@ -132,6 +141,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public SleepResizeAnchor CurrentSleepResizeAnchor => SleepResizeLogic.Normalize(_state.SleepResizeAnchor);
     public ReminderSoundMode CurrentReminderSound => ReminderSoundSettings.Normalize(_state.ReminderSound);
     public DoNotDisturbMode CurrentDoNotDisturb => DoNotDisturbSettings.Normalize(_state.DoNotDisturb);
+    public ArchiveRetentionOption CurrentArchiveRetention =>
+        ArchiveRetentionSettings.Get(_state.ArchiveRetention).Option;
     public bool IsAdaptivePersonalityEnabled => _state.AdaptivePersonalityEnabled;
     public FruitThemeKind CurrentTheme => _currentTheme.Kind;
 
@@ -162,8 +173,14 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         SetSleepTime(_state.SleepTime, persist: false);
         SetSleepResizeAnchor(_state.SleepResizeAnchor, persist: false);
         SetReminderSound(_state.ReminderSound, persist: false);
+        SetArchiveRetention(_state.ArchiveRetention, persist: false);
         SetTheme(_state.Theme, persist: false);
         RefreshOverflow();
+        if (_state.NeedsMigration)
+        {
+            _state.NeedsMigration = false;
+            SaveState();
+        }
         _reminderTimer.Start();
     }
 
@@ -228,6 +245,23 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         _state.DoNotDisturb = DoNotDisturbSettings.Normalize(mode);
         if (persist) SaveState();
+    }
+
+    public void SetArchiveRetention(ArchiveRetentionOption option, bool persist = true)
+    {
+        _state.ArchiveRetention = ArchiveRetentionSettings.Get(option).Option;
+        var removed = CleanupArchivedTasks(DateTime.Now);
+        if (persist || removed > 0) SaveState();
+    }
+
+    private int CleanupArchivedTasks(DateTime now)
+    {
+        _lastArchiveCleanupDate = DateOnly.FromDateTime(now);
+        var removed = ArchiveRetentionSettings.RemoveExpired(_archivedTasks, _state.ArchiveRetention, now);
+        if (removed == 0) return 0;
+        ArchivePanel.Visibility = _archivedTasks.Count == 0 ? Visibility.Collapsed : ArchivePanel.Visibility;
+        RefreshAdaptivePersonality();
+        return removed;
     }
 
     public void SetAdaptivePersonality(bool enabled, bool persist = true)
@@ -966,6 +1000,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void CheckTaskReminders()
     {
         var now = DateTime.Now;
+        if (_lastArchiveCleanupDate != DateOnly.FromDateTime(now) && CleanupArchivedTasks(now) > 0)
+            SaveState();
         RefreshAdaptivePersonality();
         var dueTasks = _tasks
             .Where(task => !task.IsCompleted &&
@@ -1359,6 +1395,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         var hidden = TodoListLogic.HiddenCount(_tasksView.Cast<object>().Count(), VisibleTaskLimit);
         OverflowLabel = hidden > 0 ? $"+{hidden} more" : string.Empty;
+        OnPropertyChanged(nameof(SleepTaskCountText));
     }
 
     private void SaveState()

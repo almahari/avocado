@@ -45,6 +45,7 @@ var originalState = new AppState
     SleepResizeAnchor = SleepResizeAnchor.BottomRight,
     ReminderSound = ReminderSoundMode.FruitSpecific,
     DoNotDisturb = DoNotDisturbMode.TenPmToSevenAm,
+    ArchiveRetention = ArchiveRetentionOption.ThirtyDays,
     AdaptivePersonalityEnabled = false,
     Theme = FruitThemeKind.Blueberry,
     Left = 123,
@@ -57,6 +58,7 @@ var originalState = new AppState
     Tasks = [new TodoItem
     {
         Text = "Persist me",
+        CreatedAt = new DateTime(2026, 8, 20, 10, 15, 0),
         IsCompleted = true,
         IsExpanded = true,
         IsActionsOpen = true,
@@ -83,6 +85,8 @@ Assert(loadedState.ReminderSound == ReminderSoundMode.FruitSpecific,
     "The selected reminder sound mode must persist.");
 Assert(loadedState.DoNotDisturb == DoNotDisturbMode.TenPmToSevenAm,
     "The selected Do Not Disturb schedule must persist.");
+Assert(loadedState.ArchiveRetention == ArchiveRetentionOption.ThirtyDays,
+    "The selected archive retention period must persist.");
 Assert(!loadedState.AdaptivePersonalityEnabled,
     "The Adaptive personality tray option must persist.");
 Assert(loadedState.Theme == FruitThemeKind.Blueberry, "The selected fruit theme must persist.");
@@ -105,6 +109,9 @@ Assert(loadedState.Tasks[0].Priority == TaskPriority.High, "A task's priority mu
 Assert(loadedState.Tasks[0].IsPinned, "A task's pinned state must persist.");
 Assert(loadedState.Tasks[0].DueAt == new DateTime(2026, 8, 31, 9, 30, 0),
     "A task's natural-language due date must persist.");
+Assert(loadedState.Tasks[0].CreatedAt == new DateTime(2026, 8, 20, 10, 15, 0) &&
+       loadedState.Tasks[0].CreatedToolTip.Contains("Created"),
+    "A task's creation timestamp must persist and appear in its tooltip.");
 Assert(loadedState.Tasks[0].LastReminderDate == new DateOnly(2026, 8, 28),
     "A task's last reminder date must persist to prevent duplicate alerts after a restart.");
 Assert(loadedState.Tasks[0].SnoozedUntil == new DateTime(2026, 8, 29, 18, 0, 0),
@@ -112,6 +119,23 @@ Assert(loadedState.Tasks[0].SnoozedUntil == new DateTime(2026, 8, 29, 18, 0, 0),
 Assert(!loadedState.Tasks[0].IsExpanded, "Temporary task expansion state must not persist.");
 Assert(!loadedState.Tasks[0].IsActionsOpen, "The temporary task action palette must not persist.");
 Directory.Delete(Path.GetDirectoryName(statePath)!, recursive: true);
+
+var cleanupReference = new DateTime(2026, 8, 29, 12, 0, 0);
+var cleanupArchive = new List<TodoItem>
+{
+    new() { Text = "Old", CompletedAt = cleanupReference.AddDays(-8) },
+    new() { Text = "Recent", CompletedAt = cleanupReference.AddDays(-2) },
+    new() { Text = "Legacy without date" }
+};
+Assert(ArchiveRetentionSettings.RemoveExpired(
+        cleanupArchive, ArchiveRetentionOption.SevenDays, cleanupReference) == 1 &&
+       cleanupArchive.Select(task => task.Text).SequenceEqual(["Recent", "Legacy without date"]),
+    "Seven-day archive cleanup must remove only dated completions older than seven days.");
+Assert(ArchiveRetentionSettings.RemoveExpired(
+        cleanupArchive, ArchiveRetentionOption.Never, cleanupReference) == 0,
+    "Never must disable automatic archive cleanup.");
+Assert(ArchiveRetentionSettings.Get((ArchiveRetentionOption)999).Option == ArchiveRetentionOption.Never,
+    "Unknown archive retention values must safely fall back to Never.");
 
 var normalSize = AppSizeLogic.Get(small: false);
 var smallSize = AppSizeLogic.Get(small: true);

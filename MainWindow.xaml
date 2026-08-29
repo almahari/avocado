@@ -332,7 +332,7 @@
                         <DataTemplate>
                             <Border x:Name="TaskRow" Height="33" MinHeight="33" Margin="0,0,0,3" Background="{DynamicResource TaskBrush}"
                                     BorderBrush="{DynamicResource MiddleBrush}" BorderThickness="0,0,0,2"
-                                    AllowDrop="True" Cursor="Hand" ToolTip="Click to expand • drag to reorder"
+                                    AllowDrop="True" Cursor="Hand" ToolTip="{Binding TaskToolTip}"
                                     PreviewMouseLeftButtonDown="TaskRow_PreviewMouseLeftButtonDown"
                                     PreviewMouseLeftButtonUp="TaskRow_PreviewMouseLeftButtonUp"
                                     PreviewMouseMove="TaskRow_PreviewMouseMove"
@@ -498,7 +498,8 @@
                                         <ColumnDefinition Width="30" />
                                         <ColumnDefinition Width="30" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding Text}" FontFamily="Consolas" FontSize="13"
+                                    <TextBlock Text="{Binding Text}" ToolTip="{Binding CreatedToolTip}"
+                                               FontFamily="Consolas" FontSize="13"
                                                Foreground="{DynamicResource InkBrush}" TextTrimming="CharacterEllipsis"
                                                VerticalAlignment="Center" Margin="5,0" />
                                     <Button Grid.Column="1" Content="↶" ToolTip="Restore task" Tag="{Binding}"
@@ -542,6 +543,10 @@
                        HorizontalAlignment="Center" VerticalAlignment="Top" TextAlignment="Center"
                        FontFamily="Consolas" FontSize="34" FontWeight="Bold"
                        Foreground="{DynamicResource InkBrush}" />
+            <TextBlock Text="{Binding SleepTaskCountText}" Margin="0,354,0,0"
+                       HorizontalAlignment="Center" VerticalAlignment="Top" TextAlignment="Center"
+                       FontFamily="Consolas" FontSize="28" FontWeight="Bold"
+                       Foreground="{DynamicResource MutedInkBrush}" />
         </Grid>
 
     </Grid>

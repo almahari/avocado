@@ -23,6 +23,7 @@ public sealed class TodoItem : INotifyPropertyChanged
     private DateTime? _completedAt;
 
     public Guid Id { get; set; } = Guid.NewGuid();
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
     public string Text
     {
         get => _text;
@@ -114,6 +115,10 @@ public sealed class TodoItem : INotifyPropertyChanged
     public string PinIcon => IsPinned ? "◆" : "◇";
     [JsonIgnore]
     public string PinToolTip => IsPinned ? "Unpin task" : "Pin task";
+    [JsonIgnore]
+    public string CreatedToolTip => $"Created {CreatedAt:g}";
+    [JsonIgnore]
+    public string TaskToolTip => $"{CreatedToolTip}\nClick to expand • drag to reorder";
     public DateOnly? LastReminderDate
     {
         get => _lastReminderDate;

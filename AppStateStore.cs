@@ -1,10 +1,13 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.IO;
 
 namespace Avocado;
 
 public sealed class AppState
 {
+    [JsonIgnore]
+    public bool NeedsMigration { get; set; }
     public List<TodoItem> Tasks { get; set; } = [];
     public List<TodoItem> ArchivedTasks { get; set; } = [];
     public bool AlwaysOnTop { get; set; }
@@ -14,6 +17,7 @@ public sealed class AppState
     public SleepResizeAnchor SleepResizeAnchor { get; set; } = SleepResizeAnchor.TopLeft;
     public ReminderSoundMode ReminderSound { get; set; } = ReminderSoundSettings.Default;
     public DoNotDisturbMode DoNotDisturb { get; set; } = DoNotDisturbMode.Off;
+    public ArchiveRetentionOption ArchiveRetention { get; set; } = ArchiveRetentionSettings.Default;
     public bool AdaptivePersonalityEnabled { get; set; } = true;
     public FruitThemeKind Theme { get; set; } = FruitThemeKind.Avocado;
     public double? Left { get; set; }
@@ -42,7 +46,15 @@ public sealed class AppStateStore
         try
         {
             if (!File.Exists(_path)) return new AppState();
-            return JsonSerializer.Deserialize<AppState>(File.ReadAllText(_path), JsonOptions) ?? new AppState();
+            var state = JsonSerializer.Deserialize<AppState>(File.ReadAllText(_path), JsonOptions) ?? new AppState();
+            var migrationTime = DateTime.Now;
+            foreach (var task in state.Tasks.Concat(state.ArchivedTasks))
+            {
+                if (task.CreatedAt != default) continue;
+                task.CreatedAt = task.CompletedAt ?? migrationTime;
+                state.NeedsMigration = true;
+            }
+            return state;
         }
         catch (JsonException)
         {

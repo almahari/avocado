@@ -24,5 +24,6 @@
     <Compile Include="..\..\TaskSortLogic.cs" Link="TaskSortLogic.cs" />
     <Compile Include="..\..\DoNotDisturbSettings.cs" Link="DoNotDisturbSettings.cs" />
     <Compile Include="..\..\AdaptivePersonalityLogic.cs" Link="AdaptivePersonalityLogic.cs" />
+    <Compile Include="..\..\ArchiveRetentionSettings.cs" Link="ArchiveRetentionSettings.cs" />
   </ItemGroup>
 </Project>

@@ -19,6 +19,7 @@ public partial class App : System.Windows.Application
     private readonly Dictionary<SleepResizeAnchor, Forms.ToolStripMenuItem> _sleepResizeAnchorItems = [];
     private readonly Dictionary<ReminderSoundMode, Forms.ToolStripMenuItem> _reminderSoundItems = [];
     private readonly Dictionary<DoNotDisturbMode, Forms.ToolStripMenuItem> _doNotDisturbItems = [];
+    private readonly Dictionary<ArchiveRetentionOption, Forms.ToolStripMenuItem> _archiveRetentionItems = [];
     private readonly Dictionary<FruitThemeKind, Forms.ToolStripMenuItem> _themeItems = [];
     private MainWindow? _window;
     private Icon? _trayThemeIcon;
@@ -40,6 +41,7 @@ public partial class App : System.Windows.Application
         SetSleepResizeAnchor(_window.CurrentSleepResizeAnchor, persist: false);
         SetReminderSound(_window.CurrentReminderSound, persist: false);
         SetDoNotDisturb(_window.CurrentDoNotDisturb, persist: false);
+        SetArchiveRetention(_window.CurrentArchiveRetention, persist: false);
         SetAdaptivePersonality(_window.IsAdaptivePersonalityEnabled, persist: false);
         SetResizeWhenInactive(_window.IsResizeWhenInactive, persist: false);
         SetTheme(_window.CurrentTheme, persist: false);
@@ -51,6 +53,14 @@ public partial class App : System.Windows.Application
         var menu = new Forms.ContextMenuStrip();
         var showItem = new Forms.ToolStripMenuItem("Show avocado", null, (_, _) => ToggleWindow());
         var archiveItem = new Forms.ToolStripMenuItem("Completed archive", null, (_, _) => ShowArchive());
+        var archiveCleanupItem = new Forms.ToolStripMenuItem("Archive cleanup");
+        foreach (var choice in ArchiveRetentionSettings.Choices)
+        {
+            var choiceItem = new Forms.ToolStripMenuItem(
+                choice.DisplayName, null, (_, _) => SetArchiveRetention(choice.Option));
+            _archiveRetentionItems[choice.Option] = choiceItem;
+            archiveCleanupItem.DropDownItems.Add(choiceItem);
+        }
         _normalItem = new Forms.ToolStripMenuItem("Normal window", null, (_, _) => SetWindowMode(false));
         _alwaysOnTopItem = new Forms.ToolStripMenuItem("Always on top", null, (_, _) => SetWindowMode(true));
         var sizeItem = new Forms.ToolStripMenuItem("Size");
@@ -114,6 +124,7 @@ public partial class App : System.Windows.Application
 
         menu.Items.Add(showItem);
         menu.Items.Add(archiveItem);
+        menu.Items.Add(archiveCleanupItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(_normalItem);
         menu.Items.Add(_alwaysOnTopItem);
@@ -444,6 +455,14 @@ public partial class App : System.Windows.Application
         _window.SetDoNotDisturb(mode, persist);
         foreach (var (doNotDisturbMode, menuItem) in _doNotDisturbItems)
             menuItem.Checked = doNotDisturbMode == _window.CurrentDoNotDisturb;
+    }
+
+    private void SetArchiveRetention(ArchiveRetentionOption option, bool persist = true)
+    {
+        if (_window is null) return;
+        _window.SetArchiveRetention(option, persist);
+        foreach (var (retentionOption, menuItem) in _archiveRetentionItems)
+            menuItem.Checked = retentionOption == _window.CurrentArchiveRetention;
     }
 
     private void SetAdaptivePersonality(bool enabled, bool persist = true)
