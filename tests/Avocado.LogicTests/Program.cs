@@ -48,6 +48,9 @@ var originalState = new AppState
     ArchiveRetention = ArchiveRetentionOption.ThirtyDays,
     AdaptivePersonalityEnabled = false,
     Theme = FruitThemeKind.Blueberry,
+    QuickAddShortcut = new GlobalShortcutGesture(
+        GlobalShortcutModifiers.Alt | GlobalShortcutModifiers.Shift, 'Q'),
+    ClipboardTaskShortcut = GlobalShortcutSettings.Disabled,
     Left = 123,
     Top = 456,
     LastMonitor = "DISPLAY1",
@@ -90,6 +93,9 @@ Assert(loadedState.ArchiveRetention == ArchiveRetentionOption.ThirtyDays,
 Assert(!loadedState.AdaptivePersonalityEnabled,
     "The Adaptive personality tray option must persist.");
 Assert(loadedState.Theme == FruitThemeKind.Blueberry, "The selected fruit theme must persist.");
+Assert(loadedState.QuickAddShortcut == originalState.QuickAddShortcut &&
+       loadedState.ClipboardTaskShortcut.IsDisabled,
+    "Customized and disabled global shortcuts must persist.");
 Assert(loadedState.Left == 123 && loadedState.Top == 456, "Window position must persist.");
 Assert(loadedState.LastMonitor == "DISPLAY1" &&
        loadedState.MonitorPositions["DISPLAY1"] == new SavedWindowPosition(123, 456),
@@ -110,7 +116,7 @@ Assert(loadedState.Tasks[0].IsPinned, "A task's pinned state must persist.");
 Assert(loadedState.Tasks[0].DueAt == new DateTime(2026, 8, 31, 9, 30, 0),
     "A task's natural-language due date must persist.");
 Assert(loadedState.Tasks[0].CreatedAt == new DateTime(2026, 8, 20, 10, 15, 0) &&
-       loadedState.Tasks[0].CreatedToolTip.Contains("Created"),
+       loadedState.Tasks[0].CreatedToolTip == "Created Aug 20, 2026 10:15",
     "A task's creation timestamp must persist and appear in its tooltip.");
 Assert(loadedState.Tasks[0].LastReminderDate == new DateOnly(2026, 8, 28),
     "A task's last reminder date must persist to prevent duplicate alerts after a restart.");
@@ -175,6 +181,8 @@ Assert(FruitThemes.Get((FruitThemeKind)999) == FruitThemes.Default,
     "Unknown saved themes must safely fall back to Avocado.");
 Assert(FruitThemes.All.Select(theme => FruitPersonalities.Get(theme.Kind)).Distinct().Count() >= 10,
     "Fruit themes must provide varied sleeping faces and reminder motions.");
+Assert(FruitThemes.All.Select(theme => FruitPersonalities.Get(theme.Kind)).Distinct().Count() == FruitThemes.All.Count,
+    "Every fruit theme must have a distinct face and reminder profile.");
 Assert(FruitPersonalities.Get((FruitThemeKind)999) == FruitPersonalities.Get(FruitThemeKind.Avocado),
     "Unknown personality values must safely fall back to Avocado.");
 
@@ -217,6 +225,8 @@ var exactDateTask = TaskReminderLogic.Parse("2026-09-03 08:15 !! Release build",
 Assert(exactDateTask.Text == "Release build" && exactDateTask.Priority == TaskPriority.Medium &&
        exactDateTask.DueAt == new DateTime(2026, 9, 3, 8, 15, 0),
     "An exact date, time, and priority must parse together.");
+Assert(TaskReminderLogic.FormatDueLabel(new DateTime(2026, 9, 3, 8, 15, 0)) == "SEP 03 08:15",
+    "Displayed due dates must use a two-digit day for alignment.");
 var reminderMoment = new DateTime(2026, 8, 29, 17, 50, 30);
 Assert(TaskReminderLogic.IsDue(new TimeSpan(17, 50, 0), reminderMoment, null),
     "A reminder must become due during its matching minute.");
@@ -313,6 +323,33 @@ Assert(TaskSortLogic.ByPriority(sortableTasks).Select(task => task.Text)
 Assert(TaskSortLogic.ByTime(sortableTasks).Select(task => task.Text)
         .SequenceEqual(["Pinned", "Urgent", "Later", "Plain"]),
     "Time sorting must keep pinned tasks first, then order scheduled tasks.");
+
+var calendarReference = new DateTime(2026, 8, 30, 12, 0, 0);
+var calendarTasks = new List<TodoItem>
+{
+    new() { Text = "Today", ReminderTime = TimeSpan.FromHours(14) },
+    new() { Text = "Daily", ReminderTime = TimeSpan.FromHours(9), Recurrence = TaskRecurrence.Daily },
+    new() { Text = "Monday", ReminderTime = TimeSpan.FromHours(18), Recurrence = TaskRecurrence.Monday },
+    new() { Text = "Exact", DueAt = new DateTime(2026, 9, 1, 10, 30, 0) },
+    new() { Text = "Done", IsCompleted = true, DueAt = new DateTime(2026, 9, 1, 8, 0, 0) }
+};
+var calendarWeek = CalendarLogic.GetOccurrences(
+    calendarTasks, new DateOnly(2026, 8, 30), 7, calendarReference);
+Assert(calendarWeek.Count(item => item.Task.Text == "Daily") == 7,
+    "The week calendar must show every daily recurrence.");
+Assert(calendarWeek.Any(item => item.Task.Text == "Monday" && item.At.DayOfWeek == DayOfWeek.Monday) &&
+       calendarWeek.Any(item => item.Task.Text == "Exact" && item.At == new DateTime(2026, 9, 1, 10, 30, 0)) &&
+       calendarWeek.All(item => item.Task.Text != "Done"),
+    "The calendar must resolve weekly and exact reminders while excluding completed tasks.");
+Assert(CalendarLogic.StartOfWeek(new DateOnly(2026, 9, 3)) == new DateOnly(2026, 8, 31),
+    "The week calendar must begin on Monday.");
+Assert(GlobalShortcutSettings.DisplayName(GlobalShortcutSettings.QuickAddDefault) == "Ctrl+Alt+N" &&
+       GlobalShortcutSettings.DisplayName(GlobalShortcutSettings.Disabled) == "Disabled",
+    "Global shortcuts must have clear tray-menu labels.");
+Assert(GlobalShortcutSettings.IsValid(new GlobalShortcutGesture(GlobalShortcutModifiers.Control, '8')) &&
+       GlobalShortcutSettings.IsValid(new GlobalShortcutGesture(GlobalShortcutModifiers.Alt, 0x70)) &&
+       !GlobalShortcutSettings.IsValid(new GlobalShortcutGesture(GlobalShortcutModifiers.None, 'N')),
+    "Global shortcut capture must accept supported modified keys and reject unmodified keys.");
 
 Console.WriteLine("All Avocado logic checks passed.");
 return;

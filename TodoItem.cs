@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 
@@ -116,7 +117,8 @@ public sealed class TodoItem : INotifyPropertyChanged
     [JsonIgnore]
     public string PinToolTip => IsPinned ? "Unpin task" : "Pin task";
     [JsonIgnore]
-    public string CreatedToolTip => $"Created {CreatedAt:g}";
+    public string CreatedToolTip =>
+        $"Created {CreatedAt.ToString("MMM dd, yyyy HH:mm", CultureInfo.InvariantCulture)}";
     [JsonIgnore]
     public string TaskToolTip => $"{CreatedToolTip}\nClick to expand • drag to reorder";
     public DateOnly? LastReminderDate

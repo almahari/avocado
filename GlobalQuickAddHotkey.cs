@@ -12,8 +12,6 @@ public sealed class GlobalQuickAddHotkey : IDisposable
     private const uint ModAlt = 0x0001;
     private const uint ModControl = 0x0002;
     private const uint ModNoRepeat = 0x4000;
-    private const uint VirtualKeyN = 0x4E;
-    private const uint VirtualKeyV = 0x56;
     private readonly IntPtr _handle;
     private readonly HwndSource? _source;
     private readonly Action _quickAddCallback;
@@ -21,16 +19,32 @@ public sealed class GlobalQuickAddHotkey : IDisposable
     private bool _quickAddRegistered;
     private bool _clipboardTaskRegistered;
 
-    public GlobalQuickAddHotkey(Window window, Action quickAddCallback, Action clipboardTaskCallback)
+    public bool QuickAddAvailable => _quickAddGesture.IsDisabled || _quickAddRegistered;
+    public bool ClipboardTaskAvailable => _clipboardTaskGesture.IsDisabled || _clipboardTaskRegistered;
+    public bool AllAvailable => QuickAddAvailable && ClipboardTaskAvailable;
+    private readonly GlobalShortcutGesture _quickAddGesture;
+    private readonly GlobalShortcutGesture _clipboardTaskGesture;
+
+    public GlobalQuickAddHotkey(
+        Window window,
+        Action quickAddCallback,
+        Action clipboardTaskCallback,
+        GlobalShortcutGesture quickAddGesture,
+        GlobalShortcutGesture clipboardTaskGesture)
     {
         _quickAddCallback = quickAddCallback;
         _clipboardTaskCallback = clipboardTaskCallback;
+        _quickAddGesture = quickAddGesture;
+        _clipboardTaskGesture = clipboardTaskGesture;
         _handle = new WindowInteropHelper(window).Handle;
         _source = HwndSource.FromHwnd(_handle);
         _source?.AddHook(WindowMessageHook);
-        var modifiers = ModAlt | ModControl | ModNoRepeat;
-        _quickAddRegistered = RegisterHotKey(_handle, QuickAddHotkeyId, modifiers, VirtualKeyN);
-        _clipboardTaskRegistered = RegisterHotKey(_handle, ClipboardTaskHotkeyId, modifiers, VirtualKeyV);
+        if (!quickAddGesture.IsDisabled)
+            _quickAddRegistered = RegisterHotKey(_handle, QuickAddHotkeyId,
+                ToNativeModifiers(quickAddGesture.Modifiers), (uint)quickAddGesture.VirtualKey);
+        if (!clipboardTaskGesture.IsDisabled)
+            _clipboardTaskRegistered = RegisterHotKey(_handle, ClipboardTaskHotkeyId,
+                ToNativeModifiers(clipboardTaskGesture.Modifiers), (uint)clipboardTaskGesture.VirtualKey);
     }
 
     private IntPtr WindowMessageHook(IntPtr hwnd, int message, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -58,6 +72,15 @@ public sealed class GlobalQuickAddHotkey : IDisposable
         _quickAddRegistered = false;
         _clipboardTaskRegistered = false;
         _source?.RemoveHook(WindowMessageHook);
+    }
+
+    private static uint ToNativeModifiers(GlobalShortcutModifiers modifiers)
+    {
+        var native = ModNoRepeat;
+        if (modifiers.HasFlag(GlobalShortcutModifiers.Alt)) native |= ModAlt;
+        if (modifiers.HasFlag(GlobalShortcutModifiers.Control)) native |= ModControl;
+        if (modifiers.HasFlag(GlobalShortcutModifiers.Shift)) native |= 0x0004;
+        return native;
     }
 
     [DllImport("user32.dll")]

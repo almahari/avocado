@@ -25,5 +25,7 @@
     <Compile Include="..\..\DoNotDisturbSettings.cs" Link="DoNotDisturbSettings.cs" />
     <Compile Include="..\..\AdaptivePersonalityLogic.cs" Link="AdaptivePersonalityLogic.cs" />
     <Compile Include="..\..\ArchiveRetentionSettings.cs" Link="ArchiveRetentionSettings.cs" />
+    <Compile Include="..\..\CalendarLogic.cs" Link="CalendarLogic.cs" />
+    <Compile Include="..\..\GlobalShortcutSettings.cs" Link="GlobalShortcutSettings.cs" />
   </ItemGroup>
 </Project>

@@ -15,6 +15,8 @@ public partial class App : System.Windows.Application
     private Forms.ToolStripMenuItem? _resizeWhenInactiveItem;
     private Forms.ToolStripMenuItem? _openOnStartupItem;
     private Forms.ToolStripMenuItem? _adaptivePersonalityItem;
+    private Forms.ToolStripMenuItem? _quickAddShortcutItem;
+    private Forms.ToolStripMenuItem? _clipboardTaskShortcutItem;
     private readonly Dictionary<SleepTimeOption, Forms.ToolStripMenuItem> _sleepTimeItems = [];
     private readonly Dictionary<SleepResizeAnchor, Forms.ToolStripMenuItem> _sleepResizeAnchorItems = [];
     private readonly Dictionary<ReminderSoundMode, Forms.ToolStripMenuItem> _reminderSoundItems = [];
@@ -120,6 +122,18 @@ public partial class App : System.Windows.Application
         {
             Checked = _startupRegistration.IsEnabled()
         };
+        var globalShortcutsItem = new Forms.ToolStripMenuItem("Global shortcuts");
+        _quickAddShortcutItem = new Forms.ToolStripMenuItem(
+            string.Empty, null, (_, _) => ChangeGlobalShortcut(quickAdd: true));
+        _clipboardTaskShortcutItem = new Forms.ToolStripMenuItem(
+            string.Empty, null, (_, _) => ChangeGlobalShortcut(quickAdd: false));
+        var resetShortcutsItem = new Forms.ToolStripMenuItem(
+            "Reset defaults", null, (_, _) => ResetGlobalShortcuts());
+        globalShortcutsItem.DropDownItems.Add(_quickAddShortcutItem);
+        globalShortcutsItem.DropDownItems.Add(_clipboardTaskShortcutItem);
+        globalShortcutsItem.DropDownItems.Add(new Forms.ToolStripSeparator());
+        globalShortcutsItem.DropDownItems.Add(resetShortcutsItem);
+        UpdateGlobalShortcutLabels();
         var exitItem = new Forms.ToolStripMenuItem("Exit", null, (_, _) => ExitApplication());
 
         menu.Items.Add(showItem);
@@ -130,6 +144,7 @@ public partial class App : System.Windows.Application
         menu.Items.Add(_alwaysOnTopItem);
         menu.Items.Add(sizeItem);
         menu.Items.Add(_openOnStartupItem);
+        menu.Items.Add(globalShortcutsItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(_resizeWhenInactiveItem);
         menu.Items.Add(sleepTimeItem);
@@ -499,6 +514,56 @@ public partial class App : System.Windows.Application
         }
         if (_openOnStartupItem is not null)
             _openOnStartupItem.Checked = _startupRegistration.IsEnabled();
+    }
+
+    private void ChangeGlobalShortcut(bool quickAdd)
+    {
+        if (_window is null) return;
+        var current = quickAdd
+            ? _window.CurrentQuickAddShortcut
+            : _window.CurrentClipboardTaskShortcut;
+        var actionName = quickAdd ? "Quick add" : "Clipboard task";
+        var selected = ShortcutCaptureDialog.Show(actionName, current);
+        if (selected is not GlobalShortcutGesture shortcut) return;
+        var changed = quickAdd
+            ? _window.TrySetQuickAddShortcut(shortcut)
+            : _window.TrySetClipboardTaskShortcut(shortcut);
+        if (!changed)
+        {
+            Forms.MessageBox.Show(
+                "That shortcut is already being used by Windows or another application.",
+                "Avocado",
+                Forms.MessageBoxButtons.OK,
+                Forms.MessageBoxIcon.Warning);
+        }
+        UpdateGlobalShortcutLabels();
+    }
+
+    private void ResetGlobalShortcuts()
+    {
+        if (_window is null) return;
+        var quickAddChanged = _window.TrySetQuickAddShortcut(GlobalShortcutSettings.QuickAddDefault);
+        var clipboardChanged = _window.TrySetClipboardTaskShortcut(GlobalShortcutSettings.ClipboardTaskDefault);
+        if (!quickAddChanged || !clipboardChanged)
+        {
+            Forms.MessageBox.Show(
+                "One or more default shortcuts are already being used by Windows or another application.",
+                "Avocado",
+                Forms.MessageBoxButtons.OK,
+                Forms.MessageBoxIcon.Warning);
+        }
+        UpdateGlobalShortcutLabels();
+    }
+
+    private void UpdateGlobalShortcutLabels()
+    {
+        if (_window is null) return;
+        if (_quickAddShortcutItem is not null)
+            _quickAddShortcutItem.Text =
+                $"Quick add: {GlobalShortcutSettings.DisplayName(_window.CurrentQuickAddShortcut)}";
+        if (_clipboardTaskShortcutItem is not null)
+            _clipboardTaskShortcutItem.Text =
+                $"Clipboard task: {GlobalShortcutSettings.DisplayName(_window.CurrentClipboardTaskShortcut)}";
     }
 
     private void ToggleWindow()

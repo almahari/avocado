@@ -16,15 +16,16 @@ dotnet run --project .\Avocado.csproj
 - Select `+`, press `Ctrl+N` while focused, or press the global `Ctrl+Alt+N` shortcut to add a task. Press Enter to save or Escape to cancel.
 - Separate multiple new tasks with `;`, for example `task 1; 12:00 task 2`. Each task is parsed independently.
 - Press the global `Ctrl+Alt+V` shortcut to immediately create a task from clipboard text. Normal task syntax for links, priorities, and reminders is supported.
-- Select the avocado's `×` to hide it to the notification tray.
 - Double-click the tray icon to show or hide the avocado.
-- Open the tray icon menu to choose **Normal window**, **Always on top**, themes, reminder sounds, Do Not Disturb hours, startup behavior, or **Exit**.
+- Open the tray icon menu to choose **Normal window**, **Always on top**, themes, reminder sounds, Do Not Disturb hours, startup behavior, global shortcuts, or **Exit**.
+- Choose **Global shortcuts** to change or disable the system-wide Quick Add and Clipboard Task shortcuts; press a modifier plus a letter, number, function key, or Space.
 - Toggle **Adaptive personality** in the tray menu to show or hide the fruit’s reactive face. The choice is saved.
 - From the tray menu, choose **Size → Normal** or **Size → Small**; Small is exactly half-size.
 - Enable **Resize when inactive** and choose a **Sleep time** to show a compact sleeping fruit with the active task count after inactivity; choose **Never** to disable sleeping. Hover or click to wake it.
 - Scroll the task area to reveal tasks beyond the first five; `+N more` shows how many start below the viewport.
 - Drag a task row up or down to change its saved order; nearby tasks animate aside while you drag.
 - Use the `↕` button beside `×` to sort tasks by priority or reminder time.
+- Use the `▦` button to open a compact day or week calendar, navigate dates, and jump to a scheduled task.
 - Use the `◇` button on a task to pin it above unpinned tasks. Pinned and unpinned tasks can each be reordered by dragging.
 - Each task keeps its timer and pin controls visible. Select `•••` to reveal Duplicate, Edit, and Delete.
 - Select `⧉` inside a task’s `•••` menu to duplicate it without copying completion or timer history.
@@ -44,6 +45,9 @@ When enabled, the fruit reacts to the current task state:
 - Worried while naturally dated tasks are overdue.
 - Tired whenever more than five tasks remain.
 - Calm, using the selected fruit theme’s own face, at other times.
+
+Each fruit has its own reminder movement, with timing and strength matched to that fruit’s
+personality. Fruits remain still while idle, while timers run, and when tasks are completed.
 
 ## Do Not Disturb
 

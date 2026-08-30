@@ -20,6 +20,8 @@ public sealed class AppState
     public ArchiveRetentionOption ArchiveRetention { get; set; } = ArchiveRetentionSettings.Default;
     public bool AdaptivePersonalityEnabled { get; set; } = true;
     public FruitThemeKind Theme { get; set; } = FruitThemeKind.Avocado;
+    public GlobalShortcutGesture QuickAddShortcut { get; set; } = GlobalShortcutSettings.QuickAddDefault;
+    public GlobalShortcutGesture ClipboardTaskShortcut { get; set; } = GlobalShortcutSettings.ClipboardTaskDefault;
     public double? Left { get; set; }
     public double? Top { get; set; }
     public string? LastMonitor { get; set; }

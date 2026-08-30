@@ -63,11 +63,16 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private DateTime _happyUntil = DateTime.MinValue;
     private AdaptiveMood? _adaptiveMood;
     private DateOnly? _lastArchiveCleanupDate;
+    private DateOnly _calendarAnchor = DateOnly.FromDateTime(DateTime.Now);
+    private CalendarViewMode _calendarMode = CalendarViewMode.Day;
+    private string _calendarTitle = string.Empty;
+    private string _calendarEmptyText = string.Empty;
 
     public ObservableCollection<TodoItem> Tasks => _tasks;
     public ICollectionView TasksView => _tasksView;
     public ObservableCollection<TodoItem> ArchivedTasks => _archivedTasks;
     public ObservableCollection<string> AvailableCategoryFilters { get; } = ["All"];
+    public ObservableCollection<CalendarDisplayItem> CalendarEntries { get; } = [];
     public string SelectedCategoryFilter
     {
         get => _selectedCategoryFilter;
@@ -134,6 +139,16 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         get => _adaptiveStatus;
         private set { _adaptiveStatus = value; OnPropertyChanged(); }
     }
+    public string CalendarTitle
+    {
+        get => _calendarTitle;
+        private set { _calendarTitle = value; OnPropertyChanged(); }
+    }
+    public string CalendarEmptyText
+    {
+        get => _calendarEmptyText;
+        private set { _calendarEmptyText = value; OnPropertyChanged(); }
+    }
     public bool IsAlwaysOnTop => _state.AlwaysOnTop;
     public bool IsSmallSize => _state.SmallSize;
     public bool IsResizeWhenInactive => _state.ResizeWhenInactive;
@@ -145,6 +160,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         ArchiveRetentionSettings.Get(_state.ArchiveRetention).Option;
     public bool IsAdaptivePersonalityEnabled => _state.AdaptivePersonalityEnabled;
     public FruitThemeKind CurrentTheme => _currentTheme.Kind;
+    public GlobalShortcutGesture CurrentQuickAddShortcut =>
+        GlobalShortcutSettings.Normalize(_state.QuickAddShortcut, GlobalShortcutSettings.QuickAddDefault);
+    public GlobalShortcutGesture CurrentClipboardTaskShortcut =>
+        GlobalShortcutSettings.Normalize(_state.ClipboardTaskShortcut, GlobalShortcutSettings.ClipboardTaskDefault);
 
     public event EventHandler? HideRequested;
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -175,6 +194,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         SetReminderSound(_state.ReminderSound, persist: false);
         SetArchiveRetention(_state.ArchiveRetention, persist: false);
         SetTheme(_state.Theme, persist: false);
+        _state.QuickAddShortcut = CurrentQuickAddShortcut;
+        _state.ClipboardTaskShortcut = CurrentClipboardTaskShortcut;
+        RefreshShortcutToolTip();
         RefreshOverflow();
         if (_state.NeedsMigration)
         {
@@ -460,10 +482,54 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     protected override void OnSourceInitialized(EventArgs e)
     {
         base.OnSourceInitialized(e);
+        RegisterGlobalShortcuts();
+    }
+
+    public bool TrySetQuickAddShortcut(GlobalShortcutGesture shortcut) =>
+        TrySetGlobalShortcut(shortcut, quickAdd: true);
+
+    public bool TrySetClipboardTaskShortcut(GlobalShortcutGesture shortcut) =>
+        TrySetGlobalShortcut(shortcut, quickAdd: false);
+
+    private bool TrySetGlobalShortcut(GlobalShortcutGesture shortcut, bool quickAdd)
+    {
+        if (!GlobalShortcutSettings.IsValid(shortcut)) return false;
+        var previousQuickAdd = CurrentQuickAddShortcut;
+        var previousClipboard = CurrentClipboardTaskShortcut;
+        if (quickAdd) _state.QuickAddShortcut = shortcut;
+        else _state.ClipboardTaskShortcut = shortcut;
+
+        if (_globalQuickAddHotkey is not null && !RegisterGlobalShortcuts())
+        {
+            _state.QuickAddShortcut = previousQuickAdd;
+            _state.ClipboardTaskShortcut = previousClipboard;
+            RegisterGlobalShortcuts();
+            return false;
+        }
+
+        RefreshShortcutToolTip();
+        SaveState();
+        return true;
+    }
+
+    private bool RegisterGlobalShortcuts()
+    {
+        _globalQuickAddHotkey?.Dispose();
         _globalQuickAddHotkey = new GlobalQuickAddHotkey(
             this,
             OpenFromGlobalQuickAdd,
-            CreateTaskFromClipboard);
+            CreateTaskFromClipboard,
+            CurrentQuickAddShortcut,
+            CurrentClipboardTaskShortcut);
+        return _globalQuickAddHotkey.AllAvailable;
+    }
+
+    private void RefreshShortcutToolTip()
+    {
+        if (!IsInitialized) return;
+        AddButton.ToolTip =
+            $"Add task (Ctrl+N / {GlobalShortcutSettings.DisplayName(CurrentQuickAddShortcut)}) • " +
+            $"Clipboard task ({GlobalShortcutSettings.DisplayName(CurrentClipboardTaskShortcut)})";
     }
 
     protected override void OnClosed(EventArgs e)
@@ -599,6 +665,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         var source = e.OriginalSource as DependencyObject;
         if (!IsWithinElement(source, SortPanel) && !IsWithinElement(source, SortButton))
             SortPanel.Visibility = Visibility.Collapsed;
+        if (!IsWithinElement(source, CalendarPanel) && !IsWithinElement(source, CalendarButton))
+            CalendarPanel.Visibility = Visibility.Collapsed;
         if (!IsWithinTaskRow(source)) CollapseExpandedTask();
     }
 
@@ -617,6 +685,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         CollapseExpandedTask();
         CloseTaskActions();
         SortPanel.Visibility = Visibility.Collapsed;
+        CalendarPanel.Visibility = Visibility.Collapsed;
     }
 
     private static bool HasActionControlAncestor(DependencyObject? source)
@@ -666,7 +735,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         SortPanel.Visibility = shouldOpen ? Visibility.Visible : Visibility.Collapsed;
         if (!shouldOpen) return;
         AddPanel.Visibility = Visibility.Collapsed;
-        FilterPanel.Visibility = Visibility.Collapsed;
+        SetFilterPanelVisible(false);
+        CalendarPanel.Visibility = Visibility.Collapsed;
     }
 
     private void SortByPriorityMenuItem_Click(object sender, RoutedEventArgs e)
@@ -696,14 +766,128 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void SearchButton_Click(object sender, RoutedEventArgs e)
     {
         SortPanel.Visibility = Visibility.Collapsed;
-        FilterPanel.Visibility = FilterPanel.Visibility == Visibility.Visible
-            ? Visibility.Collapsed
-            : Visibility.Visible;
-        if (FilterPanel.Visibility == Visibility.Visible) TaskSearchBox.Focus();
+        CalendarPanel.Visibility = Visibility.Collapsed;
+        var shouldOpen = FilterPanel.Visibility != Visibility.Visible;
+        SetFilterPanelVisible(shouldOpen);
+        if (shouldOpen) TaskSearchBox.Focus();
     }
 
     private void CloseFilterButton_Click(object sender, RoutedEventArgs e) =>
-        FilterPanel.Visibility = Visibility.Collapsed;
+        SetFilterPanelVisible(false);
+
+    private void SetFilterPanelVisible(bool visible)
+    {
+        FilterPanel.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+        AnimateLayout(TaskListBorder, visible ? new Thickness(0, 270, 0, 0) : new Thickness(0, 166, 0, 0));
+        AnimateHeight(TaskListBorder, visible ? 108 : 180);
+        AnimateLayout(OverflowText, visible ? new Thickness(0, 382, 0, 0) : new Thickness(0, 350, 0, 0));
+        AnimateLayout(AdaptiveFacePanel, visible ? new Thickness(0, 407, 0, 0) : new Thickness(0, 378, 0, 0));
+        RefreshOverflow();
+    }
+
+    private static void AnimateLayout(FrameworkElement element, Thickness target)
+    {
+        var start = element.Margin;
+        element.BeginAnimation(MarginProperty, null);
+        element.Margin = target;
+        element.BeginAnimation(MarginProperty, new ThicknessAnimation(start, target,
+            TimeSpan.FromMilliseconds(170))
+        {
+            EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut },
+            FillBehavior = FillBehavior.Stop
+        });
+    }
+
+    private static void AnimateHeight(FrameworkElement element, double target)
+    {
+        var start = element.ActualHeight > 0 ? element.ActualHeight : element.Height;
+        element.BeginAnimation(HeightProperty, null);
+        element.Height = target;
+        element.BeginAnimation(HeightProperty, new DoubleAnimation(start, target,
+            TimeSpan.FromMilliseconds(170))
+        {
+            EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut },
+            FillBehavior = FillBehavior.Stop
+        });
+    }
+
+    private void CalendarButton_Click(object sender, RoutedEventArgs e)
+    {
+        var shouldOpen = CalendarPanel.Visibility != Visibility.Visible;
+        CalendarPanel.Visibility = shouldOpen ? Visibility.Visible : Visibility.Collapsed;
+        if (!shouldOpen) return;
+        AddPanel.Visibility = Visibility.Collapsed;
+        SetFilterPanelVisible(false);
+        SortPanel.Visibility = Visibility.Collapsed;
+        RefreshCalendar();
+    }
+
+    private void CloseCalendarButton_Click(object sender, RoutedEventArgs e) =>
+        CalendarPanel.Visibility = Visibility.Collapsed;
+
+    private void CalendarModeButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not System.Windows.Controls.Button { Tag: string mode }) return;
+        if (mode == "Today")
+            _calendarAnchor = DateOnly.FromDateTime(DateTime.Now);
+        else if (Enum.TryParse<CalendarViewMode>(mode, out var parsedMode))
+        {
+            _calendarMode = parsedMode;
+            if (_calendarMode == CalendarViewMode.Week)
+                _calendarAnchor = CalendarLogic.StartOfWeek(_calendarAnchor);
+        }
+        RefreshCalendar();
+    }
+
+    private void CalendarNavigateButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not System.Windows.Controls.Button { Tag: string offsetText } ||
+            !int.TryParse(offsetText, out var direction)) return;
+        _calendarAnchor = _calendarAnchor.AddDays(
+            direction * (_calendarMode == CalendarViewMode.Day ? 1 : 7));
+        RefreshCalendar();
+    }
+
+    private void RefreshCalendar()
+    {
+        var start = _calendarMode == CalendarViewMode.Day
+            ? _calendarAnchor
+            : CalendarLogic.StartOfWeek(_calendarAnchor);
+        var dayCount = _calendarMode == CalendarViewMode.Day ? 1 : 7;
+        CalendarTitle = _calendarMode == CalendarViewMode.Day
+            ? start.ToString("ddd, MMM dd").ToUpperInvariant()
+            : $"{start:MMM dd} – {start.AddDays(6):MMM dd}".ToUpperInvariant();
+        var occurrences = CalendarLogic.GetOccurrences(_tasks, start, dayCount, DateTime.Now);
+        CalendarEntries.Clear();
+        foreach (var occurrence in occurrences)
+        {
+            var priority = TaskReminderLogic.PriorityPrefix(occurrence.Task.Priority);
+            CalendarEntries.Add(new CalendarDisplayItem(
+                occurrence.Task,
+                occurrence.At.ToString("ddd MMM dd").ToUpperInvariant(),
+                occurrence.At.ToString("HH:mm"),
+                priority.Length == 0 ? occurrence.Task.Text : $"{priority} {occurrence.Task.Text}"));
+        }
+        CalendarEmptyText = CalendarEntries.Count == 0 ? "NO SCHEDULED TASKS" : string.Empty;
+    }
+
+    private void CalendarTaskButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not System.Windows.Controls.Button { Tag: TodoItem task }) return;
+        CalendarPanel.Visibility = Visibility.Collapsed;
+        _taskFilterMode = TaskFilterMode.Active;
+        _taskSearchText = string.Empty;
+        TaskSearchBox.Text = string.Empty;
+        SelectedCategoryFilter = "All";
+        RefreshTaskView();
+        Dispatcher.BeginInvoke(() =>
+        {
+            if (FindTaskRow(task) is not FrameworkElement row) return;
+            row.BringIntoView();
+            row.BeginAnimation(OpacityProperty, new DoubleAnimation(0.35, 1,
+                TimeSpan.FromMilliseconds(420)) { FillBehavior = FillBehavior.Stop });
+        }, DispatcherPriority.Loaded);
+    }
 
     private void TaskSearchBox_TextChanged(object sender, TextChangedEventArgs e)
     {
@@ -728,6 +912,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         RefreshCategoryFilters();
         _tasksView.Refresh();
         RefreshOverflow();
+        if (CalendarPanel.Visibility == Visibility.Visible) RefreshCalendar();
     }
 
     private void RefreshCategoryFilters()
@@ -773,7 +958,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void OpenTaskEditor(TodoItem? task = null)
     {
         SortPanel.Visibility = Visibility.Collapsed;
-        FilterPanel.Visibility = Visibility.Collapsed;
+        SetFilterPanelVisible(false);
+        CalendarPanel.Visibility = Visibility.Collapsed;
         _editingTask = task;
         var priorityPrefix = task is null ? string.Empty : TaskReminderLogic.PriorityPrefix(task.Priority);
         var taskText = task is null
@@ -1109,13 +1295,15 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _shakeOriginalTop = Top;
         _isShaking = true;
         var personality = FruitPersonalities.Get(_currentTheme.Kind);
-        var horizontalAnimation = new DoubleAnimation(_shakeOriginalLeft - 6, _shakeOriginalLeft + 6, TimeSpan.FromMilliseconds(80))
+        var distance = 4 + personality.MotionStrength;
+        var beat = TimeSpan.FromMilliseconds(Math.Max(55, personality.MotionMilliseconds / 6));
+        var horizontalAnimation = new DoubleAnimation(_shakeOriginalLeft - distance, _shakeOriginalLeft + distance, beat)
         {
             AutoReverse = true,
             RepeatBehavior = new RepeatBehavior(TaskReminderLogic.ShakeDuration)
         };
         horizontalAnimation.Completed += (_, _) => StopShaking();
-        var verticalAnimation = new DoubleAnimation(_shakeOriginalTop - 6, _shakeOriginalTop + 6, TimeSpan.FromMilliseconds(80))
+        var verticalAnimation = new DoubleAnimation(_shakeOriginalTop - distance, _shakeOriginalTop + distance, beat)
         {
             AutoReverse = true,
             RepeatBehavior = new RepeatBehavior(TaskReminderLogic.ShakeDuration)
@@ -1393,7 +1581,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void RefreshOverflow()
     {
-        var hidden = TodoListLogic.HiddenCount(_tasksView.Cast<object>().Count(), VisibleTaskLimit);
+        var visibleLimit = FilterPanel.Visibility == Visibility.Visible ? 3 : VisibleTaskLimit;
+        var hidden = TodoListLogic.HiddenCount(_tasksView.Cast<object>().Count(), visibleLimit);
         OverflowLabel = hidden > 0 ? $"+{hidden} more" : string.Empty;
         OnPropertyChanged(nameof(SleepTaskCountText));
     }
@@ -1405,8 +1594,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _store.Save(_state);
     }
 
-    private void CloseButton_Click(object sender, RoutedEventArgs e) => HideRequested?.Invoke(this, EventArgs.Empty);
-
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
+
+public sealed record CalendarDisplayItem(
+    TodoItem Task,
+    string DayLabel,
+    string TimeLabel,
+    string Text);

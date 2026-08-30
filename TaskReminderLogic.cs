@@ -142,7 +142,7 @@ public static partial class TaskReminderLogic
     };
 
     public static string FormatDueLabel(DateTime dueAt) =>
-        dueAt.ToString("MMM d HH:mm", CultureInfo.InvariantCulture).ToUpperInvariant();
+        dueAt.ToString("MMM dd HH:mm", CultureInfo.InvariantCulture).ToUpperInvariant();
 
     private static ParsedTaskInput WithPriority(
         string text, TimeSpan? time, TaskRecurrence recurrence, DateTime? dueAt = null)
