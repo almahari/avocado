@@ -14,6 +14,7 @@ public sealed class AppState
     public bool SmallSize { get; set; }
     public bool ResizeWhenInactive { get; set; }
     public SleepTimeOption SleepTime { get; set; } = InactivitySettings.Default;
+    public SleepFruitSize SleepFruitSize { get; set; } = SleepFruitSizeLogic.Default;
     public SleepResizeAnchor SleepResizeAnchor { get; set; } = SleepResizeAnchor.TopLeft;
     public ReminderSoundMode ReminderSound { get; set; } = ReminderSoundSettings.Default;
     public DoNotDisturbMode DoNotDisturb { get; set; } = DoNotDisturbMode.Off;

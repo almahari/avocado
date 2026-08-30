@@ -18,6 +18,7 @@ public partial class App : System.Windows.Application
     private Forms.ToolStripMenuItem? _quickAddShortcutItem;
     private Forms.ToolStripMenuItem? _clipboardTaskShortcutItem;
     private readonly Dictionary<SleepTimeOption, Forms.ToolStripMenuItem> _sleepTimeItems = [];
+    private readonly Dictionary<SleepFruitSize, Forms.ToolStripMenuItem> _sleepFruitSizeItems = [];
     private readonly Dictionary<SleepResizeAnchor, Forms.ToolStripMenuItem> _sleepResizeAnchorItems = [];
     private readonly Dictionary<ReminderSoundMode, Forms.ToolStripMenuItem> _reminderSoundItems = [];
     private readonly Dictionary<DoNotDisturbMode, Forms.ToolStripMenuItem> _doNotDisturbItems = [];
@@ -40,6 +41,7 @@ public partial class App : System.Windows.Application
         SetWindowMode(_window.IsAlwaysOnTop, persist: false);
         SetSizeMode(_window.IsSmallSize, persist: false);
         SetSleepTime(_window.CurrentSleepTime, persist: false);
+        SetSleepFruitSize(_window.CurrentSleepFruitSize, persist: false);
         SetSleepResizeAnchor(_window.CurrentSleepResizeAnchor, persist: false);
         SetReminderSound(_window.CurrentReminderSound, persist: false);
         SetDoNotDisturb(_window.CurrentDoNotDisturb, persist: false);
@@ -80,6 +82,14 @@ public partial class App : System.Windows.Application
                 choice.DisplayName, null, (_, _) => SetSleepTime(choice.Option));
             _sleepTimeItems[choice.Option] = choiceItem;
             sleepTimeItem.DropDownItems.Add(choiceItem);
+        }
+        var sleepFruitSizeItem = new Forms.ToolStripMenuItem("Sleep fruit size");
+        foreach (var choice in SleepFruitSizeLogic.Choices)
+        {
+            var choiceItem = new Forms.ToolStripMenuItem(
+                choice.DisplayName, null, (_, _) => SetSleepFruitSize(choice.Size));
+            _sleepFruitSizeItems[choice.Size] = choiceItem;
+            sleepFruitSizeItem.DropDownItems.Add(choiceItem);
         }
         var sleepResizeAnchorItem = new Forms.ToolStripMenuItem("Sleep resize anchor");
         foreach (var choice in SleepResizeLogic.Choices)
@@ -148,6 +158,7 @@ public partial class App : System.Windows.Application
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(_resizeWhenInactiveItem);
         menu.Items.Add(sleepTimeItem);
+        menu.Items.Add(sleepFruitSizeItem);
         menu.Items.Add(sleepResizeAnchorItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(themesItem);
@@ -446,6 +457,14 @@ public partial class App : System.Windows.Application
         _window.SetSleepTime(option, persist);
         foreach (var (sleepTime, menuItem) in _sleepTimeItems)
             menuItem.Checked = sleepTime == _window.CurrentSleepTime;
+    }
+
+    private void SetSleepFruitSize(SleepFruitSize size, bool persist = true)
+    {
+        if (_window is null) return;
+        _window.SetSleepFruitSize(size, persist);
+        foreach (var (sleepFruitSize, menuItem) in _sleepFruitSizeItems)
+            menuItem.Checked = sleepFruitSize == _window.CurrentSleepFruitSize;
     }
 
     private void SetSleepResizeAnchor(SleepResizeAnchor anchor, bool persist = true)

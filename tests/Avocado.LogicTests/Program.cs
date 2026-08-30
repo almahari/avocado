@@ -42,6 +42,7 @@ var originalState = new AppState
     SmallSize = true,
     ResizeWhenInactive = true,
     SleepTime = SleepTimeOption.OneMinute,
+    SleepFruitSize = SleepFruitSize.Small,
     SleepResizeAnchor = SleepResizeAnchor.BottomRight,
     ReminderSound = ReminderSoundMode.FruitSpecific,
     DoNotDisturb = DoNotDisturbMode.TenPmToSevenAm,
@@ -82,6 +83,7 @@ Assert(loadedState.AlwaysOnTop, "The selected window mode must persist.");
 Assert(loadedState.SmallSize, "The selected app size must persist.");
 Assert(loadedState.ResizeWhenInactive, "The resize-when-inactive option must persist.");
 Assert(loadedState.SleepTime == SleepTimeOption.OneMinute, "The selected sleep time must persist.");
+Assert(loadedState.SleepFruitSize == SleepFruitSize.Small, "The selected sleeping fruit size must persist.");
 Assert(loadedState.SleepResizeAnchor == SleepResizeAnchor.BottomRight,
     "The selected sleep resize anchor must persist.");
 Assert(loadedState.ReminderSound == ReminderSoundMode.FruitSpecific,
@@ -146,9 +148,17 @@ Assert(ArchiveRetentionSettings.Get((ArchiveRetentionOption)999).Option == Archi
 var normalSize = AppSizeLogic.Get(small: false);
 var smallSize = AppSizeLogic.Get(small: true);
 var sleepingSize = AppSizeLogic.Sleeping;
+var smallSleepingSize = SleepFruitSizeLogic.Get(SleepFruitSize.Small);
 Assert(normalSize == new AppSize(420, 540, 1), "Normal size must preserve the current window dimensions.");
 Assert(smallSize == new AppSize(210, 270, 0.5), "Small size must be exactly half of normal size.");
 Assert(sleepingSize == new AppSize(126, 162, 0.3), "Sleeping size must be 30% of normal size.");
+Assert(SleepFruitSizeLogic.Get(SleepFruitSize.Normal) == sleepingSize,
+    "Normal sleeping fruit size must preserve the current sleeping dimensions.");
+Assert(smallSleepingSize == new AppSize(63, 81, 0.15),
+    "Small sleeping fruit size must be exactly half of the current sleeping dimensions.");
+Assert(SleepFruitSizeLogic.Choices.Count == 2, "Both sleeping fruit size choices must be available.");
+Assert(SleepFruitSizeLogic.Normalize((SleepFruitSize)999) == SleepFruitSize.Normal,
+    "Unknown sleeping fruit sizes must safely fall back to Normal.");
 Assert(sleepingSize.Width < smallSize.Width && sleepingSize.Height < smallSize.Height,
     "The sleeping app must be smaller than the user-selected Small size.");
 Assert(SleepResizeLogic.Choices.Count == 4, "All four sleep resize anchors must be available.");

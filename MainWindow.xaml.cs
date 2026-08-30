@@ -153,6 +153,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public bool IsSmallSize => _state.SmallSize;
     public bool IsResizeWhenInactive => _state.ResizeWhenInactive;
     public SleepTimeOption CurrentSleepTime => InactivitySettings.Get(_state.SleepTime).Option;
+    public SleepFruitSize CurrentSleepFruitSize => SleepFruitSizeLogic.Normalize(_state.SleepFruitSize);
     public SleepResizeAnchor CurrentSleepResizeAnchor => SleepResizeLogic.Normalize(_state.SleepResizeAnchor);
     public ReminderSoundMode CurrentReminderSound => ReminderSoundSettings.Normalize(_state.ReminderSound);
     public DoNotDisturbMode CurrentDoNotDisturb => DoNotDisturbSettings.Normalize(_state.DoNotDisturb);
@@ -190,6 +191,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         RefreshCategoryFilters();
         SetAdaptivePersonality(_state.AdaptivePersonalityEnabled, persist: false);
         SetSleepTime(_state.SleepTime, persist: false);
+        SetSleepFruitSize(_state.SleepFruitSize, persist: false);
         SetSleepResizeAnchor(_state.SleepResizeAnchor, persist: false);
         SetReminderSound(_state.ReminderSound, persist: false);
         SetArchiveRetention(_state.ArchiveRetention, persist: false);
@@ -248,6 +250,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             _inactivityTimer.Stop();
             WakeFromInactivity();
         }
+        if (persist) SaveState();
+    }
+
+    public void SetSleepFruitSize(SleepFruitSize size, bool persist = true)
+    {
+        _state.SleepFruitSize = SleepFruitSizeLogic.Normalize(size);
+        if (_isSleeping) AnimateToSize(SleepFruitSizeLogic.Get(_state.SleepFruitSize));
         if (persist) SaveState();
     }
 
@@ -394,7 +403,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         AwakeContent.Visibility = Visibility.Collapsed;
         SleepOverlay.Visibility = Visibility.Visible;
         SleepOverlay.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(180)));
-        AnimateToSize(AppSizeLogic.Sleeping);
+        AnimateToSize(SleepFruitSizeLogic.Get(_state.SleepFruitSize));
     }
 
     private void WakeFromInactivity()

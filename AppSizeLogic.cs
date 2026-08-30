@@ -3,6 +3,36 @@ namespace Avocado;
 public readonly record struct AppSize(double Width, double Height, double Scale);
 public readonly record struct AppPosition(double Left, double Top);
 
+public enum SleepFruitSize
+{
+    Normal,
+    Small
+}
+
+public sealed record SleepFruitSizeChoice(SleepFruitSize Size, string DisplayName);
+
+public static class SleepFruitSizeLogic
+{
+    public const SleepFruitSize Default = SleepFruitSize.Normal;
+
+    public static IReadOnlyList<SleepFruitSizeChoice> Choices { get; } =
+    [
+        new(SleepFruitSize.Normal, "Normal"),
+        new(SleepFruitSize.Small, "Small")
+    ];
+
+    public static SleepFruitSize Normalize(SleepFruitSize size) =>
+        Choices.Any(choice => choice.Size == size) ? size : Default;
+
+    public static AppSize Get(SleepFruitSize size)
+    {
+        var normal = AppSizeLogic.Sleeping;
+        return Normalize(size) == SleepFruitSize.Small
+            ? new AppSize(normal.Width / 2, normal.Height / 2, normal.Scale / 2)
+            : normal;
+    }
+}
+
 public enum SleepResizeAnchor
 {
     TopLeft,
