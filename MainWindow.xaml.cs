@@ -165,6 +165,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         GlobalShortcutSettings.Normalize(_state.QuickAddShortcut, GlobalShortcutSettings.QuickAddDefault);
     public GlobalShortcutGesture CurrentClipboardTaskShortcut =>
         GlobalShortcutSettings.Normalize(_state.ClipboardTaskShortcut, GlobalShortcutSettings.ClipboardTaskDefault);
+    public GlobalShortcutGesture CurrentSleepNowShortcut =>
+        GlobalShortcutSettings.Normalize(_state.SleepNowShortcut, GlobalShortcutSettings.SleepNowDefault);
 
     public event EventHandler? HideRequested;
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -198,6 +200,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         SetTheme(_state.Theme, persist: false);
         _state.QuickAddShortcut = CurrentQuickAddShortcut;
         _state.ClipboardTaskShortcut = CurrentClipboardTaskShortcut;
+        _state.SleepNowShortcut = CurrentSleepNowShortcut;
         RefreshShortcutToolTip();
         RefreshOverflow();
         if (_state.NeedsMigration)
@@ -394,10 +397,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _inactivityTimer.Start();
     }
 
-    private void EnterSleepMode()
+    private void EnterSleepMode(bool force = false)
     {
         _inactivityTimer.Stop();
-        if (!_state.ResizeWhenInactive || _isSleeping) return;
+        if ((!_state.ResizeWhenInactive && !force) || _isSleeping) return;
+        StopShaking();
         _isSleeping = true;
         CollapseExpandedTask();
         AwakeContent.Visibility = Visibility.Collapsed;
@@ -495,23 +499,38 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     }
 
     public bool TrySetQuickAddShortcut(GlobalShortcutGesture shortcut) =>
-        TrySetGlobalShortcut(shortcut, quickAdd: true);
+        TrySetGlobalShortcut(shortcut, GlobalShortcutAction.QuickAdd);
 
     public bool TrySetClipboardTaskShortcut(GlobalShortcutGesture shortcut) =>
-        TrySetGlobalShortcut(shortcut, quickAdd: false);
+        TrySetGlobalShortcut(shortcut, GlobalShortcutAction.ClipboardTask);
 
-    private bool TrySetGlobalShortcut(GlobalShortcutGesture shortcut, bool quickAdd)
+    public bool TrySetSleepNowShortcut(GlobalShortcutGesture shortcut) =>
+        TrySetGlobalShortcut(shortcut, GlobalShortcutAction.SleepNow);
+
+    private bool TrySetGlobalShortcut(GlobalShortcutGesture shortcut, GlobalShortcutAction action)
     {
         if (!GlobalShortcutSettings.IsValid(shortcut)) return false;
         var previousQuickAdd = CurrentQuickAddShortcut;
         var previousClipboard = CurrentClipboardTaskShortcut;
-        if (quickAdd) _state.QuickAddShortcut = shortcut;
-        else _state.ClipboardTaskShortcut = shortcut;
+        var previousSleepNow = CurrentSleepNowShortcut;
+        switch (action)
+        {
+            case GlobalShortcutAction.QuickAdd:
+                _state.QuickAddShortcut = shortcut;
+                break;
+            case GlobalShortcutAction.ClipboardTask:
+                _state.ClipboardTaskShortcut = shortcut;
+                break;
+            case GlobalShortcutAction.SleepNow:
+                _state.SleepNowShortcut = shortcut;
+                break;
+        }
 
         if (_globalQuickAddHotkey is not null && !RegisterGlobalShortcuts())
         {
             _state.QuickAddShortcut = previousQuickAdd;
             _state.ClipboardTaskShortcut = previousClipboard;
+            _state.SleepNowShortcut = previousSleepNow;
             RegisterGlobalShortcuts();
             return false;
         }
@@ -528,8 +547,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             this,
             OpenFromGlobalQuickAdd,
             CreateTaskFromClipboard,
+            SleepNowFromGlobalShortcut,
             CurrentQuickAddShortcut,
-            CurrentClipboardTaskShortcut);
+            CurrentClipboardTaskShortcut,
+            CurrentSleepNowShortcut);
         return _globalQuickAddHotkey.AllAvailable;
     }
 
@@ -575,6 +596,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (clipboardText.Length > 500) clipboardText = clipboardText[..500];
         AddNewTasks(TaskReminderLogic.ParseMany(clipboardText));
     }
+
+    private void SleepNowFromGlobalShortcut() => EnterSleepMode(force: true);
 
     protected override void OnClosing(CancelEventArgs e)
     {

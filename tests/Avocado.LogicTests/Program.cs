@@ -52,6 +52,7 @@ var originalState = new AppState
     QuickAddShortcut = new GlobalShortcutGesture(
         GlobalShortcutModifiers.Alt | GlobalShortcutModifiers.Shift, 'Q'),
     ClipboardTaskShortcut = GlobalShortcutSettings.Disabled,
+    SleepNowShortcut = new GlobalShortcutGesture(GlobalShortcutModifiers.Control, 0x70),
     Left = 123,
     Top = 456,
     LastMonitor = "DISPLAY1",
@@ -96,7 +97,8 @@ Assert(!loadedState.AdaptivePersonalityEnabled,
     "The Adaptive personality tray option must persist.");
 Assert(loadedState.Theme == FruitThemeKind.Blueberry, "The selected fruit theme must persist.");
 Assert(loadedState.QuickAddShortcut == originalState.QuickAddShortcut &&
-       loadedState.ClipboardTaskShortcut.IsDisabled,
+       loadedState.ClipboardTaskShortcut.IsDisabled &&
+       loadedState.SleepNowShortcut == originalState.SleepNowShortcut,
     "Customized and disabled global shortcuts must persist.");
 Assert(loadedState.Left == 123 && loadedState.Top == 456, "Window position must persist.");
 Assert(loadedState.LastMonitor == "DISPLAY1" &&
@@ -354,6 +356,7 @@ Assert(calendarWeek.Any(item => item.Task.Text == "Monday" && item.At.DayOfWeek 
 Assert(CalendarLogic.StartOfWeek(new DateOnly(2026, 9, 3)) == new DateOnly(2026, 8, 31),
     "The week calendar must begin on Monday.");
 Assert(GlobalShortcutSettings.DisplayName(GlobalShortcutSettings.QuickAddDefault) == "Ctrl+Alt+N" &&
+       GlobalShortcutSettings.DisplayName(GlobalShortcutSettings.SleepNowDefault) == "Ctrl+Alt+S" &&
        GlobalShortcutSettings.DisplayName(GlobalShortcutSettings.Disabled) == "Disabled",
     "Global shortcuts must have clear tray-menu labels.");
 Assert(GlobalShortcutSettings.IsValid(new GlobalShortcutGesture(GlobalShortcutModifiers.Control, '8')) &&

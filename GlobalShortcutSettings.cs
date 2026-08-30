@@ -14,6 +14,13 @@ public readonly record struct GlobalShortcutGesture(GlobalShortcutModifiers Modi
     public bool IsDisabled => VirtualKey == 0;
 }
 
+public enum GlobalShortcutAction
+{
+    QuickAdd,
+    ClipboardTask,
+    SleepNow
+}
+
 public static class GlobalShortcutSettings
 {
     public static GlobalShortcutGesture QuickAddDefault { get; } =
@@ -21,6 +28,9 @@ public static class GlobalShortcutSettings
 
     public static GlobalShortcutGesture ClipboardTaskDefault { get; } =
         new(GlobalShortcutModifiers.Control | GlobalShortcutModifiers.Alt, 'V');
+
+    public static GlobalShortcutGesture SleepNowDefault { get; } =
+        new(GlobalShortcutModifiers.Control | GlobalShortcutModifiers.Alt, 'S');
 
     public static GlobalShortcutGesture Disabled => default;
 

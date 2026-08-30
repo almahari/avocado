@@ -16,9 +16,10 @@ dotnet run --project .\Avocado.csproj
 - Select `+`, press `Ctrl+N` while focused, or press the global `Ctrl+Alt+N` shortcut to add a task. Press Enter to save or Escape to cancel.
 - Separate multiple new tasks with `;`, for example `task 1; 12:00 task 2`. Each task is parsed independently.
 - Press the global `Ctrl+Alt+V` shortcut to immediately create a task from clipboard text. Normal task syntax for links, priorities, and reminders is supported.
+- Press the global `Ctrl+Alt+S` shortcut to put the fruit into sleeping mode immediately.
 - Double-click the tray icon to show or hide the avocado.
 - Open the tray icon menu to choose **Normal window**, **Always on top**, themes, reminder sounds, Do Not Disturb hours, startup behavior, global shortcuts, or **Exit**.
-- Choose **Global shortcuts** to change or disable the system-wide Quick Add and Clipboard Task shortcuts; press a modifier plus a letter, number, function key, or Space.
+- Choose **Global shortcuts** to change or disable the system-wide Quick Add, Clipboard Task, and Sleep Now shortcuts; press a modifier plus a letter, number, function key, or Space.
 - Toggle **Adaptive personality** in the tray menu to show or hide the fruit’s reactive face. The choice is saved.
 - From the tray menu, choose **Size → Normal** or **Size → Small**; Small is exactly half-size.
 - Enable **Resize when inactive** and choose a **Sleep time** to show a compact sleeping fruit with the active task count after inactivity; choose **Never** to disable sleeping. Use **Sleep fruit size → Normal** for the current sleeping size or **Small** for half that size. Hover or click to wake it.

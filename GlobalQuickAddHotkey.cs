@@ -8,6 +8,7 @@ public sealed class GlobalQuickAddHotkey : IDisposable
 {
     private const int QuickAddHotkeyId = 0xA70C;
     private const int ClipboardTaskHotkeyId = 0xA70D;
+    private const int SleepNowHotkeyId = 0xA70E;
     private const int WmHotkey = 0x0312;
     private const uint ModAlt = 0x0001;
     private const uint ModControl = 0x0002;
@@ -16,26 +17,34 @@ public sealed class GlobalQuickAddHotkey : IDisposable
     private readonly HwndSource? _source;
     private readonly Action _quickAddCallback;
     private readonly Action _clipboardTaskCallback;
+    private readonly Action _sleepNowCallback;
     private bool _quickAddRegistered;
     private bool _clipboardTaskRegistered;
+    private bool _sleepNowRegistered;
 
     public bool QuickAddAvailable => _quickAddGesture.IsDisabled || _quickAddRegistered;
     public bool ClipboardTaskAvailable => _clipboardTaskGesture.IsDisabled || _clipboardTaskRegistered;
-    public bool AllAvailable => QuickAddAvailable && ClipboardTaskAvailable;
+    public bool SleepNowAvailable => _sleepNowGesture.IsDisabled || _sleepNowRegistered;
+    public bool AllAvailable => QuickAddAvailable && ClipboardTaskAvailable && SleepNowAvailable;
     private readonly GlobalShortcutGesture _quickAddGesture;
     private readonly GlobalShortcutGesture _clipboardTaskGesture;
+    private readonly GlobalShortcutGesture _sleepNowGesture;
 
     public GlobalQuickAddHotkey(
         Window window,
         Action quickAddCallback,
         Action clipboardTaskCallback,
+        Action sleepNowCallback,
         GlobalShortcutGesture quickAddGesture,
-        GlobalShortcutGesture clipboardTaskGesture)
+        GlobalShortcutGesture clipboardTaskGesture,
+        GlobalShortcutGesture sleepNowGesture)
     {
         _quickAddCallback = quickAddCallback;
         _clipboardTaskCallback = clipboardTaskCallback;
+        _sleepNowCallback = sleepNowCallback;
         _quickAddGesture = quickAddGesture;
         _clipboardTaskGesture = clipboardTaskGesture;
+        _sleepNowGesture = sleepNowGesture;
         _handle = new WindowInteropHelper(window).Handle;
         _source = HwndSource.FromHwnd(_handle);
         _source?.AddHook(WindowMessageHook);
@@ -45,6 +54,9 @@ public sealed class GlobalQuickAddHotkey : IDisposable
         if (!clipboardTaskGesture.IsDisabled)
             _clipboardTaskRegistered = RegisterHotKey(_handle, ClipboardTaskHotkeyId,
                 ToNativeModifiers(clipboardTaskGesture.Modifiers), (uint)clipboardTaskGesture.VirtualKey);
+        if (!sleepNowGesture.IsDisabled)
+            _sleepNowRegistered = RegisterHotKey(_handle, SleepNowHotkeyId,
+                ToNativeModifiers(sleepNowGesture.Modifiers), (uint)sleepNowGesture.VirtualKey);
     }
 
     private IntPtr WindowMessageHook(IntPtr hwnd, int message, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -58,6 +70,9 @@ public sealed class GlobalQuickAddHotkey : IDisposable
             case ClipboardTaskHotkeyId:
                 _clipboardTaskCallback();
                 break;
+            case SleepNowHotkeyId:
+                _sleepNowCallback();
+                break;
             default:
                 return IntPtr.Zero;
         }
@@ -69,8 +84,10 @@ public sealed class GlobalQuickAddHotkey : IDisposable
     {
         if (_quickAddRegistered) UnregisterHotKey(_handle, QuickAddHotkeyId);
         if (_clipboardTaskRegistered) UnregisterHotKey(_handle, ClipboardTaskHotkeyId);
+        if (_sleepNowRegistered) UnregisterHotKey(_handle, SleepNowHotkeyId);
         _quickAddRegistered = false;
         _clipboardTaskRegistered = false;
+        _sleepNowRegistered = false;
         _source?.RemoveHook(WindowMessageHook);
     }
 

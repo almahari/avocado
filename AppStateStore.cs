@@ -23,6 +23,7 @@ public sealed class AppState
     public FruitThemeKind Theme { get; set; } = FruitThemeKind.Avocado;
     public GlobalShortcutGesture QuickAddShortcut { get; set; } = GlobalShortcutSettings.QuickAddDefault;
     public GlobalShortcutGesture ClipboardTaskShortcut { get; set; } = GlobalShortcutSettings.ClipboardTaskDefault;
+    public GlobalShortcutGesture SleepNowShortcut { get; set; } = GlobalShortcutSettings.SleepNowDefault;
     public double? Left { get; set; }
     public double? Top { get; set; }
     public string? LastMonitor { get; set; }

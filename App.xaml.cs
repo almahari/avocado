@@ -17,6 +17,7 @@ public partial class App : System.Windows.Application
     private Forms.ToolStripMenuItem? _adaptivePersonalityItem;
     private Forms.ToolStripMenuItem? _quickAddShortcutItem;
     private Forms.ToolStripMenuItem? _clipboardTaskShortcutItem;
+    private Forms.ToolStripMenuItem? _sleepNowShortcutItem;
     private readonly Dictionary<SleepTimeOption, Forms.ToolStripMenuItem> _sleepTimeItems = [];
     private readonly Dictionary<SleepFruitSize, Forms.ToolStripMenuItem> _sleepFruitSizeItems = [];
     private readonly Dictionary<SleepResizeAnchor, Forms.ToolStripMenuItem> _sleepResizeAnchorItems = [];
@@ -134,13 +135,16 @@ public partial class App : System.Windows.Application
         };
         var globalShortcutsItem = new Forms.ToolStripMenuItem("Global shortcuts");
         _quickAddShortcutItem = new Forms.ToolStripMenuItem(
-            string.Empty, null, (_, _) => ChangeGlobalShortcut(quickAdd: true));
+            string.Empty, null, (_, _) => ChangeGlobalShortcut(GlobalShortcutAction.QuickAdd));
         _clipboardTaskShortcutItem = new Forms.ToolStripMenuItem(
-            string.Empty, null, (_, _) => ChangeGlobalShortcut(quickAdd: false));
+            string.Empty, null, (_, _) => ChangeGlobalShortcut(GlobalShortcutAction.ClipboardTask));
+        _sleepNowShortcutItem = new Forms.ToolStripMenuItem(
+            string.Empty, null, (_, _) => ChangeGlobalShortcut(GlobalShortcutAction.SleepNow));
         var resetShortcutsItem = new Forms.ToolStripMenuItem(
             "Reset defaults", null, (_, _) => ResetGlobalShortcuts());
         globalShortcutsItem.DropDownItems.Add(_quickAddShortcutItem);
         globalShortcutsItem.DropDownItems.Add(_clipboardTaskShortcutItem);
+        globalShortcutsItem.DropDownItems.Add(_sleepNowShortcutItem);
         globalShortcutsItem.DropDownItems.Add(new Forms.ToolStripSeparator());
         globalShortcutsItem.DropDownItems.Add(resetShortcutsItem);
         UpdateGlobalShortcutLabels();
@@ -535,18 +539,29 @@ public partial class App : System.Windows.Application
             _openOnStartupItem.Checked = _startupRegistration.IsEnabled();
     }
 
-    private void ChangeGlobalShortcut(bool quickAdd)
+    private void ChangeGlobalShortcut(GlobalShortcutAction action)
     {
         if (_window is null) return;
-        var current = quickAdd
-            ? _window.CurrentQuickAddShortcut
-            : _window.CurrentClipboardTaskShortcut;
-        var actionName = quickAdd ? "Quick add" : "Clipboard task";
+        var current = action switch
+        {
+            GlobalShortcutAction.QuickAdd => _window.CurrentQuickAddShortcut,
+            GlobalShortcutAction.ClipboardTask => _window.CurrentClipboardTaskShortcut,
+            _ => _window.CurrentSleepNowShortcut
+        };
+        var actionName = action switch
+        {
+            GlobalShortcutAction.QuickAdd => "Quick add",
+            GlobalShortcutAction.ClipboardTask => "Clipboard task",
+            _ => "Sleep now"
+        };
         var selected = ShortcutCaptureDialog.Show(actionName, current);
         if (selected is not GlobalShortcutGesture shortcut) return;
-        var changed = quickAdd
-            ? _window.TrySetQuickAddShortcut(shortcut)
-            : _window.TrySetClipboardTaskShortcut(shortcut);
+        var changed = action switch
+        {
+            GlobalShortcutAction.QuickAdd => _window.TrySetQuickAddShortcut(shortcut),
+            GlobalShortcutAction.ClipboardTask => _window.TrySetClipboardTaskShortcut(shortcut),
+            _ => _window.TrySetSleepNowShortcut(shortcut)
+        };
         if (!changed)
         {
             Forms.MessageBox.Show(
@@ -563,7 +578,8 @@ public partial class App : System.Windows.Application
         if (_window is null) return;
         var quickAddChanged = _window.TrySetQuickAddShortcut(GlobalShortcutSettings.QuickAddDefault);
         var clipboardChanged = _window.TrySetClipboardTaskShortcut(GlobalShortcutSettings.ClipboardTaskDefault);
-        if (!quickAddChanged || !clipboardChanged)
+        var sleepNowChanged = _window.TrySetSleepNowShortcut(GlobalShortcutSettings.SleepNowDefault);
+        if (!quickAddChanged || !clipboardChanged || !sleepNowChanged)
         {
             Forms.MessageBox.Show(
                 "One or more default shortcuts are already being used by Windows or another application.",
@@ -583,6 +599,9 @@ public partial class App : System.Windows.Application
         if (_clipboardTaskShortcutItem is not null)
             _clipboardTaskShortcutItem.Text =
                 $"Clipboard task: {GlobalShortcutSettings.DisplayName(_window.CurrentClipboardTaskShortcut)}";
+        if (_sleepNowShortcutItem is not null)
+            _sleepNowShortcutItem.Text =
+                $"Sleep now: {GlobalShortcutSettings.DisplayName(_window.CurrentSleepNowShortcut)}";
     }
 
     private void ToggleWindow()
