@@ -43,6 +43,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private long _activeTimerStartedAt;
     private string _headerText = "AVOCADO";
     private FruitThemePalette _currentTheme = FruitThemes.Default;
+    private SeasonalSkin _currentSeasonalSkin = SeasonalSkins.Default;
     private bool _isShaking;
     private double _shakeOriginalLeft;
     private double _shakeOriginalTop;
@@ -161,6 +162,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         ArchiveRetentionSettings.Get(_state.ArchiveRetention).Option;
     public bool IsAdaptivePersonalityEnabled => _state.AdaptivePersonalityEnabled;
     public FruitThemeKind CurrentTheme => _currentTheme.Kind;
+    public SeasonalSkinKind CurrentSeasonalSkin => _currentSeasonalSkin.Kind;
     public GlobalShortcutGesture CurrentQuickAddShortcut =>
         GlobalShortcutSettings.Normalize(_state.QuickAddShortcut, GlobalShortcutSettings.QuickAddDefault);
     public GlobalShortcutGesture CurrentClipboardTaskShortcut =>
@@ -198,6 +200,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         SetReminderSound(_state.ReminderSound, persist: false);
         SetArchiveRetention(_state.ArchiveRetention, persist: false);
         SetTheme(_state.Theme, persist: false);
+        SetSeasonalSkin(_state.SeasonalSkin, persist: false);
         _state.QuickAddShortcut = CurrentQuickAddShortcut;
         _state.ClipboardTaskShortcut = CurrentClipboardTaskShortcut;
         _state.SleepNowShortcut = CurrentSleepNowShortcut;
@@ -344,6 +347,21 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         SleepMouth = personality.Mouth;
         RefreshAdaptivePersonality();
         if (_activeTimerTask is null) HeaderText = _currentTheme.DisplayName.ToUpperInvariant();
+        if (persist) SaveState();
+    }
+
+    public void SetSeasonalSkin(SeasonalSkinKind kind, bool persist = true)
+    {
+        _currentSeasonalSkin = SeasonalSkins.Get(kind);
+        _state.SeasonalSkin = _currentSeasonalSkin.Kind;
+        HalloweenPumpkinSkin.Visibility = _currentSeasonalSkin.Kind == SeasonalSkinKind.HalloweenPumpkin
+            ? Visibility.Visible : Visibility.Collapsed;
+        WinterCapSkin.Visibility = _currentSeasonalSkin.Kind == SeasonalSkinKind.WinterCap
+            ? Visibility.Visible : Visibility.Collapsed;
+        SpringBlossomSkin.Visibility = _currentSeasonalSkin.Kind == SeasonalSkinKind.SpringBlossom
+            ? Visibility.Visible : Visibility.Collapsed;
+        SummerShadesSkin.Visibility = _currentSeasonalSkin.Kind == SeasonalSkinKind.SummerShades
+            ? Visibility.Visible : Visibility.Collapsed;
         if (persist) SaveState();
     }
 

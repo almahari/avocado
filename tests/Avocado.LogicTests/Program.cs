@@ -49,6 +49,7 @@ var originalState = new AppState
     ArchiveRetention = ArchiveRetentionOption.ThirtyDays,
     AdaptivePersonalityEnabled = false,
     Theme = FruitThemeKind.Blueberry,
+    SeasonalSkin = SeasonalSkinKind.WinterCap,
     QuickAddShortcut = new GlobalShortcutGesture(
         GlobalShortcutModifiers.Alt | GlobalShortcutModifiers.Shift, 'Q'),
     ClipboardTaskShortcut = GlobalShortcutSettings.Disabled,
@@ -96,6 +97,7 @@ Assert(loadedState.ArchiveRetention == ArchiveRetentionOption.ThirtyDays,
 Assert(!loadedState.AdaptivePersonalityEnabled,
     "The Adaptive personality tray option must persist.");
 Assert(loadedState.Theme == FruitThemeKind.Blueberry, "The selected fruit theme must persist.");
+Assert(loadedState.SeasonalSkin == SeasonalSkinKind.WinterCap, "The selected seasonal skin must persist.");
 Assert(loadedState.QuickAddShortcut == originalState.QuickAddShortcut &&
        loadedState.ClipboardTaskShortcut.IsDisabled &&
        loadedState.SleepNowShortcut == originalState.SleepNowShortcut,
@@ -197,6 +199,12 @@ Assert(FruitThemes.All.Select(theme => FruitPersonalities.Get(theme.Kind)).Disti
     "Every fruit theme must have a distinct face and reminder profile.");
 Assert(FruitPersonalities.Get((FruitThemeKind)999) == FruitPersonalities.Get(FruitThemeKind.Avocado),
     "Unknown personality values must safely fall back to Avocado.");
+Assert(SeasonalSkins.All.Count == 5, "The tray must offer no skin and four seasonal skins.");
+Assert(SeasonalSkins.Default.Kind == SeasonalSkinKind.None, "Seasonal skins must be opt-in.");
+Assert(SeasonalSkins.All.Select(skin => skin.Kind).Distinct().Count() == SeasonalSkins.All.Count,
+    "Every seasonal skin must have a unique selection value.");
+Assert(SeasonalSkins.Get((SeasonalSkinKind)999) == SeasonalSkins.Default,
+    "Unknown saved seasonal skins must safely fall back to None.");
 
 var timedTask = TaskReminderLogic.Parse("17:50 task 1");
 Assert(timedTask.Text == "task 1" && timedTask.ReminderTime == new TimeSpan(17, 50, 0),

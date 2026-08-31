@@ -18,7 +18,8 @@ dotnet run --project .\Avocado.csproj
 - Press the global `Ctrl+Alt+V` shortcut to immediately create a task from clipboard text. Normal task syntax for links, priorities, and reminders is supported.
 - Press the global `Ctrl+Alt+S` shortcut to put the fruit into sleeping mode immediately.
 - Double-click the tray icon to show or hide the avocado.
-- Open the tray icon menu to choose **Normal window**, **Always on top**, themes, reminder sounds, Do Not Disturb hours, startup behavior, global shortcuts, or **Exit**.
+- Open the tray icon menu to choose **Normal window**, **Always on top**, themes, seasonal skins, reminder sounds, Do Not Disturb hours, startup behavior, global shortcuts, or **Exit**.
+- Seasonal skins are independent of fruit themes: dress any fruit as a **Halloween pumpkin**, add a **Winter cap**, a **Spring blossom** crown, or **Summer shades**. Choose **None** to remove the accessory; the selection is saved.
 - Choose **Global shortcuts** to change or disable the system-wide Quick Add, Clipboard Task, and Sleep Now shortcuts; press a modifier plus a letter, number, function key, or Space.
 - Toggle **Adaptive personality** in the tray menu to show or hide the fruit’s reactive face. The choice is saved.
 - From the tray menu, choose **Size → Normal** or **Size → Small**; Small is exactly half-size.

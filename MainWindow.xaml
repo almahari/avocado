@@ -34,6 +34,12 @@
         <SolidColorBrush x:Key="SeedHighlightBrush" Color="#9A5C32" />
         <SolidColorBrush x:Key="MutedInkBrush" Color="#315A2D" />
         <SolidColorBrush x:Key="TaskBrush" Color="#DFF08A" />
+        <SolidColorBrush x:Key="SeasonalDarkBrush" Color="#24152E" />
+        <SolidColorBrush x:Key="SeasonalOrangeBrush" Color="#F08A24" />
+        <SolidColorBrush x:Key="SeasonalRedBrush" Color="#B92D3A" />
+        <SolidColorBrush x:Key="SeasonalSnowBrush" Color="#FFFDF2" />
+        <SolidColorBrush x:Key="SeasonalPinkBrush" Color="#FF91B8" />
+        <SolidColorBrush x:Key="SeasonalYellowBrush" Color="#FFD94A" />
         <Style x:Key="PixelButton" TargetType="Button">
             <Setter Property="FontFamily" Value="Consolas" />
             <Setter Property="FontWeight" Value="Bold" />
@@ -185,6 +191,41 @@
             <Rectangle Fill="{DynamicResource MiddleBrush}" Width="16" Height="320" Margin="130,116,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.35" />
             <Rectangle Fill="{DynamicResource MiddleBrush}" Width="16" Height="352" Margin="202,84,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.35" />
             <Rectangle Fill="{DynamicResource MiddleBrush}" Width="16" Height="320" Margin="274,116,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.35" />
+        </Grid>
+
+        <!-- Optional accessories are independent from the selected fruit theme. -->
+        <Grid x:Name="HalloweenPumpkinSkin" Visibility="Collapsed" IsHitTestVisible="False">
+            <Polygon Fill="{DynamicResource SeasonalDarkBrush}" Points="98,68 146,36 178,36 178,4 242,4 242,36 274,36 322,68" />
+            <Rectangle Fill="{DynamicResource SeasonalDarkBrush}" Width="288" Height="20" Margin="66,68,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeasonalOrangeBrush}" Width="58" Height="42" Margin="302,82,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeasonalDarkBrush}" Width="8" Height="12" Margin="327,72,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeasonalDarkBrush}" Width="8" Height="8" Margin="313,94,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeasonalDarkBrush}" Width="8" Height="8" Margin="341,94,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeasonalDarkBrush}" Width="24" Height="7" Margin="319,110,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Grid>
+
+        <Grid x:Name="WinterCapSkin" Visibility="Collapsed" IsHitTestVisible="False">
+            <Polygon Fill="{DynamicResource SeasonalRedBrush}" Points="82,84 114,52 146,52 146,20 258,20 258,36 290,36 322,68 322,84" />
+            <Rectangle Fill="{DynamicResource SeasonalSnowBrush}" Width="272" Height="24" Margin="74,80,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeasonalSnowBrush}" Width="36" Height="36" Margin="296,36,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Grid>
+
+        <Grid x:Name="SpringBlossomSkin" Visibility="Collapsed" IsHitTestVisible="False">
+            <Rectangle Fill="{DynamicResource AccentBrush}" Width="236" Height="10" Margin="92,82,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Ellipse Fill="{DynamicResource SeasonalPinkBrush}" Width="42" Height="42" Margin="112,50,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Ellipse Fill="{DynamicResource SeasonalPinkBrush}" Width="42" Height="42" Margin="189,38,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Ellipse Fill="{DynamicResource SeasonalPinkBrush}" Width="42" Height="42" Margin="266,50,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Ellipse Fill="{DynamicResource SeasonalYellowBrush}" Width="14" Height="14" Margin="126,64,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Ellipse Fill="{DynamicResource SeasonalYellowBrush}" Width="14" Height="14" Margin="203,52,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Ellipse Fill="{DynamicResource SeasonalYellowBrush}" Width="14" Height="14" Margin="280,64,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Grid>
+
+        <Grid x:Name="SummerShadesSkin" Visibility="Collapsed" IsHitTestVisible="False" Panel.ZIndex="4">
+            <Rectangle Fill="{DynamicResource SeasonalDarkBrush}" Width="54" Height="30" Margin="139,374,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeasonalDarkBrush}" Width="54" Height="30" Margin="227,374,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeasonalDarkBrush}" Width="34" Height="8" Margin="193,380,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Rectangle Fill="{DynamicResource SeasonalSnowBrush}" Width="12" Height="6" Margin="147,380,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.65" />
+            <Rectangle Fill="{DynamicResource SeasonalSnowBrush}" Width="12" Height="6" Margin="235,380,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.65" />
         </Grid>
 
         <Grid x:Name="AwakeContent">

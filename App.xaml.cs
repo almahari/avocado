@@ -25,6 +25,7 @@ public partial class App : System.Windows.Application
     private readonly Dictionary<DoNotDisturbMode, Forms.ToolStripMenuItem> _doNotDisturbItems = [];
     private readonly Dictionary<ArchiveRetentionOption, Forms.ToolStripMenuItem> _archiveRetentionItems = [];
     private readonly Dictionary<FruitThemeKind, Forms.ToolStripMenuItem> _themeItems = [];
+    private readonly Dictionary<SeasonalSkinKind, Forms.ToolStripMenuItem> _seasonalSkinItems = [];
     private MainWindow? _window;
     private Icon? _trayThemeIcon;
     private readonly StartupRegistration _startupRegistration = new();
@@ -50,6 +51,7 @@ public partial class App : System.Windows.Application
         SetAdaptivePersonality(_window.IsAdaptivePersonalityEnabled, persist: false);
         SetResizeWhenInactive(_window.IsResizeWhenInactive, persist: false);
         SetTheme(_window.CurrentTheme, persist: false);
+        SetSeasonalSkin(_window.CurrentSeasonalSkin, persist: false);
         ShowWindow();
     }
 
@@ -107,6 +109,14 @@ public partial class App : System.Windows.Application
                 theme.DisplayName, null, (_, _) => SetTheme(theme.Kind));
             _themeItems[theme.Kind] = themeItem;
             themesItem.DropDownItems.Add(themeItem);
+        }
+        var seasonalSkinsItem = new Forms.ToolStripMenuItem("Seasonal skins");
+        foreach (var skin in SeasonalSkins.All)
+        {
+            var skinItem = new Forms.ToolStripMenuItem(
+                skin.DisplayName, null, (_, _) => SetSeasonalSkin(skin.Kind));
+            _seasonalSkinItems[skin.Kind] = skinItem;
+            seasonalSkinsItem.DropDownItems.Add(skinItem);
         }
         var reminderSoundItem = new Forms.ToolStripMenuItem("Reminder sound");
         foreach (var choice in ReminderSoundSettings.Choices)
@@ -166,6 +176,7 @@ public partial class App : System.Windows.Application
         menu.Items.Add(sleepResizeAnchorItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(themesItem);
+        menu.Items.Add(seasonalSkinsItem);
         menu.Items.Add(_adaptivePersonalityItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(reminderSoundItem);
@@ -173,7 +184,8 @@ public partial class App : System.Windows.Application
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(exitItem);
 
-        _trayThemeIcon = CreateFruitIcon(FruitThemes.Get(_window!.CurrentTheme));
+        _trayThemeIcon = CreateFruitIcon(
+            FruitThemes.Get(_window!.CurrentTheme), _window.CurrentSeasonalSkin);
         _trayIcon = new Forms.NotifyIcon
         {
             Icon = _trayThemeIcon,
@@ -184,7 +196,7 @@ public partial class App : System.Windows.Application
         _trayIcon.DoubleClick += (_, _) => ToggleWindow();
     }
 
-    private static Icon CreateFruitIcon(FruitThemePalette theme)
+    private static Icon CreateFruitIcon(FruitThemePalette theme, SeasonalSkinKind seasonalSkin)
     {
         using var bitmap = new Bitmap(32, 32);
         using var graphics = Graphics.FromImage(bitmap);
@@ -238,11 +250,57 @@ public partial class App : System.Windows.Application
                 DrawAvocadoIcon(graphics, skin, flesh, seed);
                 break;
         }
+        DrawSeasonalIcon(graphics, seasonalSkin);
         var handle = bitmap.GetHicon();
         using var temporary = Icon.FromHandle(handle);
         var icon = (Icon)temporary.Clone();
         DestroyIcon(handle);
         return icon;
+    }
+
+    private static void DrawSeasonalIcon(Graphics graphics, SeasonalSkinKind skin)
+    {
+        using var dark = new SolidBrush(Color.FromArgb(255, 36, 21, 46));
+        using var orange = new SolidBrush(Color.FromArgb(255, 240, 138, 36));
+        using var red = new SolidBrush(Color.FromArgb(255, 185, 45, 58));
+        using var snow = new SolidBrush(Color.FromArgb(255, 255, 253, 242));
+        using var pink = new SolidBrush(Color.FromArgb(255, 255, 145, 184));
+        using var yellow = new SolidBrush(Color.FromArgb(255, 255, 217, 74));
+
+        switch (skin)
+        {
+            case SeasonalSkinKind.HalloweenPumpkin:
+                graphics.FillRectangle(dark, 5, 2, 22, 3);
+                graphics.FillRectangle(dark, 10, 0, 12, 3);
+                graphics.FillRectangle(orange, 24, 5, 7, 7);
+                graphics.FillRectangle(dark, 26, 7, 1, 1);
+                graphics.FillRectangle(dark, 29, 7, 1, 1);
+                graphics.FillRectangle(dark, 27, 10, 2, 1);
+                break;
+            case SeasonalSkinKind.WinterCap:
+                graphics.FillRectangle(red, 6, 1, 20, 5);
+                graphics.FillRectangle(red, 19, 0, 8, 4);
+                graphics.FillRectangle(snow, 5, 5, 23, 3);
+                graphics.FillRectangle(snow, 26, 1, 5, 5);
+                break;
+            case SeasonalSkinKind.SpringBlossom:
+                DrawIconFlower(graphics, pink, yellow, 8, 4);
+                DrawIconFlower(graphics, pink, yellow, 16, 2);
+                DrawIconFlower(graphics, pink, yellow, 24, 4);
+                break;
+            case SeasonalSkinKind.SummerShades:
+                graphics.FillRectangle(dark, 8, 15, 7, 4);
+                graphics.FillRectangle(dark, 18, 15, 7, 4);
+                graphics.FillRectangle(dark, 15, 16, 3, 1);
+                break;
+        }
+    }
+
+    private static void DrawIconFlower(Graphics graphics, Brush petal, Brush center, int x, int y)
+    {
+        graphics.FillRectangle(petal, x - 2, y, 5, 3);
+        graphics.FillRectangle(petal, x, y - 2, 2, 7);
+        graphics.FillRectangle(center, x, y, 2, 2);
     }
 
     private static void DrawAvocadoIcon(Graphics graphics, Brush skin, Brush flesh, Brush seed)
@@ -519,8 +577,23 @@ public partial class App : System.Windows.Application
             menuItem.Checked = themeKind == _window.CurrentTheme;
 
         if (_trayIcon is null) return;
-        var nextIcon = CreateFruitIcon(FruitThemes.Get(_window.CurrentTheme));
+        var nextIcon = CreateFruitIcon(
+            FruitThemes.Get(_window.CurrentTheme), _window.CurrentSeasonalSkin);
         _trayIcon.Icon = nextIcon;
+        _trayThemeIcon?.Dispose();
+        _trayThemeIcon = nextIcon;
+    }
+
+    private void SetSeasonalSkin(SeasonalSkinKind kind, bool persist = true)
+    {
+        if (_window is null) return;
+        _window.SetSeasonalSkin(kind, persist);
+        foreach (var (skinKind, menuItem) in _seasonalSkinItems)
+            menuItem.Checked = skinKind == _window.CurrentSeasonalSkin;
+
+        var nextIcon = CreateFruitIcon(
+            FruitThemes.Get(_window.CurrentTheme), _window.CurrentSeasonalSkin);
+        if (_trayIcon is not null) _trayIcon.Icon = nextIcon;
         _trayThemeIcon?.Dispose();
         _trayThemeIcon = nextIcon;
     }

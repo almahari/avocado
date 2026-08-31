@@ -14,6 +14,7 @@
     <Compile Include="..\..\InactivitySettings.cs" Link="InactivitySettings.cs" />
     <Compile Include="..\..\TaskTimerLogic.cs" Link="TaskTimerLogic.cs" />
     <Compile Include="..\..\FruitThemes.cs" Link="FruitThemes.cs" />
+    <Compile Include="..\..\SeasonalSkins.cs" Link="SeasonalSkins.cs" />
     <Compile Include="..\..\TaskReminderLogic.cs" Link="TaskReminderLogic.cs" />
     <Compile Include="..\..\StartupRegistration.cs" Link="StartupRegistration.cs" />
     <Compile Include="..\..\ReminderSoundSettings.cs" Link="ReminderSoundSettings.cs" />
