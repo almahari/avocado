@@ -18,7 +18,8 @@ public enum GlobalShortcutAction
 {
     QuickAdd,
     ClipboardTask,
-    SleepNow
+    SleepNow,
+    WakeUp
 }
 
 public static class GlobalShortcutSettings
@@ -31,6 +32,9 @@ public static class GlobalShortcutSettings
 
     public static GlobalShortcutGesture SleepNowDefault { get; } =
         new(GlobalShortcutModifiers.Control | GlobalShortcutModifiers.Alt, 'S');
+
+    public static GlobalShortcutGesture WakeUpDefault { get; } =
+        new(GlobalShortcutModifiers.Control | GlobalShortcutModifiers.Alt, 'W');
 
     public static GlobalShortcutGesture Disabled => default;
 

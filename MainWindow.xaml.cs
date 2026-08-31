@@ -169,6 +169,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         GlobalShortcutSettings.Normalize(_state.ClipboardTaskShortcut, GlobalShortcutSettings.ClipboardTaskDefault);
     public GlobalShortcutGesture CurrentSleepNowShortcut =>
         GlobalShortcutSettings.Normalize(_state.SleepNowShortcut, GlobalShortcutSettings.SleepNowDefault);
+    public GlobalShortcutGesture CurrentWakeShortcut =>
+        GlobalShortcutSettings.Normalize(_state.WakeShortcut, GlobalShortcutSettings.WakeUpDefault);
 
     public event EventHandler? HideRequested;
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -204,6 +206,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _state.QuickAddShortcut = CurrentQuickAddShortcut;
         _state.ClipboardTaskShortcut = CurrentClipboardTaskShortcut;
         _state.SleepNowShortcut = CurrentSleepNowShortcut;
+        _state.WakeShortcut = CurrentWakeShortcut;
         RefreshShortcutToolTip();
         RefreshOverflow();
         if (_state.NeedsMigration)
@@ -525,12 +528,16 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public bool TrySetSleepNowShortcut(GlobalShortcutGesture shortcut) =>
         TrySetGlobalShortcut(shortcut, GlobalShortcutAction.SleepNow);
 
+    public bool TrySetWakeShortcut(GlobalShortcutGesture shortcut) =>
+        TrySetGlobalShortcut(shortcut, GlobalShortcutAction.WakeUp);
+
     private bool TrySetGlobalShortcut(GlobalShortcutGesture shortcut, GlobalShortcutAction action)
     {
         if (!GlobalShortcutSettings.IsValid(shortcut)) return false;
         var previousQuickAdd = CurrentQuickAddShortcut;
         var previousClipboard = CurrentClipboardTaskShortcut;
         var previousSleepNow = CurrentSleepNowShortcut;
+        var previousWake = CurrentWakeShortcut;
         switch (action)
         {
             case GlobalShortcutAction.QuickAdd:
@@ -542,6 +549,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             case GlobalShortcutAction.SleepNow:
                 _state.SleepNowShortcut = shortcut;
                 break;
+            case GlobalShortcutAction.WakeUp:
+                _state.WakeShortcut = shortcut;
+                break;
         }
 
         if (_globalQuickAddHotkey is not null && !RegisterGlobalShortcuts())
@@ -549,6 +559,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             _state.QuickAddShortcut = previousQuickAdd;
             _state.ClipboardTaskShortcut = previousClipboard;
             _state.SleepNowShortcut = previousSleepNow;
+            _state.WakeShortcut = previousWake;
             RegisterGlobalShortcuts();
             return false;
         }
@@ -566,9 +577,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             OpenFromGlobalQuickAdd,
             CreateTaskFromClipboard,
             SleepNowFromGlobalShortcut,
+            WakeFromGlobalShortcut,
             CurrentQuickAddShortcut,
             CurrentClipboardTaskShortcut,
-            CurrentSleepNowShortcut);
+            CurrentSleepNowShortcut,
+            CurrentWakeShortcut);
         return _globalQuickAddHotkey.AllAvailable;
     }
 
@@ -620,6 +633,16 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     }
 
     private void SleepNowFromGlobalShortcut() => EnterSleepMode(force: true);
+
+    public void WakeFromGlobalShortcut()
+    {
+        if (!_isSleeping) return;
+        WakeFromInactivity();
+        if (!IsVisible) Show();
+        if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
+        Activate();
+        NotifyInteraction();
+    }
 
     protected override void OnClosing(CancelEventArgs e)
     {

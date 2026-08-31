@@ -54,6 +54,7 @@ var originalState = new AppState
         GlobalShortcutModifiers.Alt | GlobalShortcutModifiers.Shift, 'Q'),
     ClipboardTaskShortcut = GlobalShortcutSettings.Disabled,
     SleepNowShortcut = new GlobalShortcutGesture(GlobalShortcutModifiers.Control, 0x70),
+    WakeShortcut = new GlobalShortcutGesture(GlobalShortcutModifiers.Control | GlobalShortcutModifiers.Alt, 'W'),
     Left = 123,
     Top = 456,
     LastMonitor = "DISPLAY1",
@@ -100,7 +101,8 @@ Assert(loadedState.Theme == FruitThemeKind.Blueberry, "The selected fruit theme 
 Assert(loadedState.SeasonalSkin == SeasonalSkinKind.WinterCap, "The selected seasonal skin must persist.");
 Assert(loadedState.QuickAddShortcut == originalState.QuickAddShortcut &&
        loadedState.ClipboardTaskShortcut.IsDisabled &&
-       loadedState.SleepNowShortcut == originalState.SleepNowShortcut,
+       loadedState.SleepNowShortcut == originalState.SleepNowShortcut &&
+       loadedState.WakeShortcut == originalState.WakeShortcut,
     "Customized and disabled global shortcuts must persist.");
 Assert(loadedState.Left == 123 && loadedState.Top == 456, "Window position must persist.");
 Assert(loadedState.LastMonitor == "DISPLAY1" &&
