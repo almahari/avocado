@@ -699,11 +699,38 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             SortPanel.Visibility = Visibility.Collapsed;
         if (!IsWithinElement(source, CalendarPanel) && !IsWithinElement(source, CalendarButton))
             CalendarPanel.Visibility = Visibility.Collapsed;
+        if (!IsWithinElement(source, FruitContextMenu))
+            CloseFruitContextMenu();
         if (!IsWithinTaskRow(source)) CollapseExpandedTask();
     }
 
     private void Window_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e) =>
         StopShaking();
+
+    private void Window_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        NotifyInteraction();
+        ShowFruitContextMenu(e.GetPosition(this));
+    }
+
+    private void ShowFruitContextMenu(System.Windows.Point position)
+    {
+        FruitContextMenu.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
+        var menuWidth = FruitContextMenu.DesiredSize.Width;
+        var menuHeight = FruitContextMenu.DesiredSize.Height;
+        var x = Math.Max(0, Math.Min(position.X, ActualWidth - menuWidth));
+        var y = Math.Max(0, Math.Min(position.Y, ActualHeight - menuHeight));
+        FruitContextMenu.Margin = new Thickness(x, y, 0, 0);
+        FruitContextMenu.Visibility = Visibility.Visible;
+    }
+
+    private void CloseFruitContextMenu() => FruitContextMenu.Visibility = Visibility.Collapsed;
+
+    private void FruitSleepMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        CloseFruitContextMenu();
+        EnterSleepMode(force: true);
+    }
 
     private void Window_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
     {
@@ -718,6 +745,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         CloseTaskActions();
         SortPanel.Visibility = Visibility.Collapsed;
         CalendarPanel.Visibility = Visibility.Collapsed;
+        CloseFruitContextMenu();
     }
 
     private static bool HasActionControlAncestor(DependencyObject? source)

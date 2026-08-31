@@ -15,6 +15,7 @@
         PreviewKeyDown="Window_PreviewKeyDown"
         PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown"
         PreviewMouseWheel="Window_PreviewMouseWheel"
+        MouseRightButtonUp="Window_MouseRightButtonUp"
         MouseEnter="Window_MouseEnter"
         MouseLeftButtonDown="Window_MouseLeftButtonDown">
     <Window.Resources>
@@ -645,6 +646,20 @@
                        FontFamily="Consolas" FontSize="28" FontWeight="Bold"
                        Foreground="{DynamicResource MutedInkBrush}" />
         </Grid>
+
+        <Border x:Name="FruitContextMenu" Panel.ZIndex="30" Visibility="Collapsed"
+                VerticalAlignment="Top" HorizontalAlignment="Left"
+                Background="{DynamicResource CreamBrush}" BorderBrush="{DynamicResource InkBrush}"
+                BorderThickness="3">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="12" ShadowDepth="3" Opacity="0.35" Color="#000000" />
+            </Border.Effect>
+            <StackPanel>
+                <Button Content="Sleep" Width="118" Height="32"
+                        Style="{StaticResource PixelButton}"
+                        Click="FruitSleepMenuItem_Click" />
+            </StackPanel>
+        </Border>
 
     </Grid>
 </Window>
