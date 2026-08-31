@@ -682,10 +682,12 @@
                        HorizontalAlignment="Center" VerticalAlignment="Top" TextAlignment="Center"
                        FontFamily="Consolas" FontSize="34" FontWeight="Bold"
                        Foreground="{DynamicResource InkBrush}" />
-            <TextBlock Text="{Binding SleepTaskCountText}" Margin="0,354,0,0"
-                       HorizontalAlignment="Center" VerticalAlignment="Top" TextAlignment="Center"
-                       FontFamily="Consolas" FontSize="28" FontWeight="Bold"
-                       Foreground="{DynamicResource MutedInkBrush}" />
+            <TextBlock Text="{Binding SleepTaskCountText}" Width="220" Height="180"
+                       Margin="0,300,0,0" Panel.ZIndex="25"
+                       HorizontalAlignment="Center" VerticalAlignment="Top"
+                       TextAlignment="Center"
+                       FontFamily="Consolas" FontSize="144" FontWeight="Bold"
+                       Foreground="{DynamicResource InkBrush}" />
         </Grid>
 
         <Border x:Name="FruitContextMenu" Panel.ZIndex="30" Visibility="Collapsed"

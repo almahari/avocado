@@ -257,8 +257,8 @@ Assert(!TaskReminderLogic.IsDue(new TimeSpan(17, 50, 0), reminderMoment, new Dat
 Assert(TaskReminderLogic.IsDue(
         new TimeSpan(17, 50, 0), reminderMoment, new DateOnly(2026, 8, 28), TaskRecurrence.Daily),
     "An explicit daily reminder must become eligible again on a later day.");
-Assert(TaskReminderLogic.ShakeDuration == TimeSpan.FromSeconds(10),
-    "A due reminder must shake the app for exactly ten seconds.");
+Assert(TaskReminderLogic.ShakeDuration == TimeSpan.FromSeconds(2),
+    "A due reminder must shake the app for exactly two seconds.");
 Assert(TaskReminderLogic.IsSnoozeDue(reminderMoment.AddMinutes(-1), reminderMoment),
     "A reminder must fire when its snooze time is reached.");
 Assert(!TaskReminderLogic.IsSnoozeDue(reminderMoment.AddMinutes(1), reminderMoment),

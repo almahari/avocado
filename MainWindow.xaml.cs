@@ -122,7 +122,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         get
         {
             var count = _tasks.Count(task => !task.IsCompleted);
-            return count == 1 ? "1 task" : $"{count} tasks";
+            return count.ToString();
         }
     }
     public string AdaptiveEyes
@@ -598,6 +598,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void CreateTaskFromClipboard()
     {
+        var wasSleeping = _isSleeping;
         string clipboardText;
         try
         {
@@ -612,7 +613,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
         if (clipboardText.Length == 0) return;
         if (clipboardText.Length > 500) clipboardText = clipboardText[..500];
-        AddNewTasks(TaskReminderLogic.ParseMany(clipboardText));
+        if (AddNewTasks(TaskReminderLogic.ParseMany(clipboardText)) && wasSleeping)
+        {
+            ShakeWindow();
+        }
     }
 
     private void SleepNowFromGlobalShortcut() => EnterSleepMode(force: true);
@@ -1083,10 +1087,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             RefreshTaskView();
             return;
         }
-        AddNewTasks(TaskReminderLogic.ParseMany(TaskInput.Text));
+        _ = AddNewTasks(TaskReminderLogic.ParseMany(TaskInput.Text));
     }
 
-    private void AddNewTasks(IEnumerable<ParsedTaskInput> parsedTasks)
+    private bool AddNewTasks(IEnumerable<ParsedTaskInput> parsedTasks)
     {
         var addedAny = false;
         foreach (var parsed in parsedTasks)
@@ -1102,12 +1106,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             });
             addedAny = true;
         }
-        if (!addedAny) return;
+        if (!addedAny) return false;
         AddPanel.Visibility = Visibility.Collapsed;
         RefreshTaskView();
         SaveState();
         RefreshAdaptivePersonality();
         Dispatcher.BeginInvoke(TaskScrollViewer.ScrollToEnd, DispatcherPriority.Loaded);
+        return true;
     }
 
     private void TaskCheckBox_Click(object sender, RoutedEventArgs e)
