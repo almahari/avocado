@@ -61,6 +61,7 @@ public partial class App : System.Windows.Application
         var menu = new Forms.ContextMenuStrip();
         var showItem = new Forms.ToolStripMenuItem("Show avocado", null, (_, _) => ToggleWindow());
         var archiveItem = new Forms.ToolStripMenuItem("Completed archive", null, (_, _) => ShowArchive());
+        var taskHelpItem = new Forms.ToolStripMenuItem("Task help", null, (_, _) => ShowTaskHelp());
         var archiveCleanupItem = new Forms.ToolStripMenuItem("Archive cleanup");
         foreach (var choice in ArchiveRetentionSettings.Choices)
         {
@@ -166,6 +167,7 @@ public partial class App : System.Windows.Application
 
         menu.Items.Add(showItem);
         menu.Items.Add(archiveItem);
+        menu.Items.Add(taskHelpItem);
         menu.Items.Add(archiveCleanupItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(_normalItem);
@@ -702,6 +704,8 @@ public partial class App : System.Windows.Application
         ShowWindow();
         _window?.ShowArchive();
     }
+
+    private static void ShowTaskHelp() => TaskHelpDialog.ShowHelp();
 
     private void ShowWindow()
     {
