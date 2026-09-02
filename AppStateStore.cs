@@ -16,6 +16,7 @@ public sealed class AppState
     public SleepTimeOption SleepTime { get; set; } = InactivitySettings.Default;
     public SleepFruitSize SleepFruitSize { get; set; } = SleepFruitSizeLogic.Default;
     public SleepResizeAnchor SleepResizeAnchor { get; set; } = SleepResizeAnchor.TopLeft;
+    public SleepReminderRepeatOption SleepReminderRepeat { get; set; } = SleepReminderRepeatSettings.Default;
     public ReminderSoundMode ReminderSound { get; set; } = ReminderSoundSettings.Default;
     public DoNotDisturbMode DoNotDisturb { get; set; } = DoNotDisturbMode.Off;
     public ArchiveRetentionOption ArchiveRetention { get; set; } = ArchiveRetentionSettings.Default;

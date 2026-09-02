@@ -12,6 +12,7 @@
     <Compile Include="..\..\LinkParser.cs" Link="LinkParser.cs" />
     <Compile Include="..\..\AppSizeLogic.cs" Link="AppSizeLogic.cs" />
     <Compile Include="..\..\InactivitySettings.cs" Link="InactivitySettings.cs" />
+    <Compile Include="..\..\SleepReminderRepeatSettings.cs" Link="SleepReminderRepeatSettings.cs" />
     <Compile Include="..\..\TaskTimerLogic.cs" Link="TaskTimerLogic.cs" />
     <Compile Include="..\..\FruitThemes.cs" Link="FruitThemes.cs" />
     <Compile Include="..\..\SeasonalSkins.cs" Link="SeasonalSkins.cs" />

@@ -22,6 +22,7 @@ public partial class App : System.Windows.Application
     private readonly Dictionary<SleepTimeOption, Forms.ToolStripMenuItem> _sleepTimeItems = [];
     private readonly Dictionary<SleepFruitSize, Forms.ToolStripMenuItem> _sleepFruitSizeItems = [];
     private readonly Dictionary<SleepResizeAnchor, Forms.ToolStripMenuItem> _sleepResizeAnchorItems = [];
+    private readonly Dictionary<SleepReminderRepeatOption, Forms.ToolStripMenuItem> _sleepReminderRepeatItems = [];
     private readonly Dictionary<ReminderSoundMode, Forms.ToolStripMenuItem> _reminderSoundItems = [];
     private readonly Dictionary<DoNotDisturbMode, Forms.ToolStripMenuItem> _doNotDisturbItems = [];
     private readonly Dictionary<ArchiveRetentionOption, Forms.ToolStripMenuItem> _archiveRetentionItems = [];
@@ -46,6 +47,7 @@ public partial class App : System.Windows.Application
         SetSleepTime(_window.CurrentSleepTime, persist: false);
         SetSleepFruitSize(_window.CurrentSleepFruitSize, persist: false);
         SetSleepResizeAnchor(_window.CurrentSleepResizeAnchor, persist: false);
+        SetSleepReminderRepeat(_window.CurrentSleepReminderRepeat, persist: false);
         SetReminderSound(_window.CurrentReminderSound, persist: false);
         SetDoNotDisturb(_window.CurrentDoNotDisturb, persist: false);
         SetArchiveRetention(_window.CurrentArchiveRetention, persist: false);
@@ -103,6 +105,14 @@ public partial class App : System.Windows.Application
                 choice.DisplayName, null, (_, _) => SetSleepResizeAnchor(choice.Anchor));
             _sleepResizeAnchorItems[choice.Anchor] = choiceItem;
             sleepResizeAnchorItem.DropDownItems.Add(choiceItem);
+        }
+        var sleepReminderRepeatItem = new Forms.ToolStripMenuItem("Sleep reminder repeat");
+        foreach (var choice in SleepReminderRepeatSettings.Choices)
+        {
+            var choiceItem = new Forms.ToolStripMenuItem(
+                choice.DisplayName, null, (_, _) => SetSleepReminderRepeat(choice.Option));
+            _sleepReminderRepeatItems[choice.Option] = choiceItem;
+            sleepReminderRepeatItem.DropDownItems.Add(choiceItem);
         }
         var themesItem = new Forms.ToolStripMenuItem("Themes");
         foreach (var theme in FruitThemes.All)
@@ -180,6 +190,7 @@ public partial class App : System.Windows.Application
         menu.Items.Add(sleepTimeItem);
         menu.Items.Add(sleepFruitSizeItem);
         menu.Items.Add(sleepResizeAnchorItem);
+        menu.Items.Add(sleepReminderRepeatItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(themesItem);
         menu.Items.Add(seasonalSkinsItem);
@@ -541,6 +552,14 @@ public partial class App : System.Windows.Application
         _window.SetSleepResizeAnchor(anchor, persist);
         foreach (var (resizeAnchor, menuItem) in _sleepResizeAnchorItems)
             menuItem.Checked = resizeAnchor == _window.CurrentSleepResizeAnchor;
+    }
+
+    private void SetSleepReminderRepeat(SleepReminderRepeatOption option, bool persist = true)
+    {
+        if (_window is null) return;
+        _window.SetSleepReminderRepeat(option, persist);
+        foreach (var (repeatOption, menuItem) in _sleepReminderRepeatItems)
+            menuItem.Checked = repeatOption == _window.CurrentSleepReminderRepeat;
     }
 
     private void SetReminderSound(ReminderSoundMode mode, bool persist = true)

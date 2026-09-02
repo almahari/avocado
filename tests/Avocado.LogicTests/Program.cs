@@ -44,6 +44,7 @@ var originalState = new AppState
     SleepTime = SleepTimeOption.OneMinute,
     SleepFruitSize = SleepFruitSize.Small,
     SleepResizeAnchor = SleepResizeAnchor.BottomRight,
+    SleepReminderRepeat = SleepReminderRepeatOption.TwentyMinutes,
     ReminderSound = ReminderSoundMode.FruitSpecific,
     DoNotDisturb = DoNotDisturbMode.TenPmToSevenAm,
     ArchiveRetention = ArchiveRetentionOption.ThirtyDays,
@@ -89,6 +90,8 @@ Assert(loadedState.SleepTime == SleepTimeOption.OneMinute, "The selected sleep t
 Assert(loadedState.SleepFruitSize == SleepFruitSize.Small, "The selected sleeping fruit size must persist.");
 Assert(loadedState.SleepResizeAnchor == SleepResizeAnchor.BottomRight,
     "The selected sleep resize anchor must persist.");
+Assert(loadedState.SleepReminderRepeat == SleepReminderRepeatOption.TwentyMinutes,
+    "The selected sleep reminder repeat interval must persist.");
 Assert(loadedState.ReminderSound == ReminderSoundMode.FruitSpecific,
     "The selected reminder sound mode must persist.");
 Assert(loadedState.DoNotDisturb == DoNotDisturbMode.TenPmToSevenAm,
@@ -186,6 +189,14 @@ Assert(InactivitySettings.Get(SleepTimeOption.Never).Duration is null,
     "The Never sleep-time option must disable the inactivity timeout.");
 Assert(InactivitySettings.Get((SleepTimeOption)999).Option == SleepTimeOption.TwoMinutes,
     "Unknown saved sleep times must safely fall back to two minutes.");
+Assert(SleepReminderRepeatSettings.Default == SleepReminderRepeatOption.TenMinutes,
+    "The default sleep reminder repeat interval must remain ten minutes.");
+Assert(SleepReminderRepeatSettings.Choices.Select(choice => choice.Interval).SequenceEqual(
+        [TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(20), TimeSpan.FromMinutes(30)]),
+    "Sleep reminder repeat choices must be 5, 10, 20, and 30 minutes.");
+Assert(SleepReminderRepeatSettings.Get((SleepReminderRepeatOption)999).Option ==
+       SleepReminderRepeatOption.TenMinutes,
+    "Unknown sleep reminder repeat intervals must safely fall back to ten minutes.");
 Assert(TaskTimerLogic.Format(TimeSpan.Zero) == "00:00:00", "A new task timer must start at zero.");
 Assert(TaskTimerLogic.Format(new TimeSpan(1, 2, 3, 4)) == "26:03:04",
     "Task timer formatting must preserve total hours beyond one day.");
@@ -261,6 +272,8 @@ Assert(TaskReminderLogic.IsDue(
     "An explicit daily reminder must become eligible again on a later day.");
 Assert(TaskReminderLogic.ShakeDuration == TimeSpan.FromSeconds(2),
     "A due reminder must shake the app for exactly two seconds.");
+Assert(TaskReminderLogic.SleepShakeMinimumDistance == 14,
+    "A sleeping reminder must use a clearly visible minimum shake distance.");
 Assert(TaskReminderLogic.IsSnoozeDue(reminderMoment.AddMinutes(-1), reminderMoment),
     "A reminder must fire when its snooze time is reached.");
 Assert(!TaskReminderLogic.IsSnoozeDue(reminderMoment.AddMinutes(1), reminderMoment),

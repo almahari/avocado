@@ -34,6 +34,7 @@ public readonly record struct ParsedTaskInput(
 public static partial class TaskReminderLogic
 {
     public static readonly TimeSpan ShakeDuration = TimeSpan.FromSeconds(2);
+    public const double SleepShakeMinimumDistance = 14;
 
     public static IReadOnlyList<ParsedTaskInput> ParseMany(string input, DateTime? referenceTime = null)
     {

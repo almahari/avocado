@@ -25,6 +25,7 @@ dotnet run --project .\Avocado.csproj
 - Toggle **Adaptive personality** in the tray menu to show or hide the fruit’s reactive face. The choice is saved.
 - From the tray menu, choose **Size → Normal** or **Size → Small**; Small is exactly half-size.
 - Enable **Resize when inactive** and choose a **Sleep time** to show a compact sleeping fruit with the active task count after inactivity; choose **Never** to disable sleeping. Use **Sleep fruit size → Normal** for the current sleeping size or **Small** for half that size. Hover or click to wake it.
+- Choose **Sleep reminder repeat** in the tray menu to repeat an unresolved reminder every 5, 10, 20, or 30 minutes while the fruit is sleeping. Snoozing or muting the reminder stops the repeated shake.
 - Scroll the task area to reveal tasks beyond the first five; `+N more` shows how many start below the viewport.
 - Drag a task row up or down to change its saved order; nearby tasks animate aside while you drag.
 - Use the `↕` button beside the calendar to sort tasks by priority or reminder time.

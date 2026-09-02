@@ -26,6 +26,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private readonly DispatcherTimer _inactivityTimer;
     private readonly DispatcherTimer _taskTimer;
     private readonly DispatcherTimer _reminderTimer;
+    private readonly DispatcherTimer _sleepReminderRepeatTimer;
     private AppState _state;
     private bool _allowClose;
     private string _overflowLabel = string.Empty;
@@ -156,6 +157,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public SleepTimeOption CurrentSleepTime => InactivitySettings.Get(_state.SleepTime).Option;
     public SleepFruitSize CurrentSleepFruitSize => SleepFruitSizeLogic.Normalize(_state.SleepFruitSize);
     public SleepResizeAnchor CurrentSleepResizeAnchor => SleepResizeLogic.Normalize(_state.SleepResizeAnchor);
+    public SleepReminderRepeatOption CurrentSleepReminderRepeat =>
+        SleepReminderRepeatSettings.Get(_state.SleepReminderRepeat).Option;
     public ReminderSoundMode CurrentReminderSound => ReminderSoundSettings.Normalize(_state.ReminderSound);
     public DoNotDisturbMode CurrentDoNotDisturb => DoNotDisturbSettings.Normalize(_state.DoNotDisturb);
     public ArchiveRetentionOption CurrentArchiveRetention =>
@@ -192,6 +195,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _taskTimer.Tick += (_, _) => RefreshActiveTimer();
         _reminderTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _reminderTimer.Tick += (_, _) => CheckTaskReminders();
+        _sleepReminderRepeatTimer = new DispatcherTimer();
+        _sleepReminderRepeatTimer.Tick += (_, _) => RepeatUnresolvedReminder();
         InitializeComponent();
         DataContext = this;
         RefreshCategoryFilters();
@@ -199,6 +204,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         SetSleepTime(_state.SleepTime, persist: false);
         SetSleepFruitSize(_state.SleepFruitSize, persist: false);
         SetSleepResizeAnchor(_state.SleepResizeAnchor, persist: false);
+        SetSleepReminderRepeat(_state.SleepReminderRepeat, persist: false);
         SetReminderSound(_state.ReminderSound, persist: false);
         SetArchiveRetention(_state.ArchiveRetention, persist: false);
         SetTheme(_state.Theme, persist: false);
@@ -272,6 +278,19 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public void SetSleepResizeAnchor(SleepResizeAnchor anchor, bool persist = true)
     {
         _state.SleepResizeAnchor = SleepResizeLogic.Normalize(anchor);
+        if (persist) SaveState();
+    }
+
+    public void SetSleepReminderRepeat(SleepReminderRepeatOption option, bool persist = true)
+    {
+        var choice = SleepReminderRepeatSettings.Get(option);
+        _state.SleepReminderRepeat = choice.Option;
+        _sleepReminderRepeatTimer.Interval = choice.Interval;
+        if (_sleepReminderRepeatTimer.IsEnabled)
+        {
+            _sleepReminderRepeatTimer.Stop();
+            _sleepReminderRepeatTimer.Start();
+        }
         if (persist) SaveState();
     }
 
@@ -749,9 +768,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (!IsWithinTaskRow(source)) CollapseExpandedTask();
     }
 
-    private void Window_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e) =>
-        StopShaking();
-
     private void Window_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
     {
         NotifyInteraction();
@@ -1155,6 +1171,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         task.CompletedAt = DateTime.Now;
         _happyUntil = DateTime.Now.AddSeconds(4);
         _tasks.Remove(task);
+        ResolveAlertingTask(task);
         _archivedTasks.Insert(0, task);
         RefreshTaskView();
         SaveState();
@@ -1319,15 +1336,19 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             ? dueTasks[0].Text
             : $"{dueTasks.Count} tasks are due";
         SnoozePanel.Visibility = Visibility.Visible;
+        RestartSleepReminderRepeatTimer();
         SaveState();
         if (DoNotDisturbSettings.IsActive(CurrentDoNotDisturb, now)) return;
         var wasSleeping = _isSleeping;
-        NotifyInteraction();
         if (!IsVisible) Show();
         if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
-        Activate();
-        if (wasSleeping) ScheduleShakeAfterWake();
-        else ShakeWindow();
+        if (wasSleeping) ScheduleShakeAfterResize();
+        else
+        {
+            NotifyInteraction();
+            Activate();
+            ShakeWindow();
+        }
         PlayReminderSound();
     }
 
@@ -1372,11 +1393,31 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void CloseReminderPanel()
     {
         StopShaking();
+        _sleepReminderRepeatTimer.Stop();
         _alertingTasks.Clear();
         SnoozePanel.Visibility = Visibility.Collapsed;
     }
 
-    private void ScheduleShakeAfterWake()
+    private void RestartSleepReminderRepeatTimer()
+    {
+        _sleepReminderRepeatTimer.Stop();
+        _sleepReminderRepeatTimer.Interval =
+            SleepReminderRepeatSettings.Get(_state.SleepReminderRepeat).Interval;
+        _sleepReminderRepeatTimer.Start();
+    }
+
+    private void RepeatUnresolvedReminder()
+    {
+        if (_alertingTasks.Count == 0)
+        {
+            _sleepReminderRepeatTimer.Stop();
+            return;
+        }
+        if (!_isSleeping || DoNotDisturbSettings.IsActive(CurrentDoNotDisturb, DateTime.Now)) return;
+        ShakeWindow();
+    }
+
+    private void ScheduleShakeAfterResize()
     {
         StopShaking();
         var timer = new DispatcherTimer
@@ -1389,6 +1430,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             timer.Stop();
             if (!ReferenceEquals(_pendingShakeTimer, timer)) return;
             _pendingShakeTimer = null;
+            if (_alertingTasks.Count == 0 ||
+                DoNotDisturbSettings.IsActive(CurrentDoNotDisturb, DateTime.Now)) return;
             ShakeWindow();
         };
         timer.Start();
@@ -1401,7 +1444,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _shakeOriginalTop = Top;
         _isShaking = true;
         var personality = FruitPersonalities.Get(_currentTheme.Kind);
-        var distance = 4 + personality.MotionStrength;
+        var normalDistance = 4 + personality.MotionStrength;
+        var distance = _isSleeping
+            ? Math.Max(TaskReminderLogic.SleepShakeMinimumDistance, normalDistance * 2)
+            : normalDistance;
         var beat = TimeSpan.FromMilliseconds(Math.Max(55, personality.MotionMilliseconds / 6));
         var horizontalAnimation = new DoubleAnimation(_shakeOriginalLeft - distance, _shakeOriginalLeft + distance, beat)
         {
@@ -1446,10 +1492,24 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             if (ReferenceEquals(_activeTimerTask, item)) PauseActiveTimer(persist: false);
             if (ReferenceEquals(_expandedTask, item)) _expandedTask = null;
             _tasks.Remove(item);
+            ResolveAlertingTask(item);
             RefreshTaskView();
             SaveState();
             RefreshAdaptivePersonality();
         }
+    }
+
+    private void ResolveAlertingTask(TodoItem task)
+    {
+        if (!_alertingTasks.Remove(task)) return;
+        if (_alertingTasks.Count == 0)
+        {
+            CloseReminderPanel();
+            return;
+        }
+        AlertTaskLabel = _alertingTasks.Count == 1
+            ? _alertingTasks[0].Text
+            : $"{_alertingTasks.Count} tasks are due";
     }
 
     private void TaskRow_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
