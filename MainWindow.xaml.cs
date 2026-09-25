@@ -341,6 +341,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         _currentTheme = FruitThemes.Get(kind);
         _state.Theme = _currentTheme.Kind;
+        _commandPaletteWindow?.ApplyTheme(_currentTheme);
         SetThemeBrush("InkBrush", _currentTheme.Ink);
         SetThemeBrush("CreamBrush", _currentTheme.Cream);
         SetThemeBrush("ButtonBrush", _currentTheme.Button);
@@ -639,8 +640,21 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     public void OpenCommandPalette()
     {
-        _commandPaletteWindow ??= new CommandPaletteWindow(_commandConfigStore);
-        _commandPaletteWindow.Open();
+        try
+        {
+            _commandPaletteWindow ??= new CommandPaletteWindow(_commandConfigStore, _currentTheme);
+            _commandPaletteWindow.ApplyTheme(_currentTheme);
+            _commandPaletteWindow.Open();
+        }
+        catch (Exception exception)
+        {
+            System.Windows.MessageBox.Show(
+                this,
+                $"Could not open the command palette.\n\n{exception.Message}",
+                "Avocado",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+        }
     }
 
     private void OpenFromGlobalQuickAdd()

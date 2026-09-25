@@ -11,10 +11,28 @@ public partial class CommandPaletteWindow : Window
     private IReadOnlyList<CommandDefinition> _commands = [];
     private string? _loadError;
 
-    public CommandPaletteWindow(CommandConfigStore store)
+    public CommandPaletteWindow(CommandConfigStore store, FruitThemePalette theme)
     {
         _store = store;
         InitializeComponent();
+        ApplyTheme(theme);
+    }
+
+    public void ApplyTheme(FruitThemePalette theme)
+    {
+        SetBrush("PaletteInk", theme.Ink);
+        SetBrush("PaletteCream", theme.Cream);
+        SetBrush("PaletteLeaf", theme.Highlight);
+        SetBrush("PaletteBackground", theme.Outer, 0.95);
+        SetBrush("PaletteBorder", theme.Flesh);
+        SetBrush("PaletteInputBorder", theme.ButtonBorder);
+        SetBrush("PaletteResults", theme.ButtonPressed, 0.78);
+        SetBrush("PaletteRowBorder", theme.ButtonHover);
+        SetBrush("PaletteSelected", theme.MutedInk);
+        SetBrush("PaletteHover", theme.ButtonHover);
+        SetBrush("PaletteBadge", theme.Button);
+        SetBrush("PaletteMuted", theme.Task);
+        PaletteShadow.Color = ParseColor(theme.ButtonBorder);
     }
 
     public void Open()
@@ -114,5 +132,13 @@ public partial class CommandPaletteWindow : Window
     }
 
     private void ResultsList_MouseDoubleClick(object sender, MouseButtonEventArgs e) => ExecuteSelected();
+
+    private void SetBrush(string key, string value, double opacity = 1)
+    {
+        Resources[key] = new SolidColorBrush(ParseColor(value)) { Opacity = opacity };
+    }
+
+    private static System.Windows.Media.Color ParseColor(string value) =>
+        (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(value)!;
 
 }

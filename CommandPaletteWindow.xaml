@@ -11,30 +11,40 @@
         <SolidColorBrush x:Key="PaletteInk" Color="#173D2B" />
         <SolidColorBrush x:Key="PaletteCream" Color="#FFF8D9" />
         <SolidColorBrush x:Key="PaletteLeaf" Color="#9BC63E" />
-        <SolidColorBrush x:Key="PaletteMuted" Color="#6F8E74" />
+        <SolidColorBrush x:Key="PaletteBackground" Color="#173D2B" Opacity="0.95" />
+        <SolidColorBrush x:Key="PaletteBorder" Color="#9BC63E" />
+        <SolidColorBrush x:Key="PaletteInputBorder" Color="#102A1E" />
+        <SolidColorBrush x:Key="PaletteResults" Color="#153522" Opacity="0.78" />
+        <SolidColorBrush x:Key="PaletteRowBorder" Color="#2E6842" />
+        <SolidColorBrush x:Key="PaletteSelected" Color="#315A2D" />
+        <SolidColorBrush x:Key="PaletteHover" Color="#2E6842" />
+        <SolidColorBrush x:Key="PaletteBadge" Color="#214F34" />
+        <SolidColorBrush x:Key="PaletteMuted" Color="#DFF08A" />
         <Style TargetType="ListBoxItem">
             <Setter Property="Padding" Value="18,11" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="{StaticResource PaletteCream}" />
+            <Setter Property="Foreground" Value="{DynamicResource PaletteCream}" />
             <Setter Property="BorderThickness" Value="0,0,0,1" />
-            <Setter Property="BorderBrush" Value="#294D39" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PaletteRowBorder}" />
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#315A2D" />
-                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="Background" Value="{DynamicResource PaletteSelected}" />
+                    <Setter Property="Foreground" Value="{DynamicResource PaletteCream}" />
                 </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#294D39" />
+                    <Setter Property="Background" Value="{DynamicResource PaletteHover}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
     </Window.Resources>
 
-    <Border Margin="22" Background="#F2173D2B" BorderBrush="#9BC63E" BorderThickness="3"
+    <Border Margin="22" Background="{DynamicResource PaletteBackground}"
+            BorderBrush="{DynamicResource PaletteBorder}" BorderThickness="3"
             CornerRadius="10">
         <Border.Effect>
-            <DropShadowEffect BlurRadius="26" ShadowDepth="7" Opacity="0.48" Color="#081C12" />
+            <DropShadowEffect x:Name="PaletteShadow" BlurRadius="26" ShadowDepth="7"
+                              Opacity="0.48" Color="#081C12" />
         </Border.Effect>
         <Grid>
             <Grid.RowDefinitions>
@@ -44,7 +54,8 @@
             </Grid.RowDefinitions>
 
             <Grid Margin="20,20,20,14">
-                <Border Background="{StaticResource PaletteCream}" BorderBrush="#102A1E"
+                <Border Background="{DynamicResource PaletteCream}"
+                        BorderBrush="{DynamicResource PaletteInputBorder}"
                         BorderThickness="3" CornerRadius="6" />
                 <Grid Margin="18,0">
                     <Grid.ColumnDefinitions>
@@ -52,20 +63,20 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Text=">" FontFamily="Consolas" FontSize="28" FontWeight="Bold"
-                               Foreground="{StaticResource PaletteInk}" VerticalAlignment="Center"
+                               Foreground="{DynamicResource PaletteInk}" VerticalAlignment="Center"
                                Margin="0,0,12,0" />
                     <TextBox x:Name="CommandBox" Grid.Column="1" Height="66"
                              Background="Transparent" BorderThickness="0"
-                             Foreground="{StaticResource PaletteInk}"
+                             Foreground="{DynamicResource PaletteInk}"
                              FontFamily="Consolas" FontSize="26" FontWeight="Bold"
                              VerticalContentAlignment="Center"
-                             CaretBrush="{StaticResource PaletteInk}"
+                             CaretBrush="{DynamicResource PaletteInk}"
                              TextChanged="CommandBox_TextChanged" />
                 </Grid>
             </Grid>
 
             <ListBox x:Name="ResultsList" Grid.Row="1" Margin="20,0"
-                     Background="#C9123023" BorderThickness="0"
+                     Background="{DynamicResource PaletteResults}" BorderThickness="0"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      MouseDoubleClick="ResultsList_MouseDoubleClick">
                 <ListBox.ItemTemplate>
@@ -79,13 +90,14 @@
                                 <TextBlock Text="{Binding Definition.Command}" FontFamily="Consolas"
                                            FontSize="16" FontWeight="Bold" />
                                 <TextBlock Text="{Binding ExpandedParameter}" FontFamily="Consolas"
-                                           FontSize="11" Foreground="#B7C8B8"
+                                           FontSize="11" Foreground="{DynamicResource PaletteMuted}"
+                                           Opacity="0.78"
                                            TextTrimming="CharacterEllipsis" />
                             </StackPanel>
-                            <Border Grid.Column="1" Background="#244B35" CornerRadius="3"
+                            <Border Grid.Column="1" Background="{DynamicResource PaletteBadge}" CornerRadius="3"
                                     Padding="8,4" VerticalAlignment="Center" Margin="16,0,0,0">
                                 <TextBlock FontFamily="Consolas"
-                                           FontSize="11" Foreground="{StaticResource PaletteLeaf}">
+                                           FontSize="11" Foreground="{DynamicResource PaletteLeaf}">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Text" Value="{Binding Definition.Action}" />
@@ -105,10 +117,12 @@
 
             <Grid Grid.Row="2" Margin="20,0">
                 <TextBlock x:Name="StatusText" Text="Type a command"
-                           Foreground="#B7C8B8" FontFamily="Consolas" FontSize="11"
+                           Foreground="{DynamicResource PaletteMuted}" Opacity="0.78"
+                           FontFamily="Consolas" FontSize="11"
                            VerticalAlignment="Center" />
                 <TextBlock Text="UP/DOWN select   ENTER run   ESC close"
-                           Foreground="#B7C8B8" FontFamily="Consolas" FontSize="11"
+                           Foreground="{DynamicResource PaletteMuted}" Opacity="0.78"
+                           FontFamily="Consolas" FontSize="11"
                            HorizontalAlignment="Right" VerticalAlignment="Center" />
             </Grid>
         </Grid>
