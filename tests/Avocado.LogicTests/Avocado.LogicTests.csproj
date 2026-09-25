@@ -29,5 +29,8 @@
     <Compile Include="..\..\ArchiveRetentionSettings.cs" Link="ArchiveRetentionSettings.cs" />
     <Compile Include="..\..\CalendarLogic.cs" Link="CalendarLogic.cs" />
     <Compile Include="..\..\GlobalShortcutSettings.cs" Link="GlobalShortcutSettings.cs" />
+    <Compile Include="..\..\CommandPaletteLogic.cs" Link="CommandPaletteLogic.cs" />
+    <Compile Include="..\..\CommandActionExecutor.cs" Link="CommandActionExecutor.cs" />
+    <None Update="fixtures\command-palette-test.sh" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

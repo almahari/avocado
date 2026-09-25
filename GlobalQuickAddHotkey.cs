@@ -10,6 +10,7 @@ public sealed class GlobalQuickAddHotkey : IDisposable
     private const int ClipboardTaskHotkeyId = 0xA70D;
     private const int SleepNowHotkeyId = 0xA70E;
     private const int WakeHotkeyId = 0xA70F;
+    private const int CommandPaletteHotkeyId = 0xA710;
     private const int WmHotkey = 0x0312;
     private const uint ModAlt = 0x0001;
     private const uint ModControl = 0x0002;
@@ -20,20 +21,25 @@ public sealed class GlobalQuickAddHotkey : IDisposable
     private readonly Action _clipboardTaskCallback;
     private readonly Action _sleepNowCallback;
     private readonly Action _wakeCallback;
+    private readonly Action _commandPaletteCallback;
     private bool _quickAddRegistered;
     private bool _clipboardTaskRegistered;
     private bool _sleepNowRegistered;
     private bool _wakeRegistered;
+    private bool _commandPaletteRegistered;
 
     public bool QuickAddAvailable => _quickAddGesture.IsDisabled || _quickAddRegistered;
     public bool ClipboardTaskAvailable => _clipboardTaskGesture.IsDisabled || _clipboardTaskRegistered;
     public bool SleepNowAvailable => _sleepNowGesture.IsDisabled || _sleepNowRegistered;
     public bool WakeAvailable => _wakeGesture.IsDisabled || _wakeRegistered;
-    public bool AllAvailable => QuickAddAvailable && ClipboardTaskAvailable && SleepNowAvailable && WakeAvailable;
+    public bool CommandPaletteAvailable => _commandPaletteGesture.IsDisabled || _commandPaletteRegistered;
+    public bool AllAvailable => QuickAddAvailable && ClipboardTaskAvailable && SleepNowAvailable &&
+                                WakeAvailable && CommandPaletteAvailable;
     private readonly GlobalShortcutGesture _quickAddGesture;
     private readonly GlobalShortcutGesture _clipboardTaskGesture;
     private readonly GlobalShortcutGesture _sleepNowGesture;
     private readonly GlobalShortcutGesture _wakeGesture;
+    private readonly GlobalShortcutGesture _commandPaletteGesture;
 
     public GlobalQuickAddHotkey(
         Window window,
@@ -41,19 +47,23 @@ public sealed class GlobalQuickAddHotkey : IDisposable
         Action clipboardTaskCallback,
         Action sleepNowCallback,
         Action wakeCallback,
+        Action commandPaletteCallback,
         GlobalShortcutGesture quickAddGesture,
         GlobalShortcutGesture clipboardTaskGesture,
         GlobalShortcutGesture sleepNowGesture,
-        GlobalShortcutGesture wakeGesture)
+        GlobalShortcutGesture wakeGesture,
+        GlobalShortcutGesture commandPaletteGesture)
     {
         _quickAddCallback = quickAddCallback;
         _clipboardTaskCallback = clipboardTaskCallback;
         _sleepNowCallback = sleepNowCallback;
         _wakeCallback = wakeCallback;
+        _commandPaletteCallback = commandPaletteCallback;
         _quickAddGesture = quickAddGesture;
         _clipboardTaskGesture = clipboardTaskGesture;
         _sleepNowGesture = sleepNowGesture;
         _wakeGesture = wakeGesture;
+        _commandPaletteGesture = commandPaletteGesture;
         _handle = new WindowInteropHelper(window).Handle;
         _source = HwndSource.FromHwnd(_handle);
         _source?.AddHook(WindowMessageHook);
@@ -69,6 +79,9 @@ public sealed class GlobalQuickAddHotkey : IDisposable
         if (!wakeGesture.IsDisabled)
             _wakeRegistered = RegisterHotKey(_handle, WakeHotkeyId,
                 ToNativeModifiers(wakeGesture.Modifiers), (uint)wakeGesture.VirtualKey);
+        if (!commandPaletteGesture.IsDisabled)
+            _commandPaletteRegistered = RegisterHotKey(_handle, CommandPaletteHotkeyId,
+                ToNativeModifiers(commandPaletteGesture.Modifiers), (uint)commandPaletteGesture.VirtualKey);
     }
 
     private IntPtr WindowMessageHook(IntPtr hwnd, int message, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -88,6 +101,9 @@ public sealed class GlobalQuickAddHotkey : IDisposable
             case WakeHotkeyId:
                 _wakeCallback();
                 break;
+            case CommandPaletteHotkeyId:
+                _commandPaletteCallback();
+                break;
             default:
                 return IntPtr.Zero;
         }
@@ -101,10 +117,12 @@ public sealed class GlobalQuickAddHotkey : IDisposable
         if (_clipboardTaskRegistered) UnregisterHotKey(_handle, ClipboardTaskHotkeyId);
         if (_sleepNowRegistered) UnregisterHotKey(_handle, SleepNowHotkeyId);
         if (_wakeRegistered) UnregisterHotKey(_handle, WakeHotkeyId);
+        if (_commandPaletteRegistered) UnregisterHotKey(_handle, CommandPaletteHotkeyId);
         _quickAddRegistered = false;
         _clipboardTaskRegistered = false;
         _sleepNowRegistered = false;
         _wakeRegistered = false;
+        _commandPaletteRegistered = false;
         _source?.RemoveHook(WindowMessageHook);
     }
 

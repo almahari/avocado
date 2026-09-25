@@ -22,6 +22,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private readonly ObservableCollection<TodoItem> _archivedTasks = [];
     private readonly ICollectionView _tasksView;
     private readonly AppStateStore _store = new();
+    private readonly CommandConfigStore _commandConfigStore = new();
     private readonly DispatcherTimer _locationSaveTimer;
     private readonly DispatcherTimer _inactivityTimer;
     private readonly DispatcherTimer _taskTimer;
@@ -50,6 +51,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private double _shakeOriginalTop;
     private DispatcherTimer? _pendingShakeTimer;
     private GlobalQuickAddHotkey? _globalQuickAddHotkey;
+    private CommandPaletteWindow? _commandPaletteWindow;
     private readonly List<TodoItem> _alertingTasks = [];
     private string _alertTaskLabel = string.Empty;
     private string _taskSearchText = string.Empty;
@@ -174,6 +176,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         GlobalShortcutSettings.Normalize(_state.SleepNowShortcut, GlobalShortcutSettings.SleepNowDefault);
     public GlobalShortcutGesture CurrentWakeShortcut =>
         GlobalShortcutSettings.Normalize(_state.WakeShortcut, GlobalShortcutSettings.WakeUpDefault);
+    public GlobalShortcutGesture CurrentCommandPaletteShortcut =>
+        GlobalShortcutSettings.Normalize(
+            _state.CommandPaletteShortcut, GlobalShortcutSettings.CommandPaletteDefault);
 
     public event EventHandler? HideRequested;
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -213,6 +218,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _state.ClipboardTaskShortcut = CurrentClipboardTaskShortcut;
         _state.SleepNowShortcut = CurrentSleepNowShortcut;
         _state.WakeShortcut = CurrentWakeShortcut;
+        _state.CommandPaletteShortcut = CurrentCommandPaletteShortcut;
         RefreshShortcutToolTip();
         RefreshOverflow();
         if (_state.NeedsMigration)
@@ -550,6 +556,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public bool TrySetWakeShortcut(GlobalShortcutGesture shortcut) =>
         TrySetGlobalShortcut(shortcut, GlobalShortcutAction.WakeUp);
 
+    public bool TrySetCommandPaletteShortcut(GlobalShortcutGesture shortcut) =>
+        TrySetGlobalShortcut(shortcut, GlobalShortcutAction.CommandPalette);
+
     private bool TrySetGlobalShortcut(GlobalShortcutGesture shortcut, GlobalShortcutAction action)
     {
         if (!GlobalShortcutSettings.IsValid(shortcut)) return false;
@@ -557,6 +566,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         var previousClipboard = CurrentClipboardTaskShortcut;
         var previousSleepNow = CurrentSleepNowShortcut;
         var previousWake = CurrentWakeShortcut;
+        var previousCommandPalette = CurrentCommandPaletteShortcut;
         switch (action)
         {
             case GlobalShortcutAction.QuickAdd:
@@ -571,6 +581,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             case GlobalShortcutAction.WakeUp:
                 _state.WakeShortcut = shortcut;
                 break;
+            case GlobalShortcutAction.CommandPalette:
+                _state.CommandPaletteShortcut = shortcut;
+                break;
         }
 
         if (_globalQuickAddHotkey is not null && !RegisterGlobalShortcuts())
@@ -579,6 +592,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             _state.ClipboardTaskShortcut = previousClipboard;
             _state.SleepNowShortcut = previousSleepNow;
             _state.WakeShortcut = previousWake;
+            _state.CommandPaletteShortcut = previousCommandPalette;
             RegisterGlobalShortcuts();
             return false;
         }
@@ -597,10 +611,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             CreateTaskFromClipboard,
             SleepNowFromGlobalShortcut,
             WakeFromGlobalShortcut,
+            OpenCommandPalette,
             CurrentQuickAddShortcut,
             CurrentClipboardTaskShortcut,
             CurrentSleepNowShortcut,
-            CurrentWakeShortcut);
+            CurrentWakeShortcut,
+            CurrentCommandPaletteShortcut);
         return _globalQuickAddHotkey.AllAvailable;
     }
 
@@ -616,7 +632,15 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         _globalQuickAddHotkey?.Dispose();
         _globalQuickAddHotkey = null;
+        _commandPaletteWindow?.Close();
+        _commandPaletteWindow = null;
         base.OnClosed(e);
+    }
+
+    public void OpenCommandPalette()
+    {
+        _commandPaletteWindow ??= new CommandPaletteWindow(_commandConfigStore);
+        _commandPaletteWindow.Open();
     }
 
     private void OpenFromGlobalQuickAdd()

@@ -380,12 +380,70 @@ Assert(CalendarLogic.StartOfWeek(new DateOnly(2026, 9, 3)) == new DateOnly(2026,
     "The week calendar must begin on Monday.");
 Assert(GlobalShortcutSettings.DisplayName(GlobalShortcutSettings.QuickAddDefault) == "Ctrl+Alt+N" &&
        GlobalShortcutSettings.DisplayName(GlobalShortcutSettings.SleepNowDefault) == "Ctrl+Alt+S" &&
+       GlobalShortcutSettings.DisplayName(GlobalShortcutSettings.CommandPaletteDefault) == "Ctrl+Alt+P" &&
        GlobalShortcutSettings.DisplayName(GlobalShortcutSettings.Disabled) == "Disabled",
     "Global shortcuts must have clear tray-menu labels.");
 Assert(GlobalShortcutSettings.IsValid(new GlobalShortcutGesture(GlobalShortcutModifiers.Control, '8')) &&
        GlobalShortcutSettings.IsValid(new GlobalShortcutGesture(GlobalShortcutModifiers.Alt, 0x70)) &&
        !GlobalShortcutSettings.IsValid(new GlobalShortcutGesture(GlobalShortcutModifiers.None, 'N')),
     "Global shortcut capture must accept supported modified keys and reject unmodified keys.");
+
+var paletteCommands = new List<CommandDefinition>
+{
+    new() { Command = "google", Action = "open-browser", Parameter = "https://www.google.com" },
+    new() { Command = "j%1", Action = "open-browser", Parameter = "jira.com/%1" },
+    new() { Command = @"regex:^gh\s+(.+)$", Action = "open-browser", Parameter = "github.com/search?q=%1" },
+    new() { Command = "echo %1", Action = "run-bash", Parameter = "echo \"%1\"" }
+};
+var staticMatches = CommandPaletteLogic.Search(paletteCommands, "goo");
+Assert(staticMatches.Count > 0 && staticMatches[0].Definition.Command == "google",
+    "Command palette search must find static commands from partial text.");
+var placeholderMatch = CommandPaletteLogic.Search(paletteCommands, "j124-123").First();
+Assert(placeholderMatch.IsExecutable && placeholderMatch.ExpandedParameter == "jira.com/124-123",
+    "Text parameters must be captured and substituted into action parameters.");
+var regexMatch = CommandPaletteLogic.Search(paletteCommands, "gh avocado app").First();
+Assert(regexMatch.IsExecutable && regexMatch.ExpandedParameter == "github.com/search?q=avocado app",
+    "Regex capture groups must be substituted into action parameters.");
+var bashMatch = CommandPaletteLogic.Search(paletteCommands, "echo hello").First();
+Assert(bashMatch.Definition.Action == "run-bash" && bashMatch.ExpandedParameter == "echo \"hello\"",
+    "The run-bash action must preserve its expanded command line.");
+if (OperatingSystem.IsWindows())
+{
+    var bashPath = CommandActionExecutor.ResolveGitBashPath();
+    Assert(bashPath.EndsWith(@"Git\bin\bash.exe", StringComparison.OrdinalIgnoreCase),
+        "The command palette must resolve Git Bash instead of an unrelated Bash installation.");
+    var visibleBash = CommandActionExecutor.CreateBashStartInfo(
+        "echo visible", bashPath, showWindow: true);
+    Assert(visibleBash.FileName.EndsWith(@"Git\usr\bin\mintty.exe", StringComparison.OrdinalIgnoreCase) &&
+           visibleBash.ArgumentList.Contains("/usr/bin/bash") &&
+           visibleBash.ArgumentList.Last().Contains("Press Enter to close", StringComparison.Ordinal),
+        "Visible Bash commands must run in Git's terminal and remain open for the user.");
+    var scriptPath = Path.Combine(AppContext.BaseDirectory, "fixtures", "command-palette-test.sh");
+    var outputPath = Path.Combine(Path.GetTempPath(), $"avocado-bash-{Guid.NewGuid():N}.txt");
+    var scriptCommand = $"\"{scriptPath}\" \"{outputPath}\" \"first value\" second";
+    var scriptMatch = new CommandMatch(
+        new CommandDefinition { Command = "test", Action = "run-bash", Parameter = scriptCommand },
+        scriptCommand,
+        true,
+        1000);
+    using var scriptProcess = CommandActionExecutor.Execute(scriptMatch) ??
+                              throw new InvalidOperationException("Git Bash did not start.");
+    Assert(scriptProcess.WaitForExit(10_000),
+        "The test shell script must finish through the run-bash action.");
+    Assert(scriptProcess.ExitCode == 0, "The test shell script must exit successfully.");
+    var scriptOutput = File.ReadAllLines(outputPath);
+    Assert(scriptOutput.SequenceEqual([
+            "argument_count=2",
+            "argument_1=first value",
+            "argument_2=second"
+        ]),
+        "A .sh command must receive every configured argument, including values containing spaces.");
+    File.Delete(outputPath);
+}
+Assert(CommandPaletteLogic.Search(
+        [new CommandDefinition { Command = "regex:[", Action = "open-browser", Parameter = "example.com" }],
+        "anything").Count == 0,
+    "Invalid regular expressions must fail safely without breaking palette search.");
 
 Console.WriteLine("All Avocado logic checks passed.");
 return;

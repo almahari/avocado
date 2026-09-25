@@ -27,6 +27,7 @@ public sealed class AppState
     public GlobalShortcutGesture ClipboardTaskShortcut { get; set; } = GlobalShortcutSettings.ClipboardTaskDefault;
     public GlobalShortcutGesture SleepNowShortcut { get; set; } = GlobalShortcutSettings.SleepNowDefault;
     public GlobalShortcutGesture WakeShortcut { get; set; } = GlobalShortcutSettings.WakeUpDefault;
+    public GlobalShortcutGesture CommandPaletteShortcut { get; set; } = GlobalShortcutSettings.CommandPaletteDefault;
     public double? Left { get; set; }
     public double? Top { get; set; }
     public string? LastMonitor { get; set; }

@@ -19,6 +19,7 @@ public partial class App : System.Windows.Application
     private Forms.ToolStripMenuItem? _clipboardTaskShortcutItem;
     private Forms.ToolStripMenuItem? _sleepNowShortcutItem;
     private Forms.ToolStripMenuItem? _wakeShortcutItem;
+    private Forms.ToolStripMenuItem? _commandPaletteShortcutItem;
     private readonly Dictionary<SleepTimeOption, Forms.ToolStripMenuItem> _sleepTimeItems = [];
     private readonly Dictionary<SleepFruitSize, Forms.ToolStripMenuItem> _sleepFruitSizeItems = [];
     private readonly Dictionary<SleepResizeAnchor, Forms.ToolStripMenuItem> _sleepResizeAnchorItems = [];
@@ -31,6 +32,7 @@ public partial class App : System.Windows.Application
     private MainWindow? _window;
     private Icon? _trayThemeIcon;
     private readonly StartupRegistration _startupRegistration = new();
+    private readonly CommandConfigStore _commandConfigStore = new();
     private bool _isExiting;
 
     protected override void OnStartup(StartupEventArgs e)
@@ -64,6 +66,8 @@ public partial class App : System.Windows.Application
         var showItem = new Forms.ToolStripMenuItem("Show avocado", null, (_, _) => ToggleWindow());
         var archiveItem = new Forms.ToolStripMenuItem("Completed archive", null, (_, _) => ShowArchive());
         var taskHelpItem = new Forms.ToolStripMenuItem("Task help", null, (_, _) => ShowTaskHelp());
+        var setupCommandsItem = new Forms.ToolStripMenuItem(
+            "Setup commands", null, (_, _) => OpenCommandConfig());
         var archiveCleanupItem = new Forms.ToolStripMenuItem("Archive cleanup");
         foreach (var choice in ArchiveRetentionSettings.Choices)
         {
@@ -164,12 +168,15 @@ public partial class App : System.Windows.Application
             string.Empty, null, (_, _) => ChangeGlobalShortcut(GlobalShortcutAction.SleepNow));
         _wakeShortcutItem = new Forms.ToolStripMenuItem(
             string.Empty, null, (_, _) => ChangeGlobalShortcut(GlobalShortcutAction.WakeUp));
+        _commandPaletteShortcutItem = new Forms.ToolStripMenuItem(
+            string.Empty, null, (_, _) => ChangeGlobalShortcut(GlobalShortcutAction.CommandPalette));
         var resetShortcutsItem = new Forms.ToolStripMenuItem(
             "Reset defaults", null, (_, _) => ResetGlobalShortcuts());
         globalShortcutsItem.DropDownItems.Add(_quickAddShortcutItem);
         globalShortcutsItem.DropDownItems.Add(_clipboardTaskShortcutItem);
         globalShortcutsItem.DropDownItems.Add(_sleepNowShortcutItem);
         globalShortcutsItem.DropDownItems.Add(_wakeShortcutItem);
+        globalShortcutsItem.DropDownItems.Add(_commandPaletteShortcutItem);
         globalShortcutsItem.DropDownItems.Add(new Forms.ToolStripSeparator());
         globalShortcutsItem.DropDownItems.Add(resetShortcutsItem);
         UpdateGlobalShortcutLabels();
@@ -178,6 +185,7 @@ public partial class App : System.Windows.Application
         menu.Items.Add(showItem);
         menu.Items.Add(archiveItem);
         menu.Items.Add(taskHelpItem);
+        menu.Items.Add(setupCommandsItem);
         menu.Items.Add(archiveCleanupItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(_normalItem);
@@ -646,6 +654,7 @@ public partial class App : System.Windows.Application
             GlobalShortcutAction.ClipboardTask => _window.CurrentClipboardTaskShortcut,
             GlobalShortcutAction.SleepNow => _window.CurrentSleepNowShortcut,
             GlobalShortcutAction.WakeUp => _window.CurrentWakeShortcut,
+            GlobalShortcutAction.CommandPalette => _window.CurrentCommandPaletteShortcut,
             _ => GlobalShortcutSettings.Disabled
         };
         var actionName = action switch
@@ -654,6 +663,7 @@ public partial class App : System.Windows.Application
             GlobalShortcutAction.ClipboardTask => "Clipboard task",
             GlobalShortcutAction.SleepNow => "Sleep now",
             GlobalShortcutAction.WakeUp => "Wake up",
+            GlobalShortcutAction.CommandPalette => "Command palette",
             _ => "Wake up"
         };
         var selected = ShortcutCaptureDialog.Show(actionName, current);
@@ -664,6 +674,7 @@ public partial class App : System.Windows.Application
             GlobalShortcutAction.ClipboardTask => _window.TrySetClipboardTaskShortcut(shortcut),
             GlobalShortcutAction.SleepNow => _window.TrySetSleepNowShortcut(shortcut),
             GlobalShortcutAction.WakeUp => _window.TrySetWakeShortcut(shortcut),
+            GlobalShortcutAction.CommandPalette => _window.TrySetCommandPaletteShortcut(shortcut),
             _ => false
         };
         if (!changed)
@@ -684,7 +695,10 @@ public partial class App : System.Windows.Application
         var clipboardChanged = _window.TrySetClipboardTaskShortcut(GlobalShortcutSettings.ClipboardTaskDefault);
         var sleepNowChanged = _window.TrySetSleepNowShortcut(GlobalShortcutSettings.SleepNowDefault);
         var wakeChanged = _window.TrySetWakeShortcut(GlobalShortcutSettings.WakeUpDefault);
-        if (!quickAddChanged || !clipboardChanged || !sleepNowChanged || !wakeChanged)
+        var commandPaletteChanged =
+            _window.TrySetCommandPaletteShortcut(GlobalShortcutSettings.CommandPaletteDefault);
+        if (!quickAddChanged || !clipboardChanged || !sleepNowChanged || !wakeChanged ||
+            !commandPaletteChanged)
         {
             Forms.MessageBox.Show(
                 "One or more default shortcuts are already being used by Windows or another application.",
@@ -710,6 +724,9 @@ public partial class App : System.Windows.Application
         if (_wakeShortcutItem is not null)
             _wakeShortcutItem.Text =
                 $"Wake up: {GlobalShortcutSettings.DisplayName(_window.CurrentWakeShortcut)}";
+        if (_commandPaletteShortcutItem is not null)
+            _commandPaletteShortcutItem.Text =
+                $"Command palette: {GlobalShortcutSettings.DisplayName(_window.CurrentCommandPaletteShortcut)}";
     }
 
     private void ToggleWindow()
@@ -725,6 +742,22 @@ public partial class App : System.Windows.Application
     }
 
     private static void ShowTaskHelp() => TaskHelpDialog.ShowHelp();
+
+    private void OpenCommandConfig()
+    {
+        try
+        {
+            _commandConfigStore.OpenInEditor();
+        }
+        catch (Exception exception)
+        {
+            Forms.MessageBox.Show(
+                $"Could not open the command configuration.\n\n{exception.Message}",
+                "Avocado",
+                Forms.MessageBoxButtons.OK,
+                Forms.MessageBoxIcon.Warning);
+        }
+    }
 
     private void ShowWindow()
     {

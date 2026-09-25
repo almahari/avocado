@@ -17,11 +17,12 @@ dotnet run --project .\Avocado.csproj
 - Separate multiple new tasks with `;`, for example `task 1; 12:00 task 2`. Each task is parsed independently.
 - Press the global `Ctrl+Alt+V` shortcut to immediately create a task from clipboard text. Normal task syntax for links, priorities, and reminders is supported.
 - Press the global `Ctrl+Alt+S` shortcut to put the fruit into sleeping mode immediately.
+- Press the global `Ctrl+Alt+P` shortcut to open the command palette in the center of the current screen. Type to search, use Up/Down to select, Enter to run, or Escape to close.
 - Double-click the tray icon to show or hide the avocado.
 - Open the tray icon menu and choose **Task help** to see the supported task-entry formats and examples.
 - Open the tray icon menu to choose **Normal window**, **Always on top**, themes, seasonal skins, reminder sounds, Do Not Disturb hours, startup behavior, global shortcuts, or **Exit**.
 - Seasonal skins are independent of fruit themes: dress any fruit as a **Halloween pumpkin**, add a **Winter cap**, a **Spring blossom** crown, or **Summer shades**. Choose **None** to remove the accessory; the selection is saved.
-- Choose **Global shortcuts** to change or disable the system-wide Quick Add, Clipboard Task, and Sleep Now shortcuts; press a modifier plus a letter, number, function key, or Space.
+- Choose **Global shortcuts** to change or disable the system-wide Quick Add, Clipboard Task, Sleep Now, Wake Up, and Command Palette shortcuts; press a modifier plus a letter, number, function key, or Space.
 - Toggle **Adaptive personality** in the tray menu to show or hide the fruit’s reactive face. The choice is saved.
 - From the tray menu, choose **Size → Normal** or **Size → Small**; Small is exactly half-size.
 - Enable **Resize when inactive** and choose a **Sleep time** to show a compact sleeping fruit with the active task count after inactivity; choose **Never** to disable sleeping. Use **Sleep fruit size → Normal** for the current sleeping size or **Small** for half that size. Hover or click to wake it.
@@ -90,6 +91,55 @@ Priority marks belong immediately before the task text. For a scheduled task, pu
 Use the pencil icon to edit a task. The editor reconstructs its saved time, recurrence, and priority so any part can be changed or removed.
 
 Tasks, window position, and window mode are saved under `%LOCALAPPDATA%\Avocado`.
+
+## Command palette
+
+Choose **Setup commands** from the tray menu to create and open `%LOCALAPPDATA%\Avocado\commands.json` in the default JSON editor. The palette reloads this file every time it opens. Each entry contains `command`, `action`, and `parameter`, plus an optional `showWindow` flag for Bash commands:
+
+```json
+[
+  {
+    "command": "google",
+    "action": "open-browser",
+    "parameter": "https://www.google.com"
+  },
+  {
+    "command": "j%1",
+    "action": "open-browser",
+    "parameter": "https://jira.com/%1"
+  },
+  {
+    "command": "regex:^gh\\s+(.+)$",
+    "action": "open-browser",
+    "parameter": "https://github.com/search?q=%1"
+  },
+  {
+    "command": "echo %1",
+    "action": "run-bash",
+    "parameter": "echo \"%1\""
+  }
+]
+```
+
+- Static text such as `google` runs when selected.
+- `%1`, `%2`, and later placeholders capture text from the typed command and substitute it into `parameter`. For example, `j124-123` with `j%1` opens `https://jira.com/124-123`.
+- Prefix a regular expression with `regex:` (or wrap it in `/.../`). Regex capture groups map to `%1`, `%2`, and so on.
+- `open-browser` opens an HTTP or HTTPS address in the default browser. A missing scheme is treated as `https://`.
+- `run-bash` uses Git Bash from a standard Git for Windows installation and runs the expanded parameter through `bash -lc`.
+- To run a script with Git Bash, put the absolute `.sh` path first, followed by its arguments. Avocado finds Git for Windows, changes to the script directory, and invokes the script with `bash`, so executable permission is not required. Quote placeholders when an argument may contain spaces:
+
+```json
+{
+  "command": "deploy %1",
+  "action": "run-bash",
+  "parameter": "\"C:\\scripts\\deploy.sh\" \"%1\" --verbose",
+  "showWindow": true
+}
+```
+
+Set `showWindow` to `true` to open a visible Git Bash terminal. The terminal displays the script output and exit code, then waits for Enter before closing. Omit the option or set it to `false` to run silently in the background.
+
+Set `AVOCADO_GIT_BASH` to a specific `bash.exe` path if Git is installed outside its standard Windows locations.
 
 ## Verify
 

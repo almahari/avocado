@@ -1,0 +1,116 @@
+<Window x:Class="Avocado.CommandPaletteWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Avocado Command Palette"
+        Width="800" Height="460"
+        WindowStyle="None" ResizeMode="NoResize"
+        AllowsTransparency="True" Background="Transparent"
+        ShowInTaskbar="False" Topmost="True"
+        PreviewKeyDown="Window_PreviewKeyDown">
+    <Window.Resources>
+        <SolidColorBrush x:Key="PaletteInk" Color="#173D2B" />
+        <SolidColorBrush x:Key="PaletteCream" Color="#FFF8D9" />
+        <SolidColorBrush x:Key="PaletteLeaf" Color="#9BC63E" />
+        <SolidColorBrush x:Key="PaletteMuted" Color="#6F8E74" />
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="18,11" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource PaletteCream}" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="BorderBrush" Value="#294D39" />
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#315A2D" />
+                    <Setter Property="Foreground" Value="White" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#294D39" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Border Margin="22" Background="#F2173D2B" BorderBrush="#9BC63E" BorderThickness="3"
+            CornerRadius="10">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="26" ShadowDepth="7" Opacity="0.48" Color="#081C12" />
+        </Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="42" />
+            </Grid.RowDefinitions>
+
+            <Grid Margin="20,20,20,14">
+                <Border Background="{StaticResource PaletteCream}" BorderBrush="#102A1E"
+                        BorderThickness="3" CornerRadius="6" />
+                <Grid Margin="18,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text=">" FontFamily="Consolas" FontSize="28" FontWeight="Bold"
+                               Foreground="{StaticResource PaletteInk}" VerticalAlignment="Center"
+                               Margin="0,0,12,0" />
+                    <TextBox x:Name="CommandBox" Grid.Column="1" Height="66"
+                             Background="Transparent" BorderThickness="0"
+                             Foreground="{StaticResource PaletteInk}"
+                             FontFamily="Consolas" FontSize="26" FontWeight="Bold"
+                             VerticalContentAlignment="Center"
+                             CaretBrush="{StaticResource PaletteInk}"
+                             TextChanged="CommandBox_TextChanged" />
+                </Grid>
+            </Grid>
+
+            <ListBox x:Name="ResultsList" Grid.Row="1" Margin="20,0"
+                     Background="#C9123023" BorderThickness="0"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     MouseDoubleClick="ResultsList_MouseDoubleClick">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Definition.Command}" FontFamily="Consolas"
+                                           FontSize="16" FontWeight="Bold" />
+                                <TextBlock Text="{Binding ExpandedParameter}" FontFamily="Consolas"
+                                           FontSize="11" Foreground="#B7C8B8"
+                                           TextTrimming="CharacterEllipsis" />
+                            </StackPanel>
+                            <Border Grid.Column="1" Background="#244B35" CornerRadius="3"
+                                    Padding="8,4" VerticalAlignment="Center" Margin="16,0,0,0">
+                                <TextBlock FontFamily="Consolas"
+                                           FontSize="11" Foreground="{StaticResource PaletteLeaf}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value="{Binding Definition.Action}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Definition.ShowWindow}" Value="True">
+                                                    <Setter Property="Text" Value="run-bash / visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Grid Grid.Row="2" Margin="20,0">
+                <TextBlock x:Name="StatusText" Text="Type a command"
+                           Foreground="#B7C8B8" FontFamily="Consolas" FontSize="11"
+                           VerticalAlignment="Center" />
+                <TextBlock Text="UP/DOWN select   ENTER run   ESC close"
+                           Foreground="#B7C8B8" FontFamily="Consolas" FontSize="11"
+                           HorizontalAlignment="Right" VerticalAlignment="Center" />
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
