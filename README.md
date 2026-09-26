@@ -128,6 +128,7 @@ Choose **Setup commands** from the tray menu to create and open `%LOCALAPPDATA%\
 - Static text such as `google` runs when selected.
 - `aliases` contains alternate command patterns. Aliases support `%1` placeholders and regular expressions in the same way as `command`.
 - `keywords` contains additional search terms. They make a command discoverable but are not executable command patterns.
+- Search is fuzzy across commands, aliases, keywords, active tasks, bookmark names, URLs, and folder names. Exact matches rank first, while partial text, initials, missing characters, and small spelling mistakes are tolerated.
 - `%1`, `%2`, and later placeholders capture text from the typed command and substitute it into `parameter`. For example, `j124-123` with `j%1` opens `https://jira.com/124-123`.
 - Prefix a regular expression with `regex:` (or wrap it in `/.../`). Regex capture groups map to `%1`, `%2`, and so on.
 - `open-browser` opens an HTTP or HTTPS address in the default browser. A missing scheme is treated as `https://`.

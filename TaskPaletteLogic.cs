@@ -20,11 +20,14 @@ public static class TaskPaletteLogic
     {
         var query = input.Trim();
         return tasks
-            .Where(task => !task.IsCompleted &&
-                           (query.Length == 0 || task.Text.Contains(query, StringComparison.OrdinalIgnoreCase)))
-            .OrderByDescending(task => task.IsPinned)
-            .ThenBy(task => task.Text, StringComparer.OrdinalIgnoreCase)
+            .Where(task => !task.IsCompleted)
+            .Select(task => (Task: task, Score: query.Length == 0 ? 1 : PaletteSearchLogic.Score(query, task.Text)))
+            .Where(match => match.Score > 0)
+            .OrderByDescending(match => match.Score)
+            .ThenByDescending(match => match.Task.IsPinned)
+            .ThenBy(match => match.Task.Text, StringComparer.OrdinalIgnoreCase)
             .Take(limit)
+            .Select(match => match.Task)
             .ToList();
     }
 

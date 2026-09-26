@@ -411,6 +411,9 @@ Assert(CommandPaletteLogic.Search(paletteCommands, "sea").First().Definition.Com
     "Command aliases must discover and execute their command definition.");
 Assert(CommandPaletteLogic.Search(paletteCommands, "internet").Single().Definition.Command == "google",
     "Command keywords must make commands discoverable without replacing their display name.");
+Assert(CommandPaletteLogic.Search(paletteCommands, "gogle").First().Definition.Command == "google" &&
+       CommandPaletteLogic.Search(paletteCommands, "serch").First().Definition.Command == "google",
+    "Fuzzy search must tolerate spelling mistakes in command names and aliases.");
 var aliasParameterMatch = CommandPaletteLogic.Search(paletteCommands, "github avocado").First();
 Assert(aliasParameterMatch.IsExecutable &&
        aliasParameterMatch.ExpandedParameter == "github.com/search?q=avocado",
@@ -501,6 +504,8 @@ Assert(websiteSearch.Count == 1 && websiteSearch[0].Website.Name == "GitHub" &&
     "Bookmark search must return matching websites with their full folder path.");
 Assert(BookmarkLogic.Search(bookmarkFolders, "deploy").Single().Website.Name == "Dashboard",
     "Bookmark search must match website URLs as well as names.");
+Assert(BookmarkLogic.Search(bookmarkFolders, "githb").Single().Website.Name == "GitHub",
+    "Fuzzy bookmark search must tolerate a missing character in a website name.");
 var subfolderSearch = BookmarkLogic.Search(bookmarkFolders, "releases");
 Assert(subfolderSearch.Select(match => match.Website.Name).Order()
         .SequenceEqual(["Dashboard", "GitHub"]),
@@ -509,6 +514,9 @@ var parentFolderSearch = BookmarkLogic.Search(bookmarkFolders, "work");
 Assert(parentFolderSearch.Select(match => match.Website.Name).Order()
         .SequenceEqual(["Dashboard", "GitHub", "Intranet"]),
     "A matching folder must return websites from all descendant subfolders.");
+Assert(BookmarkLogic.Search(bookmarkFolders, "releses").Select(match => match.Website.Name).Order()
+        .SequenceEqual(["Dashboard", "GitHub"]),
+    "A fuzzy folder match must return every website beneath the matched folder.");
 Assert(BookmarkLogic.BuildPath([bookmarkFolders[0], bookmarkFolders[0].Folders[0]]) ==
        "Work / Releases",
     "Bookmark navigation must display a readable nested path.");
@@ -527,6 +535,11 @@ Assert(TaskPaletteLogic.GetCreateText("tasks") is null,
 Assert(TaskPaletteLogic.Search(paletteTasks, "release").Single().Text == "Write release notes" &&
        TaskPaletteLogic.Search(paletteTasks, string.Empty).All(task => !task.IsCompleted),
     "Palette task search must find active tasks and exclude completed tasks.");
+Assert(TaskPaletteLogic.Search(paletteTasks, "relese").Single().Text == "Write release notes",
+    "Fuzzy task search must tolerate spelling mistakes.");
+Assert(PaletteSearchLogic.Score("google", "google") >
+       PaletteSearchLogic.Score("gogle", "google"),
+    "Exact palette matches must rank above fuzzy matches.");
 Assert(TaskPaletteLogic.TryParseSchedule(
            "tomorrow 18:00", new DateTime(2026, 9, 26, 12, 0, 0), out var reschedule) &&
        reschedule.DueAt == new DateTime(2026, 9, 27, 18, 0, 0),

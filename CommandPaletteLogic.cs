@@ -78,11 +78,10 @@ public static class CommandPaletteLogic
             .Select(DisplayPattern)
             .Concat(command.Keywords.Where(keyword => !string.IsNullOrWhiteSpace(keyword)))
             .ToList();
-        if (searchablePatterns.Any(value => value.StartsWith(query, StringComparison.OrdinalIgnoreCase)))
-            return new CommandMatch(command, command.Parameter, IsStatic(command.Command), 200);
-        if (searchablePatterns.Any(value => value.Contains(query, StringComparison.OrdinalIgnoreCase)))
-            return new CommandMatch(command, command.Parameter, IsStatic(command.Command), 100);
-        return null;
+        var score = PaletteSearchLogic.BestScore(query, searchablePatterns);
+        return score > 0
+            ? new CommandMatch(command, command.Parameter, IsStatic(command.Command), score)
+            : null;
     }
 
     private static bool TryMatch(string command, string input, out IReadOnlyList<string> groups)

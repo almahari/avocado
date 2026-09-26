@@ -125,7 +125,7 @@ public partial class CommandPaletteWindow : Window
         }
         else
         {
-            if (query.Length == 0 || "tasks".Contains(query, StringComparison.OrdinalIgnoreCase))
+            if (query.Length == 0 || PaletteSearchLogic.Score(query, "tasks") > 0)
             {
                 var count = _taskHost.GetPaletteTasks().Count;
                 entries.Add(new PaletteEntry(
@@ -136,7 +136,7 @@ public partial class CommandPaletteWindow : Window
             }
 
             AddTaskEntries(entries, query, includeEmptyResults: false);
-            if (query.Length == 0 || "bookmarks".Contains(query, StringComparison.OrdinalIgnoreCase))
+            if (query.Length == 0 || PaletteSearchLogic.Score(query, "bookmarks") > 0)
             {
                 var count = BookmarkLogic.CountWebsites(_bookmarks);
                 entries.Add(new PaletteEntry(

@@ -33,7 +33,7 @@ public static class BookmarkLogic
 
         var matches = new List<BookmarkWebsiteMatch>();
         foreach (var folder in folders)
-            CollectMatches(folder, [], trimmed, ancestorMatched: false, matches);
+            CollectMatches(folder, [], trimmed, ancestorScore: 0, matches);
 
         return matches
             .OrderByDescending(match => match.Score)
@@ -50,27 +50,25 @@ public static class BookmarkLogic
         BookmarkFolder folder,
         IReadOnlyList<string> parentPath,
         string query,
-        bool ancestorMatched,
+        int ancestorScore,
         ICollection<BookmarkWebsiteMatch> matches)
     {
         if (string.IsNullOrWhiteSpace(folder.Name)) return;
         var path = parentPath.Append(folder.Name).ToList();
-        var folderMatched = ancestorMatched || Contains(folder.Name, query);
+        var folderScore = Math.Max(ancestorScore, PaletteSearchLogic.Score(query, folder.Name));
 
         foreach (var website in folder.Websites)
         {
             if (string.IsNullOrWhiteSpace(website.Name) || string.IsNullOrWhiteSpace(website.Url)) continue;
-            var nameMatched = Contains(website.Name, query);
-            var urlMatched = Contains(website.Url, query);
-            if (!folderMatched && !nameMatched && !urlMatched) continue;
-            var score = nameMatched ? 300 : folderMatched ? 200 : 100;
+            var nameScore = PaletteSearchLogic.Score(query, website.Name);
+            var urlScore = PaletteSearchLogic.Score(query, website.Url);
+            var score = Math.Max(nameScore + (nameScore > 0 ? 200 : 0),
+                Math.Max(folderScore + (folderScore > 0 ? 100 : 0), urlScore));
+            if (score == 0) continue;
             matches.Add(new BookmarkWebsiteMatch(website, string.Join(" / ", path), score));
         }
 
         foreach (var child in folder.Folders)
-            CollectMatches(child, path, query, folderMatched, matches);
+            CollectMatches(child, path, query, folderScore, matches);
     }
-
-    private static bool Contains(string value, string query) =>
-        value.Contains(query, StringComparison.OrdinalIgnoreCase);
 }
