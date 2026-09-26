@@ -9,6 +9,10 @@ public sealed class CommandDefinition
     public string Action { get; set; } = string.Empty;
     public string Parameter { get; set; } = string.Empty;
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public List<string> Aliases { get; set; } = [];
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public List<string> Keywords { get; set; } = [];
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public bool ShowWindow { get; set; }
 }
 
@@ -44,9 +48,10 @@ public static class CommandPaletteLogic
     {
         if (!IsUsable(command)) return null;
         var query = input.Trim();
-        if (TryMatch(command.Command, query, out var groups))
+        foreach (var pattern in Patterns(command))
         {
-            return new CommandMatch(command, Expand(command.Parameter, groups), true, 1000);
+            if (TryMatch(pattern, query, out var groups))
+                return new CommandMatch(command, Expand(command.Parameter, groups), true, 1000);
         }
 
         return IsStatic(command.Command)
@@ -63,13 +68,19 @@ public static class CommandPaletteLogic
         if (query.Length == 0)
             return new CommandMatch(command, command.Parameter, IsStatic(command.Command), 1);
 
-        if (TryMatch(command.Command, query, out var groups))
-            return new CommandMatch(command, Expand(command.Parameter, groups), true, 1000);
+        foreach (var pattern in Patterns(command))
+        {
+            if (TryMatch(pattern, query, out var groups))
+                return new CommandMatch(command, Expand(command.Parameter, groups), true, 1000);
+        }
 
-        var display = DisplayPattern(command.Command);
-        if (display.StartsWith(query, StringComparison.OrdinalIgnoreCase))
+        var searchablePatterns = Patterns(command)
+            .Select(DisplayPattern)
+            .Concat(command.Keywords.Where(keyword => !string.IsNullOrWhiteSpace(keyword)))
+            .ToList();
+        if (searchablePatterns.Any(value => value.StartsWith(query, StringComparison.OrdinalIgnoreCase)))
             return new CommandMatch(command, command.Parameter, IsStatic(command.Command), 200);
-        if (display.Contains(query, StringComparison.OrdinalIgnoreCase))
+        if (searchablePatterns.Any(value => value.Contains(query, StringComparison.OrdinalIgnoreCase)))
             return new CommandMatch(command, command.Parameter, IsStatic(command.Command), 100);
         return null;
     }
@@ -133,6 +144,15 @@ public static class CommandPaletteLogic
         command.StartsWith(RegexPrefix, StringComparison.OrdinalIgnoreCase)
             ? command[RegexPrefix.Length..]
             : command.Trim('/');
+
+    private static IEnumerable<string> Patterns(CommandDefinition command)
+    {
+        yield return command.Command;
+        foreach (var alias in command.Aliases)
+        {
+            if (!string.IsNullOrWhiteSpace(alias)) yield return alias;
+        }
+    }
 
     private static bool IsUsable(CommandDefinition command) =>
         !string.IsNullOrWhiteSpace(command.Command) && IsSupportedAction(command.Action);

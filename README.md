@@ -96,12 +96,14 @@ Tasks, window position, and window mode are saved under `%LOCALAPPDATA%\Avocado`
 
 ## Command palette
 
-Choose **Setup commands** from the tray menu to create and open `%LOCALAPPDATA%\Avocado\commands.json` in the default JSON editor. The palette reloads this file every time it opens. Each entry contains `command`, `action`, and `parameter`, plus an optional `showWindow` flag for Bash commands:
+Choose **Setup commands** from the tray menu to create and open `%LOCALAPPDATA%\Avocado\commands.json` in the default JSON editor. The palette reloads this file every time it opens. Each entry contains `command`, `action`, and `parameter`. Optional `aliases` provide alternate executable command patterns, `keywords` add search terms, and `showWindow` controls Bash visibility:
 
 ```json
 [
   {
     "command": "google",
+    "aliases": ["search"],
+    "keywords": ["web", "internet"],
     "action": "open-browser",
     "parameter": "https://www.google.com"
   },
@@ -124,6 +126,8 @@ Choose **Setup commands** from the tray menu to create and open `%LOCALAPPDATA%\
 ```
 
 - Static text such as `google` runs when selected.
+- `aliases` contains alternate command patterns. Aliases support `%1` placeholders and regular expressions in the same way as `command`.
+- `keywords` contains additional search terms. They make a command discoverable but are not executable command patterns.
 - `%1`, `%2`, and later placeholders capture text from the typed command and substitute it into `parameter`. For example, `j124-123` with `j%1` opens `https://jira.com/124-123`.
 - Prefix a regular expression with `regex:` (or wrap it in `/.../`). Regex capture groups map to `%1`, `%2`, and so on.
 - `open-browser` opens an HTTP or HTTPS address in the default browser. A missing scheme is treated as `https://`.

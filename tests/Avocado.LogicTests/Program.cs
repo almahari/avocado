@@ -390,14 +390,31 @@ Assert(GlobalShortcutSettings.IsValid(new GlobalShortcutGesture(GlobalShortcutMo
 
 var paletteCommands = new List<CommandDefinition>
 {
-    new() { Command = "google", Action = "open-browser", Parameter = "https://www.google.com" },
+    new()
+    {
+        Command = "google", Action = "open-browser", Parameter = "https://www.google.com",
+        Aliases = ["search"], Keywords = ["web", "internet"]
+    },
     new() { Command = "j%1", Action = "open-browser", Parameter = "jira.com/%1" },
-    new() { Command = @"regex:^gh\s+(.+)$", Action = "open-browser", Parameter = "github.com/search?q=%1" },
+    new()
+    {
+        Command = @"regex:^gh\s+(.+)$", Action = "open-browser", Parameter = "github.com/search?q=%1",
+        Aliases = ["github %1"]
+    },
     new() { Command = "echo %1", Action = "run-bash", Parameter = "echo \"%1\"" }
 };
 var staticMatches = CommandPaletteLogic.Search(paletteCommands, "goo");
 Assert(staticMatches.Count > 0 && staticMatches[0].Definition.Command == "google",
     "Command palette search must find static commands from partial text.");
+Assert(CommandPaletteLogic.Search(paletteCommands, "sea").First().Definition.Command == "google" &&
+       CommandPaletteLogic.Resolve(paletteCommands[0], "search")?.IsExecutable == true,
+    "Command aliases must discover and execute their command definition.");
+Assert(CommandPaletteLogic.Search(paletteCommands, "internet").Single().Definition.Command == "google",
+    "Command keywords must make commands discoverable without replacing their display name.");
+var aliasParameterMatch = CommandPaletteLogic.Search(paletteCommands, "github avocado").First();
+Assert(aliasParameterMatch.IsExecutable &&
+       aliasParameterMatch.ExpandedParameter == "github.com/search?q=avocado",
+    "Parameterized aliases must capture and substitute command arguments.");
 var placeholderMatch = CommandPaletteLogic.Search(paletteCommands, "j124-123").First();
 Assert(placeholderMatch.IsExecutable && placeholderMatch.ExpandedParameter == "jira.com/124-123",
     "Text parameters must be captured and substituted into action parameters.");
