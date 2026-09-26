@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Forms = System.Windows.Forms;
 
 namespace Avocado;
@@ -10,6 +11,7 @@ public partial class CommandPaletteWindow : Window
     private readonly CommandConfigStore _store;
     private IReadOnlyList<CommandDefinition> _commands = [];
     private string? _loadError;
+    private bool _dismissOnDeactivate;
 
     public CommandPaletteWindow(CommandConfigStore store, FruitThemePalette theme)
     {
@@ -37,6 +39,7 @@ public partial class CommandPaletteWindow : Window
 
     public void Open()
     {
+        _dismissOnDeactivate = false;
         _commands = _store.Load(out _loadError);
         CommandBox.Text = string.Empty;
         RefreshResults();
@@ -46,6 +49,7 @@ public partial class CommandPaletteWindow : Window
         Activate();
         CommandBox.Focus();
         Keyboard.Focus(CommandBox);
+        ScheduleOutsideClickDismissal();
     }
 
     private void RefreshResults()
@@ -72,7 +76,7 @@ public partial class CommandPaletteWindow : Window
 
         try
         {
-            Hide();
+            HidePalette();
             CommandActionExecutor.Execute(resolved);
         }
         catch (Exception exception)
@@ -106,7 +110,7 @@ public partial class CommandPaletteWindow : Window
     {
         if (e.Key == Key.Escape)
         {
-            Hide();
+            HidePalette();
             e.Handled = true;
             return;
         }
@@ -132,6 +136,28 @@ public partial class CommandPaletteWindow : Window
     }
 
     private void ResultsList_MouseDoubleClick(object sender, MouseButtonEventArgs e) => ExecuteSelected();
+
+    private void Window_Activated(object? sender, EventArgs e) => ScheduleOutsideClickDismissal();
+
+    private void Window_Deactivated(object? sender, EventArgs e)
+    {
+        if (!_dismissOnDeactivate) return;
+        HidePalette();
+    }
+
+    private void ScheduleOutsideClickDismissal()
+    {
+        Dispatcher.BeginInvoke(() =>
+        {
+            if (IsVisible && IsActive) _dismissOnDeactivate = true;
+        }, DispatcherPriority.ApplicationIdle);
+    }
+
+    private void HidePalette()
+    {
+        _dismissOnDeactivate = false;
+        Hide();
+    }
 
     private void SetBrush(string key, string value, double opacity = 1)
     {

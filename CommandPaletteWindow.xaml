@@ -6,6 +6,8 @@
         WindowStyle="None" ResizeMode="NoResize"
         AllowsTransparency="True" Background="Transparent"
         ShowInTaskbar="False" Topmost="True"
+        Activated="Window_Activated"
+        Deactivated="Window_Deactivated"
         PreviewKeyDown="Window_PreviewKeyDown">
     <Window.Resources>
         <SolidColorBrush x:Key="PaletteInk" Color="#173D2B" />
