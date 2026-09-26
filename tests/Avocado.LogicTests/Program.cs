@@ -496,6 +496,28 @@ Assert(BookmarkLogic.BuildPath([bookmarkFolders[0], bookmarkFolders[0].Folders[0
        "Work / Releases",
     "Bookmark navigation must display a readable nested path.");
 
+var paletteTasks = new List<TodoItem>
+{
+    new() { Text = "Write release notes", IsPinned = true },
+    new() { Text = "Buy groceries" },
+    new() { Text = "Archived", IsCompleted = true }
+};
+Assert(TaskPaletteLogic.GetCreateText("task tomorrow 18:00 Send report") ==
+       "tomorrow 18:00 Send report",
+    "The task command must retain task-entry scheduling syntax.");
+Assert(TaskPaletteLogic.GetCreateText("tasks") is null,
+    "Only a task command followed by content may create a task.");
+Assert(TaskPaletteLogic.Search(paletteTasks, "release").Single().Text == "Write release notes" &&
+       TaskPaletteLogic.Search(paletteTasks, string.Empty).All(task => !task.IsCompleted),
+    "Palette task search must find active tasks and exclude completed tasks.");
+Assert(TaskPaletteLogic.TryParseSchedule(
+           "tomorrow 18:00", new DateTime(2026, 9, 26, 12, 0, 0), out var reschedule) &&
+       reschedule.DueAt == new DateTime(2026, 9, 27, 18, 0, 0),
+    "Palette rescheduling must accept the same natural date syntax as task creation.");
+Assert(!TaskPaletteLogic.TryParseSchedule(
+        "not a schedule", new DateTime(2026, 9, 26, 12, 0, 0), out _),
+    "Palette rescheduling must reject text without a date or reminder time.");
+
 Console.WriteLine("All Avocado logic checks passed.");
 return;
 

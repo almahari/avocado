@@ -10,21 +10,27 @@ public partial class CommandPaletteWindow : Window
 {
     private readonly CommandConfigStore _store;
     private readonly BookmarkConfigStore _bookmarkStore;
+    private readonly MainWindow _taskHost;
     private IReadOnlyList<CommandDefinition> _commands = [];
     private IReadOnlyList<BookmarkFolder> _bookmarks = [];
     private readonly List<BookmarkFolder> _bookmarkPath = [];
     private string? _loadError;
     private string? _bookmarkLoadError;
     private bool _isBrowsingBookmarks;
+    private bool _isBrowsingTasks;
+    private bool _isReschedulingTask;
+    private TodoItem? _selectedTask;
     private bool _dismissOnDeactivate;
 
     public CommandPaletteWindow(
         CommandConfigStore store,
         BookmarkConfigStore bookmarkStore,
+        MainWindow taskHost,
         FruitThemePalette theme)
     {
         _store = store;
         _bookmarkStore = bookmarkStore;
+        _taskHost = taskHost;
         InitializeComponent();
         ApplyTheme(theme);
     }
@@ -53,6 +59,9 @@ public partial class CommandPaletteWindow : Window
         _bookmarks = _bookmarkStore.Load(out _bookmarkLoadError);
         _bookmarkPath.Clear();
         _isBrowsingBookmarks = false;
+        _isBrowsingTasks = false;
+        _isReschedulingTask = false;
+        _selectedTask = null;
         CommandBox.Text = string.Empty;
         RefreshResults();
 
@@ -69,7 +78,28 @@ public partial class CommandPaletteWindow : Window
         var query = CommandBox.Text.Trim();
         var entries = new List<PaletteEntry>();
 
-        if (_isBrowsingBookmarks)
+        if (_isReschedulingTask && _selectedTask is not null)
+        {
+            if (TaskPaletteLogic.TryParseSchedule(query, DateTime.Now, out var schedule))
+            {
+                entries.Add(new PaletteEntry(
+                    "Apply new schedule",
+                    ScheduleLabel(schedule),
+                    "reschedule",
+                    PaletteEntryKind.TaskAction,
+                    Task: _selectedTask,
+                    TaskAction: PaletteTaskAction.ApplyReschedule));
+            }
+        }
+        else if (_selectedTask is not null)
+        {
+            entries.AddRange(CreateTaskActions(_selectedTask));
+        }
+        else if (_isBrowsingTasks)
+        {
+            AddTaskEntries(entries, query);
+        }
+        else if (_isBrowsingBookmarks)
         {
             if (query.Length == 0)
             {
@@ -95,6 +125,17 @@ public partial class CommandPaletteWindow : Window
         }
         else
         {
+            if (query.Length == 0 || "tasks".Contains(query, StringComparison.OrdinalIgnoreCase))
+            {
+                var count = _taskHost.GetPaletteTasks().Count;
+                entries.Add(new PaletteEntry(
+                    "Tasks",
+                    $"{count} active task{(count == 1 ? string.Empty : "s")}",
+                    "tasks >",
+                    PaletteEntryKind.TaskRoot));
+            }
+
+            AddTaskEntries(entries, query, includeEmptyResults: false);
             if (query.Length == 0 || "bookmarks".Contains(query, StringComparison.OrdinalIgnoreCase))
             {
                 var count = BookmarkLogic.CountWebsites(_bookmarks);
@@ -124,6 +165,29 @@ public partial class CommandPaletteWindow : Window
             _isBrowsingBookmarks = true;
             _bookmarkPath.Clear();
             ClearSearchAndRefresh();
+            return;
+        }
+        if (selected.Kind == PaletteEntryKind.TaskRoot)
+        {
+            _isBrowsingTasks = true;
+            ClearSearchAndRefresh();
+            return;
+        }
+        if (selected.Kind == PaletteEntryKind.Task && selected.Task is not null)
+        {
+            _selectedTask = selected.Task;
+            ClearSearchAndRefresh();
+            return;
+        }
+        if (selected.Kind == PaletteEntryKind.CreateTask && selected.CreateTaskText is not null)
+        {
+            if (_taskHost.CreatePaletteTask(selected.CreateTaskText)) HidePalette();
+            return;
+        }
+        if (selected.Kind == PaletteEntryKind.TaskAction && selected.Task is not null &&
+            selected.TaskAction is PaletteTaskAction taskAction)
+        {
+            ExecuteTaskAction(selected.Task, taskAction);
             return;
         }
         if (selected.Kind == PaletteEntryKind.Folder && selected.Folder is not null)
@@ -196,7 +260,8 @@ public partial class CommandPaletteWindow : Window
             e.Handled = true;
             return;
         }
-        if (e.Key == Key.Back && CommandBox.Text.Length == 0 && _isBrowsingBookmarks)
+        if (e.Key == Key.Back && CommandBox.Text.Length == 0 &&
+            (_isBrowsingBookmarks || _isBrowsingTasks || _selectedTask is not null))
         {
             NavigateBack();
             e.Handled = true;
@@ -257,10 +322,25 @@ public partial class CommandPaletteWindow : Window
 
     private void NavigateBack()
     {
+        if (_isReschedulingTask)
+        {
+            _isReschedulingTask = false;
+        }
+        else if (_selectedTask is not null)
+        {
+            _selectedTask = null;
+        }
+        else if (_isBrowsingTasks)
+        {
+            _isBrowsingTasks = false;
+        }
+        else
+        {
         if (_bookmarkPath.Count > 0)
             _bookmarkPath.RemoveAt(_bookmarkPath.Count - 1);
         else
             _isBrowsingBookmarks = false;
+        }
         RefreshResults();
         CommandBox.Focus();
     }
@@ -277,6 +357,10 @@ public partial class CommandPaletteWindow : Window
     {
         if (_loadError is not null) return $"Command config error: {_loadError}";
         if (_bookmarkLoadError is not null) return $"Bookmark config error: {_bookmarkLoadError}";
+        if (_isReschedulingTask && _selectedTask is not null)
+            return $"Reschedule '{_selectedTask.Text}': type a date/time such as tomorrow 18:00";
+        if (_selectedTask is not null) return $"Task / {_selectedTask.Text}";
+        if (_isBrowsingTasks) return "Tasks / type 'task <details>' to create";
         if (_isBrowsingBookmarks)
         {
             var path = BookmarkLogic.BuildPath(_bookmarkPath);
@@ -312,6 +396,109 @@ public partial class CommandPaletteWindow : Window
         PaletteEntryKind.Website,
         Website: website);
 
+    private void AddTaskEntries(List<PaletteEntry> entries, string query, bool includeEmptyResults = true)
+    {
+        var createText = TaskPaletteLogic.GetCreateText(query);
+        if (createText is not null)
+        {
+            var parsed = TaskReminderLogic.Parse(createText);
+            entries.Add(new PaletteEntry(
+                $"Create task: {parsed.Text}",
+                ScheduleLabel(parsed),
+                "create",
+                PaletteEntryKind.CreateTask,
+                CreateTaskText: createText));
+            return;
+        }
+
+        if (!includeEmptyResults && query.Length == 0) return;
+        entries.AddRange(TaskPaletteLogic.Search(_taskHost.GetPaletteTasks(), query)
+            .Select(CreateTaskEntry));
+    }
+
+    private static PaletteEntry CreateTaskEntry(TodoItem task) => new(
+        task.Text,
+        string.IsNullOrWhiteSpace(task.ReminderLabel) ? "No reminder" : task.ReminderLabel,
+        "task >",
+        PaletteEntryKind.Task,
+        Task: task);
+
+    private static IEnumerable<PaletteEntry> CreateTaskActions(TodoItem task)
+    {
+        yield return TaskActionEntry("Complete task", "Move this task to completed", "complete", task,
+            PaletteTaskAction.Complete);
+        foreach (var minutes in new[] { 5, 10, 20, 30 })
+            yield return TaskActionEntry($"Snooze {minutes} minutes", "Remind again after the delay", "snooze", task,
+                minutes switch
+                {
+                    5 => PaletteTaskAction.Snooze5,
+                    10 => PaletteTaskAction.Snooze10,
+                    20 => PaletteTaskAction.Snooze20,
+                    _ => PaletteTaskAction.Snooze30
+                });
+        yield return TaskActionEntry("Mute reminder", "Remove this task's reminder and recurrence", "mute", task,
+            PaletteTaskAction.Mute);
+        yield return TaskActionEntry("Reschedule task", "Enter a new date or reminder time", "schedule >", task,
+            PaletteTaskAction.Reschedule);
+        yield return TaskActionEntry("Delete task", "Permanently remove this active task", "delete", task,
+            PaletteTaskAction.Delete);
+    }
+
+    private static PaletteEntry TaskActionEntry(
+        string title,
+        string subtitle,
+        string badge,
+        TodoItem task,
+        PaletteTaskAction action) =>
+        new(title, subtitle, badge, PaletteEntryKind.TaskAction, Task: task, TaskAction: action);
+
+    private void ExecuteTaskAction(TodoItem task, PaletteTaskAction action)
+    {
+        if (action == PaletteTaskAction.Reschedule)
+        {
+            _isReschedulingTask = true;
+            ClearSearchAndRefresh();
+            return;
+        }
+
+        if (action == PaletteTaskAction.ApplyReschedule)
+        {
+            if (!_taskHost.ReschedulePaletteTask(task, CommandBox.Text))
+            {
+                StatusText.Text = "Enter a valid date or reminder time";
+                return;
+            }
+            HidePalette();
+            return;
+        }
+
+        switch (action)
+        {
+            case PaletteTaskAction.Complete:
+                _taskHost.CompletePaletteTask(task);
+                break;
+            case PaletteTaskAction.Snooze5:
+            case PaletteTaskAction.Snooze10:
+            case PaletteTaskAction.Snooze20:
+            case PaletteTaskAction.Snooze30:
+                _taskHost.SnoozePaletteTask(task, (int)action);
+                break;
+            case PaletteTaskAction.Mute:
+                _taskHost.MutePaletteTask(task);
+                break;
+            case PaletteTaskAction.Delete:
+                _taskHost.DeletePaletteTask(task);
+                break;
+        }
+        HidePalette();
+    }
+
+    private static string ScheduleLabel(ParsedTaskInput task) => task.DueAt is DateTime dueAt
+        ? TaskReminderLogic.FormatDueLabel(dueAt)
+        : task.ReminderTime is TimeSpan reminderTime
+            ? $"{TaskReminderLogic.Label(task.Recurrence)} {reminderTime:hh\\:mm}".TrimStart()
+            : "No reminder";
+
     private void SetBrush(string key, string value, double opacity = 1)
     {
         Resources[key] = new SolidColorBrush(ParseColor(value)) { Opacity = opacity };
@@ -325,9 +512,26 @@ public partial class CommandPaletteWindow : Window
 public enum PaletteEntryKind
 {
     Command,
+    TaskRoot,
+    Task,
+    CreateTask,
+    TaskAction,
     BookmarkRoot,
     Folder,
     Website
+}
+
+public enum PaletteTaskAction
+{
+    Complete = 0,
+    Snooze5 = 5,
+    Snooze10 = 10,
+    Snooze20 = 20,
+    Snooze30 = 30,
+    Mute = 100,
+    Reschedule = 101,
+    ApplyReschedule = 102,
+    Delete = 103
 }
 
 public sealed record PaletteEntry(
@@ -337,4 +541,7 @@ public sealed record PaletteEntry(
     PaletteEntryKind Kind,
     CommandMatch? Command = null,
     BookmarkFolder? Folder = null,
-    BookmarkWebsite? Website = null);
+    BookmarkWebsite? Website = null,
+    TodoItem? Task = null,
+    PaletteTaskAction? TaskAction = null,
+    string? CreateTaskText = null);

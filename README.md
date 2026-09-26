@@ -19,6 +19,7 @@ dotnet run --project .\Avocado.csproj
 - Press the global `Ctrl+Alt+S` shortcut to put the fruit into sleeping mode immediately.
 - Press the global `Ctrl+Alt+P` shortcut to open the command palette in the center of the current screen. Type to search, use Up/Down to select, Enter to run, or Escape to close.
 - Open **Bookmarks** in the command palette to browse folders and nested subfolders. Select a website to open it, or press Backspace with an empty search box to move up one level.
+- Open **Tasks** in the command palette to search active tasks and manage their reminders, or type `task <details>` to create a task directly.
 - Double-click the tray icon to show or hide the avocado.
 - Open the tray icon menu and choose **Task help** to see the supported task-entry formats and examples.
 - Open the tray icon menu to choose **Normal window**, **Always on top**, themes, seasonal skins, reminder sounds, Do Not Disturb hours, startup behavior, global shortcuts, or **Exit**.
@@ -141,6 +142,12 @@ Choose **Setup commands** from the tray menu to create and open `%LOCALAPPDATA%\
 Set `showWindow` to `true` to open a visible Git Bash terminal. The terminal displays the script output and exit code, then waits for Enter before closing. Omit the option or set it to `false` to run silently in the background.
 
 Set `AVOCADO_GIT_BASH` to a specific `bash.exe` path if Git is installed outside its standard Windows locations.
+
+### Palette task management
+
+Open **Tasks** to browse active tasks. Selecting a task shows actions to complete it, snooze it for 5, 10, 20, or 30 minutes, mute its reminder, reschedule it, or delete it. Backspace with an empty search box returns to the previous level.
+
+Type `task <details>` from anywhere in the palette to create a task using the normal task-entry syntax. For example, `task tomorrow 18:00 Send report` creates a scheduled task. When rescheduling, enter only the new schedule, such as `tomorrow 18:00`, `daily 09:00`, or `2026-10-01 14:30`.
 
 ## Command palette bookmarks
 

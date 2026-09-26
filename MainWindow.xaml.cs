@@ -646,6 +646,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             _commandPaletteWindow ??= new CommandPaletteWindow(
                 _commandConfigStore,
                 _bookmarkConfigStore,
+                this,
                 _currentTheme);
             _commandPaletteWindow.ApplyTheme(_currentTheme);
             _commandPaletteWindow.Open();
@@ -1196,6 +1197,62 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         return true;
     }
 
+    public IReadOnlyList<TodoItem> GetPaletteTasks() => _tasks
+        .Where(task => !task.IsCompleted)
+        .ToList();
+
+    public bool CreatePaletteTask(string input) =>
+        AddNewTasks(TaskReminderLogic.ParseMany(input));
+
+    public void CompletePaletteTask(TodoItem task)
+    {
+        if (!_tasks.Contains(task)) return;
+        task.IsCompleted = true;
+        ArchiveCompletedTask(task);
+    }
+
+    public void SnoozePaletteTask(TodoItem task, int minutes)
+    {
+        if (!_tasks.Contains(task)) return;
+        task.SnoozedUntil = DateTime.Now.AddMinutes(minutes);
+        ResolveAlertingTask(task);
+        SaveState();
+    }
+
+    public void MutePaletteTask(TodoItem task)
+    {
+        if (!_tasks.Contains(task)) return;
+        task.ReminderTime = null;
+        task.Recurrence = TaskRecurrence.None;
+        task.DueAt = null;
+        task.SnoozedUntil = null;
+        task.LastReminderDate = null;
+        ResolveAlertingTask(task);
+        SaveState();
+        RefreshTaskView();
+    }
+
+    public bool ReschedulePaletteTask(TodoItem task, string input)
+    {
+        if (!_tasks.Contains(task) ||
+            !TaskPaletteLogic.TryParseSchedule(input, DateTime.Now, out var schedule)) return false;
+        task.ReminderTime = schedule.ReminderTime;
+        task.Recurrence = schedule.Recurrence;
+        task.DueAt = schedule.DueAt;
+        task.SnoozedUntil = null;
+        task.LastReminderDate = null;
+        ResolveAlertingTask(task);
+        SaveState();
+        RefreshTaskView();
+        return true;
+    }
+
+    public void DeletePaletteTask(TodoItem task)
+    {
+        if (!_tasks.Contains(task)) return;
+        DeleteTask(task);
+    }
+
     private void TaskCheckBox_Click(object sender, RoutedEventArgs e)
     {
         if (sender is System.Windows.Controls.CheckBox { DataContext: TodoItem task, IsChecked: true })
@@ -1523,22 +1580,24 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
     {
-        if (sender is System.Windows.Controls.Button { Tag: TodoItem item })
+        if (sender is System.Windows.Controls.Button { Tag: TodoItem item }) DeleteTask(item);
+    }
+
+    private void DeleteTask(TodoItem item)
+    {
+        item.IsActionsOpen = false;
+        if (ReferenceEquals(_editingTask, item))
         {
-            item.IsActionsOpen = false;
-            if (ReferenceEquals(_editingTask, item))
-            {
-                _editingTask = null;
-                AddPanel.Visibility = Visibility.Collapsed;
-            }
-            if (ReferenceEquals(_activeTimerTask, item)) PauseActiveTimer(persist: false);
-            if (ReferenceEquals(_expandedTask, item)) _expandedTask = null;
-            _tasks.Remove(item);
-            ResolveAlertingTask(item);
-            RefreshTaskView();
-            SaveState();
-            RefreshAdaptivePersonality();
+            _editingTask = null;
+            AddPanel.Visibility = Visibility.Collapsed;
         }
+        if (ReferenceEquals(_activeTimerTask, item)) PauseActiveTimer(persist: false);
+        if (ReferenceEquals(_expandedTask, item)) _expandedTask = null;
+        _tasks.Remove(item);
+        ResolveAlertingTask(item);
+        RefreshTaskView();
+        SaveState();
+        RefreshAdaptivePersonality();
     }
 
     private void ResolveAlertingTask(TodoItem task)
