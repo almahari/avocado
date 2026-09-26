@@ -31,6 +31,7 @@
     <Compile Include="..\..\GlobalShortcutSettings.cs" Link="GlobalShortcutSettings.cs" />
     <Compile Include="..\..\CommandPaletteLogic.cs" Link="CommandPaletteLogic.cs" />
     <Compile Include="..\..\CommandActionExecutor.cs" Link="CommandActionExecutor.cs" />
+    <Compile Include="..\..\BookmarkLogic.cs" Link="BookmarkLogic.cs" />
     <None Update="fixtures\command-palette-test.sh" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

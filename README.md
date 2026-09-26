@@ -18,6 +18,7 @@ dotnet run --project .\Avocado.csproj
 - Press the global `Ctrl+Alt+V` shortcut to immediately create a task from clipboard text. Normal task syntax for links, priorities, and reminders is supported.
 - Press the global `Ctrl+Alt+S` shortcut to put the fruit into sleeping mode immediately.
 - Press the global `Ctrl+Alt+P` shortcut to open the command palette in the center of the current screen. Type to search, use Up/Down to select, Enter to run, or Escape to close.
+- Open **Bookmarks** in the command palette to browse folders and nested subfolders. Select a website to open it, or press Backspace with an empty search box to move up one level.
 - Double-click the tray icon to show or hide the avocado.
 - Open the tray icon menu and choose **Task help** to see the supported task-entry formats and examples.
 - Open the tray icon menu to choose **Normal window**, **Always on top**, themes, seasonal skins, reminder sounds, Do Not Disturb hours, startup behavior, global shortcuts, or **Exit**.
@@ -140,6 +141,33 @@ Choose **Setup commands** from the tray menu to create and open `%LOCALAPPDATA%\
 Set `showWindow` to `true` to open a visible Git Bash terminal. The terminal displays the script output and exit code, then waits for Enter before closing. Omit the option or set it to `false` to run silently in the background.
 
 Set `AVOCADO_GIT_BASH` to a specific `bash.exe` path if Git is installed outside its standard Windows locations.
+
+## Command palette bookmarks
+
+Choose **Setup bookmarks** from the tray menu to create and open `%LOCALAPPDATA%\Avocado\bookmarks.json`. The palette reloads bookmarks every time it opens. Bookmark folders can contain both `folders` and `websites`, with no fixed nesting limit:
+
+```json
+[
+  {
+    "name": "Folder 1",
+    "folders": [
+      {
+        "name": "Subfolder 1",
+        "folders": [],
+        "websites": [
+          {
+            "name": "Website 1",
+            "url": "https://example.com"
+          }
+        ]
+      }
+    ],
+    "websites": []
+  }
+]
+```
+
+With an empty search box, the palette shows the current folder's subfolders and websites. Searching lists websites whose name or URL matches. When a folder or any parent folder matches the search, every website beneath that folder is included in the results.
 
 ## Verify
 

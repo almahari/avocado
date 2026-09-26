@@ -80,7 +80,7 @@
             <ListBox x:Name="ResultsList" Grid.Row="1" Margin="20,0"
                      Background="{DynamicResource PaletteResults}" BorderThickness="0"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     MouseDoubleClick="ResultsList_MouseDoubleClick">
+                     PreviewMouseLeftButtonUp="ResultsList_PreviewMouseLeftButtonUp">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -89,28 +89,17 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <StackPanel>
-                                <TextBlock Text="{Binding Definition.Command}" FontFamily="Consolas"
+                                <TextBlock Text="{Binding Title}" FontFamily="Consolas"
                                            FontSize="16" FontWeight="Bold" />
-                                <TextBlock Text="{Binding ExpandedParameter}" FontFamily="Consolas"
+                                <TextBlock Text="{Binding Subtitle}" FontFamily="Consolas"
                                            FontSize="11" Foreground="{DynamicResource PaletteMuted}"
                                            Opacity="0.78"
                                            TextTrimming="CharacterEllipsis" />
                             </StackPanel>
                             <Border Grid.Column="1" Background="{DynamicResource PaletteBadge}" CornerRadius="3"
                                     Padding="8,4" VerticalAlignment="Center" Margin="16,0,0,0">
-                                <TextBlock FontFamily="Consolas"
-                                           FontSize="11" Foreground="{DynamicResource PaletteLeaf}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Text" Value="{Binding Definition.Action}" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Definition.ShowWindow}" Value="True">
-                                                    <Setter Property="Text" Value="run-bash / visible" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
+                                <TextBlock Text="{Binding Badge}" FontFamily="Consolas"
+                                           FontSize="11" Foreground="{DynamicResource PaletteLeaf}" />
                             </Border>
                         </Grid>
                     </DataTemplate>
@@ -122,7 +111,7 @@
                            Foreground="{DynamicResource PaletteMuted}" Opacity="0.78"
                            FontFamily="Consolas" FontSize="11"
                            VerticalAlignment="Center" />
-                <TextBlock Text="UP/DOWN select   ENTER run   ESC close"
+                <TextBlock Text="UP/DOWN select   ENTER open/run   BACKSPACE up   ESC close"
                            Foreground="{DynamicResource PaletteMuted}" Opacity="0.78"
                            FontFamily="Consolas" FontSize="11"
                            HorizontalAlignment="Right" VerticalAlignment="Center" />

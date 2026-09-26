@@ -23,6 +23,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private readonly ICollectionView _tasksView;
     private readonly AppStateStore _store = new();
     private readonly CommandConfigStore _commandConfigStore = new();
+    private readonly BookmarkConfigStore _bookmarkConfigStore = new();
     private readonly DispatcherTimer _locationSaveTimer;
     private readonly DispatcherTimer _inactivityTimer;
     private readonly DispatcherTimer _taskTimer;
@@ -642,7 +643,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         try
         {
-            _commandPaletteWindow ??= new CommandPaletteWindow(_commandConfigStore, _currentTheme);
+            _commandPaletteWindow ??= new CommandPaletteWindow(
+                _commandConfigStore,
+                _bookmarkConfigStore,
+                _currentTheme);
             _commandPaletteWindow.ApplyTheme(_currentTheme);
             _commandPaletteWindow.Open();
         }

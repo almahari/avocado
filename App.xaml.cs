@@ -33,6 +33,7 @@ public partial class App : System.Windows.Application
     private Icon? _trayThemeIcon;
     private readonly StartupRegistration _startupRegistration = new();
     private readonly CommandConfigStore _commandConfigStore = new();
+    private readonly BookmarkConfigStore _bookmarkConfigStore = new();
     private bool _isExiting;
 
     protected override void OnStartup(StartupEventArgs e)
@@ -68,6 +69,8 @@ public partial class App : System.Windows.Application
         var taskHelpItem = new Forms.ToolStripMenuItem("Task help", null, (_, _) => ShowTaskHelp());
         var setupCommandsItem = new Forms.ToolStripMenuItem(
             "Setup commands", null, (_, _) => OpenCommandConfig());
+        var setupBookmarksItem = new Forms.ToolStripMenuItem(
+            "Setup bookmarks", null, (_, _) => OpenBookmarkConfig());
         var archiveCleanupItem = new Forms.ToolStripMenuItem("Archive cleanup");
         foreach (var choice in ArchiveRetentionSettings.Choices)
         {
@@ -186,6 +189,7 @@ public partial class App : System.Windows.Application
         menu.Items.Add(archiveItem);
         menu.Items.Add(taskHelpItem);
         menu.Items.Add(setupCommandsItem);
+        menu.Items.Add(setupBookmarksItem);
         menu.Items.Add(archiveCleanupItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(_normalItem);
@@ -753,6 +757,22 @@ public partial class App : System.Windows.Application
         {
             Forms.MessageBox.Show(
                 $"Could not open the command configuration.\n\n{exception.Message}",
+                "Avocado",
+                Forms.MessageBoxButtons.OK,
+                Forms.MessageBoxIcon.Warning);
+        }
+    }
+
+    private void OpenBookmarkConfig()
+    {
+        try
+        {
+            _bookmarkConfigStore.OpenInEditor();
+        }
+        catch (Exception exception)
+        {
+            Forms.MessageBox.Show(
+                $"Could not open the bookmark configuration.\n\n{exception.Message}",
                 "Avocado",
                 Forms.MessageBoxButtons.OK,
                 Forms.MessageBoxIcon.Warning);

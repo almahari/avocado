@@ -445,6 +445,57 @@ Assert(CommandPaletteLogic.Search(
         "anything").Count == 0,
     "Invalid regular expressions must fail safely without breaking palette search.");
 
+var bookmarkFolders = new List<BookmarkFolder>
+{
+    new()
+    {
+        Name = "Work",
+        Websites =
+        [
+            new BookmarkWebsite { Name = "Intranet", Url = "https://work.example/intranet" }
+        ],
+        Folders =
+        [
+            new BookmarkFolder
+            {
+                Name = "Releases",
+                Websites =
+                [
+                    new BookmarkWebsite { Name = "GitHub", Url = "https://github.com/acme" },
+                    new BookmarkWebsite { Name = "Dashboard", Url = "https://deploy.example" }
+                ]
+            }
+        ]
+    },
+    new()
+    {
+        Name = "Personal",
+        Websites =
+        [
+            new BookmarkWebsite { Name = "Recipes", Url = "https://food.example" }
+        ]
+    }
+};
+Assert(BookmarkLogic.CountWebsites(bookmarkFolders) == 4,
+    "Bookmark counts must include websites in every nested folder.");
+var websiteSearch = BookmarkLogic.Search(bookmarkFolders, "github");
+Assert(websiteSearch.Count == 1 && websiteSearch[0].Website.Name == "GitHub" &&
+       websiteSearch[0].FolderPath == "Work / Releases",
+    "Bookmark search must return matching websites with their full folder path.");
+Assert(BookmarkLogic.Search(bookmarkFolders, "deploy").Single().Website.Name == "Dashboard",
+    "Bookmark search must match website URLs as well as names.");
+var subfolderSearch = BookmarkLogic.Search(bookmarkFolders, "releases");
+Assert(subfolderSearch.Select(match => match.Website.Name).Order()
+        .SequenceEqual(["Dashboard", "GitHub"]),
+    "A matching subfolder must return every website directly beneath it.");
+var parentFolderSearch = BookmarkLogic.Search(bookmarkFolders, "work");
+Assert(parentFolderSearch.Select(match => match.Website.Name).Order()
+        .SequenceEqual(["Dashboard", "GitHub", "Intranet"]),
+    "A matching folder must return websites from all descendant subfolders.");
+Assert(BookmarkLogic.BuildPath([bookmarkFolders[0], bookmarkFolders[0].Folders[0]]) ==
+       "Work / Releases",
+    "Bookmark navigation must display a readable nested path.");
+
 Console.WriteLine("All Avocado logic checks passed.");
 return;
 
