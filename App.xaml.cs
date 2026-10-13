@@ -10,6 +10,9 @@ public partial class App : System.Windows.Application
     private Forms.NotifyIcon? _trayIcon;
     private Forms.ToolStripMenuItem? _normalItem;
     private Forms.ToolStripMenuItem? _alwaysOnTopItem;
+    private Forms.ToolStripMenuItem? _mcpServerItem;
+    private AvocadoMcpServer? _mcpServer;
+    private Task _mcpTransition = Task.CompletedTask;
     private Forms.ToolStripMenuItem? _normalSizeItem;
     private Forms.ToolStripMenuItem? _smallSizeItem;
     private Forms.ToolStripMenuItem? _resizeWhenInactiveItem;
@@ -59,6 +62,8 @@ public partial class App : System.Windows.Application
         SetTheme(_window.CurrentTheme, persist: false);
         SetSeasonalSkin(_window.CurrentSeasonalSkin, persist: false);
         ShowWindow();
+        if (_window.IsMcpServerEnabled)
+            _mcpTransition = SetMcpServerEnabledAsync(true);
     }
 
     private void CreateTrayIcon()
@@ -82,6 +87,12 @@ public partial class App : System.Windows.Application
         _normalItem = new Forms.ToolStripMenuItem("Normal window", null, (_, _) => SetWindowMode(false));
         _alwaysOnTopItem = new Forms.ToolStripMenuItem(
             "Always on top", null, (_, _) => SetWindowMode(!_window!.IsAlwaysOnTop));
+        _mcpServerItem = new Forms.ToolStripMenuItem(
+            "Enable MCP server", null, (_, _) =>
+            {
+                if (!_isExiting && _mcpTransition.IsCompleted)
+                    _mcpTransition = SetMcpServerEnabledAsync(!(_mcpServer?.IsRunning ?? false));
+            });
         var sizeItem = new Forms.ToolStripMenuItem("Size");
         _normalSizeItem = new Forms.ToolStripMenuItem("Normal", null, (_, _) => SetSizeMode(false));
         _smallSizeItem = new Forms.ToolStripMenuItem("Small", null, (_, _) => SetSizeMode(true));
@@ -198,6 +209,7 @@ public partial class App : System.Windows.Application
         menu.Items.Add(sizeItem);
         menu.Items.Add(_openOnStartupItem);
         menu.Items.Add(globalShortcutsItem);
+        menu.Items.Add(_mcpServerItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(_resizeWhenInactiveItem);
         menu.Items.Add(sleepTimeItem);
@@ -791,9 +803,40 @@ public partial class App : System.Windows.Application
 
     private void HideWindow() => _window?.Hide();
 
-    private void ExitApplication()
+    private async Task SetMcpServerEnabledAsync(bool enabled)
     {
+        if (_window is null || _mcpServerItem is null) return;
+        _mcpServerItem.Enabled = false;
+        _mcpServer ??= new AvocadoMcpServer(_window);
+        try
+        {
+            if (enabled) await _mcpServer.StartAsync();
+            else await _mcpServer.StopAsync();
+            _window.SetMcpServerEnabled(enabled);
+        }
+        catch (Exception exception)
+        {
+            // A failed start must leave the tray and saved setting disabled.
+            if (!_mcpServer.IsRunning) _window.SetMcpServerEnabled(false);
+            if (!_isExiting)
+                System.Windows.MessageBox.Show(
+                    $"Could not {(enabled ? "enable" : "disable")} the MCP server at {AvocadoMcpServer.Endpoint}.\n\n{exception.Message}",
+                    "Avocado MCP server", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        finally
+        {
+            _mcpServerItem.Checked = _mcpServer.IsRunning;
+            _mcpServerItem.Enabled = !_isExiting;
+        }
+    }
+
+    private async void ExitApplication()
+    {
+        if (_isExiting) return;
         _isExiting = true;
+        if (_mcpServerItem is not null) _mcpServerItem.Enabled = false;
+        await _mcpTransition;
+        if (_mcpServer is not null) await _mcpServer.DisposeAsync();
         _window?.AllowClose();
         _window?.Close();
         if (_trayIcon is not null)
@@ -808,6 +851,7 @@ public partial class App : System.Windows.Application
 
     protected override void OnExit(ExitEventArgs e)
     {
+        _mcpServer?.DisposeAsync().AsTask().GetAwaiter().GetResult();
         if (!_isExiting)
         {
             _trayIcon?.Dispose();

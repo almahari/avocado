@@ -11,6 +11,7 @@ public sealed class AppState
     public List<TodoItem> Tasks { get; set; } = [];
     public List<TodoItem> ArchivedTasks { get; set; } = [];
     public bool AlwaysOnTop { get; set; }
+    public bool McpServerEnabled { get; set; }
     public bool SmallSize { get; set; }
     public bool ResizeWhenInactive { get; set; }
     public SleepTimeOption SleepTime { get; set; } = InactivitySettings.Default;

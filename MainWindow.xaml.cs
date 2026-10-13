@@ -21,7 +21,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private readonly ObservableCollection<TodoItem> _tasks = [];
     private readonly ObservableCollection<TodoItem> _archivedTasks = [];
     private readonly ICollectionView _tasksView;
-    private readonly AppStateStore _store = new();
+    private readonly AppStateStore _store;
     private readonly CommandConfigStore _commandConfigStore = new();
     private readonly BookmarkConfigStore _bookmarkConfigStore = new();
     private readonly DispatcherTimer _locationSaveTimer;
@@ -184,8 +184,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public event EventHandler? HideRequested;
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public MainWindow()
+    public MainWindow() : this(new AppStateStore()) { }
+
+    public MainWindow(AppStateStore store)
     {
+        _store = store;
         _state = _store.Load();
         foreach (var item in _state.Tasks) _tasks.Add(item);
         foreach (var item in _state.ArchivedTasks) _archivedTasks.Add(item);
@@ -1289,6 +1292,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void RestoreArchivedTaskButton_Click(object sender, RoutedEventArgs e)
     {
         if (sender is not System.Windows.Controls.Button { Tag: TodoItem task }) return;
+        RestoreArchivedTask(task);
+    }
+
+    private void RestoreArchivedTask(TodoItem task)
+    {
+        if (!_archivedTasks.Contains(task)) return;
         task.IsCompleted = false;
         task.CompletedAt = null;
         _archivedTasks.Remove(task);

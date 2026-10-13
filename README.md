@@ -24,6 +24,7 @@ dotnet run --project .\Avocado.csproj
 - Open the tray icon menu and choose **Task help** to see the supported task-entry formats and examples.
 - Open the tray icon menu to choose **Normal window**, **Always on top**, themes, seasonal skins, reminder sounds, Do Not Disturb hours, startup behavior, global shortcuts, or **Exit**.
 - Toggle **Always on top** in the tray menu to enable or disable it; the choice is saved. **Normal window** also disables it.
+- Toggle **Enable MCP server** in the tray menu to allow local AI agents to list, create, and update tasks. It is off by default, and the choice is saved.
 - Seasonal skins are independent of fruit themes: dress any fruit as a **Halloween pumpkin**, add a **Winter cap**, a **Spring blossom** crown, or **Summer shades**. Choose **None** to remove the accessory; the selection is saved.
 - Choose **Global shortcuts** to change or disable the system-wide Quick Add, Clipboard Task, Sleep Now, Wake Up, and Command Palette shortcuts; press a modifier plus a letter, number, function key, or Space.
 - Toggle **Adaptive personality** in the tray menu to show or hide the fruit’s reactive face. The choice is saved.
@@ -182,11 +183,63 @@ Choose **Setup bookmarks** from the tray menu to create and open `%LOCALAPPDATA%
 
 With an empty search box, the palette shows the current folder's subfolders and websites. Searching lists websites whose name or URL matches. When a folder or any parent folder matches the search, every website beneath that folder is included in the results.
 
+## MCP server connection
+
+Run Avocado and check **Enable MCP server** in the tray menu. The server runs inside the app, including while the window is hidden. Unchecking the option or exiting Avocado stops the server. An enabled setting starts the server again when Avocado next launches.
+
+| Setting | Value |
+| --- | --- |
+| URL | `http://127.0.0.1:17842/mcp` |
+| Transport | MCP Streamable HTTP (stateless) |
+| Authentication | None; local connections only |
+| Port | `17842` (fixed) |
+
+In an MCP client that accepts `mcpServers` URL configuration, add:
+
+```json
+{
+  "mcpServers": {
+    "avocado": {
+      "url": "http://127.0.0.1:17842/mcp"
+    }
+  }
+}
+```
+
+If your client asks for a transport, select **Streamable HTTP** (some clients call it `http`). Clients with other configuration formats should use the same URL. This is an HTTP endpoint, not a stdio command or legacy SSE endpoint. A client must run on the same computer; a cloud-hosted agent cannot connect directly. The server supports both newer MCP discovery and the older `initialize` handshake through the [official MCP C# SDK](https://csharp.sdk.modelcontextprotocol.io/v2/concepts/transports/transports.html).
+
+The server binds only to IPv4 loopback and rejects untrusted Host and browser Origin headers. Any local process can use these tools while the server is enabled. No account, token, or additional server process is needed.
+
+### Available tools
+
+| Tool | Arguments | Behavior |
+| --- | --- | --- |
+| `list_tasks` | `includeCompleted` (optional, default `false`) | Returns active tasks; set `true` to also return the completed archive. |
+| `create_task` | `input` (required), `isPinned` (optional, default `false`) | Creates one task using Avocado's task-entry syntax and returns it with its ID. |
+| `update_task` | `id` (required), `text`, `priority`, `schedule`, `isPinned`, `isCompleted` (all optional) | Updates the matching active or archived task and returns it. |
+
+Task results contain `id`, `text`, `isCompleted`, `isPinned`, `priority`, `createdAt`, `completedAt`, `dueAt`, `reminderTime`, `recurrence`, `snoozedUntil`, and `elapsedTicks`. Use the returned `id` for future updates. Dates and reminder expressions use the computer's local time. Changes immediately update the app and are saved to `%LOCALAPPDATA%\Avocado\state.json`.
+
+Examples of tool arguments:
+
+```json
+{"input": "tomorrow 9am !! Review report #work", "isPinned": true}
+```
+
+```json
+{"id": "<task ID from list_tasks>", "text": "Review final report", "priority": "High", "schedule": "daily 09:00"}
+```
+
+For updates, omitted or `null` fields keep their existing values. `text` is literal replacement text and must be nonempty; it does not parse reminders or priority prefixes. `priority` accepts `None`, `Low`, `Medium`, or `High`, case insensitively. Set `schedule` to a reminder expression such as `tomorrow 18:00`, `daily 09:00`, or `2026-12-01 14:30`; set it to `""` to remove the reminder. Setting `isCompleted` to `true` archives the task, and `false` restores it. `create_task` creates a single task, so semicolons remain in its text. Unknown IDs and invalid fields return MCP tool errors; validation failures apply no changes.
+
+If connection fails, verify that Avocado is running and **Enable MCP server** is checked. If port `17842` is already occupied, enabling shows an error and the option remains unchecked; stop the other listener and enable it again. Reconnect your client after disabling and re-enabling the server.
+
 ## Verify
 
 ```powershell
 dotnet build .\Avocado.csproj
 dotnet run --project .\tests\Avocado.LogicTests\Avocado.LogicTests.csproj
+dotnet run --project .\tests\Avocado.McpTests\Avocado.McpTests.csproj
 ```
 
 ## Create a standalone Windows executable
