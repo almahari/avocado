@@ -23,6 +23,7 @@ dotnet run --project .\Avocado.csproj
 - Double-click the tray icon to show or hide the avocado.
 - Open the tray icon menu and choose **Task help** to see the supported task-entry formats and examples.
 - Open the tray icon menu to choose **Normal window**, **Always on top**, themes, seasonal skins, reminder sounds, Do Not Disturb hours, startup behavior, global shortcuts, or **Exit**.
+- Toggle **Always on top** in the tray menu to enable or disable it; the choice is saved. **Normal window** also disables it.
 - Seasonal skins are independent of fruit themes: dress any fruit as a **Halloween pumpkin**, add a **Winter cap**, a **Spring blossom** crown, or **Summer shades**. Choose **None** to remove the accessory; the selection is saved.
 - Choose **Global shortcuts** to change or disable the system-wide Quick Add, Clipboard Task, Sleep Now, Wake Up, and Command Palette shortcuts; press a modifier plus a letter, number, function key, or Space.
 - Toggle **Adaptive personality** in the tray menu to show or hide the fruit’s reactive face. The choice is saved.

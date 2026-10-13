@@ -80,7 +80,8 @@ public partial class App : System.Windows.Application
             archiveCleanupItem.DropDownItems.Add(choiceItem);
         }
         _normalItem = new Forms.ToolStripMenuItem("Normal window", null, (_, _) => SetWindowMode(false));
-        _alwaysOnTopItem = new Forms.ToolStripMenuItem("Always on top", null, (_, _) => SetWindowMode(true));
+        _alwaysOnTopItem = new Forms.ToolStripMenuItem(
+            "Always on top", null, (_, _) => SetWindowMode(!_window!.IsAlwaysOnTop));
         var sizeItem = new Forms.ToolStripMenuItem("Size");
         _normalSizeItem = new Forms.ToolStripMenuItem("Normal", null, (_, _) => SetSizeMode(false));
         _smallSizeItem = new Forms.ToolStripMenuItem("Small", null, (_, _) => SetSizeMode(true));
