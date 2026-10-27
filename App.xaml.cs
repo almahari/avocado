@@ -15,6 +15,7 @@ public partial class App : System.Windows.Application
     private Task _mcpTransition = Task.CompletedTask;
     private Forms.ToolStripMenuItem? _normalSizeItem;
     private Forms.ToolStripMenuItem? _smallSizeItem;
+    private Forms.ToolStripMenuItem? _sideDockItem;
     private Forms.ToolStripMenuItem? _resizeWhenInactiveItem;
     private Forms.ToolStripMenuItem? _openOnStartupItem;
     private Forms.ToolStripMenuItem? _adaptivePersonalityItem;
@@ -50,6 +51,7 @@ public partial class App : System.Windows.Application
         CreateTrayIcon();
         SetWindowMode(_window.IsAlwaysOnTop, persist: false);
         SetSizeMode(_window.IsSmallSize, persist: false);
+        _sideDockItem!.Checked = _window.IsSideDockLayout;
         SetSleepTime(_window.CurrentSleepTime, persist: false);
         SetSleepFruitSize(_window.CurrentSleepFruitSize, persist: false);
         SetSleepResizeAnchor(_window.CurrentSleepResizeAnchor, persist: false);
@@ -87,6 +89,34 @@ public partial class App : System.Windows.Application
         _normalItem = new Forms.ToolStripMenuItem("Normal window", null, (_, _) => SetWindowMode(false));
         _alwaysOnTopItem = new Forms.ToolStripMenuItem(
             "Always on top", null, (_, _) => SetWindowMode(!_window!.IsAlwaysOnTop));
+        _sideDockItem = new Forms.ToolStripMenuItem(
+            "Side dock layout", null, (_, _) =>
+            {
+                _window!.SetSideDockLayout(!_window.IsSideDockLayout);
+                _sideDockItem!.Checked = _window.IsSideDockLayout;
+                ShowWindow();
+            });
+        var dockSettingsItem = new Forms.ToolStripMenuItem("Side dock settings");
+        var dockScreenItem = new Forms.ToolStripMenuItem("Screen");
+        dockScreenItem.DropDownOpening += (_, _) => PopulateDockScreens(dockScreenItem);
+        PopulateDockScreens(dockScreenItem);
+        var dockSideItem = new Forms.ToolStripMenuItem("Side");
+        foreach (var edge in Enum.GetValues<SideDockEdge>())
+        {
+            var edgeItem = new Forms.ToolStripMenuItem(edge.ToString(), null, (_, _) => _window!.SetSideDockEdge(edge))
+            {
+                Tag = edge,
+                Checked = _window!.CurrentSideDockEdge == edge
+            };
+            dockSideItem.DropDownItems.Add(edgeItem);
+        }
+        dockSideItem.DropDownOpening += (_, _) =>
+        {
+            foreach (Forms.ToolStripMenuItem item in dockSideItem.DropDownItems)
+                item.Checked = (SideDockEdge)item.Tag! == _window!.CurrentSideDockEdge;
+        };
+        dockSettingsItem.DropDownItems.Add(dockScreenItem);
+        dockSettingsItem.DropDownItems.Add(dockSideItem);
         _mcpServerItem = new Forms.ToolStripMenuItem(
             "Enable MCP server", null, (_, _) =>
             {
@@ -206,6 +236,8 @@ public partial class App : System.Windows.Application
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(_normalItem);
         menu.Items.Add(_alwaysOnTopItem);
+        menu.Items.Add(_sideDockItem);
+        menu.Items.Add(dockSettingsItem);
         menu.Items.Add(sizeItem);
         menu.Items.Add(_openOnStartupItem);
         menu.Items.Add(globalShortcutsItem);
@@ -237,6 +269,32 @@ public partial class App : System.Windows.Application
         };
         _trayIcon.DoubleClick += (_, _) => ToggleWindow();
     }
+
+    private void PopulateDockScreens(Forms.ToolStripMenuItem menu)
+    {
+        foreach (var oldItem in menu.DropDownItems.Cast<Forms.ToolStripItem>().ToArray())
+        {
+            menu.DropDownItems.Remove(oldItem);
+            oldItem.Dispose();
+        }
+        var screens = Forms.Screen.AllScreens;
+        var selected = screens.FirstOrDefault(s => s.DeviceName == _window!.CurrentSideDockMonitor)
+            ?? (_window!.IsSideDockLayout ? Forms.Screen.PrimaryScreen :
+                Forms.Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(_window!).Handle));
+        for (var index = 0; index < screens.Length; index++)
+        {
+            var screen = screens[index];
+            var label = $"Screen {index + 1} — {screen.Bounds.Width} × {screen.Bounds.Height}" +
+                (screen.Primary ? " (Primary)" : string.Empty);
+            menu.DropDownItems.Add(new Forms.ToolStripMenuItem(label, null, (_, _) =>
+            {
+                _window!.SetSideDockMonitor(screen.DeviceName);
+                foreach (Forms.ToolStripMenuItem item in menu.DropDownItems)
+                    item.Checked = (string?)item.Tag == screen.DeviceName;
+            }) { Tag = screen.DeviceName, Checked = screen.DeviceName == selected?.DeviceName });
+        }
+    }
+
 
     private static Icon CreateFruitIcon(FruitThemePalette theme, SeasonalSkinKind seasonalSkin)
     {
@@ -287,6 +345,29 @@ public partial class App : System.Windows.Application
                 break;
             case FruitThemeKind.Onion:
                 DrawOnionIcon(graphics, skin, flesh, accent);
+                break;
+            case FruitThemeKind.Cat:
+                using (var catFur = new SolidBrush(Color.FromArgb(242, 174, 83)))
+                {
+                    graphics.FillPolygon(catFur, new System.Drawing.Point[] { new(4, 14), new(4, 3), new(13, 8), new(20, 8), new(28, 3), new(28, 16) });
+                    graphics.FillEllipse(catFur, 3, 7, 26, 23);
+                    graphics.FillEllipse(skin, 9, 15, 3, 4);
+                    graphics.FillEllipse(skin, 21, 15, 3, 4);
+                    graphics.FillEllipse(seed, 15, 21, 3, 3);
+                }
+                break;
+            case FruitThemeKind.Lion:
+                using (var mane = new SolidBrush(Color.FromArgb(168, 98, 42)))
+                using (var fur = new SolidBrush(Color.FromArgb(241, 184, 82)))
+                {
+                    graphics.FillEllipse(mane, 1, 1, 30, 30);
+                    graphics.FillEllipse(fur, 5, 4, 7, 8);
+                    graphics.FillEllipse(fur, 20, 4, 7, 8);
+                    graphics.FillEllipse(fur, 6, 8, 20, 20);
+                    graphics.FillEllipse(skin, 10, 14, 3, 4);
+                    graphics.FillEllipse(skin, 20, 14, 3, 4);
+                    graphics.FillEllipse(seed, 15, 21, 3, 3);
+                }
                 break;
             default:
                 DrawAvocadoIcon(graphics, skin, flesh, seed);
@@ -748,7 +829,7 @@ public partial class App : System.Windows.Application
 
     private void ToggleWindow()
     {
-        if (_window?.IsVisible == true) HideWindow();
+        if (_window?.IsVisible == true && !_window.IsSideDockCollapsed) HideWindow();
         else ShowWindow();
     }
 
@@ -797,11 +878,16 @@ public partial class App : System.Windows.Application
         if (_window is null) return;
         _window.NotifyInteraction();
         _window.Show();
+        _window.ExpandSideDock();
         if (_window.WindowState == WindowState.Minimized) _window.WindowState = WindowState.Normal;
         _window.Activate();
     }
 
-    private void HideWindow() => _window?.Hide();
+    private void HideWindow()
+    {
+        if (_window?.IsSideDockLayout == true) _window.CollapseSideDock();
+        else _window?.Hide();
+    }
 
     private async Task SetMcpServerEnabledAsync(bool enabled)
     {

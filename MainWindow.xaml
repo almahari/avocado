@@ -69,7 +69,20 @@
         </Style>
     </Window.Resources>
 
+    <Grid x:Name="LayoutHost">
+        <Border x:Name="DockSurface" Visibility="Collapsed" Margin="32,0,0,0"
+                Background="{DynamicResource FleshBrush}" BorderBrush="{DynamicResource OuterBrush}"
+                BorderThickness="3" CornerRadius="16,0,0,16">
+            <Grid IsHitTestVisible="False" ClipToBounds="True">
+                <Border x:Name="DockWallpaper" CornerRadius="12,0,0,12" />
+                <Image x:Name="DockCatScene" Visibility="Collapsed" VerticalAlignment="Bottom"
+                       Stretch="Uniform" Source="Assets/cat-scene.png" Height="440" />
+                <Image x:Name="DockThemeScene" Visibility="Collapsed" VerticalAlignment="Bottom"
+                       Stretch="Uniform" Height="440" />
+            </Grid>
+        </Border>
     <Grid x:Name="Root" Background="Transparent">
+        <Grid x:Name="FruitArtwork">
         <!-- Fruit-specific pixel silhouettes -->
         <Grid x:Name="AvocadoShape">
             <Polygon Fill="{DynamicResource OuterBrush}" Points="194,4 226,4 226,52 274,52 274,68 306,68 306,84 322,84 322,100 338,100 338,132 354,132 354,164 370,164 370,212 386,212 386,356 370,356 370,404 354,404 354,436 338,436 338,468 306,468 306,484 274,484 274,500 146,500 146,484 114,484 114,468 82,468 82,436 66,436 66,404 50,404 50,356 34,356 34,212 50,212 50,164 66,164 66,132 82,132 82,100 98,100 98,84 114,84 114,68 146,68 146,52 194,52" />
@@ -192,6 +205,24 @@
             <Rectangle Fill="{DynamicResource MiddleBrush}" Width="16" Height="320" Margin="274,116,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.35" />
         </Grid>
 
+        <Grid x:Name="CatShape" Visibility="Collapsed">
+            <Grid Width="360" Height="470" Margin="30,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Grid.Clip><RectangleGeometry Rect="0,0,360,470" RadiusX="80" RadiusY="80" /></Grid.Clip>
+                <Border Background="{DynamicResource FleshBrush}" CornerRadius="80" />
+                <Image Source="Assets/cat-scene.png" Stretch="Uniform" Width="360" Height="340"
+                       VerticalAlignment="Bottom" IsHitTestVisible="False" />
+                <Border BorderBrush="{DynamicResource OuterBrush}" BorderThickness="3" CornerRadius="80" IsHitTestVisible="False" />
+            </Grid>
+        </Grid>
+        <Grid x:Name="LionShape" Visibility="Collapsed">
+            <Grid Width="360" Height="470" Margin="30,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Grid.Clip><RectangleGeometry Rect="0,0,360,470" RadiusX="80" RadiusY="80" /></Grid.Clip>
+                <Border Background="{DynamicResource FleshBrush}" CornerRadius="80" />
+                <Image Source="Assets/theme-scenes/lion-scene.png" Stretch="Uniform" Width="360" Height="340"
+                       VerticalAlignment="Bottom" IsHitTestVisible="False" />
+                <Border BorderBrush="{DynamicResource OuterBrush}" BorderThickness="3" CornerRadius="80" IsHitTestVisible="False" />
+            </Grid>
+        </Grid>
         <!-- Optional accessories are independent from the selected fruit theme. -->
         <Grid x:Name="HalloweenPumpkinSkin" Visibility="Collapsed" IsHitTestVisible="False">
             <Polygon Fill="{DynamicResource SeasonalDarkBrush}" Points="98,68 146,36 178,36 178,4 242,4 242,36 274,36 322,68" />
@@ -227,26 +258,106 @@
             <Rectangle Fill="{DynamicResource SeasonalSnowBrush}" Width="12" Height="6" Margin="235,380,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.65" />
         </Grid>
 
+        </Grid>
         <Grid x:Name="AwakeContent">
-        <TextBlock Text="{Binding HeaderText}" Margin="0,105,0,0" VerticalAlignment="Top"
+        <Grid x:Name="DockHeader" Visibility="Collapsed" Margin="24,22,24,0" Height="246" VerticalAlignment="Top">
+            <TextBlock Text="Today's Tasks" FontFamily="Segoe UI" FontSize="26" FontWeight="Bold"
+                       Foreground="{DynamicResource InkBrush}" />
+            <TextBlock Text="{Binding DockDateText}" FontFamily="Segoe UI" FontSize="13" Margin="0,36,0,0"
+                       Foreground="{DynamicResource MutedInkBrush}" VerticalAlignment="Top" />
+            <Button x:Name="ClearDockDateFilterButton" Content="All tasks" Visibility="Collapsed"
+                    HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,32,0,0" Width="70" Height="26"
+                    Style="{StaticResource PixelButton}" FontSize="11" ToolTip="Clear the date filter"
+                    Click="ClearDockDateFilter_Click" />
+            <ItemsControl x:Name="DockClocks" ItemsSource="{Binding WorldClocks}" Margin="-3,64,-3,0" Height="80" VerticalAlignment="Top">
+                <ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Columns="4" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate><DataTemplate>
+                    <Border Background="{DynamicResource TaskBrush}" CornerRadius="10" Margin="3,0" Padding="7,9" ToolTip="{Binding Description}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Name}" FontFamily="Segoe UI" FontSize="11" Foreground="{DynamicResource MutedInkBrush}" />
+                            <TextBlock Text="{Binding Time}" FontFamily="Segoe UI" FontSize="19" FontWeight="SemiBold" Foreground="{DynamicResource InkBrush}" />
+                            <TextBlock Text="{Binding Date}" FontFamily="Segoe UI" FontSize="9" Foreground="{DynamicResource MutedInkBrush}" />
+                        </StackPanel>
+                    </Border>
+                </DataTemplate></ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <ItemsControl x:Name="DockDayStrip" ItemsSource="{Binding DockDays}" Margin="-3,154,-3,0" Height="54" VerticalAlignment="Top">
+                <ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Columns="7" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate><DataTemplate>
+                    <Button x:Name="DockDayDropTarget" Margin="3,0" Click="DockDay_Click" Tag="{Binding Date}"
+                            ToolTip="Click to filter tasks for this date; click again to show all. Drop a task here to reschedule it." Cursor="Hand"
+                            AllowDrop="True" DragOver="DockDay_DragOver" DragLeave="DockDay_DragLeave" Drop="DockDay_Drop">
+                        <Button.Style><Style TargetType="Button">
+                            <Setter Property="Background" Value="{DynamicResource TaskBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource InkBrush}" />
+                            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button">
+                                <Border x:Name="DayBorder" Background="{TemplateBinding Background}" CornerRadius="8" Padding="2,5">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True"><Setter Property="Opacity" Value="0.8" /></Trigger>
+                                    <DataTrigger Binding="{Binding IsToday}" Value="True">
+                                        <Setter TargetName="DayBorder" Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+                                        <Setter TargetName="DayBorder" Property="BorderThickness" Value="2" />
+                                    </DataTrigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate></Setter.Value></Setter>
+                            <Style.Triggers><DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
+                                <Setter Property="Foreground" Value="{DynamicResource CreamBrush}" />
+                            </DataTrigger></Style.Triggers>
+                        </Style></Button.Style>
+                        <StackPanel><TextBlock Text="{Binding DayName}" FontFamily="Segoe UI" FontSize="10" HorizontalAlignment="Center" />
+                            <TextBlock Text="{Binding DayNumber}" FontFamily="Segoe UI" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" /></StackPanel>
+                    </Button>
+                </DataTemplate></ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <TextBlock Text="{Binding DockTaskHeading}" FontFamily="Segoe UI" FontSize="19" FontWeight="SemiBold" Margin="0,220,0,0"
+                       Foreground="{DynamicResource InkBrush}" VerticalAlignment="Top" />
+        </Grid>
+        <TextBlock x:Name="DockEmptyState" Visibility="Collapsed" Text="{Binding DockEmptyMessage}"
+                   Margin="24,305,24,0" VerticalAlignment="Top" HorizontalAlignment="Center"
+                   FontFamily="Segoe UI" FontSize="14" TextAlignment="Center" TextWrapping="Wrap"
+                   Foreground="{DynamicResource MutedInkBrush}" IsHitTestVisible="False" />
+        <TextBlock x:Name="FruitHeader" Text="{Binding HeaderText}" Margin="0,105,0,0" VerticalAlignment="Top"
                    HorizontalAlignment="Center" FontFamily="Consolas" FontSize="22"
                    FontWeight="Bold" Foreground="{DynamicResource InkBrush}" />
-        <Button x:Name="SortButton" Content="↕" ToolTip="Sort tasks"
-                Style="{StaticResource PixelButton}" Width="26" Height="26"
-                Margin="82,116,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-                FontSize="15" Click="SortButton_Click" />
-        <Button x:Name="CalendarButton" Content="▦" ToolTip="Calendar"
-                Style="{StaticResource PixelButton}" Width="28" Height="28"
-                Margin="112,115,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-                FontSize="15" Click="CalendarButton_Click" />
-        <Button x:Name="AddButton" Content="+" ToolTip="Add task (Ctrl+N / Ctrl+Alt+N) • Clipboard task (Ctrl+Alt+V)"
+        <Button x:Name="SortButton" ToolTip="Sort tasks" AutomationProperties.Name="Sort tasks"
+                Style="{StaticResource PixelButton}" Width="30" Height="30"
+                Margin="82,114,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                Click="SortButton_Click">
+            <Viewbox Width="18" Height="18"><Canvas Width="24" Height="24">
+                <Path Data="M 8,20 L 8,4 M 4,8 L 8,4 L 12,8 M 16,4 L 16,20 M 12,16 L 16,20 L 20,16"
+                      Stroke="{DynamicResource CreamBrush}" StrokeThickness="2" StrokeLineJoin="Round" />
+            </Canvas></Viewbox>
+        </Button>
+        <Button x:Name="CalendarButton" ToolTip="Calendar" AutomationProperties.Name="Calendar"
+                Style="{StaticResource PixelButton}" Width="30" Height="30"
+                Margin="118,114,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                Click="CalendarButton_Click">
+            <Viewbox Width="18" Height="18"><Canvas Width="24" Height="24">
+                <Path Data="M 4,5 L 20,5 L 20,21 L 4,21 Z M 4,10 L 20,10 M 8,2 L 8,7 M 16,2 L 16,7 M 8,13 L 8,18 M 12,13 L 12,18 M 16,13 L 16,18"
+                      Stroke="{DynamicResource CreamBrush}" StrokeThickness="2" StrokeLineJoin="Round" />
+            </Canvas></Viewbox>
+        </Button>
+        <Button x:Name="AddButton" ToolTip="Add task (Ctrl+N / Ctrl+Alt+N) • Clipboard task (Ctrl+Alt+V)" AutomationProperties.Name="Add task"
                 Style="{StaticResource PixelButton}" Width="30" Height="30"
                 Margin="0,114,84,0" HorizontalAlignment="Right" VerticalAlignment="Top"
-                FontSize="20" Click="AddButton_Click" />
-        <Button x:Name="SearchButton" Content="⌕" ToolTip="Search and filter tasks"
-                Style="{StaticResource PixelButton}" Width="28" Height="28"
-                Margin="0,115,118,0" HorizontalAlignment="Right" VerticalAlignment="Top"
-                FontSize="16" Click="SearchButton_Click" />
+                Click="AddButton_Click">
+            <Viewbox Width="18" Height="18"><Canvas Width="24" Height="24">
+                <Path Data="M 12,4 L 12,20 M 4,12 L 20,12"
+                      Stroke="{DynamicResource CreamBrush}" StrokeThickness="2" />
+            </Canvas></Viewbox>
+        </Button>
+        <Button x:Name="SearchButton" ToolTip="Search and filter tasks" AutomationProperties.Name="Search and filter tasks"
+                Style="{StaticResource PixelButton}" Width="30" Height="30"
+                Margin="0,114,120,0" HorizontalAlignment="Right" VerticalAlignment="Top"
+                Click="SearchButton_Click">
+            <Viewbox Width="18" Height="18"><Canvas Width="24" Height="24">
+                <Path Data="M 17,10 A 7,7 0 1 1 3,10 A 7,7 0 1 1 17,10 M 15,15 L 21,21"
+                      Stroke="{DynamicResource CreamBrush}" StrokeThickness="2" />
+            </Canvas></Viewbox>
+        </Button>
         <!-- Input editor -->
         <Border x:Name="AddPanel" Width="262" Height="42" Margin="0,157,0,0"
                 VerticalAlignment="Top" HorizontalAlignment="Center"
@@ -443,8 +554,8 @@
                 <ItemsControl x:Name="TaskItemsControl" ItemsSource="{Binding TasksView}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border x:Name="TaskRow" Height="33" MinHeight="33" Margin="0,0,0,3" Background="{DynamicResource TaskBrush}"
-                                    BorderBrush="{DynamicResource MiddleBrush}" BorderThickness="0,0,0,2"
+                            <Border x:Name="TaskRow" MinHeight="33" Background="{DynamicResource TaskBrush}"
+                                    BorderBrush="{DynamicResource MiddleBrush}"
                                     AllowDrop="True" Cursor="Hand" ToolTip="{Binding TaskToolTip}"
                                     PreviewMouseLeftButtonDown="TaskRow_PreviewMouseLeftButtonDown"
                                     PreviewMouseLeftButtonUp="TaskRow_PreviewMouseLeftButtonUp"
@@ -453,7 +564,17 @@
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="Opacity" Value="1" />
+                                        <Setter Property="Height" Value="33" />
+                                        <Setter Property="Margin" Value="0,0,0,3" />
+                                        <Setter Property="BorderThickness" Value="0,0,0,2" />
                                         <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsSideDockLayout, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
+                                                <Setter Property="Height" Value="44" />
+                                                <Setter Property="Margin" Value="0,0,0,7" />
+                                                <Setter Property="CornerRadius" Value="8" />
+                                                <Setter Property="BorderThickness" Value="0" />
+                                                <Setter Property="Padding" Value="5,0" />
+                                            </DataTrigger>
                                             <DataTrigger Binding="{Binding IsDragging}" Value="True">
                                                 <Setter Property="Opacity" Value="0.35" />
                                             </DataTrigger>
@@ -462,7 +583,7 @@
                                 </Border.Style>
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="33" />
+                                        <RowDefinition Height="*" MinHeight="33" />
                                         <RowDefinition>
                                             <RowDefinition.Style>
                                                 <Style TargetType="RowDefinition">
@@ -486,7 +607,29 @@
                                         <ColumnDefinition Width="32" />
                                     </Grid.ColumnDefinitions>
                                     <CheckBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                              IsChecked="{Binding IsCompleted}" Click="TaskCheckBox_Click" />
+                                              IsChecked="{Binding IsCompleted}" Click="TaskCheckBox_Click">
+                                        <CheckBox.Style><Style TargetType="CheckBox">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsSideDockLayout, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
+                                                    <Setter Property="Width" Value="22" /><Setter Property="Height" Value="22" />
+                                                    <Setter Property="Cursor" Value="Hand" />
+                                                    <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="CheckBox">
+                                                        <Border x:Name="Box" Background="Transparent" BorderBrush="{DynamicResource InkBrush}" BorderThickness="2" CornerRadius="5">
+                                                            <Path x:Name="Tick" Visibility="Collapsed" Data="M 3,9 L 7,13 L 15,4"
+                                                                  Stroke="{DynamicResource CreamBrush}" StrokeThickness="2" Margin="1" />
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsChecked" Value="True">
+                                                                <Setter TargetName="Box" Property="Background" Value="{DynamicResource ButtonBrush}" />
+                                                                <Setter TargetName="Tick" Property="Visibility" Value="Visible" />
+                                                            </Trigger>
+                                                            <Trigger Property="IsMouseOver" Value="True"><Setter Property="Opacity" Value="0.75" /></Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate></Setter.Value></Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style></CheckBox.Style>
+                                    </CheckBox>
                                     <TextBlock Grid.Column="1" Text="{Binding PriorityLabel}"
                                                FontFamily="Consolas" FontSize="11" FontWeight="Bold"
                                                Foreground="{DynamicResource SeedBrush}" Margin="0,0,4,0"
@@ -496,10 +639,12 @@
                                                Foreground="{DynamicResource MutedInkBrush}" Margin="0,0,6,0"
                                                VerticalAlignment="Center" />
                                     <local:LinkTextBlock LinkText="{Binding Text}"
-                                               FontFamily="Consolas" FontSize="14" Foreground="{DynamicResource InkBrush}"
+                                               Foreground="{DynamicResource InkBrush}"
                                                >
                                         <local:LinkTextBlock.Style>
                                             <Style TargetType="local:LinkTextBlock">
+                                                <Setter Property="FontFamily" Value="Consolas" />
+                                                <Setter Property="FontSize" Value="14" />
                                                 <Setter Property="Grid.Row" Value="0" />
                                                 <Setter Property="Grid.Column" Value="3" />
                                                 <Setter Property="Grid.ColumnSpan" Value="1" />
@@ -508,6 +653,10 @@
                                                 <Setter Property="TextWrapping" Value="NoWrap" />
                                                 <Setter Property="TextTrimming" Value="CharacterEllipsis" />
                                                 <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsSideDockLayout, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
+                                                        <Setter Property="FontFamily" Value="Segoe UI" />
+                                                        <Setter Property="FontSize" Value="15" />
+                                                    </DataTrigger>
                                                     <DataTrigger Binding="{Binding IsExpanded}" Value="True">
                                                         <Setter Property="Grid.Row" Value="1" />
                                                         <Setter Property="Grid.Column" Value="0" />
@@ -703,5 +852,18 @@
             </StackPanel>
         </Border>
 
+    </Grid>
+        <Button x:Name="DockCloseButton" Visibility="Collapsed" Content="×"
+                Width="32" Height="32" Margin="0,12,12,0" VerticalAlignment="Top" HorizontalAlignment="Right"
+                Style="{StaticResource PixelButton}" FontSize="22" Click="DockCloseButton_Click"
+                ToolTip="Collapse to screen edge" AutomationProperties.Name="Collapse side panel" />
+        <Button x:Name="DockTab" Visibility="Collapsed" Width="32" Height="144"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,96,0,0"
+                Style="{StaticResource PixelButton}" Click="DockTab_Click"
+                ToolTip="Open or collapse side panel" AutomationProperties.Name="Toggle side panel">
+            <TextBlock Text="Tasks" FontSize="13">
+                <TextBlock.LayoutTransform><RotateTransform Angle="-90" /></TextBlock.LayoutTransform>
+            </TextBlock>
+        </Button>
     </Grid>
 </Window>

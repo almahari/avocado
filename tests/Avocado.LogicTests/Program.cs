@@ -200,7 +200,27 @@ Assert(SleepReminderRepeatSettings.Get((SleepReminderRepeatOption)999).Option ==
 Assert(TaskTimerLogic.Format(TimeSpan.Zero) == "00:00:00", "A new task timer must start at zero.");
 Assert(TaskTimerLogic.Format(new TimeSpan(1, 2, 3, 4)) == "26:03:04",
     "Task timer formatting must preserve total hours beyond one day.");
-Assert(FruitThemes.All.Count == 14, "The tray must offer all fourteen fruit themes.");
+Assert(FruitThemes.All.Count == 16, "The tray must offer the fourteen fruit themes, Cat, and Lion.");
+var winterClocks = WorldClockLogic.GetReadings(new DateTimeOffset(2026, 1, 15, 22, 30, 0, TimeSpan.Zero));
+var calendarMovedTask = new TodoItem
+{
+    Text = "Schedule test", ReminderTime = TimeSpan.FromHours(14), Recurrence = TaskRecurrence.Daily,
+    SnoozedUntil = new DateTime(2026, 7, 3, 15, 0, 0), LastReminderDate = new DateOnly(2026, 7, 3)
+};
+CalendarLogic.MoveToDate(calendarMovedTask, new DateOnly(2026, 7, 8));
+Assert(calendarMovedTask.DueAt == new DateTime(2026, 7, 8, 14, 0, 0) && calendarMovedTask.ReminderTime is null &&
+    calendarMovedTask.Recurrence == TaskRecurrence.None && calendarMovedTask.SnoozedUntil is null && calendarMovedTask.LastReminderDate is null,
+    "Moving a recurring reminder to a date must preserve its time and create a clean one-off schedule.");
+var newlyDatedTask = new TodoItem { Text = "No previous schedule" };
+CalendarLogic.MoveToDate(newlyDatedTask, new DateOnly(2026, 7, 8));
+Assert(newlyDatedTask.DueAt == new DateTime(2026, 7, 8, 9, 0, 0), "Newly dated tasks must default to 9 AM.");
+Assert(winterClocks.Select(clock => clock.Time).SequenceEqual(new[] { "01:30", "22:30", "18:30", "06:30" }),
+    "World clocks must use Bahrain, UK winter time, fixed EDT, and Singapore offsets.");
+Assert(winterClocks[0].Date == "Fri, 16 Jan" && winterClocks[1].Date == "Thu, 15 Jan",
+    "World clocks must show the correct local day when dates differ.");
+var summerClocks = WorldClockLogic.GetReadings(new DateTimeOffset(2026, 7, 15, 12, 0, 0, TimeSpan.Zero));
+Assert(summerClocks[1].Time == "13:00" && summerClocks[2].Time == "08:00",
+    "The UK clock must follow British Summer Time while EDT stays UTC-4.");
 Assert(FruitThemes.Default.Kind == FruitThemeKind.Avocado, "Avocado must remain the default theme.");
 Assert(FruitThemes.All.Select(theme => theme.Kind).Distinct().Count() == FruitThemes.All.Count,
     "Every fruit theme must have a unique selection value.");

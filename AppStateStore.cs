@@ -4,6 +4,8 @@ using System.IO;
 
 namespace Avocado;
 
+public enum SideDockEdge { Left, Right }
+
 public sealed class AppState
 {
     [JsonIgnore]
@@ -13,6 +15,9 @@ public sealed class AppState
     public bool AlwaysOnTop { get; set; }
     public bool McpServerEnabled { get; set; }
     public bool SmallSize { get; set; }
+    public bool SideDockLayout { get; set; }
+    public string? SideDockMonitor { get; set; }
+    public SideDockEdge SideDockEdge { get; set; } = SideDockEdge.Right;
     public bool ResizeWhenInactive { get; set; }
     public SleepTimeOption SleepTime { get; set; } = InactivitySettings.Default;
     public SleepFruitSize SleepFruitSize { get; set; } = SleepFruitSizeLogic.Default;

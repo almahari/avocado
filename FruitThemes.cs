@@ -15,7 +15,9 @@ public enum FruitThemeKind
     Tomato,
     Pumpkin,
     Potato,
-    Onion
+    Onion,
+    Cat,
+    Lion
 }
 
 public sealed record FruitThemePalette(
@@ -82,7 +84,13 @@ public static class FruitThemes
             "#755130", "#4A301B", "#76502D", "#67513A", "#E5C79D"),
         new(FruitThemeKind.Onion, "Onion", "#3E183F", "#FFF2F4", "#672969", "#2A0E2B",
             "#87388A", "#491D4A", "#5D245F", "#944F96", "#D7A7D6", "#F0D0E8",
-            "#6D8B48", "#774D2D", "#A77A52", "#735176", "#F1D8EA")
+            "#6D8B48", "#774D2D", "#A77A52", "#735176", "#F1D8EA"),
+        new(FruitThemeKind.Cat, "Cat", "#573C22", "#FFF5D8", "#81552F", "#624022",
+            "#A56B37", "#634020", "#8A603A", "#E4B76A", "#FBECC4", "#FFE4A4",
+            "#BB7839", "#9E592B", "#CF8B45", "#806641", "#FFF3D2"),
+        new(FruitThemeKind.Lion, "Lion", "#53351D", "#FFF0CC", "#85522A", "#5E371C",
+            "#AA6B32", "#633B20", "#8C592E", "#D4A151", "#F9E6B9", "#FFE2A0",
+            "#B97632", "#9B5B29", "#CA893D", "#7C6038", "#FFF2D0")
     ];
 
     public static FruitThemePalette Default => All[0];

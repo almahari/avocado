@@ -24,8 +24,11 @@ dotnet run --project .\Avocado.csproj
 - Open the tray icon menu and choose **Task help** to see the supported task-entry formats and examples.
 - Open the tray icon menu to choose **Normal window**, **Always on top**, themes, seasonal skins, reminder sounds, Do Not Disturb hours, startup behavior, global shortcuts, or **Exit**.
 - Toggle **Always on top** in the tray menu to enable or disable it; the choice is saved. **Normal window** also disables it.
+- Toggle **Side dock layout** in the tray menu for a themed task panel filling the screen above the taskbar. Task rows stretch across the panel, and every theme has a soft background with its own illustrated character scene at the bottom. Choose **Side dock settings → Screen** to pick a monitor and **Side dock settings → Side → Left / Right** to choose an edge. These choices are saved; if the selected monitor is disconnected, the panel uses the primary screen until it returns. Close the panel or click its vertical tab to collapse it to the selected edge; click the tab again to reopen it. Turn the layout off to return to the floating fruit. In this layout, Sleep Now collapses the panel and Wake Up reopens it; fruit size and inactivity resizing apply when you return to the floating layout.
 - Toggle **Enable MCP server** in the tray menu to allow local AI agents to list, create, and update tasks. It is off by default, and the choice is saved.
 - Seasonal skins are independent of fruit themes: dress any fruit as a **Halloween pumpkin**, add a **Winter cap**, a **Spring blossom** crown, or **Summer shades**. Choose **None** to remove the accessory; the selection is saved.
+- Choose **Themes → Cat** for a warm cream planner with rounded task rows and an illustrated waving cat. The side dock header shows live 24-hour clocks for **Bahrain**, **UK** (GMT/BST automatically), **EDT** (fixed UTC−4), and **Singapore**, including each location's date. Select a day in the seven-day strip to filter tasks for that date, including recurring reminders and snoozed tasks. Click the selected date again or choose **All tasks** to clear the date filter. The calendar toolbar button still opens the calendar.
+- Choose **Themes → Lion** for a similar warm illustrated planner with a golden lion, caramel mane, and savannah scene. Lion works in both the side dock and floating layouts; the selection is saved.
 - Choose **Global shortcuts** to change or disable the system-wide Quick Add, Clipboard Task, Sleep Now, Wake Up, and Command Palette shortcuts; press a modifier plus a letter, number, function key, or Space.
 - Toggle **Adaptive personality** in the tray menu to show or hide the fruit’s reactive face. The choice is saved.
 - From the tray menu, choose **Size → Normal** or **Size → Small**; Small is exactly half-size.
@@ -33,6 +36,7 @@ dotnet run --project .\Avocado.csproj
 - Choose **Sleep reminder repeat** in the tray menu to repeat an unresolved reminder every 5, 10, 20, or 30 minutes while the fruit is sleeping. Snoozing or muting the reminder stops the repeated shake.
 - Scroll the task area to reveal tasks beyond the first five; `+N more` shows how many start below the viewport.
 - Drag a task row up or down to change its saved order; nearby tasks animate aside while you drag.
+- In the side dock, drag a task onto a date in the top strip to reschedule it. The date highlights while you hover. The existing scheduled time is preserved; tasks without a time use 9:00 AM. Dropping a recurring reminder on a specific date makes it a one-off task for that date.
 - Use the `↕` button beside the calendar to sort tasks by priority or reminder time.
 - Use the `▦` button to open a compact day or week calendar, navigate dates, and jump to a scheduled task.
 - Use the `◇` button on a task to pin it above unpinned tasks. Pinned and unpinned tasks can each be reordered by dragging.
@@ -240,6 +244,7 @@ If connection fails, verify that Avocado is running and **Enable MCP server** is
 dotnet build .\Avocado.csproj
 dotnet run --project .\tests\Avocado.LogicTests\Avocado.LogicTests.csproj
 dotnet run --project .\tests\Avocado.McpTests\Avocado.McpTests.csproj
+dotnet run --project .\tests\Avocado.LayoutTests\Avocado.LayoutTests.csproj
 ```
 
 ## Create a standalone Windows executable

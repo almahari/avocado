@@ -120,7 +120,7 @@ public sealed class TodoItem : INotifyPropertyChanged
     public string CreatedToolTip =>
         $"Created {CreatedAt.ToString("MMM dd, yyyy HH:mm", CultureInfo.InvariantCulture)}";
     [JsonIgnore]
-    public string TaskToolTip => $"{CreatedToolTip}\nClick to expand • drag to reorder";
+    public string TaskToolTip => $"{CreatedToolTip}\nClick to expand • drag to reorder or drop on a calendar date to reschedule";
     public DateOnly? LastReminderDate
     {
         get => _lastReminderDate;

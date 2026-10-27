@@ -195,7 +195,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _tasksView = CollectionViewSource.GetDefaultView(_tasks);
         _tasksView.Filter = item => item is TodoItem task &&
                                     TaskFilterLogic.Matches(task, _taskSearchText, _taskFilterMode,
-                                        _selectedCategoryFilter);
+                                        _selectedCategoryFilter) && (_dockDateTaskIds is null || _dockDateTaskIds.Contains(task.Id));
         _locationSaveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(350) };
         _locationSaveTimer.Tick += (_, _) => SaveLocationNow();
         _inactivityTimer = new DispatcherTimer();
@@ -208,6 +208,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _sleepReminderRepeatTimer.Tick += (_, _) => RepeatUnresolvedReminder();
         InitializeComponent();
         DataContext = this;
+        StartWorldClocks();
         RefreshCategoryFilters();
         SetAdaptivePersonality(_state.AdaptivePersonalityEnabled, persist: false);
         SetSleepTime(_state.SleepTime, persist: false);
@@ -235,7 +236,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     public void SetAlwaysOnTop(bool value, bool persist = true)
     {
-        Topmost = value;
+        Topmost = value || IsSideDockCollapsed;
         _state.AlwaysOnTop = value;
         if (persist) SaveState();
     }
@@ -244,7 +245,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         _state.SmallSize = small;
         if (_isSleeping) WakeFromInactivity();
-        else ApplySizeImmediately(AppSizeLogic.Get(small));
+        else if (!IsSideDockLayout) ApplySizeImmediately(AppSizeLogic.Get(small));
         NotifyInteraction();
         if (persist) SaveState();
     }
@@ -336,7 +337,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public void SetAdaptivePersonality(bool enabled, bool persist = true)
     {
         _state.AdaptivePersonalityEnabled = enabled;
-        AdaptiveFacePanel.Visibility = enabled ? Visibility.Visible : Visibility.Collapsed;
+        AdaptiveFacePanel.Visibility = enabled && !IsSideDockLayout && _currentTheme.Kind != FruitThemeKind.Lion
+            ? Visibility.Visible : Visibility.Collapsed;
         RefreshAdaptivePersonality();
         if (persist) SaveState();
     }
@@ -375,6 +377,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         PumpkinShape.Visibility = _currentTheme.Kind == FruitThemeKind.Pumpkin ? Visibility.Visible : Visibility.Collapsed;
         PotatoShape.Visibility = _currentTheme.Kind == FruitThemeKind.Potato ? Visibility.Visible : Visibility.Collapsed;
         OnionShape.Visibility = _currentTheme.Kind == FruitThemeKind.Onion ? Visibility.Visible : Visibility.Collapsed;
+        CatShape.Visibility = _currentTheme.Kind == FruitThemeKind.Cat ? Visibility.Visible : Visibility.Collapsed;
+        LionShape.Visibility = _currentTheme.Kind == FruitThemeKind.Lion ? Visibility.Visible : Visibility.Collapsed;
+        UpdateDockWallpaper();
+        UpdateDockHeaderLayout();
+        UpdateDockTaskArea();
         var personality = FruitPersonalities.Get(_currentTheme.Kind);
         SleepEyes = personality.Eyes;
         SleepMouth = personality.Mouth;
@@ -443,13 +450,14 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void RestartInactivityTimer()
     {
         _inactivityTimer.Stop();
-        if (!_state.ResizeWhenInactive ||
+        if (IsSideDockLayout || !_state.ResizeWhenInactive ||
             InactivitySettings.Get(_state.SleepTime).Duration is null) return;
         _inactivityTimer.Start();
     }
 
     private void EnterSleepMode(bool force = false)
     {
+        if (IsSideDockLayout) { CollapseSideDock(); return; }
         _inactivityTimer.Stop();
         if ((!_state.ResizeWhenInactive && !force) || _isSleeping) return;
         StopShaking();
@@ -474,6 +482,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void ApplySizeImmediately(AppSize size)
     {
+        if (IsSideDockLayout) { PositionSideDock(); return; }
         _sizeAnimationVersion++;
         BeginAnimation(WidthProperty, null);
         BeginAnimation(HeightProperty, null);
@@ -546,6 +555,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     protected override void OnSourceInitialized(EventArgs e)
     {
         base.OnSourceInitialized(e);
+        System.Windows.Interop.HwndSource.FromHwnd(new System.Windows.Interop.WindowInteropHelper(this).Handle)
+            ?.AddHook(SideDockWindowMessage);
         RegisterGlobalShortcuts();
     }
 
@@ -635,6 +646,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     protected override void OnClosed(EventArgs e)
     {
+        _worldClockTimer?.Stop();
         _globalQuickAddHotkey?.Dispose();
         _globalQuickAddHotkey = null;
         _commandPaletteWindow?.Close();
@@ -667,6 +679,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void OpenFromGlobalQuickAdd()
     {
+        ExpandSideDock();
         NotifyInteraction();
         if (!IsVisible) Show();
         if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
@@ -701,6 +714,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     public void WakeFromGlobalShortcut()
     {
+        if (IsSideDockLayout) { ExpandSideDock(); return; }
         if (!_isSleeping) return;
         WakeFromInactivity();
         if (!IsVisible) Show();
@@ -741,6 +755,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             Left = SystemParameters.WorkArea.Right - Width - 28;
             Top = SystemParameters.WorkArea.Bottom - Height - 28;
         }
+        if (IsSideDockLayout) SetSideDockLayout(true, persist: false);
     }
 
     private bool IsOnVirtualScreen(double left, double top) =>
@@ -751,7 +766,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void Window_LocationChanged(object? sender, EventArgs e)
     {
-        if (!IsLoaded) return;
+        if (!IsLoaded || IsSideDockLayout) return;
         _locationSaveTimer.Stop();
         _locationSaveTimer.Start();
     }
@@ -759,6 +774,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void SaveLocationNow()
     {
         _locationSaveTimer.Stop();
+        if (IsSideDockLayout) { SaveState(); return; }
         _state.Left = Left;
         _state.Top = Top;
         var screen = System.Windows.Forms.Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(this).Handle);
@@ -769,6 +785,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
+        if (IsSideDockLayout) return;
         var source = e.OriginalSource as DependencyObject;
         if (e.ButtonState != MouseButtonState.Pressed ||
             HasActionControlAncestor(source) || IsWithinTaskRow(source)) return;
@@ -949,6 +966,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         AnimateHeight(TaskListBorder, visible ? 108 : 180);
         AnimateLayout(OverflowText, visible ? new Thickness(0, 382, 0, 0) : new Thickness(0, 350, 0, 0));
         AnimateLayout(AdaptiveFacePanel, visible ? new Thickness(0, 407, 0, 0) : new Thickness(0, 378, 0, 0));
+        UpdateDockTaskArea();
         RefreshOverflow();
     }
 
@@ -1077,7 +1095,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void RefreshTaskView()
     {
         RefreshCategoryFilters();
+        RefreshDockDateFilter();
         _tasksView.Refresh();
+        DockEmptyState.Visibility = IsSideDockLayout && _tasksView.IsEmpty ? Visibility.Visible : Visibility.Collapsed;
         RefreshOverflow();
         if (CalendarPanel.Visibility == Visibility.Visible) RefreshCalendar();
     }
@@ -1547,6 +1567,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void ShakeWindow()
     {
+        if (IsSideDockLayout) return;
         StopShaking();
         _shakeOriginalLeft = Left;
         _shakeOriginalTop = Top;
@@ -1832,14 +1853,14 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
         row.BeginAnimation(HeightProperty, null);
         row.Height = startingHeight;
-        var animation = new DoubleAnimation(startingHeight, CollapsedTaskHeight, TimeSpan.FromMilliseconds(160))
+        var animation = new DoubleAnimation(startingHeight, IsSideDockLayout ? 44 : CollapsedTaskHeight, TimeSpan.FromMilliseconds(160))
         {
             EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
         };
         animation.Completed += (_, _) =>
         {
             row.BeginAnimation(HeightProperty, null);
-            if (!task.IsExpanded) row.Height = CollapsedTaskHeight;
+            if (!task.IsExpanded) row.ClearValue(HeightProperty);
         };
         row.BeginAnimation(HeightProperty, animation, HandoffBehavior.SnapshotAndReplace);
     }

@@ -10,6 +10,16 @@ public sealed record CalendarOccurrence(TodoItem Task, DateTime At);
 
 public static class CalendarLogic
 {
+    public static void MoveToDate(TodoItem task, DateOnly date)
+    {
+        var time = task.DueAt?.TimeOfDay ?? task.ReminderTime ?? TimeSpan.FromHours(9);
+        task.ReminderTime = null;
+        task.Recurrence = TaskRecurrence.None;
+        task.DueAt = date.ToDateTime(TimeOnly.FromTimeSpan(time));
+        task.SnoozedUntil = null;
+        task.LastReminderDate = null;
+    }
+
     public static IReadOnlyList<CalendarOccurrence> GetOccurrences(
         IEnumerable<TodoItem> tasks,
         DateOnly start,
