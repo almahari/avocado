@@ -13,6 +13,7 @@
   <ItemGroup>
     <Resource Include="Assets\cat-scene.png" />
     <Resource Include="Assets\theme-scenes\*.png" />
+    <Resource Include="Assets\mascot-sleep\*.png" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="ModelContextProtocol.AspNetCore" Version="2.2.0" />
   </ItemGroup>

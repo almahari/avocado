@@ -77,6 +77,7 @@ public partial class MainWindow
             RestartInactivityTimer();
         }
         RefreshTaskView();
+        UpdateMascotAnimation(force: true);
         if (persist) SaveState();
     }
 
@@ -85,6 +86,7 @@ public partial class MainWindow
         if (!IsSideDockLayout) return;
         StopShaking();
         _sideDockCollapsed = true;
+        UpdateMascotAnimation(force: true);
         Root.Visibility = DockSurface.Visibility = DockCloseButton.Visibility = Visibility.Collapsed;
         ShowInTaskbar = false;
         Topmost = true;
@@ -96,6 +98,7 @@ public partial class MainWindow
     {
         if (!IsSideDockLayout) return;
         _sideDockCollapsed = false;
+        UpdateMascotAnimation(force: true);
         Root.Visibility = DockSurface.Visibility = DockCloseButton.Visibility = Visibility.Visible;
         ShowInTaskbar = true;
         Topmost = _state.AlwaysOnTop;
@@ -138,6 +141,8 @@ public partial class MainWindow
         var illustrationHeight = Math.Min(320, Height * 0.32);
         DockCatScene.Height = Math.Min(440, Height * 0.44);
         DockThemeScene.Height = DockCatScene.Height;
+        DockMascotEffects.Height = DockCatScene.Height;
+        DockMascotGround.Height = DockCatScene.Height;
         TaskListBorder.Margin = new Thickness(20, top, 20, 0);
         TaskListBorder.Height = Math.Max(80, Height - top - illustrationHeight - 12);
         AdaptiveFacePanel.BeginAnimation(MarginProperty, null);

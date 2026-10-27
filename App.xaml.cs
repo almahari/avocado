@@ -19,6 +19,7 @@ public partial class App : System.Windows.Application
     private Forms.ToolStripMenuItem? _resizeWhenInactiveItem;
     private Forms.ToolStripMenuItem? _openOnStartupItem;
     private Forms.ToolStripMenuItem? _adaptivePersonalityItem;
+    private Forms.ToolStripMenuItem? _mascotAnimationsItem;
     private Forms.ToolStripMenuItem? _quickAddShortcutItem;
     private Forms.ToolStripMenuItem? _clipboardTaskShortcutItem;
     private Forms.ToolStripMenuItem? _sleepNowShortcutItem;
@@ -198,6 +199,11 @@ public partial class App : System.Windows.Application
         _adaptivePersonalityItem = new Forms.ToolStripMenuItem(
             "Adaptive personality", null,
             (_, _) => SetAdaptivePersonality(!_window!.IsAdaptivePersonalityEnabled));
+        _mascotAnimationsItem = new Forms.ToolStripMenuItem("Mascot animations", null, (_, _) =>
+        {
+            _window!.SetMascotAnimations(!_window.IsMascotAnimationsEnabled);
+            _mascotAnimationsItem!.Checked = _window.IsMascotAnimationsEnabled;
+        }) { Checked = _window!.IsMascotAnimationsEnabled };
         _openOnStartupItem = new Forms.ToolStripMenuItem(
             "Open on Windows startup", null,
             (_, _) => SetOpenOnStartup(!_startupRegistration.IsEnabled()))
@@ -252,6 +258,7 @@ public partial class App : System.Windows.Application
         menu.Items.Add(themesItem);
         menu.Items.Add(seasonalSkinsItem);
         menu.Items.Add(_adaptivePersonalityItem);
+        menu.Items.Add(_mascotAnimationsItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(reminderSoundItem);
         menu.Items.Add(doNotDisturbItem);

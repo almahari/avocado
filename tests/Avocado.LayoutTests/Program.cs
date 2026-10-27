@@ -16,6 +16,8 @@ internal static class Program
     private static void Main(string[] args)
     {
         if (args.Contains("--cat-clipping")) { VerifyCatClipping(); return; }
+        if (args.Contains("--mascot-animations")) { VerifyMascotAnimations(); return; }
+        if (args.Contains("--palette-time")) { VerifyPaletteTime(); return; }
         var directory = Path.Combine(Path.GetTempPath(), "Avocado-layout-" + Guid.NewGuid());
         Directory.CreateDirectory(directory);
         var store = new AppStateStore(Path.Combine(directory, "state.json"));
@@ -39,6 +41,14 @@ internal static class Program
         {
             tray.ContextMenuStrip.Show(16, 16);
             Pump();
+            var mascotToggle = tray.ContextMenuStrip.Items.OfType<Forms.ToolStripMenuItem>().Single(item => item.Text == "Mascot animations");
+            Check(mascotToggle.Checked, "mascot animations are enabled in the tray by default");
+            mascotToggle.PerformClick();
+            Check(!window.IsMascotAnimationsEnabled && !store.Load().MascotAnimationsEnabled && !mascotToggle.Checked,
+                "tray toggle disables and saves mascot animations");
+            mascotToggle.PerformClick();
+            Check(window.IsMascotAnimationsEnabled && store.Load().MascotAnimationsEnabled && mascotToggle.Checked,
+                "tray toggle restores mascot animations");
             toggle.PerformClick();
             Pump();
             Check(toggle.Checked && window.IsSideDockLayout && store.Load().SideDockLayout, "tray enables and saves layout");
@@ -301,6 +311,146 @@ internal static class Program
         finally { window.AllowClose(); window.Close(); app.Shutdown(); }
     }
 
+    private static void VerifyMascotAnimations()
+    {
+        var directory = Path.Combine(Path.GetTempPath(), "Avocado-mascots-" + Guid.NewGuid());
+        Directory.CreateDirectory(directory);
+        var store = new AppStateStore(Path.Combine(directory, "state.json"));
+        store.Save(new AppState { Theme = FruitThemeKind.Lion, Tasks = [new() { Text = "One" }, new() { Text = "Two" }] });
+        var app = new LayoutTestApp { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+        var window = new MainWindow(store);
+        try
+        {
+            window.Show();
+            window.SetSideDockLayout(true);
+            Pump();
+            var tasks = (Border)window.FindName("TaskListBorder");
+            var taskBounds = new System.Windows.Size(tasks.ActualWidth, tasks.ActualHeight);
+            var effects = (Grid)window.FindName("DockMascotEffects");
+            var image = (System.Windows.Controls.Image)window.FindName("DockThemeScene");
+            Check(window.CurrentMascotAnimationState == MascotAnimationState.Still, "idle mascots remain still");
+            window.CompletePaletteTask(window.Tasks[0]);
+            Pump(180);
+            Check(window.CurrentMascotAnimationState == MascotAnimationState.Celebrating && effects.Children.Count == 4,
+                "task completion celebrates with a badge and three sparkles");
+            Check(new System.Windows.Size(tasks.ActualWidth, tasks.ActualHeight) == taskBounds &&
+                  !tasks.RenderTransform.HasAnimatedProperties, "celebrations keep task controls stationary");
+            var transforms = (TransformGroup)image.RenderTransform;
+            Check(transforms.Children.Any(transform => transform.HasAnimatedProperties) == SystemParameters.ClientAreaAnimation,
+                "mascot motion follows the Windows animation preference");
+            Capture(window, Path.Combine(directory, "celebrating.png"));
+            window.CompletePaletteTask(window.Tasks[0]);
+            Check(effects.Children.Count == 4, "rapid completions replace effects without stacking them");
+            typeof(MainWindow).GetField("_happyUntil", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(window, DateTime.MinValue);
+            Pump(1200);
+            Check(window.CurrentMascotAnimationState == MascotAnimationState.Still && effects.Children.Count == 0 &&
+                  image.RenderTransform == Transform.Identity, "celebrations automatically return to the still pose");
+
+            window.SetDoNotDisturb(DoNotDisturbMode.Always);
+            var present = typeof(MainWindow).GetMethod("ApplyMascotAnimation", BindingFlags.Instance | BindingFlags.NonPublic)!;
+            present.Invoke(window, [MascotAnimationState.Sleeping, false, image]);
+            Check(((TransformGroup)image.RenderTransform).Children.All(transform => !transform.HasAnimatedProperties) &&
+                  effects.Children.Cast<FrameworkElement>().All(child => !child.RenderTransform.HasAnimatedProperties) &&
+                  ((BitmapImage)image.Source).UriSource.AbsoluteUri.EndsWith("lion-sleep.png"),
+                "reduced motion keeps sleeping artwork without breathing or drifting");
+            present.Invoke(window, [MascotAnimationState.Celebrating, false, image]);
+            Check(((TransformGroup)image.RenderTransform).Children.All(transform => !transform.HasAnimatedProperties) &&
+                  effects.Children.Count == 4 && effects.Children.Cast<FrameworkElement>().All(child => child.Opacity == 1),
+                "reduced motion uses static celebration feedback");
+            window.SetDoNotDisturb(DoNotDisturbMode.Always);
+            var sheet = new System.Windows.Controls.Primitives.UniformGrid { Columns = 4, Width = 800, Height = 960 };
+            foreach (var theme in FruitThemes.All)
+            {
+                window.SetTheme(theme.Kind);
+                Pump(40);
+                var active = (System.Windows.Controls.Image)window.FindName(theme.Kind == FruitThemeKind.Cat ? "DockCatScene" : "DockThemeScene");
+                Check(window.CurrentMascotAnimationState == MascotAnimationState.Sleeping && active.Source is BitmapImage bitmap &&
+                      bitmap.UriSource.AbsoluteUri.EndsWith($"/{theme.Kind.ToString().ToLowerInvariant()}-sleep.png"),
+                    $"{theme.DisplayName} uses its sleeping illustration during quiet hours");
+                var card = new DockPanel { Background = ((Border)window.FindName("DockSurface")).Background, Width = 200, Height = 240 };
+                var label = new TextBlock { Text = theme.DisplayName, Margin = new Thickness(10), FontSize = 17,
+                    Foreground = (System.Windows.Media.Brush)window.Resources["InkBrush"] };
+                DockPanel.SetDock(label, Dock.Top);
+                card.Children.Add(label);
+                card.Children.Add(new System.Windows.Controls.Image { Source = active.Source, Stretch = Stretch.Uniform });
+                sheet.Children.Add(card);
+            }
+            sheet.Measure(new System.Windows.Size(800, 960));
+            sheet.Arrange(new Rect(0, 0, 800, 960));
+            sheet.UpdateLayout();
+            Capture(sheet, Path.Combine(directory, "sleeping-mascots.png"));
+            Capture(window, Path.Combine(directory, "sleeping.png"));
+            window.SetMascotAnimations(false);
+            Check(window.CurrentMascotAnimationState == MascotAnimationState.Still && effects.Children.Count == 0 &&
+                  !store.Load().MascotAnimationsEnabled, "saved mascot toggle disables poses and motion");
+            window.SetMascotAnimations(true);
+            window.CollapseSideDock();
+            Check(window.CurrentMascotAnimationState == MascotAnimationState.Still && effects.Children.Count == 0,
+                "collapsed panels stop all mascot effects");
+            window.ExpandSideDock();
+            Check(window.CurrentMascotAnimationState == MascotAnimationState.Sleeping, "expanded panels restore the quiet-hours pose");
+            window.SetTheme(FruitThemeKind.Lion);
+            window.SetSideDockLayout(false);
+            var floating = (System.Windows.Controls.Image)window.FindName("LionMascotImage");
+            Check(window.CurrentMascotAnimationState == MascotAnimationState.Sleeping &&
+                  ((BitmapImage)floating.Source).UriSource.AbsoluteUri.EndsWith("lion-sleep.png"), "floating Lion also sleeps during quiet hours");
+            window.SetTheme(FruitThemeKind.Avocado);
+            Check(window.AdaptiveEyes == "─     ─", "floating pixel fruit displays sleepy eyes during quiet hours");
+            window.SetDoNotDisturb(DoNotDisturbMode.Off);
+            Check(window.CurrentMascotAnimationState == MascotAnimationState.Still &&
+                  ((Grid)window.FindName("FloatingMascotEffects")).Children.Count == 0, "ending quiet hours wakes the mascot");
+            window.Hide();
+            Check(window.CurrentMascotAnimationState == MascotAnimationState.Still, "hidden windows remain still");
+            Console.WriteLine($"Mascot previews: {directory}");
+        }
+        finally { window.AllowClose(); window.Close(); app.Shutdown(); }
+    }
+
+    private static void VerifyPaletteTime()
+    {
+        var directory = Path.Combine(Path.GetTempPath(), "Avocado-palette-time-" + Guid.NewGuid());
+        Directory.CreateDirectory(directory);
+        var store = new AppStateStore(Path.Combine(directory, "state.json"));
+        store.Save(new AppState { Theme = FruitThemeKind.Lion, Tasks = [new() { Text = "Meeting 14:30" }] });
+        var app = new LayoutTestApp { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+        var host = new MainWindow(store);
+        var palette = new CommandPaletteWindow(new CommandConfigStore(Path.Combine(directory, "commands.json")),
+            new BookmarkConfigStore(Path.Combine(directory, "bookmarks.json")), host, FruitThemes.Get(FruitThemeKind.Lion));
+        try
+        {
+            host.Show();
+            palette.Open();
+            var input = (System.Windows.Controls.TextBox)palette.FindName("CommandBox");
+            var results = (System.Windows.Controls.ListBox)palette.FindName("ResultsList");
+            input.Text = "14:30";
+            Pump();
+            var entries = results.Items.Cast<PaletteEntry>().ToArray();
+            Check(entries.Length == 6 && entries.All(entry => entry.Kind == PaletteEntryKind.TimeConversion && entry.CopyText is not null) &&
+                  entries.Select(entry => entry.Title.Split('·')[0].Trim()).SequenceEqual(new[] { "Bahrain", "UK", "EDT", "EST", "Singapore", "India" }),
+                "bare HH:MM displays six time conversions instead of search results");
+            var last = (FrameworkElement)results.ItemContainerGenerator.ContainerFromIndex(5);
+            Check(last.TransformToAncestor(results).Transform(new System.Windows.Point(0, last.ActualHeight)).Y <= results.ActualHeight + 2,
+                "all six time conversions fit in the palette");
+            Check(((TextBlock)palette.FindName("StatusText")).Text.Contains(TimeZoneInfo.Local.StandardName) &&
+                  ((TextBlock)palette.FindName("HintText")).Text.Contains("copy time"), "palette labels the source time zone and copy action");
+            Capture(palette, Path.Combine(directory, "time-conversions.png"));
+            input.Text = "24:90";
+            Pump();
+            Check(results.Items.Cast<PaletteEntry>().All(entry => entry.Kind != PaletteEntryKind.TimeConversion) && palette.Height <= 460,
+                "invalid time restores normal palette search and height");
+            input.Text = "task tomorrow 09:00 Test conversion guard";
+            Check(results.Items.Cast<PaletteEntry>().Single().Kind == PaletteEntryKind.CreateTask, "task creation keeps its scheduling syntax");
+            typeof(CommandPaletteWindow).GetField("_selectedTask", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(palette, host.Tasks[0]);
+            typeof(CommandPaletteWindow).GetField("_isReschedulingTask", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(palette, true);
+            input.Text = "15:45";
+            Check(results.Items.Cast<PaletteEntry>().Single().TaskAction == PaletteTaskAction.ApplyReschedule,
+                "HH:MM in task rescheduling remains a schedule instead of a conversion");
+            Check(host.Tasks.Count == 1 && !host.Tasks[0].IsCompleted, "typing times does not modify tasks");
+            Console.WriteLine($"Palette time preview: {directory}");
+        }
+        finally { palette.Close(); host.AllowClose(); host.Close(); app.Shutdown(); }
+    }
+
     private static void Click(MainWindow window, string name) =>
         ((System.Windows.Controls.Button)window.FindName(name)).RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
 
@@ -323,10 +473,10 @@ internal static class Program
         Console.WriteLine("PASS " + message);
     }
 
-    private static void Pump()
+    private static void Pump(int milliseconds = 250)
     {
         var frame = new DispatcherFrame();
-        var timer = new DispatcherTimer(DispatcherPriority.Background) { Interval = TimeSpan.FromMilliseconds(250) };
+        var timer = new DispatcherTimer(DispatcherPriority.Background) { Interval = TimeSpan.FromMilliseconds(milliseconds) };
         timer.Tick += (_, _) => { timer.Stop(); frame.Continue = false; };
         timer.Start();
         Dispatcher.PushFrame(frame);

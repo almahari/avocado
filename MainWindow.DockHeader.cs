@@ -31,6 +31,7 @@ public partial class MainWindow
 
     private void RefreshWorldClocks()
     {
+        UpdateMascotAnimation();
         var readings = WorldClockLogic.GetReadings(DateTimeOffset.UtcNow);
         for (var index = 0; index < readings.Count; index++)
         {
@@ -144,7 +145,7 @@ public partial class MainWindow
         DockHeader.Visibility = dock ? Visibility.Visible : Visibility.Collapsed;
         FruitHeader.Visibility = dock ? Visibility.Collapsed : Visibility.Visible;
         DockCatScene.Visibility = _currentTheme.Kind == FruitThemeKind.Cat ? Visibility.Visible : Visibility.Collapsed;
-        AdaptiveFacePanel.Visibility = _state.AdaptivePersonalityEnabled && !dock && _currentTheme.Kind != FruitThemeKind.Lion
+        AdaptiveFacePanel.Visibility = _state.AdaptivePersonalityEnabled && !dock && _currentTheme.Kind is not (FruitThemeKind.Lion or FruitThemeKind.Cat)
             ? Visibility.Visible : Visibility.Collapsed;
         AwakeContent.Margin = new Thickness(0);
         SortButton.Margin = dock ? new Thickness(0, 242, 128, 0) : new Thickness(82, 114, 0, 0);

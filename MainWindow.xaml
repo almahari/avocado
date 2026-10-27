@@ -75,10 +75,12 @@
                 BorderThickness="3" CornerRadius="16,0,0,16">
             <Grid IsHitTestVisible="False" ClipToBounds="True">
                 <Border x:Name="DockWallpaper" CornerRadius="12,0,0,12" />
+                <Image x:Name="DockMascotGround" Visibility="Collapsed" VerticalAlignment="Bottom" Stretch="Uniform" Height="440" />
                 <Image x:Name="DockCatScene" Visibility="Collapsed" VerticalAlignment="Bottom"
                        Stretch="Uniform" Source="Assets/cat-scene.png" Height="440" />
                 <Image x:Name="DockThemeScene" Visibility="Collapsed" VerticalAlignment="Bottom"
                        Stretch="Uniform" Height="440" />
+                <Grid x:Name="DockMascotEffects" VerticalAlignment="Bottom" Height="440" IsHitTestVisible="False" />
             </Grid>
         </Border>
     <Grid x:Name="Root" Background="Transparent">
@@ -209,7 +211,8 @@
             <Grid Width="360" Height="470" Margin="30,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Grid.Clip><RectangleGeometry Rect="0,0,360,470" RadiusX="80" RadiusY="80" /></Grid.Clip>
                 <Border Background="{DynamicResource FleshBrush}" CornerRadius="80" />
-                <Image Source="Assets/cat-scene.png" Stretch="Uniform" Width="360" Height="340"
+                <Image x:Name="CatMascotGround" Visibility="Collapsed" Stretch="Uniform" Width="360" Height="340" VerticalAlignment="Bottom" IsHitTestVisible="False" />
+                <Image x:Name="CatMascotImage" Source="Assets/cat-scene.png" Stretch="Uniform" Width="360" Height="340"
                        VerticalAlignment="Bottom" IsHitTestVisible="False" />
                 <Border BorderBrush="{DynamicResource OuterBrush}" BorderThickness="3" CornerRadius="80" IsHitTestVisible="False" />
             </Grid>
@@ -218,7 +221,8 @@
             <Grid Width="360" Height="470" Margin="30,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Grid.Clip><RectangleGeometry Rect="0,0,360,470" RadiusX="80" RadiusY="80" /></Grid.Clip>
                 <Border Background="{DynamicResource FleshBrush}" CornerRadius="80" />
-                <Image Source="Assets/theme-scenes/lion-scene.png" Stretch="Uniform" Width="360" Height="340"
+                <Image x:Name="LionMascotGround" Visibility="Collapsed" Stretch="Uniform" Width="360" Height="340" VerticalAlignment="Bottom" IsHitTestVisible="False" />
+                <Image x:Name="LionMascotImage" Source="Assets/theme-scenes/lion-scene.png" Stretch="Uniform" Width="360" Height="340"
                        VerticalAlignment="Bottom" IsHitTestVisible="False" />
                 <Border BorderBrush="{DynamicResource OuterBrush}" BorderThickness="3" CornerRadius="80" IsHitTestVisible="False" />
             </Grid>
@@ -259,6 +263,8 @@
         </Grid>
 
         </Grid>
+        <Grid x:Name="FloatingMascotEffects" Width="360" Height="170" Margin="30,340,0,0"
+              HorizontalAlignment="Left" VerticalAlignment="Top" IsHitTestVisible="False" />
         <Grid x:Name="AwakeContent">
         <Grid x:Name="DockHeader" Visibility="Collapsed" Margin="24,22,24,0" Height="246" VerticalAlignment="Top">
             <TextBlock Text="Today's Tasks" FontFamily="Segoe UI" FontSize="26" FontWeight="Bold"

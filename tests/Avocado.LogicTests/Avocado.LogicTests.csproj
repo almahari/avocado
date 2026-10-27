@@ -16,6 +16,8 @@
     <Compile Include="..\..\TaskTimerLogic.cs" Link="TaskTimerLogic.cs" />
     <Compile Include="..\..\FruitThemes.cs" Link="FruitThemes.cs" />
     <Compile Include="..\..\WorldClockLogic.cs" Link="WorldClockLogic.cs" />
+    <Compile Include="..\..\PaletteTimeLogic.cs" Link="PaletteTimeLogic.cs" />
+    <Compile Include="..\..\MascotAnimationLogic.cs" Link="MascotAnimationLogic.cs" />
     <Compile Include="..\..\SeasonalSkins.cs" Link="SeasonalSkins.cs" />
     <Compile Include="..\..\TaskReminderLogic.cs" Link="TaskReminderLogic.cs" />
     <Compile Include="..\..\StartupRegistration.cs" Link="StartupRegistration.cs" />

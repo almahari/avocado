@@ -107,11 +107,12 @@
             </ListBox>
 
             <Grid Grid.Row="2" Margin="20,0">
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
                 <TextBlock x:Name="StatusText" Text="Type a command"
                            Foreground="{DynamicResource PaletteMuted}" Opacity="0.78"
                            FontFamily="Consolas" FontSize="11"
-                           VerticalAlignment="Center" />
-                <TextBlock Text="UP/DOWN select   ENTER open/run   BACKSPACE up   ESC close"
+                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                <TextBlock x:Name="HintText" Grid.Column="1" Margin="16,0,0,0" Text="UP/DOWN select   ENTER open/run   BACKSPACE up   ESC close"
                            Foreground="{DynamicResource PaletteMuted}" Opacity="0.78"
                            FontFamily="Consolas" FontSize="11"
                            HorizontalAlignment="Right" VerticalAlignment="Center" />

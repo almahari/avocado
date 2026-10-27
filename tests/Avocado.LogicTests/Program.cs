@@ -201,7 +201,32 @@ Assert(TaskTimerLogic.Format(TimeSpan.Zero) == "00:00:00", "A new task timer mus
 Assert(TaskTimerLogic.Format(new TimeSpan(1, 2, 3, 4)) == "26:03:04",
     "Task timer formatting must preserve total hours beyond one day.");
 Assert(FruitThemes.All.Count == 16, "The tray must offer the fourteen fruit themes, Cat, and Lion.");
+Assert(MascotAnimationLogic.GetState(true, false, true) == MascotAnimationState.Celebrating, "Completing a task celebrates.");
+Assert(MascotAnimationLogic.GetState(true, true, true) == MascotAnimationState.Sleeping, "Quiet hours take priority over celebration.");
+Assert(MascotAnimationLogic.GetState(false, true, true) == MascotAnimationState.Still, "The animation toggle disables all mascot reactions.");
+Assert(MascotAnimationLogic.GetState(true, false, false) == MascotAnimationState.Still, "Idle mascots stay still.");
 var winterClocks = WorldClockLogic.GetReadings(new DateTimeOffset(2026, 1, 15, 22, 30, 0, TimeSpan.Zero));
+var bahrainZone = TimeZoneInfo.FindSystemTimeZoneById("Arab Standard Time");
+var ukZone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
+var winterConversion = PaletteTimeLogic.Convert("14:30", new DateTimeOffset(2026, 1, 15, 10, 0, 0, TimeSpan.Zero), bahrainZone)!;
+Assert(winterConversion.Readings.Select(reading => reading.Name).SequenceEqual(["Bahrain", "UK", "EDT", "EST", "Singapore", "India"]),
+    "Palette time conversions must list all six requested time zones in order.");
+Assert(winterConversion.Readings.Select(reading => reading.Time).SequenceEqual(["14:30", "11:30", "07:30", "06:30", "19:30", "17:00"]),
+    "Palette time conversion must interpret HH:MM in the source zone and keep EDT and EST distinct.");
+Assert(PaletteTimeLogic.Convert("14:30", new DateTimeOffset(2026, 7, 15, 10, 0, 0, TimeSpan.Zero), bahrainZone)!.Readings[1].Time == "12:30",
+    "Palette UK conversion must follow British Summer Time.");
+var midnightConversion = PaletteTimeLogic.Convert("00:15", new DateTimeOffset(2026, 1, 15, 10, 0, 0, TimeSpan.Zero), bahrainZone)!;
+Assert(midnightConversion.Readings[0].Date == "Thu, 15 Jan" && midnightConversion.Readings[1].Date == "Wed, 14 Jan" &&
+    midnightConversion.Readings[4].Time == "05:15", "Time conversions must show previous and next local dates correctly.");
+Assert(PaletteTimeLogic.Convert("12:00", DateTimeOffset.UtcNow, bahrainZone)!.Readings[5].Time == "14:30" &&
+    winterConversion.Readings[5].UtcOffset == "UTC+05:30", "India conversion must retain the half-hour offset.");
+foreach (var invalidTime in new[] { "24:00", "12:60", "1:30", "12:3", "12:30:00", "task 12:30", "hello", "" })
+    Assert(PaletteTimeLogic.Convert(invalidTime, DateTimeOffset.UtcNow, bahrainZone) is null, "Only valid HH:MM input should activate time conversion.");
+Assert(PaletteTimeLogic.Convert("01:30", new DateTimeOffset(2026, 3, 29, 12, 0, 0, TimeSpan.Zero), ukZone) is { Error: not null, Readings.Count: 0 },
+    "A skipped local clock hour must show an error instead of inventing an instant.");
+var repeatedHour = PaletteTimeLogic.Convert("01:30", new DateTimeOffset(2026, 10, 25, 12, 0, 0, TimeSpan.Zero), ukZone)!;
+Assert(repeatedHour.SourceLabel.Contains("repeated hour") && repeatedHour.Readings[0].Time == "04:30",
+    "A repeated local hour must explicitly use the current source offset.");
 var calendarMovedTask = new TodoItem
 {
     Text = "Schedule test", ReminderTime = TimeSpan.FromHours(14), Recurrence = TaskRecurrence.Daily,

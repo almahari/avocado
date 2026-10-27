@@ -18,6 +18,7 @@ dotnet run --project .\Avocado.csproj
 - Press the global `Ctrl+Alt+V` shortcut to immediately create a task from clipboard text. Normal task syntax for links, priorities, and reminders is supported.
 - Press the global `Ctrl+Alt+S` shortcut to put the fruit into sleeping mode immediately.
 - Press the global `Ctrl+Alt+P` shortcut to open the command palette in the center of the current screen. Type to search, use Up/Down to select, Enter to run, or Escape to close.
+- At the command palette's top level, enter a 24-hour time such as `14:30` to convert today's time in your computer's local time zone to **Bahrain, UK, EDT, EST, Singapore, and India**. Results show the local date and UTC offset; UK follows GMT/BST while EDT and EST are fixed UTC−4 and UTC−5. Select a result and press Enter (or click it) to copy its time.
 - Open **Bookmarks** in the command palette to browse folders and nested subfolders. Select a website to open it, or press Backspace with an empty search box to move up one level.
 - Open **Tasks** in the command palette to search active tasks and manage their reminders, or type `task <details>` to create a task directly.
 - Double-click the tray icon to show or hide the avocado.
@@ -31,6 +32,7 @@ dotnet run --project .\Avocado.csproj
 - Choose **Themes → Lion** for a similar warm illustrated planner with a golden lion, caramel mane, and savannah scene. Lion works in both the side dock and floating layouts; the selection is saved.
 - Choose **Global shortcuts** to change or disable the system-wide Quick Add, Clipboard Task, Sleep Now, Wake Up, and Command Palette shortcuts; press a modifier plus a letter, number, function key, or Space.
 - Toggle **Adaptive personality** in the tray menu to show or hide the fruit’s reactive face. The choice is saved.
+- **Mascot animations** is enabled by default. Completing a task gives the current mascot a short celebratory bounce with sparkles. During the selected **Do not disturb** hours, illustrated mascots use peaceful sleeping artwork with gentle breathing; floating pixel fruits show sleepy eyes. Quiet hours take priority over celebrations. Tasks remain usable. Toggle **Mascot animations** in the tray to disable these reactions; the setting is saved. Windows' animation preference is respected, with static feedback when motion is disabled. Hidden or collapsed windows stop all mascot motion.
 - From the tray menu, choose **Size → Normal** or **Size → Small**; Small is exactly half-size.
 - Enable **Resize when inactive** and choose a **Sleep time** to show a compact sleeping fruit with the active task count after inactivity; choose **Never** to disable sleeping. Use **Sleep fruit size → Normal** for the current sleeping size or **Small** for half that size. Hover or click to wake it.
 - Choose **Sleep reminder repeat** in the tray menu to repeat an unresolved reminder every 5, 10, 20, or 30 minutes while the fruit is sleeping. Snoozing or muting the reminder stops the repeated shake.
@@ -245,6 +247,8 @@ dotnet build .\Avocado.csproj
 dotnet run --project .\tests\Avocado.LogicTests\Avocado.LogicTests.csproj
 dotnet run --project .\tests\Avocado.McpTests\Avocado.McpTests.csproj
 dotnet run --project .\tests\Avocado.LayoutTests\Avocado.LayoutTests.csproj
+dotnet run --project .\tests\Avocado.LayoutTests\Avocado.LayoutTests.csproj -- --mascot-animations
+dotnet run --project .\tests\Avocado.LayoutTests\Avocado.LayoutTests.csproj -- --palette-time
 ```
 
 ## Create a standalone Windows executable

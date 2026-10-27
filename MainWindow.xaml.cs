@@ -208,6 +208,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _sleepReminderRepeatTimer.Tick += (_, _) => RepeatUnresolvedReminder();
         InitializeComponent();
         DataContext = this;
+        IsVisibleChanged += (_, _) => UpdateMascotAnimation(force: true);
         StartWorldClocks();
         RefreshCategoryFilters();
         SetAdaptivePersonality(_state.AdaptivePersonalityEnabled, persist: false);
@@ -314,6 +315,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public void SetDoNotDisturb(DoNotDisturbMode mode, bool persist = true)
     {
         _state.DoNotDisturb = DoNotDisturbSettings.Normalize(mode);
+        UpdateMascotAnimation(force: true);
+        RefreshAdaptivePersonality();
         if (persist) SaveState();
     }
 
@@ -337,7 +340,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public void SetAdaptivePersonality(bool enabled, bool persist = true)
     {
         _state.AdaptivePersonalityEnabled = enabled;
-        AdaptiveFacePanel.Visibility = enabled && !IsSideDockLayout && _currentTheme.Kind != FruitThemeKind.Lion
+        AdaptiveFacePanel.Visibility = enabled && !IsSideDockLayout && _currentTheme.Kind is not (FruitThemeKind.Lion or FruitThemeKind.Cat)
             ? Visibility.Visible : Visibility.Collapsed;
         RefreshAdaptivePersonality();
         if (persist) SaveState();
@@ -382,6 +385,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         UpdateDockWallpaper();
         UpdateDockHeaderLayout();
         UpdateDockTaskArea();
+        UpdateMascotAnimation(force: true);
         var personality = FruitPersonalities.Get(_currentTheme.Kind);
         SleepEyes = personality.Eyes;
         SleepMouth = personality.Mouth;
@@ -408,6 +412,13 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void RefreshAdaptivePersonality()
     {
         if (!_state.AdaptivePersonalityEnabled) return;
+        if (_mascotState == MascotAnimationState.Sleeping)
+        {
+            AdaptiveEyes = "─     ─";
+            AdaptiveMouth = "ᴗ";
+            AdaptiveStatus = "Sleeping — quiet hours";
+            return;
+        }
         var now = DateTime.Now;
         var overdueCount = _tasks.Count(task =>
             !task.IsCompleted && task.DueAt is DateTime dueAt && dueAt < now);
@@ -462,6 +473,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if ((!_state.ResizeWhenInactive && !force) || _isSleeping) return;
         StopShaking();
         _isSleeping = true;
+        UpdateMascotAnimation(force: true);
         CollapseExpandedTask();
         AwakeContent.Visibility = Visibility.Collapsed;
         SleepOverlay.Visibility = Visibility.Visible;
@@ -473,6 +485,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         if (!_isSleeping) return;
         _isSleeping = false;
+        UpdateMascotAnimation(force: true);
         SleepOverlay.BeginAnimation(OpacityProperty, null);
         SleepOverlay.Visibility = Visibility.Collapsed;
         AwakeContent.Visibility = Visibility.Visible;
@@ -646,6 +659,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     protected override void OnClosed(EventArgs e)
     {
+        _mascotClosed = true;
+        StopMascotMotion();
         _worldClockTimer?.Stop();
         _globalQuickAddHotkey?.Dispose();
         _globalQuickAddHotkey = null;
@@ -756,6 +771,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             Top = SystemParameters.WorkArea.Bottom - Height - 28;
         }
         if (IsSideDockLayout) SetSideDockLayout(true, persist: false);
+        UpdateMascotAnimation(force: true);
     }
 
     private bool IsOnVirtualScreen(double left, double top) =>
@@ -1292,6 +1308,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (ReferenceEquals(_expandedTask, task)) _expandedTask = null;
         task.CompletedAt = DateTime.Now;
         _happyUntil = DateTime.Now.AddSeconds(4);
+        UpdateMascotAnimation(force: true);
         _tasks.Remove(task);
         ResolveAlertingTask(task);
         _archivedTasks.Insert(0, task);

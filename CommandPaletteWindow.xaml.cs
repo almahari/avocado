@@ -21,6 +21,7 @@ public partial class CommandPaletteWindow : Window
     private bool _isReschedulingTask;
     private TodoItem? _selectedTask;
     private bool _dismissOnDeactivate;
+    private PaletteTimeConversion? _timeConversion;
 
     public CommandPaletteWindow(
         CommandConfigStore store,
@@ -77,6 +78,7 @@ public partial class CommandPaletteWindow : Window
     {
         var query = CommandBox.Text.Trim();
         var entries = new List<PaletteEntry>();
+        _timeConversion = null;
 
         if (_isReschedulingTask && _selectedTask is not null)
         {
@@ -123,6 +125,15 @@ public partial class CommandPaletteWindow : Window
                     CreateWebsiteEntry(match.Website, match.FolderPath)));
             }
         }
+        else if (PaletteTimeLogic.Convert(query, DateTimeOffset.UtcNow, TimeZoneInfo.Local) is { } conversion)
+        {
+            _timeConversion = conversion;
+            if (conversion.Error is string error)
+                entries.Add(new PaletteEntry("Time unavailable today", error, "local time", PaletteEntryKind.Information));
+            else entries.AddRange(conversion.Readings.Select(reading => new PaletteEntry(
+                $"{reading.Name} · {reading.Time}", $"{reading.Date} · {reading.Description}", reading.UtcOffset,
+                PaletteEntryKind.TimeConversion, CopyText: reading.Time)));
+        }
         else
         {
             if (query.Length == 0 || PaletteSearchLogic.Score(query, "tasks") > 0)
@@ -155,11 +166,33 @@ public partial class CommandPaletteWindow : Window
         ResultsList.ItemsSource = entries;
         ResultsList.SelectedIndex = ResultsList.Items.Count > 0 ? 0 : -1;
         StatusText.Text = GetStatusText(entries.Count);
+        HintText.Text = _timeConversion is null ? "UP/DOWN select   ENTER open/run   BACKSPACE up   ESC close" : "ENTER copy time   ESC close";
+        var screen = Forms.Screen.FromPoint(Forms.Cursor.Position);
+        var availableHeight = screen.WorkingArea.Height / VisualTreeHelper.GetDpi(this).DpiScaleY - 32;
+        var height = Math.Max(300, Math.Min(_timeConversion is null ? 460 : 580, availableHeight));
+        if (Math.Abs(Height - height) > 1)
+        {
+            Height = height;
+            if (IsVisible) CenterOnPointerScreen();
+        }
     }
 
     private void ExecuteSelected()
     {
         if (ResultsList.SelectedItem is not PaletteEntry selected) return;
+        if (selected.Kind == PaletteEntryKind.TimeConversion && selected.CopyText is string time)
+        {
+            try
+            {
+                System.Windows.Clipboard.SetText(time);
+                StatusText.Text = $"Copied {selected.Title}";
+            }
+            catch (System.Runtime.InteropServices.ExternalException)
+            {
+                StatusText.Text = "Clipboard is busy. Try again.";
+            }
+            return;
+        }
         if (selected.Kind == PaletteEntryKind.BookmarkRoot)
         {
             _isBrowsingBookmarks = true;
@@ -355,6 +388,7 @@ public partial class CommandPaletteWindow : Window
 
     private string GetStatusText(int resultCount)
     {
+        if (_timeConversion is not null) return _timeConversion.SourceLabel;
         if (_loadError is not null) return $"Command config error: {_loadError}";
         if (_bookmarkLoadError is not null) return $"Bookmark config error: {_bookmarkLoadError}";
         if (_isReschedulingTask && _selectedTask is not null)
@@ -518,7 +552,9 @@ public enum PaletteEntryKind
     TaskAction,
     BookmarkRoot,
     Folder,
-    Website
+    Website,
+    TimeConversion,
+    Information
 }
 
 public enum PaletteTaskAction
@@ -544,4 +580,5 @@ public sealed record PaletteEntry(
     BookmarkWebsite? Website = null,
     TodoItem? Task = null,
     PaletteTaskAction? TaskAction = null,
-    string? CreateTaskText = null);
+    string? CreateTaskText = null,
+    string? CopyText = null);
