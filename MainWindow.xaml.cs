@@ -340,7 +340,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public void SetAdaptivePersonality(bool enabled, bool persist = true)
     {
         _state.AdaptivePersonalityEnabled = enabled;
-        AdaptiveFacePanel.Visibility = enabled && !IsSideDockLayout && _currentTheme.Kind is not (FruitThemeKind.Lion or FruitThemeKind.Cat)
+        AdaptiveFacePanel.Visibility = enabled && !IsSideDockLayout && !FruitThemes.IsAnimal(_currentTheme.Kind)
             ? Visibility.Visible : Visibility.Collapsed;
         RefreshAdaptivePersonality();
         if (persist) SaveState();
@@ -382,6 +382,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         OnionShape.Visibility = _currentTheme.Kind == FruitThemeKind.Onion ? Visibility.Visible : Visibility.Collapsed;
         CatShape.Visibility = _currentTheme.Kind == FruitThemeKind.Cat ? Visibility.Visible : Visibility.Collapsed;
         LionShape.Visibility = _currentTheme.Kind == FruitThemeKind.Lion ? Visibility.Visible : Visibility.Collapsed;
+        GiraffeShape.Visibility = _currentTheme.Kind == FruitThemeKind.Giraffe ? Visibility.Visible : Visibility.Collapsed;
+        ElephantShape.Visibility = _currentTheme.Kind == FruitThemeKind.Elephant ? Visibility.Visible : Visibility.Collapsed;
         UpdateDockWallpaper();
         UpdateDockHeaderLayout();
         UpdateDockTaskArea();

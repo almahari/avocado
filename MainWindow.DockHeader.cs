@@ -145,7 +145,7 @@ public partial class MainWindow
         DockHeader.Visibility = dock ? Visibility.Visible : Visibility.Collapsed;
         FruitHeader.Visibility = dock ? Visibility.Collapsed : Visibility.Visible;
         DockCatScene.Visibility = _currentTheme.Kind == FruitThemeKind.Cat ? Visibility.Visible : Visibility.Collapsed;
-        AdaptiveFacePanel.Visibility = _state.AdaptivePersonalityEnabled && !dock && _currentTheme.Kind is not (FruitThemeKind.Lion or FruitThemeKind.Cat)
+        AdaptiveFacePanel.Visibility = _state.AdaptivePersonalityEnabled && !dock && !FruitThemes.IsAnimal(_currentTheme.Kind)
             ? Visibility.Visible : Visibility.Collapsed;
         AwakeContent.Margin = new Thickness(0);
         SortButton.Margin = dock ? new Thickness(0, 242, 128, 0) : new Thickness(82, 114, 0, 0);

@@ -1,0 +1,26 @@
+{
+  "tool": "Built-in image_gen",
+  "transparentBackground": true,
+  "images": [
+    {
+      "file": "Assets/theme-scenes/giraffe-scene.png",
+      "prompt": "Create a NEW production task-planner illustration asset matching the provided reference's cozy warm hand-drawn stationery style and bottom-weighted composition. Replace the cat with a very cute young giraffe with a long graceful neck, golden tan coat, soft caramel spots, two small ossicones, round ears, big shiny brown eyes and rosy cheeks. Friendly smiling mascot, sitting comfortably and waving one front paw/leg (the elephant can greet with its trunk). The animal must be instantly recognizable with anatomically coherent limbs and features. Large single mascot in the bottom-right lower 65% of a square image. Along only the bottom edge: honey and apricot savannah hills, sage grass tufts and one tiny distant acacia silhouette at the very bottom. Preserve a mostly transparent upper 35% and upper-left for planner UI. Soft pastel colors, warm brown hand-drawn outlines, delicate paper-like grain, polished cozy illustration. Transparent background, no opaque backdrop. No text, lettering, numbers, phone, UI, frame, watermark, cats, lions, or additional characters. Square transparent asset.",
+      "reference": "Assets/cat-scene.png"
+    },
+    {
+      "file": "Assets/mascot-sleep/giraffe-sleep.png",
+      "prompt": "Edit this exact giraffe illustration into its SLEEPING animation state for the same task planner. Keep the same character identity, palette, illustration style, scale, lower-right placement, transparent background and bottom landscape. Give it gently closed curved eyes and a peaceful sleeping smile. Lower any waving limb, rest its front legs comfortably, and gently relax the head; for the elephant lower the trunk naturally, for the giraffe keep its long neck and spots clear. It should look peacefully asleep while seated in the same spot. Keep all animal-specific features consistent and limbs anatomically coherent. Preserve the warm hand-drawn outlines, paper texture, transparent upper third and upper-left, and the existing landscape at the very bottom. No text, letters, Z symbols, UI, frame, watermark, opaque backdrop, or new characters. Square transparent asset. This is the sleeping counterpart, not a redesign.",
+      "reference": "Assets/theme-scenes/giraffe-scene.png"
+    },
+    {
+      "file": "Assets/theme-scenes/elephant-scene.png",
+      "prompt": "Create a NEW production task-planner illustration asset matching the provided reference's cozy warm hand-drawn stationery style and bottom-weighted composition. Replace the cat with a very cute young elephant with a softly rounded gray-lavender body, large gentle ears with pale pink inner ears, a short curved trunk lifted in a friendly greeting, shiny brown eyes and rosy cheeks. Friendly smiling mascot, sitting comfortably and waving one front paw/leg (the elephant can greet with its trunk). The animal must be instantly recognizable with anatomically coherent limbs and features. Large single mascot in the bottom-right lower 65% of a square image. Along only the bottom edge: soft sand, sage and pale lavender savannah hills with a few tiny grass tufts at the very bottom. Preserve a mostly transparent upper 35% and upper-left for planner UI. Soft pastel colors, warm brown hand-drawn outlines, delicate paper-like grain, polished cozy illustration. Transparent background, no opaque backdrop. No text, lettering, numbers, phone, UI, frame, watermark, cats, lions, or additional characters. Square transparent asset.",
+      "reference": "Assets/cat-scene.png"
+    },
+    {
+      "file": "Assets/mascot-sleep/elephant-sleep.png",
+      "prompt": "Edit this exact elephant illustration into its SLEEPING animation state for the same task planner. Keep the same character identity, palette, illustration style, scale, lower-right placement, transparent background and bottom landscape. Give it gently closed curved eyes and a peaceful sleeping smile. Lower any waving limb, rest its front legs comfortably, and gently relax the head; for the elephant lower the trunk naturally, for the giraffe keep its long neck and spots clear. It should look peacefully asleep while seated in the same spot. Keep all animal-specific features consistent and limbs anatomically coherent. Preserve the warm hand-drawn outlines, paper texture, transparent upper third and upper-left, and the existing landscape at the very bottom. No text, letters, Z symbols, UI, frame, watermark, opaque backdrop, or new characters. Square transparent asset. This is the sleeping counterpart, not a redesign.",
+      "reference": "Assets/theme-scenes/elephant-scene.png"
+    }
+  ]
+}

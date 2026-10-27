@@ -17,7 +17,9 @@ public enum FruitThemeKind
     Potato,
     Onion,
     Cat,
-    Lion
+    Lion,
+    Giraffe,
+    Elephant
 }
 
 public sealed record FruitThemePalette(
@@ -90,10 +92,19 @@ public static class FruitThemes
             "#BB7839", "#9E592B", "#CF8B45", "#806641", "#FFF3D2"),
         new(FruitThemeKind.Lion, "Lion", "#53351D", "#FFF0CC", "#85522A", "#5E371C",
             "#AA6B32", "#633B20", "#8C592E", "#D4A151", "#F9E6B9", "#FFE2A0",
-            "#B97632", "#9B5B29", "#CA893D", "#7C6038", "#FFF2D0")
+            "#B97632", "#9B5B29", "#CA893D", "#7C6038", "#FFF2D0"),
+        new(FruitThemeKind.Giraffe, "Giraffe", "#51351F", "#FFF3D6", "#81522D", "#59371D",
+            "#A16B38", "#603D22", "#6D4828", "#D4AC62", "#FAEBC8", "#FFE3A6",
+            "#B27C3C", "#9B6637", "#C38A48", "#7B6440", "#FFF0CC"),
+        new(FruitThemeKind.Elephant, "Elephant", "#34394F", "#F5F0FA", "#535C7B", "#353B53",
+            "#707C9D", "#414A66", "#424C66", "#B7BBD1", "#E9E6F2", "#F2E3EE",
+            "#7E88AA", "#777087", "#A393A7", "#58617A", "#EAE5F5")
     ];
 
     public static FruitThemePalette Default => All[0];
+
+    public static bool IsAnimal(FruitThemeKind kind) =>
+        kind is FruitThemeKind.Cat or FruitThemeKind.Lion or FruitThemeKind.Giraffe or FruitThemeKind.Elephant;
 
     public static FruitThemePalette Get(FruitThemeKind kind) =>
         All.FirstOrDefault(theme => theme.Kind == kind) ?? Default;

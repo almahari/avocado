@@ -12,6 +12,7 @@ public partial class MainWindow
 {
     private readonly Dictionary<FruitThemeKind, ImageSource> _sleepSceneCache = [];
     private FrameworkElement? _mascotAnimationTarget;
+    private FruitThemeKind _mascotAnimationTheme;
     private System.Windows.Controls.Image? _mascotGroundImage;
     private MascotAnimationState _mascotState;
     private bool _mascotMotionAllowed;
@@ -37,12 +38,8 @@ public partial class MainWindow
 
     private FrameworkElement GetMascotAnimationTarget() => IsSideDockLayout
         ? (_currentTheme.Kind == FruitThemeKind.Cat ? DockCatScene : DockThemeScene)
-        : _currentTheme.Kind switch
-        {
-            FruitThemeKind.Cat => CatMascotImage,
-            FruitThemeKind.Lion => LionMascotImage,
-            _ => (FrameworkElement)FindName($"{_currentTheme.Kind}Shape")
-        };
+        : (FrameworkElement)FindName(FruitThemes.IsAnimal(_currentTheme.Kind)
+            ? $"{_currentTheme.Kind}MascotImage" : $"{_currentTheme.Kind}Shape");
 
     private void UpdateMascotAnimation(bool force = false)
     {
@@ -63,6 +60,7 @@ public partial class MainWindow
         _mascotState = state;
         _mascotMotionAllowed = motion;
         _mascotAnimationTarget = target;
+        _mascotAnimationTheme = _currentTheme.Kind;
         OnPropertyChanged(nameof(CurrentMascotAnimationState));
         RefreshAdaptivePersonality();
 
@@ -89,7 +87,7 @@ public partial class MainWindow
         if (target is System.Windows.Controls.Image movingImage)
         {
             _mascotGroundImage = IsSideDockLayout ? DockMascotGround :
-                _currentTheme.Kind == FruitThemeKind.Cat ? CatMascotGround : LionMascotGround;
+                (System.Windows.Controls.Image)FindName($"{_currentTheme.Kind}MascotGround");
             _mascotGroundImage.Source = source;
             _mascotGroundImage.OpacityMask = MascotRegionMask(upper: false);
             _mascotGroundImage.Visibility = Visibility.Visible;
@@ -188,8 +186,7 @@ public partial class MainWindow
             _mascotAnimationTarget.OpacityMask = null;
             // Restore the old image before changing theme or layout.
             if (_mascotAnimationTarget is System.Windows.Controls.Image image)
-                image.Source = image == CatMascotImage || image == DockCatScene ? GetMascotScene(FruitThemeKind.Cat)
-                    : image == LionMascotImage ? GetMascotScene(FruitThemeKind.Lion) : GetMascotScene(_currentTheme.Kind);
+                image.Source = GetMascotScene(_mascotAnimationTheme);
         }
         if (_mascotGroundImage is not null)
         {

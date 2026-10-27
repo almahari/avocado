@@ -200,7 +200,7 @@ Assert(SleepReminderRepeatSettings.Get((SleepReminderRepeatOption)999).Option ==
 Assert(TaskTimerLogic.Format(TimeSpan.Zero) == "00:00:00", "A new task timer must start at zero.");
 Assert(TaskTimerLogic.Format(new TimeSpan(1, 2, 3, 4)) == "26:03:04",
     "Task timer formatting must preserve total hours beyond one day.");
-Assert(FruitThemes.All.Count == 16, "The tray must offer the fourteen fruit themes, Cat, and Lion.");
+Assert(FruitThemes.All.Count == 18, "The tray must offer fourteen fruit themes and four animal themes.");
 Assert(MascotAnimationLogic.GetState(true, false, true) == MascotAnimationState.Celebrating, "Completing a task celebrates.");
 Assert(MascotAnimationLogic.GetState(true, true, true) == MascotAnimationState.Sleeping, "Quiet hours take priority over celebration.");
 Assert(MascotAnimationLogic.GetState(false, true, true) == MascotAnimationState.Still, "The animation toggle disables all mascot reactions.");

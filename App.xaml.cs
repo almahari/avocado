@@ -376,6 +376,37 @@ public partial class App : System.Windows.Application
                     graphics.FillEllipse(seed, 15, 21, 3, 3);
                 }
                 break;
+            case FruitThemeKind.Giraffe:
+                using (var fur = new SolidBrush(Color.FromArgb(235, 187, 100)))
+                using (var hornPen = new Pen(ColorTranslator.FromHtml(theme.Ink), 2))
+                {
+                    graphics.FillRectangle(fur, 12, 15, 10, 17);
+                    graphics.FillEllipse(fur, 5, 5, 8, 6);
+                    graphics.FillEllipse(fur, 22, 5, 8, 6);
+                    graphics.DrawLine(hornPen, 12, 2, 13, 8);
+                    graphics.DrawLine(hornPen, 23, 2, 22, 8);
+                    graphics.FillEllipse(fur, 8, 6, 20, 15);
+                    graphics.FillEllipse(seed, 13, 22, 4, 4);
+                    graphics.FillEllipse(seed, 18, 28, 4, 4);
+                    graphics.FillEllipse(skin, 12, 11, 3, 4);
+                    graphics.FillEllipse(skin, 22, 11, 3, 4);
+                }
+                break;
+            case FruitThemeKind.Elephant:
+                using (var fur = new SolidBrush(Color.FromArgb(172, 180, 205)))
+                using (var innerEar = new SolidBrush(Color.FromArgb(221, 193, 211)))
+                {
+                    graphics.FillEllipse(fur, 1, 6, 12, 20);
+                    graphics.FillEllipse(fur, 19, 6, 12, 20);
+                    graphics.FillEllipse(innerEar, 3, 9, 8, 14);
+                    graphics.FillEllipse(innerEar, 21, 9, 8, 14);
+                    graphics.FillEllipse(fur, 7, 4, 18, 23);
+                    graphics.FillRectangle(fur, 14, 19, 7, 10);
+                    graphics.FillEllipse(fur, 15, 25, 12, 7);
+                    graphics.FillEllipse(skin, 10, 13, 3, 4);
+                    graphics.FillEllipse(skin, 20, 13, 3, 4);
+                }
+                break;
             default:
                 DrawAvocadoIcon(graphics, skin, flesh, seed);
                 break;

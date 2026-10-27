@@ -290,7 +290,7 @@ internal static class Program
         {
             window.Show();
             Pump();
-            foreach (var theme in new[] { FruitThemeKind.Cat, FruitThemeKind.Lion })
+            foreach (var theme in FruitThemes.All.Where(theme => FruitThemes.IsAnimal(theme.Kind)).Select(theme => theme.Kind))
             foreach (var small in new[] { false, true })
             {
                 window.SetTheme(theme);
@@ -358,7 +358,8 @@ internal static class Program
                   effects.Children.Count == 4 && effects.Children.Cast<FrameworkElement>().All(child => child.Opacity == 1),
                 "reduced motion uses static celebration feedback");
             window.SetDoNotDisturb(DoNotDisturbMode.Always);
-            var sheet = new System.Windows.Controls.Primitives.UniformGrid { Columns = 4, Width = 800, Height = 960 };
+            var sheetHeight = Math.Ceiling(FruitThemes.All.Count / 4.0) * 240;
+            var sheet = new System.Windows.Controls.Primitives.UniformGrid { Columns = 4, Width = 800, Height = sheetHeight };
             foreach (var theme in FruitThemes.All)
             {
                 window.SetTheme(theme.Kind);
@@ -375,8 +376,8 @@ internal static class Program
                 card.Children.Add(new System.Windows.Controls.Image { Source = active.Source, Stretch = Stretch.Uniform });
                 sheet.Children.Add(card);
             }
-            sheet.Measure(new System.Windows.Size(800, 960));
-            sheet.Arrange(new Rect(0, 0, 800, 960));
+            sheet.Measure(new System.Windows.Size(800, sheetHeight));
+            sheet.Arrange(new Rect(0, 0, 800, sheetHeight));
             sheet.UpdateLayout();
             Capture(sheet, Path.Combine(directory, "sleeping-mascots.png"));
             Capture(window, Path.Combine(directory, "sleeping.png"));
@@ -391,9 +392,17 @@ internal static class Program
             Check(window.CurrentMascotAnimationState == MascotAnimationState.Sleeping, "expanded panels restore the quiet-hours pose");
             window.SetTheme(FruitThemeKind.Lion);
             window.SetSideDockLayout(false);
-            var floating = (System.Windows.Controls.Image)window.FindName("LionMascotImage");
-            Check(window.CurrentMascotAnimationState == MascotAnimationState.Sleeping &&
-                  ((BitmapImage)floating.Source).UriSource.AbsoluteUri.EndsWith("lion-sleep.png"), "floating Lion also sleeps during quiet hours");
+            foreach (var theme in FruitThemes.All.Where(theme => FruitThemes.IsAnimal(theme.Kind)))
+            {
+                window.SetTheme(theme.Kind);
+                var floating = (System.Windows.Controls.Image)window.FindName($"{theme.Kind}MascotImage");
+                Check(window.CurrentMascotAnimationState == MascotAnimationState.Sleeping &&
+                      ((BitmapImage)floating.Source).UriSource.AbsoluteUri.EndsWith($"{theme.Kind.ToString().ToLowerInvariant()}-sleep.png") &&
+                      !((FrameworkElement)window.FindName("AdaptiveFacePanel")).IsVisible,
+                    $"floating {theme.DisplayName} sleeps without an extra face overlay");
+                Pump(40);
+                Capture(window, Path.Combine(directory, $"floating-{theme.Kind}-sleep.png"));
+            }
             window.SetTheme(FruitThemeKind.Avocado);
             Check(window.AdaptiveEyes == "─     ─", "floating pixel fruit displays sleepy eyes during quiet hours");
             window.SetDoNotDisturb(DoNotDisturbMode.Off);

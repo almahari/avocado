@@ -34,7 +34,9 @@ public static class FruitPersonalities
             [FruitThemeKind.Potato] = new("·", "﹏", ReminderMotion.Horizontal, 1.8, 680),
             [FruitThemeKind.Onion] = new("⌒", "°", ReminderMotion.Vertical, 2.7, 490),
             [FruitThemeKind.Cat] = new("•", "ω", ReminderMotion.Horizontal, 2.0, 540),
-            [FruitThemeKind.Lion] = new("⌒", "ω", ReminderMotion.Vertical, 2.8, 510)
+            [FruitThemeKind.Lion] = new("⌒", "ω", ReminderMotion.Vertical, 2.8, 510),
+            [FruitThemeKind.Giraffe] = new("˘", "ω", ReminderMotion.Vertical, 2.4, 570),
+            [FruitThemeKind.Elephant] = new("─", "ω", ReminderMotion.Horizontal, 1.9, 650)
         };
 
     public static FruitPersonality Get(FruitThemeKind kind) =>
