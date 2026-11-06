@@ -1,0 +1,214 @@
+{
+  "tool": "Built-in image_gen",
+  "transparentBackground": true,
+  "postprocessing": "PNG size normalization with Lanczos; alpha values <=8 cleared to remove invisible resampling specks.",
+  "images": [
+    {
+      "file": "Assets/theme-scenes/redpanda-scene.png",
+      "prompt": "Use case: style-transfer. Create a production transparent task-planner scene based on the two reference images: match their cozy warm hand-drawn stationery texture, warm brown outlines, pastel palette, square canvas and bottom-right placement. Replace animal with one cute chibi RED PANDA, orange-red fur, cream face markings and striped ringed tail, wearing a deep maple burgundy hoodie #8E3B2E with drawstrings and pocket. Sitting and waving one paw, friendly big eyes and rosy cheeks. Large single mascot in bottom-right lower 65% exactly matching reference scale; mostly transparent upper 35% and upper-left. Small landscape strip only along bottom edge, autumn maple leaves and bamboo tufts. True transparent background. No text, letters, numbers, watermark, frame, UI, or extra characters. Output a single square scene.",
+      "reference": [
+        "Assets/theme-scenes/giraffe-scene.png",
+        "Assets/cat-scene.png"
+      ],
+      "edits": [
+        {
+          "prompt": "Use case: precise-object-edit. Keep this exact red panda illustration unchanged: same mascot, pose, facial expression, hoodie, texture, colors, location, size and landscape. Make only the two lower extreme corners transparent by gently rounding off the landscape's bottom left and bottom right ends; keep a small transparent margin at each corner. All four corner pixels must have alpha zero. Keep the landscape strip otherwise unchanged. Preserve exact 1254x1254 canvas. True transparent background, no text or new objects.",
+          "reference": "Assets/theme-scenes/redpanda-scene.png"
+        }
+      ]
+    },
+    {
+      "file": "Assets/theme-scenes/fox-scene.png",
+      "prompt": "Use case: style-transfer. Create a NEW transparent task-planner scene matching the reference images' cozy warm hand-drawn stationery texture, warm brown outlines, pastel palette, scale and bottom-right composition. One cute chibi red FOX with orange fur, white chest and muzzle, black-tipped ears and paws, big fluffy white-tipped tail wearing a navy #2F4A6D hoodie with drawstrings and pocket. Seated, waving one paw, friendly big eyes and rosy cheeks. Large single mascot in bottom-right lower 65% of square; mostly transparent upper 35% and upper-left. Small landscape strip only along bottom edge: autumn forest floor with small mushrooms and ferns. Keep all four exact corner pixels fully transparent by softly ending landscape a few pixels before the lower corners. No text, letters, Z symbols, watermark, frame, UI or other characters. True transparent background.",
+      "reference": [
+        "Assets/theme-scenes/giraffe-scene.png",
+        "Assets/cat-scene.png"
+      ]
+    },
+    {
+      "file": "Assets/theme-scenes/koala-scene.png",
+      "prompt": "Use case: style-transfer. Create a NEW transparent task-planner scene matching the reference images' cozy warm hand-drawn stationery texture, warm brown outlines, pastel palette, scale and bottom-right composition. One cute chibi KOALA with soft grey fur, big fluffy round ears with white tufts and a large dark oval nose wearing a eucalyptus green #7FA88A hoodie with drawstrings and pocket. Seated, waving one paw, friendly big eyes and rosy cheeks. Large single mascot in bottom-right lower 65% of square; mostly transparent upper 35% and upper-left. Small landscape strip only along bottom edge: eucalyptus branches and soft sage hills. Keep all four exact corner pixels fully transparent by softly ending landscape a few pixels before the lower corners. No text, letters, Z symbols, watermark, frame, UI or other characters. True transparent background.",
+      "reference": [
+        "Assets/theme-scenes/giraffe-scene.png",
+        "Assets/cat-scene.png"
+      ]
+    },
+    {
+      "file": "Assets/mascot-sleep/redpanda-sleep.png",
+      "prompt": "Use case: precise-object-edit. Edit this EXACT redpanda scene into its sleeping animation state. Change only eyes to gently closed curves, mouth to a peaceful small smile, lower waving paw into the lap. Preserve exact animal identity, deep maple burgundy #8E3B2E hoodie, fur features, pose scale and pixel placement, same bottom landscape and warm hand-drawn texture. Preserve transparent background, upper empty region and all composition. No text, Z letters, symbols, watermark or extra characters. Square transparent PNG.",
+      "reference": "Assets/theme-scenes/redpanda-scene.png",
+      "edits": [
+        {
+          "prompt": "Use case: precise-object-edit. Keep this exact red panda illustration unchanged: same mascot, pose, facial expression, hoodie, texture, colors, location, size and landscape. Make only the two lower extreme corners transparent by gently rounding off the landscape's bottom left and bottom right ends; keep a small transparent margin at each corner. All four corner pixels must have alpha zero. Keep the landscape strip otherwise unchanged. Preserve exact 1254x1254 canvas. True transparent background, no text or new objects.",
+          "reference": "Assets/mascot-sleep/redpanda-sleep.png"
+        }
+      ]
+    },
+    {
+      "file": "Assets/mascot-sleep/fox-sleep.png",
+      "prompt": "Use case: precise-object-edit. Edit this EXACT fox scene into its sleeping animation state. Change only eyes to gently closed curves, mouth to a peaceful small smile, lower waving paw into the lap. Preserve exact animal identity, navy #2F4A6D hoodie, fur features, pose scale and pixel placement, same bottom landscape and warm hand-drawn texture. Preserve transparent background, upper empty region and all composition. No text, Z letters, symbols, watermark or extra characters. Square transparent PNG.",
+      "reference": "Assets/theme-scenes/fox-scene.png"
+    },
+    {
+      "file": "Assets/mascot-sleep/koala-sleep.png",
+      "prompt": "Use case: precise-object-edit. Edit this EXACT koala scene into its sleeping animation state. Change only eyes to gently closed curves, mouth to a peaceful small smile, lower waving paw into the lap. Preserve exact animal identity, eucalyptus green #7FA88A hoodie, fur features, pose scale and pixel placement, same bottom landscape and warm hand-drawn texture. Preserve transparent background, upper empty region and all composition. No text, Z letters, symbols, watermark or extra characters. Square transparent PNG.",
+      "reference": "Assets/theme-scenes/koala-scene.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/redpanda-idle.png",
+      "prompt": "Use case: style-transfer. Production desktop mascot IDLE sprite, match reference thick dark brown outline sticker illustration, smooth flat warm colors and tiny soft highlights, full-body standing chibi proportions, front view. Replace animal with one cute chibi RED PANDA with orange-red fur, cream face markings and a striped ringed tail, wearing a deep maple burgundy #8E3B2E hoodie with visible drawstrings, front kangaroo pocket and ribbed cuffs. Two arms resting naturally at sides, two feet on same level, gentle closed-mouth smile and large shiny eyes. Same scale and centered placement as reference. Target 512x512 transparent canvas; head top at y=41 (8% down), feet baseline y=486 (5% from bottom). All tail and ears inside canvas. Tail must remain lower than head. Single character only, no ground or shadows. True transparent background, all corners alpha zero. No text, lettering, watermark, border, extra props or characters.",
+      "reference": [
+        "Assets/desktop-mascot/elephant-idle.png",
+        "Assets/desktop-mascot/lion-idle.png"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/fox-idle.png",
+      "prompt": "Use case: style-transfer. Production desktop mascot IDLE sprite, match reference thick dark brown outline sticker illustration, smooth flat warm colors and tiny soft highlights, full-body standing chibi proportions, front view. Replace animal with one cute chibi red FOX with orange fur, white chest and muzzle, black-tipped ears and paws, big fluffy white-tipped tail, wearing a navy #2F4A6D hoodie with visible drawstrings, front kangaroo pocket and ribbed cuffs. Two arms resting naturally at sides, two feet on same level, gentle closed-mouth smile and large shiny eyes. Same scale and centered placement as reference. Target 512x512 transparent canvas; head top at y=41 (8% down), feet baseline y=486 (5% from bottom). All tail and ears inside canvas. Tail must remain lower than head. Single character only, no ground or shadows. True transparent background, all corners alpha zero. No text, lettering, watermark, border, extra props or characters.",
+      "reference": [
+        "Assets/desktop-mascot/elephant-idle.png",
+        "Assets/desktop-mascot/lion-idle.png"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/koala-idle.png",
+      "prompt": "Use case: style-transfer. Production desktop mascot IDLE sprite, match reference thick dark brown outline sticker illustration, smooth flat warm colors and tiny soft highlights, full-body standing chibi proportions, front view. Replace animal with one cute chibi KOALA with soft grey fur, big fluffy round ears with white tufts and a large dark oval nose, wearing a eucalyptus green #7FA88A hoodie with visible drawstrings, front kangaroo pocket and ribbed cuffs. Two arms resting naturally at sides, two feet on same level, gentle closed-mouth smile and large shiny eyes. Same scale and centered placement as reference. Target 512x512 transparent canvas; head top at y=41 (8% down), feet baseline y=486 (5% from bottom). All tail and ears inside canvas. Tail must remain lower than head. Single character only, no ground or shadows. True transparent background, all corners alpha zero. No text, lettering, watermark, border, extra props or characters.",
+      "reference": [
+        "Assets/desktop-mascot/elephant-idle.png",
+        "Assets/desktop-mascot/lion-idle.png"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/redpanda-wave.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame wave. Raise one paw to the side in a friendly wave, cheerful open mouth. The hand stays below the top of the ears. Preserve the exact cute chibi RED PANDA with orange-red fur, cream face markings and a striped ringed tail, deep maple burgundy #8E3B2E hoodie, fur pattern, proportions, drawing style and thickness, head and body alignment. Same 512x512 transparent canvas, same head-top y=46 and foot baseline y=486; DO NOT enlarge, shrink, recenter, redesign or tilt the character. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners fully transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/redpanda-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/redpanda-play.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame play. Joyful jumping gesture with both arms up, joyful open mouth; lift body only 3 pixels and bend knees, keep arm tips below ear tops and feet within 3 pixels of idle baseline. Preserve the exact cute chibi RED PANDA with orange-red fur, cream face markings and a striped ringed tail, deep maple burgundy #8E3B2E hoodie, fur pattern, proportions, drawing style and thickness, head and body alignment. Same 512x512 transparent canvas, same head-top y=46 and foot baseline y=486; DO NOT enlarge, shrink, recenter, redesign or tilt the character. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners fully transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/redpanda-idle.png",
+      "edits": [
+        {
+          "prompt": "Use case: precise-object-edit. Create PLAY frame from this EXACT idle sprite. Raise both arms joyfully to sides below ear tops; cheerful open mouth; knees slightly bent, tiny jumping gesture. Crucial animation alignment: keep head top at 46px and lowest feet at 486px on 512px canvas, absolutely no upward shift of feet. Keep head and torso fixed in same position, same identity, size, hoodie, tail, exact drawing style. Frame must align with provided idle. True transparent background. No letters, effects, motion marks, props, ground or shadows.",
+          "reference": "Assets/desktop-mascot/redpanda-idle.png"
+        }
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/redpanda-sleep.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame sleep. Keep standing idle pose unchanged, eyes gently closed and peaceful smile; paws stay at sides. Preserve the exact cute chibi RED PANDA with orange-red fur, cream face markings and a striped ringed tail, deep maple burgundy #8E3B2E hoodie, fur pattern, proportions, drawing style and thickness, head and body alignment. Same 512x512 transparent canvas, same head-top y=46 and foot baseline y=486; DO NOT enlarge, shrink, recenter, redesign or tilt the character. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners fully transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/redpanda-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/redpanda-blink.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame blink. Change ONLY the eyes to closed curved eyelids; every other pixel, outline, body, tail, mouth, scale and position must remain unchanged. Preserve the exact cute chibi RED PANDA with orange-red fur, cream face markings and a striped ringed tail, deep maple burgundy #8E3B2E hoodie, fur pattern, proportions, drawing style and thickness, head and body alignment. Same 512x512 transparent canvas, same head-top y=46 and foot baseline y=486; DO NOT enlarge, shrink, recenter, redesign or tilt the character. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners fully transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/redpanda-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/redpanda-tailleft.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame tailleft. Change ONLY the tail: swing it further outward and upward, but keep entire tail below ear tops and above foot baseline. Everything else unchanged. For the koala its anatomically natural short tail is a small rounded grey nub near hip; rotate it outward slightly, do not invent a long tail. Preserve exact cute chibi RED PANDA with orange-red fur, cream face markings and a striped ringed tail, deep maple burgundy #8E3B2E hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=46 and foot baseline y=486. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/redpanda-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/redpanda-tailright.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame tailright. Change ONLY the tail: tuck it lower and inward, remaining above foot baseline. Everything else unchanged. For the koala its anatomically natural short tail is a small rounded grey nub near hip; tuck it inward slightly, do not invent a long tail. Preserve exact cute chibi RED PANDA with orange-red fur, cream face markings and a striped ringed tail, deep maple burgundy #8E3B2E hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=46 and foot baseline y=486. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/redpanda-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/redpanda-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame wavehalf. Exact halfway animation pose from idle to waving: one arm half raised at a diagonal side angle, paw below shoulder, gentle cheerful smile. Everything else unchanged. Preserve exact cute chibi RED PANDA with orange-red fur, cream face markings and a striped ringed tail, deep maple burgundy #8E3B2E hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=46 and foot baseline y=486. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/redpanda-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/redpanda-playhalf.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame playhalf. Exact halfway animation pose from idle to joyful play: both arms half up/outward, a slight crouch of only 2 pixels, cheerful expression. Keep head top and foot baseline within 3 pixels of idle. Preserve exact cute chibi RED PANDA with orange-red fur, cream face markings and a striped ringed tail, deep maple burgundy #8E3B2E hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=46 and foot baseline y=486. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/redpanda-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/fox-wave.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame wave. Raise one paw to the side in a friendly wave, cheerful open mouth. The hand stays below the top of the ears. Preserve exact cute chibi red FOX with orange fur, white chest and muzzle, black-tipped ears and paws, big fluffy white-tipped tail, navy #2F4A6D hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=43 and foot baseline y=487. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/fox-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/fox-play.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame play. Joyful jumping gesture with both arms up, joyful open mouth; lift body only 3 pixels and bend knees, keep arm tips below ear tops and feet within 3 pixels of idle baseline. Preserve exact cute chibi red FOX with orange fur, white chest and muzzle, black-tipped ears and paws, big fluffy white-tipped tail, navy #2F4A6D hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=43 and foot baseline y=487. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/fox-idle.png",
+      "edits": [
+        {
+          "prompt": "Use case: precise-object-edit. Create PLAY frame from this EXACT idle sprite. Raise both arms joyfully to sides below ear tops; cheerful open mouth; knees slightly bent, tiny jumping gesture. Crucial animation alignment: keep head top at 43px and lowest feet at 486px on 512px canvas, absolutely no upward shift of feet. Keep head and torso fixed in same position, same identity, size, hoodie, tail, exact drawing style. Frame must align with provided idle. True transparent background. No letters, effects, motion marks, props, ground or shadows.",
+          "reference": "Assets/desktop-mascot/fox-idle.png"
+        }
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/fox-sleep.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame sleep. Keep standing idle pose unchanged, eyes gently closed and peaceful smile; paws stay at sides. Preserve exact cute chibi red FOX with orange fur, white chest and muzzle, black-tipped ears and paws, big fluffy white-tipped tail, navy #2F4A6D hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=43 and foot baseline y=487. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/fox-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/fox-blink.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame blink. Change ONLY the eyes to closed curved eyelids; every other pixel, outline, body, tail, mouth, scale and position must remain unchanged. Preserve exact cute chibi red FOX with orange fur, white chest and muzzle, black-tipped ears and paws, big fluffy white-tipped tail, navy #2F4A6D hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=43 and foot baseline y=487. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/fox-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/fox-tailleft.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame tailleft. Change ONLY the tail: swing it further outward and upward, but keep entire tail below ear tops and above foot baseline. Everything else unchanged. For the koala its anatomically natural short tail is a small rounded grey nub near hip; rotate it outward slightly, do not invent a long tail. Preserve exact cute chibi red FOX with orange fur, white chest and muzzle, black-tipped ears and paws, big fluffy white-tipped tail, navy #2F4A6D hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=43 and foot baseline y=487. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/fox-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/fox-tailright.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame tailright. Change ONLY the tail: tuck it lower and inward, remaining above foot baseline. Everything else unchanged. For the koala its anatomically natural short tail is a small rounded grey nub near hip; tuck it inward slightly, do not invent a long tail. Preserve exact cute chibi red FOX with orange fur, white chest and muzzle, black-tipped ears and paws, big fluffy white-tipped tail, navy #2F4A6D hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=43 and foot baseline y=487. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/fox-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/fox-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame wavehalf. Exact halfway animation pose from idle to waving: one arm half raised at a diagonal side angle, paw below shoulder, gentle cheerful smile. Everything else unchanged. Preserve exact cute chibi red FOX with orange fur, white chest and muzzle, black-tipped ears and paws, big fluffy white-tipped tail, navy #2F4A6D hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=43 and foot baseline y=487. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/fox-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/fox-playhalf.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame playhalf. Exact halfway animation pose from idle to joyful play: both arms half up/outward, a slight crouch of only 2 pixels, cheerful expression. Keep head top and foot baseline within 3 pixels of idle. Preserve exact cute chibi red FOX with orange fur, white chest and muzzle, black-tipped ears and paws, big fluffy white-tipped tail, navy #2F4A6D hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=43 and foot baseline y=487. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/fox-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/koala-wave.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame wave. Raise one paw to the side in a friendly wave, cheerful open mouth. The hand stays below the top of the ears. Preserve exact cute chibi KOALA with soft grey fur, big fluffy round ears with white tufts and a large dark oval nose, eucalyptus green #7FA88A hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=47 and foot baseline y=485. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/koala-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/koala-play.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame play. Joyful jumping gesture with both arms up, joyful open mouth; lift body only 3 pixels and bend knees, keep arm tips below ear tops and feet within 3 pixels of idle baseline. Preserve exact cute chibi KOALA with soft grey fur, big fluffy round ears with white tufts and a large dark oval nose, eucalyptus green #7FA88A hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=47 and foot baseline y=485. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/koala-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/koala-sleep.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame sleep. Keep standing idle pose unchanged, eyes gently closed and peaceful smile; paws stay at sides. Preserve exact cute chibi KOALA with soft grey fur, big fluffy round ears with white tufts and a large dark oval nose, eucalyptus green #7FA88A hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=47 and foot baseline y=485. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/koala-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/koala-blink.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame blink. Change ONLY the eyes to closed curved eyelids; every other pixel, outline, body, tail, mouth, scale and position must remain unchanged. Preserve exact cute chibi KOALA with soft grey fur, big fluffy round ears with white tufts and a large dark oval nose, eucalyptus green #7FA88A hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=47 and foot baseline y=485. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/koala-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/koala-tailleft.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame tailleft. Change ONLY the tail: swing it further outward and upward, but keep entire tail below ear tops and above foot baseline. Everything else unchanged. For the koala its anatomically natural short tail is a small rounded grey nub near hip; rotate it outward slightly, do not invent a long tail. Preserve exact cute chibi KOALA with soft grey fur, big fluffy round ears with white tufts and a large dark oval nose, eucalyptus green #7FA88A hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=47 and foot baseline y=485. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/koala-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/koala-tailright.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame tailright. Change ONLY the tail: tuck it lower and inward, remaining above foot baseline. Everything else unchanged. For the koala its anatomically natural short tail is a small rounded grey nub near hip; tuck it inward slightly, do not invent a long tail. Preserve exact cute chibi KOALA with soft grey fur, big fluffy round ears with white tufts and a large dark oval nose, eucalyptus green #7FA88A hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=47 and foot baseline y=485. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/koala-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/koala-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame wavehalf. Exact halfway animation pose from idle to waving: one arm half raised at a diagonal side angle, paw below shoulder, gentle cheerful smile. Everything else unchanged. Preserve exact cute chibi KOALA with soft grey fur, big fluffy round ears with white tufts and a large dark oval nose, eucalyptus green #7FA88A hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=47 and foot baseline y=485. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/koala-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/koala-playhalf.png",
+      "prompt": "Use case: precise-object-edit. Edit the provided EXACT idle sprite into frame playhalf. Exact halfway animation pose from idle to joyful play: both arms half up/outward, a slight crouch of only 2 pixels, cheerful expression. Keep head top and foot baseline within 3 pixels of idle. Preserve exact cute chibi KOALA with soft grey fur, big fluffy round ears with white tufts and a large dark oval nose, eucalyptus green #7FA88A hoodie, pattern, proportions, drawing style and head/body alignment. Same 512x512 transparent canvas, head top y=47 and foot baseline y=485. DO NOT enlarge, shrink, recenter, redesign or tilt. No floor/shadow, effects, motion marks, extra characters, text, symbols or watermark. All corners transparent. Single full-body sprite.",
+      "reference": "Assets/desktop-mascot/koala-idle.png"
+    }
+  ]
+}

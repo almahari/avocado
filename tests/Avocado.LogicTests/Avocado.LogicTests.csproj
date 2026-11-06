@@ -18,6 +18,8 @@
     <Compile Include="..\..\WorldClockLogic.cs" Link="WorldClockLogic.cs" />
     <Compile Include="..\..\PaletteTimeLogic.cs" Link="PaletteTimeLogic.cs" />
     <Compile Include="..\..\MascotAnimationLogic.cs" Link="MascotAnimationLogic.cs" />
+    <Compile Include="..\..\DesktopMascotLogic.cs" Link="DesktopMascotLogic.cs" />
+    <Compile Include="..\..\DesktopMascotSettings.cs" Link="DesktopMascotSettings.cs" />
     <Compile Include="..\..\SeasonalSkins.cs" Link="SeasonalSkins.cs" />
     <Compile Include="..\..\TaskReminderLogic.cs" Link="TaskReminderLogic.cs" />
     <Compile Include="..\..\StartupRegistration.cs" Link="StartupRegistration.cs" />
