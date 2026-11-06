@@ -8,6 +8,15 @@ public enum DesktopMascotIdleAction { Bounce, Sway, Wave, Cheer, Love, LookAroun
 
 public sealed record DesktopMascotNag(TodoItem Task, string Title, string Summary);
 
+public sealed record DesktopMascotDigestEntry(TodoItem Task, string When, bool IsLate = false);
+
+public sealed record DesktopMascotDigest(
+    string Date,
+    string Time,
+    IReadOnlyList<DesktopMascotDigestEntry> Today,
+    IReadOnlyList<DesktopMascotDigestEntry> Old,
+    IReadOnlyList<DesktopMascotDigestEntry> Tomorrow);
+
 public static class DesktopMascotLogic
 {
     public const double SpriteSize = 150;
@@ -23,6 +32,9 @@ public static class DesktopMascotLogic
         "Hehe, that tickles!", "Boop!", "Hey! I'm working here 🐾", "Need a snack break?",
         "You've got this!", "Wheee!", "Pet me again 😊"
     ];
+
+    public static string FramePath(FruitThemeKind theme, string frame) =>
+        $"Assets/desktop-mascot/{theme.ToString().ToLowerInvariant()}-{frame}.png";
 
     public static string SpritePath(FruitThemeKind theme, DesktopMascotPose pose) =>
         $"Assets/desktop-mascot/{theme.ToString().ToLowerInvariant()}-{pose.ToString().ToLowerInvariant()}.png";
@@ -62,6 +74,74 @@ public static class DesktopMascotLogic
         return stale is null ? null : new DesktopMascotNag(stale, "Remember this one?",
             $"{stale.Text}\nWaiting for {DescribeAge(now - stale.CreatedAt)}.");
     }
+
+    /// <summary>
+    /// Builds the "What's up!" digest: today's work, old (overdue or stale) tasks and tomorrow's plan.
+    /// </summary>
+    public static DesktopMascotDigest BuildDigest(IEnumerable<TodoItem> tasks, DateTime now)
+    {
+        var today = now.Date;
+        var tomorrow = today.AddDays(1);
+        var todayItems = new List<(DesktopMascotDigestEntry Entry, TimeSpan Sort)>();
+        var oldItems = new List<(DesktopMascotDigestEntry Entry, DateTime Since)>();
+        var tomorrowItems = new List<(DesktopMascotDigestEntry Entry, TimeSpan Sort)>();
+        var anytime = TimeSpan.FromDays(1);
+
+        foreach (var task in tasks.Where(task => !task.IsCompleted))
+        {
+            if (task.DueAt is DateTime due)
+            {
+                if (due.Date < today)
+                    oldItems.Add((new(task, $"was due {due.ToString("MMM d", CultureInfo.InvariantCulture)} · {DescribeAge(now - due)} late", true), due));
+                else if (due.Date == today)
+                    todayItems.Add((new(task, due < now ? $"late · {due:HH:mm}" : due.ToString("HH:mm", CultureInfo.InvariantCulture), due < now), due.TimeOfDay));
+                else if (due.Date == tomorrow)
+                    tomorrowItems.Add((new(task, due.ToString("HH:mm", CultureInfo.InvariantCulture)), due.TimeOfDay));
+                continue;
+            }
+
+            if (task.ReminderTime is TimeSpan time)
+            {
+                var clock = $"{time:hh\\:mm}";
+                if (task.Recurrence == TaskRecurrence.None)
+                {
+                    // One-off time reminders that already fired on an earlier day are left-overs.
+                    if (task.LastReminderDate is DateOnly fired && fired < DateOnly.FromDateTime(today))
+                        oldItems.Add((new(task, $"reminded {fired.ToString("MMM d", CultureInfo.InvariantCulture)}", true), fired.ToDateTime(TimeOnly.FromTimeSpan(time))));
+                    else
+                        todayItems.Add((new(task, clock), time));
+                    continue;
+                }
+                var label = task.Recurrence == TaskRecurrence.Daily ? "daily" : TaskReminderLogic.Label(task.Recurrence).ToLowerInvariant();
+                if (TaskReminderLogic.MatchesDay(task.Recurrence, today.DayOfWeek))
+                    todayItems.Add((new(task, $"{clock} · {label}"), time));
+                if (TaskReminderLogic.MatchesDay(task.Recurrence, tomorrow.DayOfWeek))
+                    tomorrowItems.Add((new(task, $"{clock} · {label}"), time));
+                continue;
+            }
+
+            if (now - task.CreatedAt >= StaleTaskAge)
+                oldItems.Add((new(task, $"open for {DescribeAge(now - task.CreatedAt)}"), task.CreatedAt));
+            else
+                todayItems.Add((new(task, "anytime"), anytime));
+        }
+
+        return new DesktopMascotDigest(
+            now.ToString("dddd, MMMM d, yyyy", CultureInfo.InvariantCulture),
+            now.ToString("HH:mm", CultureInfo.InvariantCulture),
+            todayItems.OrderBy(item => item.Sort).ThenByDescending(item => item.Entry.Task.Priority).Select(item => item.Entry).ToList(),
+            oldItems.OrderBy(item => item.Since).Select(item => item.Entry).ToList(),
+            tomorrowItems.OrderBy(item => item.Sort).ThenByDescending(item => item.Entry.Task.Priority).Select(item => item.Entry).ToList());
+    }
+
+    public static string DigestGreeting(DateTime now) => now.Hour switch
+    {
+        < 5 => "Up late? Here's the plan",
+        < 12 => "Good morning! Here's your day",
+        < 17 => "Good afternoon! Here's what's up",
+        < 21 => "Good evening! Here's what's left",
+        _ => "Winding down? Here's what's up"
+    };
 
     public static string ReminderTitle(int count) => count == 1 ? "Reminder!" : $"{count} reminders!";
 

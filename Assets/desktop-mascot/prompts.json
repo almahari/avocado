@@ -361,6 +361,1698 @@
       "file": "Assets/desktop-mascot/elephant-sleep.png",
       "prompt": "Use case: identity-preserve. Edit the exact reference elephant mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #B7BBD1, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks. Preserve the species-specific animal anatomy exactly.",
       "reference": "Assets/desktop-mascot/elephant-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/avocado-blink.png",
+      "prompt": "Use case: precise-object-edit. EDIT the reference sprite into avocado-blink.png. Output exactly 512x512 PNG with true transparent alpha. Keep the entire reference pixel-aligned: same center, head outline size and position, foot baseline, hoodie, colors, arms, tail, mouth and outline style. Change ONLY both open eyes into gently curved happy closed-eye lines. No other changes. No shadow, ground, scenery or text. Preserve original transparent margins; character bounds top 46 bottom 486.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png",
+      "references": [
+        "Assets/desktop-mascot/avocado-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-0c1a552e-030e-43cb-826e-b10a1ef2c1f0.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/avocado-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/avocado-tailleft.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the avocado idle mascot, into ONE tailleft animation in-between frame. Change ONLY the existing tail, swinging it a little farther out/up toward the character's side in a natural mid-swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png",
+      "references": [
+        "Assets/desktop-mascot/avocado-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-0b71de83-f876-425a-99be-8207d292e3d5.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/avocado-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/avocado-tailright.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the avocado idle mascot, into ONE tailright animation in-between frame. Change ONLY the existing tail, tucking it a little closer/lower toward the legs at the opposite end of a gentle swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png",
+      "references": [
+        "Assets/desktop-mascot/avocado-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-4f8e8652-01b9-46be-95bb-41f3f2848c21.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/avocado-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/avocado-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the avocado idle mascot, into ONE wavehalf animation in-between frame. Reference 1 is the idle edit target; reference 2 is the wave endpoint. Raise the SAME waving arm exactly halfway between idle and wave, elbow out and paw at shoulder height; keep a small smile. Everything else stays like idle, including the other arm and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png",
+      "references": [
+        "Assets/desktop-mascot/avocado-idle.png",
+        "Assets/desktop-mascot/avocado-wave.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-5d978e24-a812-4716-b957-a7dc539c8b5b.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/avocado-idle.png",
+      "referenceRoles": [
+        "idle edit target",
+        "pose endpoint, arm movement reference only"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/strawberry-blink.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the strawberry idle mascot, into ONE blink animation in-between frame. Change ONLY both open eyes into gently curved happy closed-eye lines. Same mouth, body, arms and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry.",
+      "reference": "Assets/desktop-mascot/strawberry-idle.png",
+      "references": [
+        "Assets/desktop-mascot/strawberry-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-b9d8abce-b07c-40d1-b6a4-a7893d9ef576.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/strawberry-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/strawberry-tailleft.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the strawberry idle mascot, into ONE tailleft animation in-between frame. Change ONLY the existing tail, swinging it a little farther out/up toward the character's side in a natural mid-swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry.",
+      "reference": "Assets/desktop-mascot/strawberry-idle.png",
+      "references": [
+        "Assets/desktop-mascot/strawberry-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-9985bb2c-6c54-4a77-a7da-e7886e4981d6.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/strawberry-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/strawberry-tailright.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the strawberry idle mascot, into ONE tailright animation in-between frame. Change ONLY the existing tail, tucking it a little closer/lower toward the legs at the opposite end of a gentle swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry.",
+      "reference": "Assets/desktop-mascot/strawberry-idle.png",
+      "references": [
+        "Assets/desktop-mascot/strawberry-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-c4863b1a-b185-4bc5-a5b1-d3365c145987.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/strawberry-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/strawberry-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the strawberry idle mascot, into ONE wavehalf animation in-between frame. Reference 1 is the idle edit target; reference 2 is the wave endpoint. Raise the SAME waving arm exactly halfway between idle and wave, elbow out and paw at shoulder height; keep a small smile. Everything else stays like idle, including the other arm and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry.",
+      "reference": "Assets/desktop-mascot/strawberry-idle.png",
+      "references": [
+        "Assets/desktop-mascot/strawberry-idle.png",
+        "Assets/desktop-mascot/strawberry-wave.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-66de6796-b72d-4a97-a5ea-ceeb4d9f2a6f.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/strawberry-idle.png",
+      "referenceRoles": [
+        "idle edit target",
+        "pose endpoint, arm movement reference only"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/orange-blink.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the orange idle mascot, into ONE blink animation in-between frame. Change ONLY both open eyes into gently curved happy closed-eye lines. Same mouth, body, arms and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry.",
+      "reference": "Assets/desktop-mascot/orange-idle.png",
+      "references": [
+        "Assets/desktop-mascot/orange-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-fa20d44a-75e5-44ab-b145-72c82f3e301e.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/orange-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/orange-tailleft.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the orange idle mascot, into ONE tailleft animation in-between frame. Change ONLY the existing tail, swinging it a little farther out/up toward the character's side in a natural mid-swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry.",
+      "reference": "Assets/desktop-mascot/orange-idle.png",
+      "references": [
+        "Assets/desktop-mascot/orange-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-265485c4-9d84-4e44-a3b9-35bc8fff1f37.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/orange-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/orange-tailright.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the orange idle mascot, into ONE tailright animation in-between frame. Change ONLY the existing tail, tucking it a little closer/lower toward the legs at the opposite end of a gentle swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry.",
+      "reference": "Assets/desktop-mascot/orange-idle.png",
+      "references": [
+        "Assets/desktop-mascot/orange-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-2fd1c5fe-259b-4f43-95f0-4573ae37c81c.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/orange-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/orange-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT ONLY THE SECOND/LAST IMAGE, the IDLE orange mascot. Reference 1 shows the waving arm endpoint ONLY. Keep the SECOND/LAST image's head, face, hoodie torso, tail and legs unchanged and pixel-aligned in the exact same locations. Raise its left-on-screen arm halfway toward reference 1's waving arm; paw at shoulder height with elbow bent outward. Small idle closed-mouth smile. Head bounds must remain the idle head bounds, not the first image. Do not shift right. 512x512 PNG transparent alpha, no scenery, shadows, ground, text or motion lines.",
+      "reference": "Assets/desktop-mascot/orange-idle.png",
+      "references": [
+        "Assets/desktop-mascot/orange-wave.png",
+        "Assets/desktop-mascot/orange-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-3c4aad7b-f9a4-4b48-98ed-abfe35e8de86.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/orange-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/blueberry-blink.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the blueberry idle mascot, into ONE blink animation in-between frame. Change ONLY both open eyes into gently curved happy closed-eye lines. Same mouth, body, arms and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry.",
+      "reference": "Assets/desktop-mascot/blueberry-idle.png",
+      "references": [
+        "Assets/desktop-mascot/blueberry-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-0ccef153-0869-417b-84ca-0b48756a6f4c.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/blueberry-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/blueberry-tailleft.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the blueberry idle mascot, into ONE tailleft animation in-between frame. Change ONLY the existing tail, swinging it a little farther out/up toward the character's side in a natural mid-swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry.",
+      "reference": "Assets/desktop-mascot/blueberry-idle.png",
+      "references": [
+        "Assets/desktop-mascot/blueberry-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-7bee1725-ea39-423a-bfea-7e8603de6b6e.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/blueberry-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/blueberry-tailright.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the blueberry idle mascot, into ONE tailright animation in-between frame. Change ONLY the existing tail, tucking it a little closer/lower toward the legs at the opposite end of a gentle swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry.",
+      "reference": "Assets/desktop-mascot/blueberry-idle.png",
+      "references": [
+        "Assets/desktop-mascot/blueberry-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-f5cc07ee-74f3-44c5-9aa2-e39ab1a3c692.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/blueberry-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/blueberry-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the blueberry idle mascot, into ONE wavehalf animation in-between frame. Reference 1 is the wave endpoint; reference 2 is the IDLE EDIT TARGET. Raise the SAME waving arm exactly halfway between idle and wave, elbow out and paw at shoulder height; keep a small smile. Everything else stays like idle, including the other arm and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only.",
+      "reference": "Assets/desktop-mascot/blueberry-idle.png",
+      "references": [
+        "Assets/desktop-mascot/blueberry-wave.png",
+        "Assets/desktop-mascot/blueberry-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-defda1a4-dd89-4ca6-9564-525a91117754.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/blueberry-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/watermelon-blink.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the watermelon idle mascot, into ONE blink animation in-between frame. Change ONLY both open eyes into gently curved happy closed-eye lines. Same mouth, body, arms and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,428,486]; head silhouette in rows 0-199 has bounds [86,46,367,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/watermelon-idle.png",
+      "references": [
+        "Assets/desktop-mascot/watermelon-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-b9f577d3-36a2-4a81-bdda-5bfd1d92e11e.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/watermelon-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/watermelon-tailleft.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the watermelon idle mascot, into ONE tailleft animation in-between frame. Change ONLY the existing tail, swinging it a little farther out/up toward the character's side in a natural mid-swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,428,486]; head silhouette in rows 0-199 has bounds [86,46,367,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/watermelon-idle.png",
+      "references": [
+        "Assets/desktop-mascot/watermelon-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-00f938b4-b986-46ec-bc6d-265d8aaf425c.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/watermelon-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/watermelon-tailright.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the watermelon idle mascot, into ONE tailright animation in-between frame. Change ONLY the existing tail, tucking it a little closer/lower toward the legs at the opposite end of a gentle swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,428,486]; head silhouette in rows 0-199 has bounds [86,46,367,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/watermelon-idle.png",
+      "references": [
+        "Assets/desktop-mascot/watermelon-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-65533dab-56a1-4d23-8a75-56436bdce263.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/watermelon-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/watermelon-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the watermelon idle mascot, into ONE wavehalf animation in-between frame. Reference 1 is the wave endpoint; reference 2 is the IDLE EDIT TARGET. Raise the SAME waving arm exactly halfway between idle and wave, elbow out and paw at shoulder height; keep a small smile. Everything else stays like idle, including the other arm and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,428,486]; head silhouette in rows 0-199 has bounds [86,46,367,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/watermelon-idle.png",
+      "references": [
+        "Assets/desktop-mascot/watermelon-wave.png",
+        "Assets/desktop-mascot/watermelon-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-fd846638-fd9b-4029-af80-feb2df7df51e.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/watermelon-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/kiwi-blink.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the kiwi idle mascot, into ONE blink animation in-between frame. Change ONLY both open eyes into gently curved happy closed-eye lines. Same mouth, body, arms and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/kiwi-idle.png",
+      "references": [
+        "Assets/desktop-mascot/kiwi-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-9532f312-5eef-4616-933d-f856127eacd7.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/kiwi-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/kiwi-tailleft.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the kiwi idle mascot, into ONE tailleft animation in-between frame. Change ONLY the existing tail, swinging it a little farther out/up toward the character's side in a natural mid-swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/kiwi-idle.png",
+      "references": [
+        "Assets/desktop-mascot/kiwi-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-c4eef000-b695-4093-8116-eb5e7a1a43a4.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/kiwi-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/kiwi-tailright.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the kiwi idle mascot, into ONE tailright animation in-between frame. Change ONLY the existing tail, tucking it a little closer/lower toward the legs at the opposite end of a gentle swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/kiwi-idle.png",
+      "references": [
+        "Assets/desktop-mascot/kiwi-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-63cc077a-f166-4328-b355-41acd20ca67e.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/kiwi-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/kiwi-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the kiwi idle mascot, into ONE wavehalf animation in-between frame. Reference 1 is the wave endpoint; reference 2 is the IDLE EDIT TARGET. Raise the SAME waving arm exactly halfway between idle and wave, elbow out and paw at shoulder height; keep a small smile. Everything else stays like idle, including the other arm and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/kiwi-idle.png",
+      "references": [
+        "Assets/desktop-mascot/kiwi-wave.png",
+        "Assets/desktop-mascot/kiwi-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-9ae9dd5e-02c2-49c9-8581-dc7d3ed7d2df.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/kiwi-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/papaya-blink.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the papaya idle mascot, into ONE blink animation in-between frame. Change ONLY both open eyes into gently curved happy closed-eye lines. Same mouth, body, arms and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/papaya-idle.png",
+      "references": [
+        "Assets/desktop-mascot/papaya-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-96abf18a-a20b-4237-a60b-aab7a3918172.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/papaya-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/papaya-tailleft.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the papaya idle mascot, into ONE tailleft animation in-between frame. Change ONLY the existing tail, swinging it a little farther out/up toward the character's side in a natural mid-swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/papaya-idle.png",
+      "references": [
+        "Assets/desktop-mascot/papaya-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-c5453f9b-5e9b-45ec-8be7-fa8a9a035f84.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/papaya-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/papaya-tailright.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the papaya idle mascot, into ONE tailright animation in-between frame. Change ONLY the existing tail, tucking it a little closer/lower toward the legs at the opposite end of a gentle swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/papaya-idle.png",
+      "references": [
+        "Assets/desktop-mascot/papaya-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-fc2bc37c-7ad7-47a8-8ed3-9701ce63c21f.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/papaya-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/papaya-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the papaya idle mascot, into ONE wavehalf animation in-between frame. Reference 1 is the wave endpoint; reference 2 is the IDLE EDIT TARGET. Raise the SAME waving arm exactly halfway between idle and wave, elbow out and paw at shoulder height; keep a small smile. Everything else stays like idle, including the other arm and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/papaya-idle.png",
+      "references": [
+        "Assets/desktop-mascot/papaya-wave.png",
+        "Assets/desktop-mascot/papaya-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-67117f70-0161-4a4d-ada7-ff5951ed9e06.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/papaya-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/apple-blink.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the apple idle mascot, into ONE blink animation in-between frame. Change ONLY both open eyes into gently curved happy closed-eye lines. Same mouth, body, arms and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/apple-idle.png",
+      "references": [
+        "Assets/desktop-mascot/apple-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-3f14ed4f-0748-4831-b531-15e0a246b9d0.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/apple-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/apple-tailleft.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the apple idle mascot, into ONE tailleft animation in-between frame. Change ONLY the existing tail, swinging it a little farther out/up toward the character's side in a natural mid-swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/apple-idle.png",
+      "references": [
+        "Assets/desktop-mascot/apple-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-a6d4be05-6989-4fd4-98a1-f481d8adb473.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/apple-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/apple-tailright.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the apple idle mascot, into ONE tailright animation in-between frame. Change ONLY the existing tail, tucking it a little closer/lower toward the legs at the opposite end of a gentle swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/apple-idle.png",
+      "references": [
+        "Assets/desktop-mascot/apple-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-cc9a4d27-5d09-467e-b51c-7b81b77fcd04.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/apple-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/apple-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the apple idle mascot, into ONE wavehalf animation in-between frame. Reference 1 is the wave endpoint; reference 2 is the IDLE EDIT TARGET. Raise the SAME waving arm exactly halfway between idle and wave, elbow out and paw at shoulder height; keep a small smile. Everything else stays like idle, including the other arm and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/apple-idle.png",
+      "references": [
+        "Assets/desktop-mascot/apple-wave.png",
+        "Assets/desktop-mascot/apple-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-a938e5d1-e086-4f08-8cb8-24cc6d8864e6.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/apple-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/apple-playhalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the apple idle mascot, into ONE playhalf animation in-between frame. Reference 1 is the play endpoint; reference 2 is the IDLE EDIT TARGET. Make a subtle intermediate pose: raise both paws only halfway from the downward idle arms toward the playful arms. Keep elbows BELOW shoulder level and paws at chest level, both forearms angled down/out, NOT fully raised sideways. Very slight knee bend, happy face. Keep the entire HEAD, ears and hood rigidly fixed in the original IDLE pixel locations, not tilted, shifted or resized. Preserve idle tail and torso placement. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/apple-idle.png",
+      "references": [
+        "Assets/desktop-mascot/apple-play.png",
+        "Assets/desktop-mascot/apple-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-042f3410-8651-471f-90e9-3da8fc3dc963.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/apple-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/mango-blink.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the mango idle mascot, into ONE blink animation in-between frame. Change ONLY both open eyes into gently curved happy closed-eye lines. Same mouth, body, arms and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/mango-idle.png",
+      "references": [
+        "Assets/desktop-mascot/mango-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-f24f0f81-4c5f-4d74-913c-a94f67a7c95d.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/mango-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/mango-tailleft.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the mango idle mascot, into ONE tailleft animation in-between frame. Change ONLY the existing tail, swinging it a little farther out/up toward the character's side in a natural mid-swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/mango-idle.png",
+      "references": [
+        "Assets/desktop-mascot/mango-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-47bfd17d-4971-4bbc-b4be-60727be8363d.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/mango-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/mango-tailright.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the mango idle mascot, into ONE tailright animation in-between frame. Change ONLY the existing tail, tucking it a little closer/lower toward the legs at the opposite end of a gentle swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/mango-idle.png",
+      "references": [
+        "Assets/desktop-mascot/mango-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-675dea87-0ff0-4414-8bf6-75dd383aa990.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/mango-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/mango-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the mango idle mascot, into ONE wavehalf animation in-between frame. Reference 1 is the wave endpoint; reference 2 is the IDLE EDIT TARGET. Raise the SAME waving arm exactly halfway between idle and wave, elbow out and paw at shoulder height; keep a small smile. Everything else stays like idle, including the other arm and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/mango-idle.png",
+      "references": [
+        "Assets/desktop-mascot/mango-wave.png",
+        "Assets/desktop-mascot/mango-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-993353ec-66b7-473f-96a8-3d97d12bfb3d.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/mango-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/mango-playhalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the mango idle mascot, into ONE playhalf animation in-between frame. Reference 1 is the play endpoint; reference 2 is the IDLE EDIT TARGET. Make a subtle intermediate pose: raise both paws only halfway from the downward idle arms toward the playful arms. Keep elbows BELOW shoulder level and paws at chest level, both forearms angled down/out, NOT fully raised sideways. Very slight knee bend, happy face. Keep the entire HEAD, ears and hood rigidly fixed in the original IDLE pixel locations, not tilted, shifted or resized. Preserve idle tail and torso placement. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/mango-idle.png",
+      "references": [
+        "Assets/desktop-mascot/mango-play.png",
+        "Assets/desktop-mascot/mango-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-284dd3d1-bb13-40f4-b7a3-dbf2625db717.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/mango-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/lemon-blink.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the lemon idle mascot, into ONE blink animation in-between frame. Change ONLY both open eyes into gently curved happy closed-eye lines. Same mouth, body, arms and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,365,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/lemon-idle.png",
+      "references": [
+        "Assets/desktop-mascot/lemon-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-12fd96a7-78fb-4289-957b-6d8c27ac5838.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/lemon-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/lemon-tailleft.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the lemon idle mascot, into ONE tailleft animation in-between frame. Change ONLY the existing tail, swinging it a little farther out/up toward the character's side in a natural mid-swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,365,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/lemon-idle.png",
+      "references": [
+        "Assets/desktop-mascot/lemon-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-8cdb4084-f757-477c-b0e3-f4d606c5bc1c.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/lemon-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/lemon-tailright.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the lemon idle mascot, into ONE tailright animation in-between frame. Change ONLY the existing tail, tucking it a little closer/lower toward the legs at the opposite end of a gentle swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,365,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/lemon-idle.png",
+      "references": [
+        "Assets/desktop-mascot/lemon-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-f979e6c2-bca1-42b4-b7ec-c7cb076242ec.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/lemon-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/lemon-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the lemon idle mascot, into ONE wavehalf animation in-between frame. Reference 1 is the wave endpoint; reference 2 is the IDLE EDIT TARGET. Raise the SAME waving arm exactly halfway between idle and wave, elbow out and paw at shoulder height; keep a small smile. Everything else stays like idle, including the other arm and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,365,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/lemon-idle.png",
+      "references": [
+        "Assets/desktop-mascot/lemon-wave.png",
+        "Assets/desktop-mascot/lemon-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-3ddbf75e-1796-412d-a86b-a74b293aced1.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/lemon-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/lemon-playhalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the lemon idle mascot, into ONE playhalf animation in-between frame. Reference 1 is the play endpoint; reference 2 is the IDLE EDIT TARGET. Make a subtle intermediate pose: raise both paws only halfway from the downward idle arms toward the playful arms. Keep elbows BELOW shoulder level and paws at chest level, both forearms angled down/out, NOT fully raised sideways. Very slight knee bend, happy face. Keep the entire HEAD, ears and hood rigidly fixed in the original IDLE pixel locations, not tilted, shifted or resized. Preserve idle tail and torso placement. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,365,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/lemon-idle.png",
+      "references": [
+        "Assets/desktop-mascot/lemon-play.png",
+        "Assets/desktop-mascot/lemon-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-ad0b5b06-313b-4923-af3b-9b42e9420625.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/lemon-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/tomato-blink.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the tomato idle mascot, into ONE blink animation in-between frame. Change ONLY both open eyes into gently curved happy closed-eye lines. Same mouth, body, arms and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,429,486]; head silhouette in rows 0-199 has bounds [86,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/tomato-idle.png",
+      "references": [
+        "Assets/desktop-mascot/tomato-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-dc97559f-3c97-4bb9-ac30-b2fc50efd0aa.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/tomato-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/tomato-tailleft.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the tomato idle mascot, into ONE tailleft animation in-between frame. Change ONLY the existing tail, swinging it a little farther out/up toward the character's side in a natural mid-swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,429,486]; head silhouette in rows 0-199 has bounds [86,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/tomato-idle.png",
+      "references": [
+        "Assets/desktop-mascot/tomato-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-8981dd3a-6961-4bf9-8382-759af6a52879.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/tomato-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/tomato-tailright.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the tomato idle mascot, into ONE tailright animation in-between frame. Change ONLY the existing tail, tucking it a little closer/lower toward the legs at the opposite end of a gentle swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,429,486]; head silhouette in rows 0-199 has bounds [86,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/tomato-idle.png",
+      "references": [
+        "Assets/desktop-mascot/tomato-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-711e0930-2b68-4149-8d08-74df5f695151.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/tomato-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/tomato-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the tomato idle mascot, into ONE wavehalf animation in-between frame. Reference 1 is the wave endpoint; reference 2 is the IDLE EDIT TARGET. Raise the SAME waving arm exactly halfway between idle and wave, elbow out and paw at shoulder height; keep a small smile. Everything else stays like idle, including the other arm and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,429,486]; head silhouette in rows 0-199 has bounds [86,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/tomato-idle.png",
+      "references": [
+        "Assets/desktop-mascot/tomato-wave.png",
+        "Assets/desktop-mascot/tomato-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-9988ee81-4098-450e-b653-ddcce43ae4c3.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/tomato-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/tomato-playhalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the tomato idle mascot, into ONE playhalf animation in-between frame. Reference 1 is the play endpoint; reference 2 is the IDLE EDIT TARGET. Make a subtle intermediate pose: raise both paws only halfway from the downward idle arms toward the playful arms. Keep elbows BELOW shoulder level and paws at chest level, both forearms angled down/out, NOT fully raised sideways. Very slight knee bend, happy face. Keep the entire HEAD, ears and hood rigidly fixed in the original IDLE pixel locations, not tilted, shifted or resized. Preserve idle tail and torso placement. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,429,486]; head silhouette in rows 0-199 has bounds [86,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/tomato-idle.png",
+      "references": [
+        "Assets/desktop-mascot/tomato-play.png",
+        "Assets/desktop-mascot/tomato-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-55ada2bb-0f6c-478b-8579-70e53e53a4ba.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/tomato-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/pumpkin-blink.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the pumpkin idle mascot, into ONE blink animation in-between frame. Change ONLY both open eyes into gently curved happy closed-eye lines. Same mouth, body, arms and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,428,486]; head silhouette in rows 0-199 has bounds [85,46,368,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/pumpkin-idle.png",
+      "references": [
+        "Assets/desktop-mascot/pumpkin-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-5c5fb69e-73d2-4f7c-8481-e1e162eee73e.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/pumpkin-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/pumpkin-tailleft.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the pumpkin idle mascot, into ONE tailleft animation in-between frame. Change ONLY the existing tail, swinging it a little farther out/up toward the character's side in a natural mid-swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,428,486]; head silhouette in rows 0-199 has bounds [85,46,368,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/pumpkin-idle.png",
+      "references": [
+        "Assets/desktop-mascot/pumpkin-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-6a6fd701-66a2-4baa-be17-8c39c5f5c061.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/pumpkin-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/pumpkin-tailright.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the pumpkin idle mascot, into ONE tailright animation in-between frame. Change ONLY the existing tail, tucking it a little closer/lower toward the legs at the opposite end of a gentle swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,428,486]; head silhouette in rows 0-199 has bounds [85,46,368,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/pumpkin-idle.png",
+      "references": [
+        "Assets/desktop-mascot/pumpkin-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-0f29da62-33aa-47fe-aa12-ef1c80f4d11f.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/pumpkin-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/pumpkin-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the pumpkin idle mascot, into ONE wavehalf animation in-between frame. Reference 1 is the wave endpoint; reference 2 is the IDLE EDIT TARGET. Raise the SAME waving arm exactly halfway between idle and wave, elbow out and paw at shoulder height; keep a small smile. Everything else stays like idle, including the other arm and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,428,486]; head silhouette in rows 0-199 has bounds [85,46,368,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/pumpkin-idle.png",
+      "references": [
+        "Assets/desktop-mascot/pumpkin-wave.png",
+        "Assets/desktop-mascot/pumpkin-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-150ed7cb-fa87-43a2-a7b4-0d1532809cde.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/pumpkin-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/pumpkin-playhalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the pumpkin idle mascot, into ONE playhalf animation in-between frame. Reference 1 is the play endpoint; reference 2 is the IDLE EDIT TARGET. Make a subtle intermediate pose: raise both paws only halfway from the downward idle arms toward the playful arms. Keep elbows BELOW shoulder level and paws at chest level, both forearms angled down/out, NOT fully raised sideways. Very slight knee bend, happy face. Keep the entire HEAD, ears and hood rigidly fixed in the original IDLE pixel locations, not tilted, shifted or resized. Preserve idle tail and torso placement. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,428,486]; head silhouette in rows 0-199 has bounds [85,46,368,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/pumpkin-idle.png",
+      "references": [
+        "Assets/desktop-mascot/pumpkin-play.png",
+        "Assets/desktop-mascot/pumpkin-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-bbfc0a10-a667-41a4-8a83-269f2386b713.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/pumpkin-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/potato-blink.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the potato idle mascot, into ONE blink animation in-between frame. Change ONLY both open eyes into gently curved happy closed-eye lines. Same mouth, body, arms and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,367,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/potato-idle.png",
+      "references": [
+        "Assets/desktop-mascot/potato-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-b5bce7b6-047c-47ac-a9aa-51c0311491f6.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/potato-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/potato-tailleft.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the potato idle mascot, into ONE tailleft animation in-between frame. Change ONLY the existing tail, swinging it a little farther out/up toward the character's side in a natural mid-swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,367,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/potato-idle.png",
+      "references": [
+        "Assets/desktop-mascot/potato-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-28774ef1-25af-4dd3-9d7f-845ed02d4a4d.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/potato-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/potato-tailright.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the potato idle mascot, into ONE tailright animation in-between frame. Change ONLY the existing tail, tucking it a little closer/lower toward the legs at the opposite end of a gentle swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,367,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/potato-idle.png",
+      "references": [
+        "Assets/desktop-mascot/potato-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-426695da-b9f2-4a80-8e7d-ccc826303121.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/potato-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/potato-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the potato idle mascot, into ONE wavehalf animation in-between frame. Reference 1 is the wave endpoint; reference 2 is the IDLE EDIT TARGET. Raise the SAME waving arm exactly halfway between idle and wave, elbow out and paw at shoulder height; keep a small smile. Everything else stays like idle, including the other arm and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,367,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/potato-idle.png",
+      "references": [
+        "Assets/desktop-mascot/potato-wave.png",
+        "Assets/desktop-mascot/potato-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-2fa9c732-55a2-49b5-a4cb-460aa3359065.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/potato-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/potato-playhalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the potato idle mascot, into ONE playhalf animation in-between frame. Reference 1 is the play endpoint; reference 2 is the IDLE EDIT TARGET. Make a subtle intermediate pose: raise both paws only halfway from the downward idle arms toward the playful arms. Keep elbows BELOW shoulder level and paws at chest level, both forearms angled down/out, NOT fully raised sideways. Very slight knee bend, happy face. Keep the entire HEAD, ears and hood rigidly fixed in the original IDLE pixel locations, not tilted, shifted or resized. Preserve idle tail and torso placement. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,367,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/potato-idle.png",
+      "references": [
+        "Assets/desktop-mascot/potato-play.png",
+        "Assets/desktop-mascot/potato-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-a8b1f32d-1868-4842-8c76-13bafcfcb30a.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/potato-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/onion-blink.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the onion idle mascot, into ONE blink animation in-between frame. Change ONLY both open eyes into gently curved happy closed-eye lines. Same mouth, body, arms and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [84,46,368,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/onion-idle.png",
+      "references": [
+        "Assets/desktop-mascot/onion-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-ea3272e6-dd46-4891-ab63-4bbc300861fc.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/onion-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/onion-tailleft.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the onion idle mascot, into ONE tailleft animation in-between frame. Change ONLY the existing tail, swinging it a little farther out/up toward the character's side in a natural mid-swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [84,46,368,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/onion-idle.png",
+      "references": [
+        "Assets/desktop-mascot/onion-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-8a95834c-1539-402f-a7c5-ba43f96c81b1.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/onion-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/onion-tailright.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the onion idle mascot, into ONE tailright animation in-between frame. Change ONLY the existing tail, tucking it a little closer/lower toward the legs at the opposite end of a gentle swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [84,46,368,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/onion-idle.png",
+      "references": [
+        "Assets/desktop-mascot/onion-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-80250d99-c8b0-4ba1-ad84-168164506547.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/onion-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/onion-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the onion idle mascot, into ONE wavehalf animation in-between frame. Reference 1 is the wave endpoint; reference 2 is the IDLE EDIT TARGET. Raise the SAME waving arm exactly halfway between idle and wave, elbow out and paw at shoulder height; keep a small smile. Everything else stays like idle, including the other arm and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [84,46,368,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/onion-idle.png",
+      "references": [
+        "Assets/desktop-mascot/onion-wave.png",
+        "Assets/desktop-mascot/onion-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-afec7283-a2d5-4108-9d09-e234cd4d8aac.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/onion-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/onion-playhalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the onion idle mascot, into ONE playhalf animation in-between frame. Reference 1 is the play endpoint; reference 2 is the IDLE EDIT TARGET. Make a subtle intermediate pose: raise both paws only halfway from the downward idle arms toward the playful arms. Keep elbows BELOW shoulder level and paws at chest level, both forearms angled down/out, NOT fully raised sideways. Very slight knee bend, happy face. Keep the entire HEAD, ears and hood rigidly fixed in the original IDLE pixel locations, not tilted, shifted or resized. Preserve idle tail and torso placement. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [84,46,368,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/onion-idle.png",
+      "references": [
+        "Assets/desktop-mascot/onion-play.png",
+        "Assets/desktop-mascot/onion-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-f1e2131d-6f98-4d8c-ad81-90b49dd0cca3.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/onion-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/cat-blink.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the cat idle mascot, into ONE blink animation in-between frame. Change ONLY both open eyes into gently curved happy closed-eye lines. Same mouth, body, arms and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [101,46,410,486]; head silhouette in rows 0-199 has bounds [101,46,365,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/cat-idle.png",
+      "references": [
+        "Assets/desktop-mascot/cat-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-759092c1-12db-4109-a392-a922eee2113d.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/cat-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/cat-tailleft.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the cat idle mascot, into ONE tailleft animation in-between frame. Change ONLY the existing tail, swinging it a little farther out/up toward the character's side in a natural mid-swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [101,46,410,486]; head silhouette in rows 0-199 has bounds [101,46,365,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/cat-idle.png",
+      "references": [
+        "Assets/desktop-mascot/cat-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-61917c2b-7c14-4aad-a332-a317d2d77405.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/cat-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/cat-tailright.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the cat idle mascot, into ONE tailright animation in-between frame. Change ONLY the existing tail, tucking it a little closer/lower toward the legs at the opposite end of a gentle swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [101,46,410,486]; head silhouette in rows 0-199 has bounds [101,46,365,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/cat-idle.png",
+      "references": [
+        "Assets/desktop-mascot/cat-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-7a2ee402-88e1-43a4-abfd-a5ee6bae034a.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/cat-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/cat-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the cat idle mascot, into ONE wavehalf animation in-between frame. Reference 1 is the wave endpoint; reference 2 is the IDLE EDIT TARGET. Raise the SAME waving arm exactly halfway between idle and wave, elbow out and paw at shoulder height; keep a small smile. Everything else stays like idle, including the other arm and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [101,46,410,486]; head silhouette in rows 0-199 has bounds [101,46,365,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/cat-idle.png",
+      "references": [
+        "Assets/desktop-mascot/cat-wave.png",
+        "Assets/desktop-mascot/cat-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-5b35583e-f776-47c7-aa51-eaca3c0e05ba.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/cat-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/cat-playhalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the cat idle mascot, into ONE playhalf animation in-between frame. Reference 1 is the play endpoint; reference 2 is the IDLE EDIT TARGET. Make a subtle intermediate pose: raise both paws only halfway from the downward idle arms toward the playful arms. Keep elbows BELOW shoulder level and paws at chest level, both forearms angled down/out, NOT fully raised sideways. Very slight knee bend, happy face. Keep the entire HEAD, ears and hood rigidly fixed in the original IDLE pixel locations, not tilted, shifted or resized. Preserve idle tail and torso placement. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [101,46,410,486]; head silhouette in rows 0-199 has bounds [101,46,365,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/cat-idle.png",
+      "references": [
+        "Assets/desktop-mascot/cat-play.png",
+        "Assets/desktop-mascot/cat-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-11b9fc0a-b24f-44e9-8372-0ecbe0024142.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/cat-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/lion-blink.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the lion idle mascot, into ONE blink animation in-between frame. Change ONLY both open eyes into gently curved happy closed-eye lines. Same mouth, body, arms and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [81,46,431,486]; head silhouette in rows 0-199 has bounds [81,46,395,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/lion-idle.png",
+      "references": [
+        "Assets/desktop-mascot/lion-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-7fde98d8-1e89-41da-9d4c-5e4ec369be72.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/lion-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/lion-tailleft.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the lion idle mascot, into ONE tailleft animation in-between frame. Change ONLY the existing tail, swinging it a little farther out/up toward the character's side in a natural mid-swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [81,46,431,486]; head silhouette in rows 0-199 has bounds [81,46,395,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/lion-idle.png",
+      "references": [
+        "Assets/desktop-mascot/lion-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-817aa57e-ccc0-4262-ab27-8a7c9111f362.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/lion-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/lion-tailright.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the lion idle mascot, into ONE tailright animation in-between frame. Change ONLY the existing tail, tucking it a little closer/lower toward the legs at the opposite end of a gentle swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [81,46,431,486]; head silhouette in rows 0-199 has bounds [81,46,395,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/lion-idle.png",
+      "references": [
+        "Assets/desktop-mascot/lion-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-5490b7ba-1175-4435-9ec8-1b3c85b6429c.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/lion-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/lion-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the lion idle mascot, into ONE wavehalf animation in-between frame. Reference 1 is the wave endpoint; reference 2 is the IDLE EDIT TARGET. Raise the SAME waving arm exactly halfway between idle and wave, elbow out and paw at shoulder height; keep a small smile. Everything else stays like idle, including the other arm and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [81,46,431,486]; head silhouette in rows 0-199 has bounds [81,46,395,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/lion-idle.png",
+      "references": [
+        "Assets/desktop-mascot/lion-wave.png",
+        "Assets/desktop-mascot/lion-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-437faf9a-02ba-48cf-b3ef-7a42e0052af0.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/lion-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/lion-playhalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the lion idle mascot, into ONE playhalf animation in-between frame. Reference 1 is the play endpoint; reference 2 is the IDLE EDIT TARGET. Make a subtle intermediate pose: raise both paws only halfway from the downward idle arms toward the playful arms. Keep elbows BELOW shoulder level and paws at chest level, both forearms angled down/out, NOT fully raised sideways. Very slight knee bend, happy face. Keep the entire HEAD, ears and hood rigidly fixed in the original IDLE pixel locations, not tilted, shifted or resized. Preserve idle tail and torso placement. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [81,46,431,486]; head silhouette in rows 0-199 has bounds [81,46,395,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/lion-idle.png",
+      "references": [
+        "Assets/desktop-mascot/lion-play.png",
+        "Assets/desktop-mascot/lion-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-e23c7998-af03-41fb-a69c-12ab99545b2c.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/lion-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/giraffe-blink.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the giraffe idle mascot, into ONE blink animation in-between frame. Change ONLY both open eyes into gently curved happy closed-eye lines. Same mouth, body, arms and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [96,46,416,486]; head silhouette in rows 0-199 has bounds [96,46,398,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/giraffe-idle.png",
+      "references": [
+        "Assets/desktop-mascot/giraffe-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-a8aa625a-42f1-4011-9436-f74819ddac51.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/giraffe-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/giraffe-tailleft.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the giraffe idle mascot, into ONE tailleft animation in-between frame. Change ONLY the existing tail, swinging it a little farther out/up toward the character's side in a natural mid-swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [96,46,416,486]; head silhouette in rows 0-199 has bounds [96,46,398,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/giraffe-idle.png",
+      "references": [
+        "Assets/desktop-mascot/giraffe-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-7ac2066b-81fe-4cf1-a429-4b3764de0e7f.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/giraffe-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/giraffe-tailright.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the giraffe idle mascot, into ONE tailright animation in-between frame. Change ONLY the existing tail, tucking it a little closer/lower toward the legs at the opposite end of a gentle swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [96,46,416,486]; head silhouette in rows 0-199 has bounds [96,46,398,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/giraffe-idle.png",
+      "references": [
+        "Assets/desktop-mascot/giraffe-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-76fb5da8-a6ee-434e-913d-52f96449c4df.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/giraffe-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/giraffe-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the giraffe idle mascot, into ONE wavehalf animation in-between frame. Reference 1 is the wave endpoint; reference 2 is the IDLE EDIT TARGET. Raise the SAME waving arm exactly halfway between idle and wave, elbow out and paw at shoulder height; keep a small smile. Everything else stays like idle, including the other arm and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [96,46,416,486]; head silhouette in rows 0-199 has bounds [96,46,398,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/giraffe-idle.png",
+      "references": [
+        "Assets/desktop-mascot/giraffe-wave.png",
+        "Assets/desktop-mascot/giraffe-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-ec98d56c-c2fa-407e-862d-30d24c2de53c.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/giraffe-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/giraffe-playhalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the giraffe idle mascot, into ONE playhalf animation in-between frame. Reference 1 is the play endpoint; reference 2 is the IDLE EDIT TARGET. Make a subtle intermediate pose: raise both paws only halfway from the downward idle arms toward the playful arms. Keep elbows BELOW shoulder level and paws at chest level, both forearms angled down/out, NOT fully raised sideways. Very slight knee bend, happy face. Keep the entire HEAD, ears and hood rigidly fixed in the original IDLE pixel locations, not tilted, shifted or resized. Preserve idle tail and torso placement. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [96,46,416,486]; head silhouette in rows 0-199 has bounds [96,46,398,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/giraffe-idle.png",
+      "references": [
+        "Assets/desktop-mascot/giraffe-play.png",
+        "Assets/desktop-mascot/giraffe-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-accfe094-5b49-4e8c-9307-006b775d0830.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/giraffe-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/elephant-blink.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the elephant idle mascot, into ONE blink animation in-between frame. Change ONLY both open eyes into gently curved happy closed-eye lines. Same mouth, body, arms and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [45,46,466,486]; head silhouette in rows 0-199 has bounds [45,46,465,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/elephant-idle.png",
+      "references": [
+        "Assets/desktop-mascot/elephant-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-0b043525-948b-49e5-b151-910326467384.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/elephant-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/elephant-tailleft.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the elephant idle mascot, into ONE tailleft animation in-between frame. Change ONLY the existing tail, swinging it a little farther out/up toward the character's side in a natural mid-swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [45,46,466,486]; head silhouette in rows 0-199 has bounds [45,46,465,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/elephant-idle.png",
+      "references": [
+        "Assets/desktop-mascot/elephant-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-771664be-30d4-43c7-9f15-5ee384801d12.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/elephant-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/elephant-tailright.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 1, the elephant idle mascot, into ONE tailright animation in-between frame. Change ONLY the existing tail, tucking it a little closer/lower toward the legs at the opposite end of a gentle swish. Keep body, arms, feet, head, eyes and mouth unchanged. Preserve this animal's own tail anatomy. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of reference 1. Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. Exact 512x512 IDLE coordinates: full silhouette bounds [45,46,466,486]; head silhouette in rows 0-199 has bounds [45,46,465,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/elephant-idle.png",
+      "references": [
+        "Assets/desktop-mascot/elephant-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-50f44167-6e2f-46eb-9c18-8f20a82e8a9e.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/elephant-idle.png",
+      "referenceRoles": [
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/elephant-wavehalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the elephant idle mascot, into ONE wavehalf animation in-between frame. Reference 1 is the wave endpoint; reference 2 is the IDLE EDIT TARGET. Raise the SAME waving arm exactly halfway between idle and wave, elbow out and paw at shoulder height; keep a small smile. Everything else stays like idle, including the other arm and tail. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [45,46,466,486]; head silhouette in rows 0-199 has bounds [45,46,465,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/elephant-idle.png",
+      "references": [
+        "Assets/desktop-mascot/elephant-wave.png",
+        "Assets/desktop-mascot/elephant-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-0852a2e5-d8bd-4d2d-8b85-d16e7c92f93d.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/elephant-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/elephant-playhalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the elephant idle mascot, into ONE playhalf animation in-between frame. Reference 1 is the play endpoint; reference 2 is the IDLE EDIT TARGET. Make a subtle intermediate pose: raise both paws only halfway from the downward idle arms toward the playful arms. Keep elbows BELOW shoulder level and paws at chest level, both forearms angled down/out, NOT fully raised sideways. Very slight knee bend, happy face. Keep the entire HEAD, ears and hood rigidly fixed in the original IDLE pixel locations, not tilted, shifted or resized. Preserve idle tail and torso placement. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [45,46,466,486]; head silhouette in rows 0-199 has bounds [45,46,465,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/elephant-idle.png",
+      "references": [
+        "Assets/desktop-mascot/elephant-play.png",
+        "Assets/desktop-mascot/elephant-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-2b5aebb6-278b-4de1-985d-d6288e20d699.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/elephant-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/avocado-playhalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the avocado idle mascot, into ONE playhalf animation in-between frame. Reference 1 is the play endpoint; reference 2 is the IDLE EDIT TARGET. Make a subtle intermediate pose: raise both paws only halfway from the downward idle arms toward the playful arms. Keep elbows BELOW shoulder level and paws at chest level, both forearms angled down/out, NOT fully raised sideways. Very slight knee bend, happy face. Keep the entire HEAD, ears and hood rigidly fixed in the original IDLE pixel locations, not tilted, shifted or resized. Preserve idle tail and torso placement. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,365,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png",
+      "references": [
+        "Assets/desktop-mascot/avocado-play.png",
+        "Assets/desktop-mascot/avocado-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-7a07a04c-a129-49a3-b568-2852170b20e7.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/avocado-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/strawberry-playhalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the strawberry idle mascot, into ONE playhalf animation in-between frame. Reference 1 is the play endpoint; reference 2 is the IDLE EDIT TARGET. Make a subtle intermediate pose: raise both paws only halfway from the downward idle arms toward the playful arms. Keep elbows BELOW shoulder level and paws at chest level, both forearms angled down/out, NOT fully raised sideways. Very slight knee bend, happy face. Keep the entire HEAD, ears and hood rigidly fixed in the original IDLE pixel locations, not tilted, shifted or resized. Preserve idle tail and torso placement. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/strawberry-idle.png",
+      "references": [
+        "Assets/desktop-mascot/strawberry-play.png",
+        "Assets/desktop-mascot/strawberry-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-e6241fa6-8c99-4852-a8e4-2e729e5135c3.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/strawberry-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/orange-playhalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the orange idle mascot, into ONE playhalf animation in-between frame. Reference 1 is the play endpoint; reference 2 is the IDLE EDIT TARGET. Make a subtle intermediate pose: raise both paws only halfway from the downward idle arms toward the playful arms. Keep elbows BELOW shoulder level and paws at chest level, both forearms angled down/out, NOT fully raised sideways. Very slight knee bend, happy face. Keep the entire HEAD, ears and hood rigidly fixed in the original IDLE pixel locations, not tilted, shifted or resized. Preserve idle tail and torso placement. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,430,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/orange-idle.png",
+      "references": [
+        "Assets/desktop-mascot/orange-play.png",
+        "Assets/desktop-mascot/orange-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-70ed05f7-6b5e-4d7c-ba79-a823953285f5.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/orange-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/blueberry-playhalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the blueberry idle mascot, into ONE playhalf animation in-between frame. Reference 1 is the play endpoint; reference 2 is the IDLE EDIT TARGET. Make a subtle intermediate pose: raise both paws only halfway from the downward idle arms toward the playful arms. Keep elbows BELOW shoulder level and paws at chest level, both forearms angled down/out, NOT fully raised sideways. Very slight knee bend, happy face. Keep the entire HEAD, ears and hood rigidly fixed in the original IDLE pixel locations, not tilted, shifted or resized. Preserve idle tail and torso placement. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,365,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/blueberry-idle.png",
+      "references": [
+        "Assets/desktop-mascot/blueberry-play.png",
+        "Assets/desktop-mascot/blueberry-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-193addc4-db63-4866-bea4-7a87b7a6819c.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/blueberry-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/watermelon-playhalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the watermelon idle mascot, into ONE playhalf animation in-between frame. Reference 1 is the play endpoint; reference 2 is the IDLE EDIT TARGET. Make a subtle intermediate pose: raise both paws only halfway from the downward idle arms toward the playful arms. Keep elbows BELOW shoulder level and paws at chest level, both forearms angled down/out, NOT fully raised sideways. Very slight knee bend, happy face. Keep the entire HEAD, ears and hood rigidly fixed in the original IDLE pixel locations, not tilted, shifted or resized. Preserve idle tail and torso placement. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [83,46,428,486]; head silhouette in rows 0-199 has bounds [86,46,367,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/watermelon-idle.png",
+      "references": [
+        "Assets/desktop-mascot/watermelon-play.png",
+        "Assets/desktop-mascot/watermelon-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-2d61876f-8d6e-4ee5-8d60-90d8530d722c.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/watermelon-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/kiwi-playhalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the kiwi idle mascot, into ONE playhalf animation in-between frame. Reference 1 is the play endpoint; reference 2 is the IDLE EDIT TARGET. Make a subtle intermediate pose: raise both paws only halfway from the downward idle arms toward the playful arms. Keep elbows BELOW shoulder level and paws at chest level, both forearms angled down/out, NOT fully raised sideways. Very slight knee bend, happy face. Keep the entire HEAD, ears and hood rigidly fixed in the original IDLE pixel locations, not tilted, shifted or resized. Preserve idle tail and torso placement. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/kiwi-idle.png",
+      "references": [
+        "Assets/desktop-mascot/kiwi-play.png",
+        "Assets/desktop-mascot/kiwi-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-f68180d0-83d9-401c-af89-9b9b30c3691f.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/kiwi-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
+    },
+    {
+      "file": "Assets/desktop-mascot/papaya-playhalf.png",
+      "prompt": "Use case: precise-object-edit. EDIT reference 2, the papaya idle mascot, into ONE playhalf animation in-between frame. Reference 1 is the play endpoint; reference 2 is the IDLE EDIT TARGET. Make a subtle intermediate pose: raise both paws only halfway from the downward idle arms toward the playful arms. Keep elbows BELOW shoulder level and paws at chest level, both forearms angled down/out, NOT fully raised sideways. Very slight knee bend, happy face. Keep the entire HEAD, ears and hood rigidly fixed in the original IDLE pixel locations, not tilted, shifted or resized. Preserve idle tail and torso placement. Preserve EXACT identity, hoodie and pocket patch, colors, outlines, scale, head shape/size/position, character center, feet locations and transparent margins of IDLE image (reference 2). Output exactly 512x512 PNG with true transparent alpha, no scenery, shadow, ground, text, motion lines, extra objects or redesign. These frames cross-fade with idle; preserve its pixel alignment. Change only the specified moving part, retain all other reference pixels and geometry. The LAST image is the edit target: preserve its head and torso geometry and placement exactly. First image supplies arm movement only. Exact 512x512 IDLE coordinates: full silhouette bounds [82,46,429,486]; head silhouette in rows 0-199 has bounds [85,46,366,200]. Keep head precisely at these IDLE coordinates, even when arms or knees bend. Copy idle head geometry unchanged. Never recenter based on raised arms.",
+      "reference": "Assets/desktop-mascot/papaya-idle.png",
+      "references": [
+        "Assets/desktop-mascot/papaya-play.png",
+        "Assets/desktop-mascot/papaya-idle.png"
+      ],
+      "generatedSource": "C:\\Users\\ali\\.codex\\generated_images\\01a1af41-3402-75e2-a39d-d993e5be40ab\\exec-8b44aa71-6eda-4a50-9d7a-56b2390b0b47.png",
+      "generatedSize": [
+        1254,
+        1254
+      ],
+      "postprocessing": "Lanczos resize to 512x512; alpha <= 8 removed; no translation or character geometry changes.",
+      "editTarget": "Assets/desktop-mascot/papaya-idle.png",
+      "referenceRoles": [
+        "pose endpoint, arm movement reference only",
+        "idle edit target"
+      ]
     }
   ]
 }

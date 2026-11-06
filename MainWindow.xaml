@@ -247,6 +247,36 @@
                 <Border BorderBrush="{DynamicResource OuterBrush}" BorderThickness="3" CornerRadius="80" IsHitTestVisible="False" />
             </Grid>
         </Grid>
+        <Grid x:Name="RedPandaShape" Visibility="Collapsed">
+            <Grid Width="360" Height="470" Margin="30,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Grid.Clip><RectangleGeometry Rect="0,0,360,470" RadiusX="80" RadiusY="80" /></Grid.Clip>
+                <Border Background="{DynamicResource FleshBrush}" CornerRadius="80" />
+                <Image x:Name="RedPandaMascotGround" Visibility="Collapsed" Stretch="Uniform" Width="360" Height="340" VerticalAlignment="Bottom" IsHitTestVisible="False" />
+                <Image x:Name="RedPandaMascotImage" Source="Assets/theme-scenes/redpanda-scene.png" Stretch="Uniform" Width="360" Height="340"
+                       VerticalAlignment="Bottom" IsHitTestVisible="False" />
+                <Border BorderBrush="{DynamicResource OuterBrush}" BorderThickness="3" CornerRadius="80" IsHitTestVisible="False" />
+            </Grid>
+        </Grid>
+        <Grid x:Name="FoxShape" Visibility="Collapsed">
+            <Grid Width="360" Height="470" Margin="30,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Grid.Clip><RectangleGeometry Rect="0,0,360,470" RadiusX="80" RadiusY="80" /></Grid.Clip>
+                <Border Background="{DynamicResource FleshBrush}" CornerRadius="80" />
+                <Image x:Name="FoxMascotGround" Visibility="Collapsed" Stretch="Uniform" Width="360" Height="340" VerticalAlignment="Bottom" IsHitTestVisible="False" />
+                <Image x:Name="FoxMascotImage" Source="Assets/theme-scenes/fox-scene.png" Stretch="Uniform" Width="360" Height="340"
+                       VerticalAlignment="Bottom" IsHitTestVisible="False" />
+                <Border BorderBrush="{DynamicResource OuterBrush}" BorderThickness="3" CornerRadius="80" IsHitTestVisible="False" />
+            </Grid>
+        </Grid>
+        <Grid x:Name="KoalaShape" Visibility="Collapsed">
+            <Grid Width="360" Height="470" Margin="30,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Grid.Clip><RectangleGeometry Rect="0,0,360,470" RadiusX="80" RadiusY="80" /></Grid.Clip>
+                <Border Background="{DynamicResource FleshBrush}" CornerRadius="80" />
+                <Image x:Name="KoalaMascotGround" Visibility="Collapsed" Stretch="Uniform" Width="360" Height="340" VerticalAlignment="Bottom" IsHitTestVisible="False" />
+                <Image x:Name="KoalaMascotImage" Source="Assets/theme-scenes/koala-scene.png" Stretch="Uniform" Width="360" Height="340"
+                       VerticalAlignment="Bottom" IsHitTestVisible="False" />
+                <Border BorderBrush="{DynamicResource OuterBrush}" BorderThickness="3" CornerRadius="80" IsHitTestVisible="False" />
+            </Grid>
+        </Grid>
         <!-- Optional accessories are independent from the selected fruit theme. -->
         <Grid x:Name="HalloweenPumpkinSkin" Visibility="Collapsed" IsHitTestVisible="False">
             <Polygon Fill="{DynamicResource SeasonalDarkBrush}" Points="98,68 146,36 178,36 178,4 242,4 242,36 274,36 322,68" />

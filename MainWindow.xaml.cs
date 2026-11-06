@@ -384,6 +384,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         LionShape.Visibility = _currentTheme.Kind == FruitThemeKind.Lion ? Visibility.Visible : Visibility.Collapsed;
         GiraffeShape.Visibility = _currentTheme.Kind == FruitThemeKind.Giraffe ? Visibility.Visible : Visibility.Collapsed;
         ElephantShape.Visibility = _currentTheme.Kind == FruitThemeKind.Elephant ? Visibility.Visible : Visibility.Collapsed;
+        RedPandaShape.Visibility = _currentTheme.Kind == FruitThemeKind.RedPanda ? Visibility.Visible : Visibility.Collapsed;
+        FoxShape.Visibility = _currentTheme.Kind == FruitThemeKind.Fox ? Visibility.Visible : Visibility.Collapsed;
+        KoalaShape.Visibility = _currentTheme.Kind == FruitThemeKind.Koala ? Visibility.Visible : Visibility.Collapsed;
         UpdateDockWallpaper();
         UpdateDockHeaderLayout();
         UpdateDockTaskArea();
@@ -409,6 +412,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             ? Visibility.Visible : Visibility.Collapsed;
         SummerShadesSkin.Visibility = _currentSeasonalSkin.Kind == SeasonalSkinKind.SummerShades
             ? Visibility.Visible : Visibility.Collapsed;
+        _desktopMascot?.ApplySettings();
         if (persist) SaveState();
     }
 
@@ -1319,6 +1323,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         RefreshTaskView();
         SaveState();
         RefreshAdaptivePersonality();
+        NotifyDesktopMascotTaskCompleted();
     }
 
     public void ShowArchive()

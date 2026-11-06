@@ -31,6 +31,7 @@ public sealed class AppState
     public bool DesktopMascotEnabled { get; set; }
     public double? DesktopMascotLeft { get; set; }
     public double? DesktopMascotTop { get; set; }
+    public DesktopMascotSettings DesktopMascot { get; set; } = new();
     public FruitThemeKind Theme { get; set; } = FruitThemeKind.Avocado;
     public SeasonalSkinKind SeasonalSkin { get; set; } = SeasonalSkinKind.None;
     public GlobalShortcutGesture QuickAddShortcut { get; set; } = GlobalShortcutSettings.QuickAddDefault;

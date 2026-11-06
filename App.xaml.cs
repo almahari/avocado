@@ -21,6 +21,8 @@ public partial class App : System.Windows.Application
     private Forms.ToolStripMenuItem? _adaptivePersonalityItem;
     private Forms.ToolStripMenuItem? _mascotAnimationsItem;
     private Forms.ToolStripMenuItem? _desktopMascotItem;
+    private readonly Dictionary<DesktopMascotFeature, Forms.ToolStripMenuItem> _mascotFeatureItems = [];
+    private readonly Dictionary<DesktopMascotSize, Forms.ToolStripMenuItem> _mascotSizeItems = [];
     private Forms.ToolStripMenuItem? _quickAddShortcutItem;
     private Forms.ToolStripMenuItem? _clipboardTaskShortcutItem;
     private Forms.ToolStripMenuItem? _sleepNowShortcutItem;
@@ -270,6 +272,7 @@ public partial class App : System.Windows.Application
         menu.Items.Add(_adaptivePersonalityItem);
         menu.Items.Add(_mascotAnimationsItem);
         menu.Items.Add(_desktopMascotItem);
+        menu.Items.Add(CreateMascotFeaturesMenu());
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(reminderSoundItem);
         menu.Items.Add(doNotDisturbItem);
@@ -286,6 +289,53 @@ public partial class App : System.Windows.Application
             Visible = true
         };
         _trayIcon.DoubleClick += (_, _) => ToggleWindow();
+    }
+
+    private Forms.ToolStripMenuItem CreateMascotFeaturesMenu()
+    {
+        var featuresItem = new Forms.ToolStripMenuItem("Mascot features");
+        var sizeItem = new Forms.ToolStripMenuItem("Mascot size");
+        foreach (var size in Enum.GetValues<DesktopMascotSize>())
+        {
+            var item = new Forms.ToolStripMenuItem(size.ToString(), null, (_, _) =>
+            {
+                _window!.SetDesktopMascotSize(size);
+                RefreshMascotFeatureChecks();
+            });
+            _mascotSizeItems[size] = item;
+            sizeItem.DropDownItems.Add(item);
+        }
+        featuresItem.DropDownItems.Add(sizeItem);
+        featuresItem.DropDownItems.Add(new Forms.ToolStripSeparator());
+        foreach (var info in DesktopMascotFeatures.All)
+        {
+            var item = new Forms.ToolStripMenuItem(info.DisplayName, null, (_, _) =>
+            {
+                _window!.SetDesktopMascotFeature(info.Feature, !_window.IsDesktopMascotFeatureEnabled(info.Feature));
+                RefreshMascotFeatureChecks();
+            });
+            _mascotFeatureItems[info.Feature] = item;
+            featuresItem.DropDownItems.Add(item);
+        }
+        featuresItem.DropDownItems.Add(new Forms.ToolStripSeparator());
+        featuresItem.DropDownItems.Add(new Forms.ToolStripMenuItem("Enable all", null, (_, _) => SetAllMascotFeatures(true)));
+        featuresItem.DropDownItems.Add(new Forms.ToolStripMenuItem("Disable all", null, (_, _) => SetAllMascotFeatures(false)));
+        featuresItem.DropDownOpening += (_, _) => RefreshMascotFeatureChecks();
+        RefreshMascotFeatureChecks();
+        return featuresItem;
+    }
+
+    private void SetAllMascotFeatures(bool enabled)
+    {
+        foreach (var info in DesktopMascotFeatures.All) _window!.SetDesktopMascotFeature(info.Feature, enabled);
+        RefreshMascotFeatureChecks();
+    }
+
+    private void RefreshMascotFeatureChecks()
+    {
+        if (_window is null) return;
+        foreach (var (feature, item) in _mascotFeatureItems) item.Checked = _window.IsDesktopMascotFeatureEnabled(feature);
+        foreach (var (size, item) in _mascotSizeItems) item.Checked = _window.DesktopMascotSettings.Size == size;
     }
 
     private void PopulateDockScreens(Forms.ToolStripMenuItem menu)
@@ -416,6 +466,55 @@ public partial class App : System.Windows.Application
                     graphics.FillEllipse(fur, 15, 25, 12, 7);
                     graphics.FillEllipse(skin, 10, 13, 3, 4);
                     graphics.FillEllipse(skin, 20, 13, 3, 4);
+                }
+                break;
+            case FruitThemeKind.RedPanda:
+                using (var fur = new SolidBrush(Color.FromArgb(214, 96, 44)))
+                using (var cream = new SolidBrush(Color.FromArgb(250, 236, 214)))
+                using (var dark = new SolidBrush(Color.FromArgb(90, 42, 24)))
+                {
+                    graphics.FillEllipse(fur, 3, 2, 9, 9);
+                    graphics.FillEllipse(fur, 20, 2, 9, 9);
+                    graphics.FillEllipse(cream, 5, 4, 5, 5);
+                    graphics.FillEllipse(cream, 22, 4, 5, 5);
+                    graphics.FillEllipse(fur, 3, 6, 26, 22);
+                    graphics.FillEllipse(cream, 6, 14, 8, 8);
+                    graphics.FillEllipse(cream, 18, 14, 8, 8);
+                    graphics.FillEllipse(cream, 11, 19, 10, 8);
+                    graphics.FillEllipse(dark, 9, 14, 3, 4);
+                    graphics.FillEllipse(dark, 20, 14, 3, 4);
+                    graphics.FillEllipse(dark, 14, 20, 4, 3);
+                }
+                break;
+            case FruitThemeKind.Fox:
+                using (var fur = new SolidBrush(Color.FromArgb(229, 128, 50)))
+                using (var white = new SolidBrush(Color.FromArgb(255, 248, 238)))
+                using (var dark = new SolidBrush(Color.FromArgb(46, 32, 26)))
+                {
+                    graphics.FillPolygon(fur, new System.Drawing.Point[] { new(3, 2), new(12, 9), new(6, 15) });
+                    graphics.FillPolygon(fur, new System.Drawing.Point[] { new(29, 2), new(20, 9), new(26, 15) });
+                    graphics.FillPolygon(dark, new System.Drawing.Point[] { new(3, 2), new(7, 5), new(4, 7) });
+                    graphics.FillPolygon(dark, new System.Drawing.Point[] { new(29, 2), new(25, 5), new(28, 7) });
+                    graphics.FillEllipse(fur, 4, 7, 24, 18);
+                    graphics.FillPolygon(white, new System.Drawing.Point[] { new(6, 16), new(16, 30), new(26, 16), new(16, 21) });
+                    graphics.FillEllipse(dark, 10, 13, 3, 4);
+                    graphics.FillEllipse(dark, 19, 13, 3, 4);
+                    graphics.FillEllipse(dark, 14, 25, 4, 3);
+                }
+                break;
+            case FruitThemeKind.Koala:
+                using (var fur = new SolidBrush(Color.FromArgb(160, 168, 166)))
+                using (var innerEar = new SolidBrush(Color.FromArgb(236, 238, 234)))
+                using (var dark = new SolidBrush(Color.FromArgb(52, 56, 58)))
+                {
+                    graphics.FillEllipse(fur, 0, 4, 13, 13);
+                    graphics.FillEllipse(fur, 19, 4, 13, 13);
+                    graphics.FillEllipse(innerEar, 3, 7, 7, 7);
+                    graphics.FillEllipse(innerEar, 22, 7, 7, 7);
+                    graphics.FillEllipse(fur, 5, 7, 22, 22);
+                    graphics.FillEllipse(dark, 11, 12, 3, 3);
+                    graphics.FillEllipse(dark, 18, 12, 3, 3);
+                    graphics.FillEllipse(dark, 13, 16, 6, 8);
                 }
                 break;
             default:

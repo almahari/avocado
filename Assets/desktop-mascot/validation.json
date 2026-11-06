@@ -1,9 +1,9 @@
 {
   "tool": "Built-in image_gen",
-  "expected": 72,
-  "verified": 72,
+  "expected": 162,
+  "verified": 162,
   "failed": [],
-  "totalPngBytes": 13207556,
+  "totalPngBytes": 30276796,
   "files": [
     {
       "file": "Assets/desktop-mascot/avocado-idle.png",
@@ -1516,6 +1516,4873 @@
         486
       ],
       "bytes": 199571
+    },
+    {
+      "file": "Assets/desktop-mascot/avocado-blink.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        430,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        2,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 186444,
+      "sha256": "0591d212b2c874252687b8ea4061de56d0dc75c228a57f2d171b4c61839e6cf2",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/avocado-tailleft.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        432,
+        486
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        3,
+        0
+      ],
+      "headBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 185218,
+      "sha256": "f984c5e4eafa9c40f35525687338649b35b2ae8d7ce057f37e0dacf03bf1df87",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/avocado-tailright.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        418,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        -11,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 183462,
+      "sha256": "d2b569e1658f26d2583f0e44f9eec338ad887fb0bb28e40b97be483997d7e0e0",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/avocado-wavehalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        429,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        0,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 189397,
+      "sha256": "f0f81a42587012341f718ef23ada95cc033e900a26d476ff19709aa96adab517",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/strawberry-blink.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        430,
+        488
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        1,
+        2
+      ],
+      "headBounds": [
+        84,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        -1,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 191001,
+      "sha256": "13ef6acbde0d7e61f48d5d33f5276f7e7a724c4426bbe05104c8f2888ac13c28",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/strawberry-tailleft.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        428,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        -1,
+        1
+      ],
+      "headBounds": [
+        84,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        -1,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 188099,
+      "sha256": "daea3e2ee8d6e71a739a97a4286146f66f7e0bf092db69d77eb39232e47b0819",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/strawberry-tailright.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        424,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        0,
+        -5,
+        1
+      ],
+      "headBounds": [
+        84,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        -1,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 186954,
+      "sha256": "766d6f9acd6aefafd34a35343c4d85425a0156117d692ba5b093402f8c1d71c4",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/strawberry-wavehalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        46,
+        428,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        0,
+        -1,
+        1
+      ],
+      "headBounds": [
+        84,
+        47,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        -1,
+        1,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 191385,
+      "sha256": "5ea15173e73f9d4cedacf32a42836c7706d8974d241ca5053a77d79f11ab907b",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/orange-blink.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        431,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        430,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        84,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        -1,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 185486,
+      "sha256": "a0edd7ff380ef117c7bf9f92ac938804fe8ff18e99c8d08db988b9f9dec12f69",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/orange-tailleft.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        422,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        430,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        -8,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 187062,
+      "sha256": "c9516e065806c24d488848bc4b51149242a879f50ec8732779305f33c06beced",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/orange-tailright.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        422,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        430,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        -8,
+        1
+      ],
+      "headBounds": [
+        84,
+        45,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        -1,
+        -1,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 187483,
+      "sha256": "e7fef0645457812678e425870e16bafc249792d242a33cb2a0350b9833a0c9da",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/orange-wavehalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        62,
+        45,
+        430,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        430,
+        486
+      ],
+      "boundsDelta": [
+        -20,
+        -1,
+        0,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 188083,
+      "sha256": "d39834c8b9fb423ab76bdc5c34cd1161e6a179d02026cf19822d707aea30e365",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/blueberry-blink.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        430,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 188633,
+      "sha256": "29c09c5a41053428f1779656214113797d6f094e5ffc81de9a4212b4f9e01016",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/blueberry-tailleft.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        429,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        0,
+        1
+      ],
+      "headBounds": [
+        84,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        -1,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 189622,
+      "sha256": "2611b1e18817d81b46ebfc32b60ea6ae91fd209d6cdaa8abfa82c3c00ce1ae72",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/blueberry-tailright.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        419,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        -10,
+        1
+      ],
+      "headBounds": [
+        85,
+        45,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        -1,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 190771,
+      "sha256": "921623d63f98daccb927efcbb4e0ea979564f9a287785efbc23fc480cdf7bb42",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/blueberry-wavehalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        431,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        2,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 192308,
+      "sha256": "59ae59266ef12d79d6310d8a65acf916678a2be855607de3220a7441c2385295",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/watermelon-blink.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        45,
+        429,
+        487
+      ],
+      "idleBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        368,
+        200
+      ],
+      "idleHeadBounds": [
+        86,
+        46,
+        367,
+        200
+      ],
+      "headBoundsDelta": [
+        -1,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 187489,
+      "sha256": "fd270db43b25aa5498d470b00eb8407e03dccd83f3df4eafba40a2d7440cc325",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/watermelon-tailleft.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        45,
+        431,
+        487
+      ],
+      "idleBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        3,
+        1
+      ],
+      "headBounds": [
+        86,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        86,
+        46,
+        367,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 190227,
+      "sha256": "9a437ce869f819711ed0c46601f86f4c32725b026828b75ab120379bb75837f9",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/watermelon-tailright.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        45,
+        417,
+        488
+      ],
+      "idleBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        -11,
+        2
+      ],
+      "headBounds": [
+        85,
+        45,
+        368,
+        200
+      ],
+      "idleHeadBounds": [
+        86,
+        46,
+        367,
+        200
+      ],
+      "headBoundsDelta": [
+        -1,
+        -1,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 189950,
+      "sha256": "4427f97f295f3d8433228bc1100572f0301e2c96abbf9ae5e577f8f9797bc1f0",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/watermelon-wavehalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        45,
+        428,
+        487
+      ],
+      "idleBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        0,
+        1
+      ],
+      "headBounds": [
+        86,
+        46,
+        368,
+        200
+      ],
+      "idleHeadBounds": [
+        86,
+        46,
+        367,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 194416,
+      "sha256": "198fa6f2675ad59216ba34ba39f8a5caa80b9359ce6c58ef7ac262d67434fce2",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/kiwi-blink.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        430,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 191360,
+      "sha256": "4139abe2bb028a9d52785a0afb50a016115f8025efd1c29aa1aa483599e712ea",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/kiwi-tailleft.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        436,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        7,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 192790,
+      "sha256": "9408311b0ffacf358ad288b393967540a08ee52f51ea0f54e550960c358a6d4c",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/kiwi-tailright.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        420,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        -9,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 190292,
+      "sha256": "18cba5a24167435266347d56dca9a749b0e61c29cd4c5d43c71c5e6458cc777d",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/kiwi-wavehalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        430,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 193865,
+      "sha256": "fe8d6d33bd0287d609add6b797d7633ad87a277e7ba8bc1b1e7be781efa29c62",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/papaya-blink.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        430,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        84,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        -1,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 188269,
+      "sha256": "37f79f02f16aa14554fe95ac7d93658cb31fea0588c8e2a78f6866f42a77455c",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/papaya-tailleft.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        432,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 187772,
+      "sha256": "f779681de5b28a162de8e058802a40f402ff3e4a6ad81985bfb2e411ec5dea46",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/papaya-tailright.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        417,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        0,
+        -12,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 185916,
+      "sha256": "fb54adf9a13a0299d47ba49803a0d69ec2a555ff5cd6d8ed3628462d7333d26f",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/papaya-wavehalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        429,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        1,
+        0,
+        0,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 189079,
+      "sha256": "d497f0bd1135c8d95105669d754df3c114de734eeff15a1070d3ee9d1b6a8872",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/apple-blink.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        429,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        0,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 188144,
+      "sha256": "0c7007e621ac377fe84ca7c2fb9d47d1c217a485fe6bb40e48e9b82aed42b86f",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/apple-tailleft.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        427,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        -2,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 185908,
+      "sha256": "618ac4bdeb44d41c9614ae3668f8885044767d9bf8478b92e2c97ddd75168ed3",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/apple-tailright.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        417,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        0,
+        -12,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 185163,
+      "sha256": "00219c08b17b140a34ed86cc8b0148c42721b2c616bd8417f50d89637130720a",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/apple-wavehalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        430,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 193453,
+      "sha256": "34cb163eb4d186647d68891c7c454060591391274a7d9024d0a0d7527f290fe7",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/apple-playhalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        77,
+        46,
+        426,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -5,
+        0,
+        -3,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 187617,
+      "sha256": "f666dbcdf1ee0681e4ad3249d2a6c848e4e719fba14f99bf38a8dfd77adcaf08",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/mango-blink.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        45,
+        430,
+        487
+      ],
+      "idleBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 186830,
+      "sha256": "b0ad839cb504a554c9744d302a73069e986caa164cf34e30dd2630984fd6dc93",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/mango-tailleft.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        431,
+        487
+      ],
+      "idleBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        0,
+        2,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 190212,
+      "sha256": "e5879782db67bcdfc5a3de38881ebad2e98a2a8048b440c9e8147211873fdf57",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/mango-tailright.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        415,
+        487
+      ],
+      "idleBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        0,
+        -14,
+        1
+      ],
+      "headBounds": [
+        86,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 186368,
+      "sha256": "803d845b9cbe7e263a8e254c89d65fb1a01743388173a2070e52842d081ede28",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/mango-wavehalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        45,
+        429,
+        487
+      ],
+      "idleBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        0,
+        1
+      ],
+      "headBounds": [
+        86,
+        45,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        1,
+        -1,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 194023,
+      "sha256": "e36557fa04f51d23e735c25e78d81a9552bb587173852371d43dc5cb6933641e",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/mango-playhalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        77,
+        45,
+        428,
+        487
+      ],
+      "idleBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -6,
+        -1,
+        -1,
+        1
+      ],
+      "headBounds": [
+        86,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 188654,
+      "sha256": "a7c2dae1202d8eaef7d221b15fefd4010fb7d88c59b3da370973e5f17dca80ba",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/lemon-blink.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        430,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        365,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 186669,
+      "sha256": "852d59fc42d133b876465a9cf83780616c0be1db87262edb589c952eca067997",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/lemon-tailleft.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        430,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        84,
+        46,
+        365,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        -1,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 188345,
+      "sha256": "840315588ad9e885538f1256b5600291efc743ed627875c1dd9f8f3d2af57607",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/lemon-tailright.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        44,
+        418,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -2,
+        -11,
+        1
+      ],
+      "headBounds": [
+        84,
+        45,
+        365,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        -1,
+        -1,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 185168,
+      "sha256": "26eacf928c8595773f9ddecd9dc7a82f7324691a3ff9deac298b14de0f3d0ad3",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/lemon-wavehalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        429,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        0,
+        1
+      ],
+      "headBounds": [
+        84,
+        45,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        -1,
+        -1,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 190012,
+      "sha256": "a385f99d129cb629f36406129e4b96c38904529f9d9bfd7b92fdd3845fa59498",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/lemon-playhalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        429,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        0,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        365,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 188364,
+      "sha256": "c42fcb8ac5dc1cb08d4f74723ebeb4f9ff0155793469a8e61e7687442d70fbfc",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/tomato-blink.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        430,
+        487
+      ],
+      "idleBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        86,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        -1,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 183842,
+      "sha256": "a000ea59d17c6c00dc4e9f697c6aeac5b946509891f3434ccbf7f6e083354e8d",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/tomato-tailleft.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        432,
+        487
+      ],
+      "idleBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        0,
+        3,
+        1
+      ],
+      "headBounds": [
+        86,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        86,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 185644,
+      "sha256": "5ff8f6c24b0f5dc3144e1a86b27a8d33238655a08c4ea1dce916fb5fd803e5c5",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/tomato-tailright.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        45,
+        415,
+        487
+      ],
+      "idleBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        -14,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        86,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        -1,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 183017,
+      "sha256": "fb31833a95e1e419352f0933764fb707b0c1f9a7d99e48683dbfea70949af2e3",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/tomato-wavehalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        429,
+        487
+      ],
+      "idleBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "headBounds": [
+        86,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        86,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 187934,
+      "sha256": "4df2f839e928a446f74ee2406165ec4535a46b6c8b15205c9f4a5de5d3fbb495",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/tomato-playhalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        431,
+        487
+      ],
+      "idleBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -2,
+        -1,
+        2,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        86,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        -1,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 184250,
+      "sha256": "ab2a34edc9de46d0e0ac2a8d71c77215a043dd2a6ee92cf952153476f44ffe09",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/pumpkin-blink.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        487
+      ],
+      "idleBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        0,
+        1,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        368,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        368,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 186706,
+      "sha256": "14b447e57c926505a1852bb80931769ceffb6f51d65ff36a3ffd893c298a08b6",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/pumpkin-tailleft.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        44,
+        432,
+        487
+      ],
+      "idleBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -2,
+        4,
+        1
+      ],
+      "headBounds": [
+        85,
+        45,
+        369,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        368,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        -1,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 187940,
+      "sha256": "2d1795f650cc8d3d3c00d480082aa7c25cea2db771c216b1dd78bd7780814743",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/pumpkin-tailright.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        45,
+        417,
+        487
+      ],
+      "idleBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        -11,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        368,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        368,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 183474,
+      "sha256": "92d9c1e9c7af86868dcaa1d273c2297a35c1a7b25a618be92cccc9ecdd6b36c3",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/pumpkin-wavehalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "idleBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "headBounds": [
+        86,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        368,
+        200
+      ],
+      "headBoundsDelta": [
+        1,
+        0,
+        -1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 188433,
+      "sha256": "449b68cb6c6bb367a8851f2e43ba87ca9b366b6c4117a6b5b08249d0cf75d782",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/pumpkin-playhalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        80,
+        45,
+        433,
+        486
+      ],
+      "idleBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "boundsDelta": [
+        -3,
+        -1,
+        5,
+        0
+      ],
+      "headBounds": [
+        85,
+        46,
+        369,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        368,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 190575,
+      "sha256": "7aab022abd0571525fe43e6e6b7b976dd8ffbc8958487eaa6d18c244b1ae31b0",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/potato-blink.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        430,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 185876,
+      "sha256": "0f0be5d322e7fdb3d9b3b9f9657174e259e630c02f91baeae8faa14269487394",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/potato-tailleft.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        436,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        7,
+        1
+      ],
+      "headBounds": [
+        84,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "headBoundsDelta": [
+        -1,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 188192,
+      "sha256": "30013ef81694ae68feeebe0dc81edcbdc0ffcc0bd94fb6ed06c609da67d2f21d",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/potato-tailright.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        419,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        -10,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 185747,
+      "sha256": "862bd1f930cf9d6d47019c9c70be3fff6f3b952173b77abe10045fbf0e8f24bc",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/potato-wavehalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "headBounds": [
+        85,
+        47,
+        368,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 191362,
+      "sha256": "80a72040c7f4ec8a796d52855bc0172bb31352005d7ec991d4935194774bf07b",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/potato-playhalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        430,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        368,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 187803,
+      "sha256": "e2ebf5081307de0c6329cb8e1a6b308a14efa1d33d5b42528933e0cd8dce94e5",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/onion-blink.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        430,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        368,
+        200
+      ],
+      "idleHeadBounds": [
+        84,
+        46,
+        368,
+        200
+      ],
+      "headBoundsDelta": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 190942,
+      "sha256": "22e6bab49ade52b5f4257675416dd430bcbb4e6ad90df4860c33f87e0f6a0032",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/onion-tailleft.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        435,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        6,
+        1
+      ],
+      "headBounds": [
+        84,
+        46,
+        368,
+        200
+      ],
+      "idleHeadBounds": [
+        84,
+        46,
+        368,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 190090,
+      "sha256": "8aeffbb7bbcb8b06dbc3fc3c6cf7ee3edaba01a55845c56dc421e2806a267fed",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/onion-tailright.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        419,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        -10,
+        1
+      ],
+      "headBounds": [
+        84,
+        45,
+        368,
+        200
+      ],
+      "idleHeadBounds": [
+        84,
+        46,
+        368,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        -1,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 190613,
+      "sha256": "6bfc79e1e8e87647d457703d5ac0bce7e49fd319cbb400de2ea2224670621d10",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/onion-wavehalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        431,
+        486
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        2,
+        0
+      ],
+      "headBounds": [
+        85,
+        46,
+        368,
+        200
+      ],
+      "idleHeadBounds": [
+        84,
+        46,
+        368,
+        200
+      ],
+      "headBoundsDelta": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 192088,
+      "sha256": "86c89febedd8c724b1fd38b3eb75c2e3ec9ebf2a9e5dfddf5fff98f010a9442a",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/onion-playhalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        429,
+        486
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        0,
+        0
+      ],
+      "headBounds": [
+        84,
+        45,
+        368,
+        200
+      ],
+      "idleHeadBounds": [
+        84,
+        46,
+        368,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        -1,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 189601,
+      "sha256": "b84f4003d187c1c2d83a1fc48e0133a0ea5c5a5352f0f8d0d1eee9dc9c2e1fe9",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/cat-blink.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        100,
+        46,
+        411,
+        487
+      ],
+      "idleBounds": [
+        101,
+        46,
+        410,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        0,
+        1,
+        1
+      ],
+      "headBounds": [
+        101,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        101,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 188850,
+      "sha256": "bc026edcf3ccc637f8dfc7e1241df6bd2ee11202189701920b8bb07f4a6229a8",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/cat-tailleft.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        100,
+        45,
+        417,
+        487
+      ],
+      "idleBounds": [
+        101,
+        46,
+        410,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        7,
+        1
+      ],
+      "headBounds": [
+        101,
+        46,
+        365,
+        200
+      ],
+      "idleHeadBounds": [
+        101,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 189968,
+      "sha256": "49fcd724dc20ebbda2ec14d05ed8b6cca41019d6bf8ee82595864648a8b66c82",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/cat-tailright.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        101,
+        45,
+        412,
+        487
+      ],
+      "idleBounds": [
+        101,
+        46,
+        410,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        2,
+        1
+      ],
+      "headBounds": [
+        101,
+        46,
+        365,
+        200
+      ],
+      "idleHeadBounds": [
+        101,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 186808,
+      "sha256": "0507a4381fc72ccbee6367ec48033af1fa9cac05de588eda332814d5e1351f8f",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/cat-wavehalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        100,
+        45,
+        413,
+        487
+      ],
+      "idleBounds": [
+        101,
+        46,
+        410,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        3,
+        1
+      ],
+      "headBounds": [
+        101,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        101,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 188330,
+      "sha256": "88299fff2e2b38f1d8f8d7a09cda81e9fc6f9ab1113ca1362bbb44e995b696be",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/cat-playhalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        85,
+        45,
+        410,
+        486
+      ],
+      "idleBounds": [
+        101,
+        46,
+        410,
+        486
+      ],
+      "boundsDelta": [
+        -16,
+        -1,
+        0,
+        0
+      ],
+      "headBounds": [
+        101,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        101,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 190023,
+      "sha256": "f40fd051092fbdcc6422c5f8bac8948f01f1007b1e63b59377b9b1bdc654cb67",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/lion-blink.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        432,
+        487
+      ],
+      "idleBounds": [
+        81,
+        46,
+        431,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        81,
+        45,
+        396,
+        200
+      ],
+      "idleHeadBounds": [
+        81,
+        46,
+        395,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        -1,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 197855,
+      "sha256": "d71c2b171b0d2449835963263976e3f85e9b5d85bf4909d149f066b7ab189fd6",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/lion-tailleft.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        434,
+        487
+      ],
+      "idleBounds": [
+        81,
+        46,
+        431,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        3,
+        1
+      ],
+      "headBounds": [
+        81,
+        45,
+        395,
+        200
+      ],
+      "idleHeadBounds": [
+        81,
+        46,
+        395,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        -1,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 197057,
+      "sha256": "cf5992684b91ab8d57715d31988c1d0401b1f7ec1b1bca6d2bd988a383c730b5",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/lion-tailright.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        80,
+        45,
+        428,
+        487
+      ],
+      "idleBounds": [
+        81,
+        46,
+        431,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        -3,
+        1
+      ],
+      "headBounds": [
+        80,
+        46,
+        396,
+        200
+      ],
+      "idleHeadBounds": [
+        81,
+        46,
+        395,
+        200
+      ],
+      "headBoundsDelta": [
+        -1,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 195995,
+      "sha256": "447c9a61b3fdc3abddeb6d29ce1483f3f34876ea5560cedf9d90e9085c798dd2",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/lion-wavehalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        45,
+        432,
+        487
+      ],
+      "idleBounds": [
+        81,
+        46,
+        431,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        82,
+        45,
+        394,
+        200
+      ],
+      "idleHeadBounds": [
+        81,
+        46,
+        395,
+        200
+      ],
+      "headBoundsDelta": [
+        1,
+        -1,
+        -1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 202822,
+      "sha256": "c4725485c0d9bed6073a9ca72a6463bcc8f81362403f94af08d50f5ada7121c1",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/lion-playhalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        80,
+        45,
+        433,
+        487
+      ],
+      "idleBounds": [
+        81,
+        46,
+        431,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        2,
+        1
+      ],
+      "headBounds": [
+        81,
+        46,
+        396,
+        200
+      ],
+      "idleHeadBounds": [
+        81,
+        46,
+        395,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 202486,
+      "sha256": "4e9e96cca67c91c4c2878510c92905c6771ffa7915ae81646e56772890d71bf3",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/giraffe-blink.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        95,
+        45,
+        418,
+        487
+      ],
+      "idleBounds": [
+        96,
+        46,
+        416,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        2,
+        1
+      ],
+      "headBounds": [
+        96,
+        45,
+        399,
+        200
+      ],
+      "idleHeadBounds": [
+        96,
+        46,
+        398,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        -1,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 178178,
+      "sha256": "86639245bad22e0cd442e45298a9088e7b1347cf3a198e50bd54ffbbbff046b7",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/giraffe-tailleft.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        96,
+        45,
+        423,
+        488
+      ],
+      "idleBounds": [
+        96,
+        46,
+        416,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        7,
+        2
+      ],
+      "headBounds": [
+        97,
+        46,
+        398,
+        200
+      ],
+      "idleHeadBounds": [
+        96,
+        46,
+        398,
+        200
+      ],
+      "headBoundsDelta": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 178310,
+      "sha256": "3b490b302dc151aea722d128a1bf13bc7e17a903662a4de25d34a0efe7b2c8f6",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/giraffe-tailright.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        95,
+        45,
+        417,
+        487
+      ],
+      "idleBounds": [
+        96,
+        46,
+        416,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        96,
+        45,
+        399,
+        200
+      ],
+      "idleHeadBounds": [
+        96,
+        46,
+        398,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        -1,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 179052,
+      "sha256": "70aaef1f18343546d19712bc9e138306ce0ad7f7d4444b0f2455cb00b070878f",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/giraffe-wavehalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        96,
+        45,
+        417,
+        488
+      ],
+      "idleBounds": [
+        96,
+        46,
+        416,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        1,
+        2
+      ],
+      "headBounds": [
+        96,
+        45,
+        398,
+        200
+      ],
+      "idleHeadBounds": [
+        96,
+        46,
+        398,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        -1,
+        0,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 182551,
+      "sha256": "9a665f37456bd32522f25109bb9f69cbfc0cfb4ec2d8587a6fe4f10bffaeac38",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/giraffe-playhalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        95,
+        45,
+        419,
+        487
+      ],
+      "idleBounds": [
+        96,
+        46,
+        416,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        3,
+        1
+      ],
+      "headBounds": [
+        96,
+        46,
+        399,
+        200
+      ],
+      "idleHeadBounds": [
+        96,
+        46,
+        398,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 179296,
+      "sha256": "82e178ee3c423a3766524e3ef0de43e1256cc005253640e1d102c743a08dec1c",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/elephant-blink.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        44,
+        45,
+        466,
+        487
+      ],
+      "idleBounds": [
+        45,
+        46,
+        466,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        -1,
+        0,
+        1
+      ],
+      "headBounds": [
+        45,
+        45,
+        466,
+        200
+      ],
+      "idleHeadBounds": [
+        45,
+        46,
+        465,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        -1,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 208278,
+      "sha256": "799cc689a75ed63f54cf04bdea122a7fe4e81cffc345ea5dbe1ef38ab5386638",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/elephant-tailleft.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        45,
+        45,
+        467,
+        487
+      ],
+      "idleBounds": [
+        45,
+        46,
+        466,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        45,
+        46,
+        466,
+        200
+      ],
+      "idleHeadBounds": [
+        45,
+        46,
+        465,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 209114,
+      "sha256": "a5d0357368d05ed6a7c7d0c62364268047cc0d03756cd6c76d81993cce152266",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/elephant-tailright.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        45,
+        46,
+        466,
+        487
+      ],
+      "idleBounds": [
+        45,
+        46,
+        466,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "headBounds": [
+        45,
+        46,
+        466,
+        200
+      ],
+      "idleHeadBounds": [
+        45,
+        46,
+        465,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 206091,
+      "sha256": "173d534980c7c7641b0914dd8b7fd1d1e0378a103ade5390f7e7774c485513d2",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/elephant-wavehalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        45,
+        45,
+        467,
+        487
+      ],
+      "idleBounds": [
+        45,
+        46,
+        466,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        46,
+        46,
+        466,
+        200
+      ],
+      "idleHeadBounds": [
+        45,
+        46,
+        465,
+        200
+      ],
+      "headBoundsDelta": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 209949,
+      "sha256": "59e320852e914c112c78bee349bf4e5b9225cfe6e32d1758220c8c9f77d50643",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/elephant-playhalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        45,
+        45,
+        467,
+        487
+      ],
+      "idleBounds": [
+        45,
+        46,
+        466,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        1,
+        1
+      ],
+      "headBounds": [
+        46,
+        46,
+        466,
+        200
+      ],
+      "idleHeadBounds": [
+        45,
+        46,
+        465,
+        200
+      ],
+      "headBoundsDelta": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 206880,
+      "sha256": "3a386a4f705bc9b4edd1b4aab189b71cc13da4440cad2d3ddda60997442135b8",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/avocado-playhalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        427,
+        486
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        -2,
+        0
+      ],
+      "headBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 187792,
+      "sha256": "152b61b888d996d298ac4751abe21bbecd15246e35ff259ee4dec387d362c2ec",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/strawberry-playhalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        80,
+        45,
+        431,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        -2,
+        -1,
+        2,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        365,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        -1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 189060,
+      "sha256": "704f4d80a7340908e22aa84dde15b023d65a0e6af1e5cef74fcb0a54bf58e1c8",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/orange-playhalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        46,
+        431,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        430,
+        486
+      ],
+      "boundsDelta": [
+        -1,
+        0,
+        1,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 186608,
+      "sha256": "675bc9e93404921e6461e38989cf1ebec99797952eadb351d2388d178458b915",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/blueberry-playhalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        427,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        -2,
+        1
+      ],
+      "headBounds": [
+        85,
+        45,
+        366,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        365,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        -1,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 186917,
+      "sha256": "a292c8c304df6a5fbd6f748768b3a8f1f6e97b729ef1e2583d1ab15aa44fe942",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/watermelon-playhalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        84,
+        46,
+        429,
+        487
+      ],
+      "idleBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "boundsDelta": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "headBounds": [
+        87,
+        46,
+        369,
+        200
+      ],
+      "idleHeadBounds": [
+        86,
+        46,
+        367,
+        200
+      ],
+      "headBoundsDelta": [
+        1,
+        0,
+        2,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 189866,
+      "sha256": "380462629aab7f0598c1c61795984e9b7df54c5b1534b08b49e7039ffb784431",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/kiwi-playhalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        45,
+        427,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        -1,
+        -2,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 192111,
+      "sha256": "9398df27a681f14fada6a5bd01d42f3de0314f4c65891781eaec54664781ac32",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
+    },
+    {
+      "file": "Assets/desktop-mascot/papaya-playhalf.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        427,
+        487
+      ],
+      "idleBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "boundsDelta": [
+        0,
+        0,
+        -2,
+        1
+      ],
+      "headBounds": [
+        85,
+        46,
+        367,
+        200
+      ],
+      "idleHeadBounds": [
+        85,
+        46,
+        366,
+        200
+      ],
+      "headBoundsDelta": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "alignmentPassed": true,
+      "bytes": 187101,
+      "sha256": "2a90cbac6f314c5a7ea0b46a314f67ea76a4f2d5a5875e1e1764f46f528bb118",
+      "visualReview": "Character identity, colors, hoodie, species anatomy and requested pose inspected after generation."
     }
-  ]
+  ],
+  "inbetweenExpected": 90,
+  "inbetweenVerified": 90,
+  "maxInbetweenVerticalBoundsDeltaPx": 2,
+  "maxInbetweenHeadBoundsDeltaPx": 2,
+  "originalSpritesChecked": 72,
+  "originalSpritesUnchanged": true,
+  "alignmentMethod": "Full alpha bounds after removing alpha <=8 resampling speckles; opaque upper-head silhouette (rows 0-199, alpha >127); maximum 6 px deviation. Generated image geometry was never translated or warped."
 }

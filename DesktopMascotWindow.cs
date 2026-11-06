@@ -34,16 +34,26 @@ public interface IDesktopMascotHost
     void ShowMainFromMascot();
     void SaveMascotPosition(double left, double top);
     void HideMascotFromMascot();
+    DesktopMascotSettings MascotSettings { get; }
+    void SaveMascotSettings();
+    int AddMascotTasks(string input);
+    int CompletedTodayCount { get; }
+    void MoveMascotTaskToTomorrow(TodoItem task);
+    ReminderSoundMode MascotSoundMode { get; }
+    SeasonalSkinKind MascotSeasonalSkin { get; }
 }
 
 /// <summary>
 /// A transparent, always-on-top, draggable desktop mascot that plays while idle,
 /// reminds the user about old tasks and pops a speech bubble when a reminder fires.
 /// </summary>
-public sealed class DesktopMascotWindow : Window
+public sealed partial class DesktopMascotWindow : Window
 {
-    private const double WindowWidth = 300;
-    private const double WindowHeight = 360;
+    private double _spriteSize = DesktopMascotLogic.SpriteSize;
+    private double WindowWidth => Math.Max(300, _spriteSize + 150);
+    private double WindowHeight => _spriteSize + 210;
+    private const double LargeWidth = 440;
+    private double LargeHeight => _spriteSize + 610;
 
     private readonly IDesktopMascotHost _host;
     private readonly Random _random = new();
@@ -53,8 +63,16 @@ public sealed class DesktopMascotWindow : Window
     private readonly DispatcherTimer _poseTimer = new();
     private readonly DispatcherTimer _bubbleTimer = new();
     private readonly DispatcherTimer _nagTimer = new() { Interval = TimeSpan.FromMinutes(1) };
+    private readonly DispatcherTimer _digestClock = new() { Interval = TimeSpan.FromSeconds(1) };
+    private TextBlock? _digestClockText;
+    private TextBlock? _digestDateText;
+    private bool _isLarge;
     private Image _spriteFront = NewSpriteLayer(1);
     private Image _spriteBack = NewSpriteLayer(0);
+    private readonly Canvas _outfit = new() { IsHitTestVisible = false };
+    private readonly RotateTransform _look = new();
+    private readonly TranslateTransform _lookShift = new();
+    private readonly Grid _root = new();
     private readonly Grid _actor = new();
     private readonly Grid _spriteHost = new() { HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Bottom, Cursor = Cursors.Hand, Background = null };
     // "Alive" layer (always running) and "trick" layer (one-off actions) are separate so they blend.
@@ -78,6 +96,7 @@ public sealed class DesktopMascotWindow : Window
     public DesktopMascotWindow(IDesktopMascotHost host, double? left, double? top)
     {
         _host = host;
+        _spriteSize = DesktopMascotFeatures.SpriteSize(host.MascotSettings.Size);
         Title = "Avocado mascot";
         Width = WindowWidth;
         Height = WindowHeight;
@@ -106,6 +125,7 @@ public sealed class DesktopMascotWindow : Window
         _poseTimer.Tick += (_, _) => { _poseTimer.Stop(); ReturnToRest(); };
         _bubbleTimer.Tick += (_, _) => { _bubbleTimer.Stop(); HideBubble(); };
         _nagTimer.Tick += (_, _) => Tick();
+        _digestClock.Tick += (_, _) => UpdateDigestClock();
         SourceInitialized += (_, _) => HideFromAltTab();
         Loaded += (_, _) =>
         {
@@ -114,13 +134,14 @@ public sealed class DesktopMascotWindow : Window
             _nagTimer.Start();
             Tick();
             Greet();
+            StartFeatures();
         };
         SystemParameters.StaticPropertyChanged += OnSystemParametersChanged;
     }
 
     private UIElement BuildLayout()
     {
-        var root = new Grid();
+        var root = _root;
 
         // Sprite stack: the host carries the always-on "alive" motion, the actor carries tricks,
         // and two image layers cross-fade so poses blend instead of popping.
@@ -129,6 +150,8 @@ public sealed class DesktopMascotWindow : Window
         alive.Children.Add(_breath);
         alive.Children.Add(_sway);
         alive.Children.Add(_bob);
+        alive.Children.Add(_look);
+        alive.Children.Add(_lookShift);
         _spriteHost.RenderTransform = alive;
         _spriteHost.Margin = new Thickness(0, 0, 0, 6);
         var tricks = new TransformGroup();
@@ -139,14 +162,16 @@ public sealed class DesktopMascotWindow : Window
         _actor.RenderTransform = tricks;
         _actor.Children.Add(_spriteBack);
         _actor.Children.Add(_spriteFront);
+        _actor.Children.Add(_outfit);
         _spriteHost.Children.Add(_actor);
+        AttachInteraction();
         _spriteHost.MouseLeftButtonDown += Sprite_MouseLeftButtonDown;
         _spriteHost.MouseRightButtonUp += (_, e) => { ShowMenu(); e.Handled = true; };
         _spriteHost.MouseEnter += (_, _) => { if (!_isDragging && !_sleeping && _pose == DesktopMascotPose.Idle && _bubble.Visibility != Visibility.Visible) Wiggle(); };
         _spriteHost.ToolTip = "Drag me anywhere • double-click to open Avocado • right-click for options";
 
         _effects.VerticalAlignment = VerticalAlignment.Bottom;
-        _effects.Height = DesktopMascotLogic.SpriteSize + 30;
+        _effects.Height = _spriteSize + 30;
 
         _bubble.CornerRadius = new CornerRadius(16);
         _bubble.BorderThickness = new Thickness(2.5);
@@ -154,7 +179,7 @@ public sealed class DesktopMascotWindow : Window
         _bubble.MaxWidth = WindowWidth - 12;
         _bubble.HorizontalAlignment = HorizontalAlignment.Center;
         _bubble.VerticalAlignment = VerticalAlignment.Bottom;
-        _bubble.Margin = new Thickness(6, 0, 6, DesktopMascotLogic.SpriteSize + 18);
+        _bubble.Margin = new Thickness(6, 0, 6, _spriteSize + 18);
         _bubble.Effect = new System.Windows.Media.Effects.DropShadowEffect
         { BlurRadius = 12, ShadowDepth = 2, Opacity = 0.28, Color = Colors.Black };
         _bubble.RenderTransformOrigin = new System.Windows.Point(0.5, 1);
@@ -163,7 +188,7 @@ public sealed class DesktopMascotWindow : Window
         _bubbleTail.StrokeThickness = 2.5;
         _bubbleTail.HorizontalAlignment = HorizontalAlignment.Center;
         _bubbleTail.VerticalAlignment = VerticalAlignment.Bottom;
-        _bubbleTail.Margin = new Thickness(0, 0, 30, DesktopMascotLogic.SpriteSize + 4);
+        _bubbleTail.Margin = new Thickness(0, 0, 30, _spriteSize + 4);
 
         root.Children.Add(_effects);
         root.Children.Add(_spriteHost);
@@ -184,6 +209,7 @@ public sealed class DesktopMascotWindow : Window
         _bubbleTail.Stroke = BrushFrom(theme.Ink);
         if (_bubble.Child is FrameworkElement content) RestyleBubble(content);
         SetPose(_pose, instant: true);
+        UpdateOutfit();
     }
 
     private static Image NewSpriteLayer(double opacity)
@@ -200,10 +226,28 @@ public sealed class DesktopMascotWindow : Window
     /// <summary>Cross-fades to the new pose so changes read as motion instead of a cut.</summary>
     private void SetPose(DesktopMascotPose pose, bool instant = false)
     {
+        var previous = _pose;
         _pose = pose;
         var source = LoadSprite(_host.MascotTheme.Kind, pose);
         if (ReferenceEquals(_spriteFront.Source, source)) return;
-        if (instant || !MotionAllowed || _spriteFront.Source is null)
+        _frameQueue.Clear();
+        // With frame animation, pass through the in-between drawing (e.g. arm half raised).
+        if (!instant && MotionAllowed && Feature(DesktopMascotFeature.FrameAnimation) &&
+            InBetweenFrame(previous, pose) is ImageSource middle)
+        {
+            ShowSource(middle, 150);
+            _frameQueue.Enqueue((source, 190, 0));
+            StartFrameQueue(150);
+            return;
+        }
+        ShowSource(source, instant ? 0 : pose == DesktopMascotPose.Sleep ? 700 : 340);
+    }
+
+    /// <summary>Displays an image, cross-fading from the current one over <paramref name="blendMs"/>.</summary>
+    private void ShowSource(ImageSource? source, int blendMs)
+    {
+        if (ReferenceEquals(_spriteFront.Source, source)) return;
+        if (blendMs <= 0 || !MotionAllowed || _spriteFront.Source is null)
         {
             _spriteFront.BeginAnimation(OpacityProperty, null);
             _spriteBack.BeginAnimation(OpacityProperty, null);
@@ -216,7 +260,7 @@ public sealed class DesktopMascotWindow : Window
         _spriteFront.Source = source;
         _actor.Children.Remove(_spriteFront);
         _actor.Children.Add(_spriteFront);
-        var blend = TimeSpan.FromMilliseconds(pose == DesktopMascotPose.Sleep ? 700 : 340);
+        var blend = TimeSpan.FromMilliseconds(blendMs);
         var ease = new SineEase { EasingMode = EasingMode.EaseInOut };
         _spriteFront.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, blend) { EasingFunction = ease });
         _spriteBack.BeginAnimation(OpacityProperty, new DoubleAnimation(1, 0, blend) { EasingFunction = ease, BeginTime = blend / 3 });
@@ -231,6 +275,16 @@ public sealed class DesktopMascotWindow : Window
                      ?? (theme != FruitThemeKind.Avocado ? LoadSprite(FruitThemeKind.Avocado, pose) : null)
                      ?? TryLoad(theme == FruitThemeKind.Cat ? "Assets/cat-scene.png"
                          : $"Assets/theme-scenes/{theme.ToString().ToLowerInvariant()}-scene.png");
+        _spriteCache[path] = source;
+        return source;
+    }
+
+    /// <summary>Loads an optional extra frame (blink, tail, half poses); null when it does not exist.</summary>
+    private ImageSource? LoadFrame(FruitThemeKind theme, string frame)
+    {
+        var path = DesktopMascotLogic.FramePath(theme, frame);
+        if (_spriteCache.TryGetValue(path, out var cached)) return cached;
+        var source = TryLoad(path);
         _spriteCache[path] = source;
         return source;
     }
@@ -276,6 +330,7 @@ public sealed class DesktopMascotWindow : Window
     {
         ScheduleIdle();
         if (_isDragging || _sleeping || _bubble.Visibility == Visibility.Visible || !IsVisible) return;
+        if (TryFeatureIdleAction()) return;
         var action = DesktopMascotLogic.PickIdleAction(_random, _lastAction);
         _lastAction = action;
         if (!MotionAllowed && action is not DesktopMascotIdleAction.Wave and not DesktopMascotIdleAction.Cheer)
@@ -501,6 +556,8 @@ public sealed class DesktopMascotWindow : Window
         foreach (var task in tasks) _lastNagged[task.Id] = DateTime.Now;
         ShowBubble(DesktopMascotLogic.ReminderTitle(tasks.Count), DesktopMascotLogic.ReminderSummary(tasks), tasks, reminder: true);
         Hop(1);
+        Sound(DesktopMascotSound.Hello);
+        BeginEscalation(tasks);
     }
 
     /// <summary>Called by the host when an alert is resolved elsewhere (e.g. in the main window).</summary>
@@ -532,7 +589,9 @@ public sealed class DesktopMascotWindow : Window
             return;
         }
         if (_bubble.Visibility == Visibility.Visible) return;
-        ShowBubble(string.Empty, DesktopMascotLogic.PickPokeLine(_random), [], reminder: false, seconds: 3);
+        Sound(DesktopMascotSound.Poke);
+        ShowBubble(string.Empty, Feature(DesktopMascotFeature.Mood) && _random.Next(3) == 0
+            ? DesktopMascotFeatures.MoodLine(_mood) : DesktopMascotLogic.PickPokeLine(_random), [], reminder: false, seconds: 3);
         Hop(1);
     }
 
@@ -553,20 +612,29 @@ public sealed class DesktopMascotWindow : Window
         close.Click += (_, _) => HideBubble();
         DockPanel.SetDock(close, Dock.Right);
         header.Children.Add(close);
-        if (title.Length > 0)
-            header.Children.Add(new TextBlock
-            {
-                Text = title, FontSize = 15, FontWeight = FontWeights.Bold, Foreground = ink,
-                FontFamily = new FontFamily("Segoe UI"), Margin = new Thickness(0, 0, 0, 4)
-            });
-        panel.Children.Add(header);
-
-        panel.Children.Add(new TextBlock
+        var bodyText = new TextBlock
         {
             Text = body, TextWrapping = TextWrapping.Wrap, FontSize = 13, Foreground = ink,
-            FontFamily = new FontFamily("Segoe UI"), Margin = new Thickness(0, title.Length > 0 ? 0 : -18, 18, 0),
-            MaxHeight = 120, TextTrimming = TextTrimming.CharacterEllipsis
-        });
+            FontFamily = new FontFamily("Segoe UI"), MaxHeight = 120, TextTrimming = TextTrimming.CharacterEllipsis,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+        if (title.Length > 0)
+        {
+            header.Children.Add(new TextBlock
+            {
+                Text = title, FontSize = 15, FontWeight = FontWeights.Bold, Foreground = ink, TextWrapping = TextWrapping.Wrap,
+                FontFamily = new FontFamily("Segoe UI"), Margin = new Thickness(0, 0, 6, 4)
+            });
+            panel.Children.Add(header);
+            panel.Children.Add(bodyText);
+        }
+        else
+        {
+            // No title: the message shares the first row with the close button instead of sliding under it.
+            bodyText.Margin = new Thickness(0, 0, 6, 0);
+            header.Children.Add(bodyText);
+            panel.Children.Add(header);
+        }
 
         if (tasks.Count > 0)
         {
@@ -577,16 +645,35 @@ public sealed class DesktopMascotWindow : Window
                 HideBubble();
                 Celebrate();
             }));
-            actions.Children.Add(BubbleButton(reminder ? "Snooze 10m" : "Later", theme, primary: false, () =>
+            var snooze = reminder ? SnoozeMinutes() : 60;
+            actions.Children.Add(BubbleButton(reminder ? $"Snooze {snooze}m" : "Later", theme, primary: false, () =>
             {
-                foreach (var task in tasks.ToList()) _host.SnoozeMascotTask(task, reminder ? 10 : 60);
+                if (reminder) RememberSnooze(snooze);
+                foreach (var task in tasks.ToList()) _host.SnoozeMascotTask(task, snooze);
                 HideBubble();
             }));
+            if (reminder && Feature(DesktopMascotFeature.SmartReminders))
+                foreach (var alternative in new[] { 5, 10, 30, 60 }.Where(minutes => minutes != snooze).Take(2))
+                    actions.Children.Add(BubbleButton($"{alternative}m", theme, primary: false, () =>
+                    {
+                        RememberSnooze(alternative);
+                        foreach (var task in tasks.ToList()) _host.SnoozeMascotTask(task, alternative);
+                        HideBubble();
+                    }));
             actions.Children.Add(BubbleButton("Open", theme, primary: false, () => { HideBubble(); _host.ShowMainFromMascot(); }));
             panel.Children.Add(actions);
         }
 
-        _bubble.Child = panel;
+        PresentBubble(panel, sticky: reminder, seconds, large: false);
+        if (reminder || tasks.Count > 0) SetPose(DesktopMascotPose.Wave);
+    }
+
+    /// <summary>Shows any content in the speech bubble; large bubbles grow the window upward.</summary>
+    private void PresentBubble(UIElement content, bool sticky, int seconds, bool large)
+    {
+        _digestClock.Stop();
+        SetLarge(large);
+        _bubble.Child = content;
         _bubble.Visibility = Visibility.Visible;
         _bubbleTail.Visibility = Visibility.Visible;
         if (MotionAllowed)
@@ -607,15 +694,207 @@ public sealed class DesktopMascotWindow : Window
             _bubble.BeginAnimation(OpacityProperty, fadeIn);
             _bubbleTail.BeginAnimation(OpacityProperty, fadeIn);
         }
-        if (reminder || tasks.Count > 0) SetPose(DesktopMascotPose.Wave);
-
         _bubbleTimer.Stop();
-        // Reminders stay until the user reacts; everything else fades away.
-        if (!reminder)
+        // Reminders and the digest stay until the user reacts; everything else fades away.
+        if (!sticky)
         {
             _bubbleTimer.Interval = seconds > 0 ? TimeSpan.FromSeconds(seconds) : DesktopMascotLogic.BubbleDuration;
             _bubbleTimer.Start();
         }
+    }
+
+    // ---------- Big bubble sizing ----------
+
+    /// <summary>Resizes the window around the mascot's feet so the mascot never jumps.</summary>
+    private void SetLarge(bool large)
+    {
+        if (large == _isLarge) return;
+        BeginAnimation(LeftProperty, null);
+        var footX = Left + Width / 2;
+        var footY = Top + Height;
+        _isLarge = large;
+        Width = large ? LargeWidth : WindowWidth;
+        Height = large ? LargeHeight : WindowHeight;
+        _bubble.MaxWidth = Width - 12;
+        var (x, y) = DesktopMascotLogic.ClampToArea(footX - Width / 2, footY - Height, Width, Height,
+            SystemParameters.VirtualScreenLeft, SystemParameters.VirtualScreenTop,
+            SystemParameters.VirtualScreenWidth, SystemParameters.VirtualScreenHeight);
+        Left = x;
+        Top = y;
+    }
+
+    /// <summary>Position of the compact window, which is what gets persisted.</summary>
+    private (double Left, double Top) CompactPosition() =>
+        (Left + (Width - WindowWidth) / 2, Top + Height - WindowHeight);
+
+    // ---------- "What's up!" digest ----------
+
+    public void ShowDigest()
+    {
+        if (_sleeping)
+        {
+            _sleeping = false;
+            StartBreathing();
+            UpdateSleepBadge();
+        }
+        var digest = DesktopMascotLogic.BuildDigest(_host.OpenTasks, DateTime.Now);
+        var content = BuildDigestContent(digest);
+        if (_isLarge && _bubble.Visibility == Visibility.Visible && _digestClock.IsEnabled)
+        {
+            // Refresh in place (e.g. after ticking a task off) without replaying the pop-in.
+            _bubble.Child = content;
+            return;
+        }
+        PresentBubble(content, sticky: true, seconds: 0, large: true);
+        SetPose(DesktopMascotPose.Wave);
+        Hop(1);
+        StartDigestClock();
+    }
+
+    private UIElement BuildDigestContent(DesktopMascotDigest digest)
+    {
+        var theme = _host.MascotTheme;
+        var ink = BrushFrom(theme.Ink);
+        var muted = BrushFrom(theme.MutedInk);
+        var root = new DockPanel { Width = LargeWidth - 44, LastChildFill = true };
+
+        // Header: greeting, live clock and date.
+        var header = new DockPanel { Margin = new Thickness(0, 0, 0, 8) };
+        DockPanel.SetDock(header, Dock.Top);
+        var close = new Button
+        {
+            Content = "✕", Width = 24, Height = 24, Padding = new Thickness(0), FontSize = 12,
+            Background = System.Windows.Media.Brushes.Transparent, BorderThickness = new Thickness(0),
+            Foreground = ink, Cursor = Cursors.Hand, VerticalAlignment = VerticalAlignment.Top, ToolTip = "Close"
+        };
+        close.Click += (_, _) => HideBubble();
+        DockPanel.SetDock(close, Dock.Right);
+        header.Children.Add(close);
+        var titleStack = new StackPanel();
+        titleStack.Children.Add(new TextBlock
+        {
+            Text = DesktopMascotLogic.DigestGreeting(DateTime.Now), FontSize = 13, FontWeight = FontWeights.SemiBold,
+            Foreground = muted, FontFamily = new FontFamily("Segoe UI")
+        });
+        _digestClockText = new TextBlock
+        {
+            Text = digest.Time, FontSize = 34, FontWeight = FontWeights.Bold, Foreground = ink,
+            FontFamily = new FontFamily("Segoe UI"), Margin = new Thickness(0, -2, 0, -4)
+        };
+        titleStack.Children.Add(_digestClockText);
+        _digestDateText = new TextBlock
+        {
+            Text = digest.Date, FontSize = 14, FontWeight = FontWeights.SemiBold, Foreground = ink,
+            FontFamily = new FontFamily("Segoe UI")
+        };
+        titleStack.Children.Add(_digestDateText);
+        header.Children.Add(titleStack);
+        root.Children.Add(header);
+
+        // Footer actions.
+        var footer = new WrapPanel { Margin = new Thickness(0, 10, 0, 0) };
+        DockPanel.SetDock(footer, Dock.Bottom);
+        footer.Children.Add(BubbleButton("Open Avocado", theme, primary: true, () => { HideBubble(); _host.ShowMainFromMascot(); }));
+        footer.Children.Add(BubbleButton("Got it!", theme, primary: false, HideBubble));
+        if (Feature(DesktopMascotFeature.QuickAdd))
+            footer.Children.Add(BubbleButton("+ Add task", theme, primary: false, ShowQuickAdd));
+        root.Children.Add(footer);
+
+        var sections = new StackPanel();
+        AddDigestSection(sections, "☀  Today", digest.Today, "Nothing scheduled — enjoy! 🎉");
+        AddDigestSection(sections, "⏳  Old tasks", digest.Old, "No old tasks. Nice and tidy ✨");
+        AddDigestSection(sections, "🌙  Tomorrow", digest.Tomorrow, "Tomorrow is wide open.");
+        root.Children.Add(new ScrollViewer
+        {
+            Content = sections, MaxHeight = LargeHeight - _spriteSize - 230,
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled
+        });
+        return root;
+    }
+
+    private void AddDigestSection(System.Windows.Controls.Panel parent, string title, IReadOnlyList<DesktopMascotDigestEntry> entries, string emptyText)
+    {
+        var theme = _host.MascotTheme;
+        var ink = BrushFrom(theme.Ink);
+        var muted = BrushFrom(theme.MutedInk);
+        var heading = new Border
+        {
+            Background = BrushFrom(theme.Task), CornerRadius = new CornerRadius(8),
+            Padding = new Thickness(8, 3, 8, 4), Margin = new Thickness(0, 8, 0, 4),
+            Child = new TextBlock
+            {
+                Text = $"{title}  ({entries.Count})", FontSize = 14, FontWeight = FontWeights.Bold,
+                Foreground = ink, FontFamily = new FontFamily("Segoe UI")
+            }
+        };
+        parent.Children.Add(heading);
+        if (entries.Count == 0)
+        {
+            parent.Children.Add(new TextBlock
+            {
+                Text = emptyText, FontSize = 12.5, FontStyle = FontStyles.Italic, Foreground = muted,
+                Margin = new Thickness(8, 0, 0, 2), FontFamily = new FontFamily("Segoe UI")
+            });
+            return;
+        }
+        foreach (var entry in entries)
+        {
+            var row = new DockPanel { Margin = new Thickness(2, 1, 0, 1) };
+            var done = new Button
+            {
+                Content = "✓", Width = 22, Height = 22, Padding = new Thickness(0), FontSize = 11, FontWeight = FontWeights.Bold,
+                Margin = new Thickness(0, 1, 6, 0), VerticalAlignment = VerticalAlignment.Top, Cursor = Cursors.Hand,
+                Background = BrushFrom(theme.Cream), Foreground = ink, BorderBrush = ink, BorderThickness = new Thickness(1.5),
+                ToolTip = "Mark done", Tag = false, Template = RoundedButtonTemplate()
+            };
+            var task = entry.Task;
+            done.Click += (_, _) =>
+            {
+                _host.CompleteMascotTask(task);
+                AddSparkles("★", 2);
+                ShowDigest();
+            };
+            DockPanel.SetDock(done, Dock.Left);
+            row.Children.Add(done);
+            var when = new TextBlock
+            {
+                Text = entry.When, FontSize = 11.5, Margin = new Thickness(6, 3, 0, 0), VerticalAlignment = VerticalAlignment.Top,
+                Foreground = entry.IsLate ? BrushFrom(theme.Seed) : muted, FontWeight = entry.IsLate ? FontWeights.SemiBold : FontWeights.Normal,
+                FontFamily = new FontFamily("Segoe UI")
+            };
+            DockPanel.SetDock(when, Dock.Right);
+            row.Children.Add(when);
+            var priority = TaskReminderLogic.PriorityPrefix(task.Priority);
+            row.Children.Add(new TextBlock
+            {
+                Text = (priority.Length > 0 ? priority + " " : string.Empty) + task.Text,
+                FontSize = 13.5, Foreground = ink, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 2, 0, 0),
+                FontFamily = new FontFamily("Segoe UI")
+            });
+            parent.Children.Add(row);
+        }
+    }
+
+    private void StartDigestClock()
+    {
+        _digestClock.Stop();
+        _digestClock.Start();
+    }
+
+    private void StopDigestClock()
+    {
+        _digestClock.Stop();
+        _digestClockText = null;
+        _digestDateText = null;
+    }
+
+    private void UpdateDigestClock()
+    {
+        if (_digestClockText is null) { _digestClock.Stop(); return; }
+        var now = DateTime.Now;
+        _digestClockText.Text = now.ToString("HH:mm", System.Globalization.CultureInfo.InvariantCulture);
+        if (_digestDateText is not null)
+            _digestDateText.Text = now.ToString("dddd, MMMM d, yyyy", System.Globalization.CultureInfo.InvariantCulture);
     }
 
     private Button BubbleButton(string text, FruitThemePalette theme, bool primary, Action onClick)
@@ -675,6 +954,8 @@ public sealed class DesktopMascotWindow : Window
     {
         _bubbleTimer.Stop();
         _bubbleIsReminder = false;
+        EndEscalation();
+        if (_quickAddOpen) EndQuickAdd();
         var child = _bubble.Child;
         void Collapse()
         {
@@ -683,6 +964,8 @@ public sealed class DesktopMascotWindow : Window
             _bubble.Visibility = Visibility.Collapsed;
             _bubbleTail.Visibility = Visibility.Collapsed;
             _bubble.Child = null;
+            StopDigestClock();
+            SetLarge(false);
             UpdateSleepBadge();
         }
         ReturnToRest();
@@ -696,6 +979,7 @@ public sealed class DesktopMascotWindow : Window
     private void Celebrate()
     {
         HoldPose(DesktopMascotPose.Play, 2200);
+        Sound(DesktopMascotSound.Cheer);
         Hop(2);
         AddSparkles("★", 3);
         ShowBubble("Yay!", "Task done — great job! 🎉", [], reminder: false, seconds: 3);
@@ -742,7 +1026,8 @@ public sealed class DesktopMascotWindow : Window
                 SystemParameters.VirtualScreenWidth, SystemParameters.VirtualScreenHeight);
             Left = x;
             Top = y;
-            _host.SaveMascotPosition(Left, Top);
+            var (compactLeft, compactTop) = CompactPosition();
+            _host.SaveMascotPosition(compactLeft, compactTop);
             // Soft landing after being carried.
             _squash.BeginAnimation(ScaleTransform.ScaleYProperty, Keyframes((0, 1), (140, 0.94), (380, 1.02), (600, 1)));
             _squash.BeginAnimation(ScaleTransform.ScaleXProperty, Keyframes((0, 1), (140, 1.04), (380, 0.99), (600, 1)));
@@ -758,6 +1043,9 @@ public sealed class DesktopMascotWindow : Window
     private void ShowMenu()
     {
         var menu = new ContextMenu();
+        menu.Items.Add(MenuEntry("What's up!", ShowDigest));
+        if (Feature(DesktopMascotFeature.QuickAdd)) menu.Items.Add(MenuEntry("Quick add…", ShowQuickAdd));
+        if (Feature(DesktopMascotFeature.DayWrapUp)) menu.Items.Add(MenuEntry("Day wrap-up", ShowWrapUp));
         menu.Items.Add(MenuEntry("Open Avocado", () => _host.ShowMainFromMascot()));
         menu.Items.Add(MenuEntry("Play!", Dance));
         menu.Items.Add(MenuEntry(_sleeping ? "Wake up" : "Take a nap", () =>
@@ -814,6 +1102,8 @@ public sealed class DesktopMascotWindow : Window
         _poseTimer.Stop();
         _bubbleTimer.Stop();
         _nagTimer.Stop();
+        _digestClock.Stop();
+        StopFeatures();
         base.OnClosed(e);
     }
 

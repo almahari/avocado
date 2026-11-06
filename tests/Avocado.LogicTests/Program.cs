@@ -200,7 +200,7 @@ Assert(SleepReminderRepeatSettings.Get((SleepReminderRepeatOption)999).Option ==
 Assert(TaskTimerLogic.Format(TimeSpan.Zero) == "00:00:00", "A new task timer must start at zero.");
 Assert(TaskTimerLogic.Format(new TimeSpan(1, 2, 3, 4)) == "26:03:04",
     "Task timer formatting must preserve total hours beyond one day.");
-Assert(FruitThemes.All.Count == 18, "The tray must offer fourteen fruit themes and four animal themes.");
+Assert(FruitThemes.All.Count == 21, "The tray must offer fourteen fruit themes and seven animal themes.");
 Assert(MascotAnimationLogic.GetState(true, false, true) == MascotAnimationState.Celebrating, "Completing a task celebrates.");
 Assert(MascotAnimationLogic.GetState(true, true, true) == MascotAnimationState.Sleeping, "Quiet hours take priority over celebration.");
 Assert(MascotAnimationLogic.GetState(false, true, true) == MascotAnimationState.Still, "The animation toggle disables all mascot reactions.");
@@ -627,6 +627,89 @@ for (var i = 0; i < 50; i++)
     var delay = DesktopMascotLogic.NextIdleDelay(mascotRandom);
     Assert(delay >= TimeSpan.FromSeconds(10) && delay < TimeSpan.FromSeconds(25), "Idle tricks must happen every few seconds.");
 }
+var digestNow = new DateTime(2026, 11, 6, 14, 30, 0); // Friday
+var dueLater = new TodoItem { Text = "Ship build", DueAt = digestNow.Date.AddHours(17), CreatedAt = digestNow.AddHours(-3) };
+var dueEarlier = new TodoItem { Text = "Standup notes", DueAt = digestNow.Date.AddHours(9), CreatedAt = digestNow.AddHours(-8) };
+var dueYesterday = new TodoItem { Text = "Pay invoice", DueAt = digestNow.Date.AddDays(-1).AddHours(10), CreatedAt = digestNow.AddDays(-3) };
+var dueTomorrow = new TodoItem { Text = "Dentist", DueAt = digestNow.Date.AddDays(1).AddHours(11), CreatedAt = digestNow.AddHours(-1) };
+var dailyStretch = new TodoItem { Text = "Stretch", ReminderTime = new TimeSpan(16, 0, 0), Recurrence = TaskRecurrence.Daily, CreatedAt = digestNow.AddDays(-30) };
+var mondayOnly = new TodoItem { Text = "Weekly review", ReminderTime = new TimeSpan(10, 0, 0), Recurrence = TaskRecurrence.Monday, CreatedAt = digestNow.AddDays(-30) };
+var newIdea = new TodoItem { Text = "Sketch logo", CreatedAt = digestNow.AddHours(-2) };
+var dustyIdea = new TodoItem { Text = "Clean garage", CreatedAt = digestNow.AddDays(-6) };
+var finished = new TodoItem { Text = "Done thing", IsCompleted = true, DueAt = digestNow.Date.AddHours(12) };
+var digest = DesktopMascotLogic.BuildDigest(
+    [dueLater, dueEarlier, dueYesterday, dueTomorrow, dailyStretch, mondayOnly, newIdea, dustyIdea, finished], digestNow);
+Assert(digest.Date == "Friday, November 6, 2026" && digest.Time == "14:30", "The digest must show the current date and time.");
+Assert(digest.Today.Select(entry => entry.Task.Text).SequenceEqual(["Standup notes", "Stretch", "Ship build", "Sketch logo"]),
+    "Today must list today's scheduled tasks by time, then unscheduled new tasks.");
+Assert(digest.Today[0].IsLate && digest.Today[0].When.StartsWith("late"), "Tasks due earlier today must be flagged late.");
+Assert(digest.Old.Select(entry => entry.Task.Text).SequenceEqual(["Clean garage", "Pay invoice"]),
+    "Old tasks must list stale and overdue tasks, oldest first.");
+Assert(digest.Tomorrow.Select(entry => entry.Task.Text).SequenceEqual(["Dentist", "Stretch"]),
+    "Tomorrow must include dated tasks and recurring reminders that match tomorrow.");
+Assert(digest.Today.Concat(digest.Old).Concat(digest.Tomorrow).All(entry => entry.Task != finished && entry.Task != mondayOnly),
+    "Completed tasks and reminders for other weekdays must not appear.");
+Assert(DesktopMascotLogic.DigestGreeting(new DateTime(2026, 11, 6, 8, 0, 0)).StartsWith("Good morning"),
+    "The digest greeting must match the time of day.");
+// ---------- Mascot feature logic ----------
+var mascotSettings = new DesktopMascotSettings();
+Assert(mascotSettings.IsEnabled(DesktopMascotFeature.MorningBriefing) && !mascotSettings.IsEnabled(DesktopMascotFeature.SoundEffects),
+    "Mascot features must fall back to their defaults until toggled.");
+mascotSettings.Features[DesktopMascotFeature.MorningBriefing] = false;
+Assert(!mascotSettings.IsEnabled(DesktopMascotFeature.MorningBriefing), "A tray toggle must override the default.");
+Assert(DesktopMascotFeatures.All.Select(info => info.Feature).Distinct().Count() == Enum.GetValues<DesktopMascotFeature>().Length,
+    "Every mascot feature must have exactly one tray entry.");
+Assert(DesktopMascotFeatures.GetMood(0, 0, 0) == DesktopMascotMood.Happy, "A clean list makes the mascot happy.");
+Assert(DesktopMascotFeatures.GetMood(3, 0, 0) == DesktopMascotMood.Worried, "Three overdue tasks make the mascot worried.");
+Assert(DesktopMascotFeatures.GetMood(1, 1, 0) == DesktopMascotMood.Content, "A little backlog keeps the mascot content.");
+Assert(DesktopMascotFeatures.PreferredSnooze([]) == 10, "Without history the snooze defaults to 10 minutes.");
+Assert(DesktopMascotFeatures.PreferredSnooze([10, 30, 30, 5]) == 30, "The most used snooze length is preferred.");
+Assert(DesktopMascotFeatures.PreferredSnooze([10, 30]) == 30, "Ties prefer the most recent snooze length.");
+var snoozes = Enumerable.Repeat(5, 25).ToList();
+DesktopMascotFeatures.RecordSnooze(snoozes, 10);
+Assert(snoozes.Count == 20 && snoozes[^1] == 10, "Snooze history keeps only the latest 20 choices.");
+Assert(DesktopMascotFeatures.EscalationLevel(TimeSpan.FromSeconds(30)) == 1 &&
+       DesktopMascotFeatures.EscalationLevel(TimeSpan.FromMinutes(3)) == 2 &&
+       DesktopMascotFeatures.EscalationLevel(TimeSpan.FromMinutes(6)) == 3, "Unanswered reminders escalate over time.");
+var headsUpNow = new DateTime(2026, 11, 6, 9, 56, 0);
+var meeting = new TodoItem { Text = "Meeting", DueAt = new DateTime(2026, 11, 6, 10, 0, 0) };
+var laterMeeting = new TodoItem { Text = "Later", DueAt = new DateTime(2026, 11, 6, 11, 0, 0) };
+var dailyAtTen = new TodoItem { Text = "Daily", ReminderTime = new TimeSpan(10, 0, 0), Recurrence = TaskRecurrence.Daily };
+var warned = new HashSet<Guid>();
+var soon = DesktopMascotFeatures.UpcomingSoon([meeting, laterMeeting, dailyAtTen], headsUpNow, warned);
+Assert(soon.Count == 2 && soon.Contains(meeting) && soon.Contains(dailyAtTen), "Only tasks due within five minutes get a heads-up.");
+warned.Add(meeting.Id);
+Assert(!DesktopMascotFeatures.UpcomingSoon([meeting], headsUpNow, warned).Any(), "A heads-up is given only once.");
+Assert(DesktopMascotFeatures.OutfitFor(new DateTime(2026, 12, 20), SeasonalSkinKind.None) == DesktopMascotOutfit.SantaHat &&
+       DesktopMascotFeatures.OutfitFor(new DateTime(2026, 7, 1), SeasonalSkinKind.None) == DesktopMascotOutfit.Sunglasses &&
+       DesktopMascotFeatures.OutfitFor(new DateTime(2026, 7, 1), SeasonalSkinKind.HalloweenPumpkin) == DesktopMascotOutfit.PumpkinHat,
+    "Outfits follow the season unless a seasonal skin is chosen.");
+Assert(DesktopMascotFeatures.TimeOfDayProp(new DateTime(2026, 11, 6, 8, 0, 0)) is null &&
+       DesktopMascotFeatures.TimeOfDayProp(new DateTime(2026, 11, 6, 23, 0, 0)) == "yawn" &&
+       DesktopMascotFeatures.TimeOfDayProp(new DateTime(2026, 11, 6, 14, 0, 0)) is null, "Time-of-day props match the hour.");
+var quickNow = new DateTime(2026, 11, 6, 14, 0, 0);
+Assert(DesktopMascotFeatures.NormalizeQuickAdd("remind me in 20 min to stretch", quickNow) == "2026-11-06 14:20 stretch",
+    "Relative quick-add reminders become dated tasks.");
+Assert(DesktopMascotFeatures.NormalizeQuickAdd("in 2 hours call Sam", quickNow) == "2026-11-06 16:00 call Sam",
+    "Hour-based quick-add reminders work.");
+var normalizedTomorrow = DesktopMascotFeatures.NormalizeQuickAdd("remind me tomorrow 9am !! call Sam", quickNow);
+Assert(normalizedTomorrow == "tomorrow 9am !! call Sam" &&
+       TaskReminderLogic.Parse(normalizedTomorrow, quickNow).DueAt == new DateTime(2026, 11, 7, 9, 0, 0),
+    "The 'remind me' prefix is stripped so the normal task syntax applies.");
+Assert(DesktopMascotFeatures.NormalizeQuickAdd("Buy milk", quickNow) == "Buy milk", "Plain quick-add text is unchanged.");
+Assert(DesktopMascotFeatures.TaskFromDrop("https://example.com/docs\nmore", null) == "https://example.com/docs : Read example.com",
+    "Dropped links become labelled link tasks.");
+Assert(DesktopMascotFeatures.TaskFromDrop(null, [@"C:\reports\q3.pdf"]) == @"Check q3.pdf : C:\reports\q3.pdf",
+    "A dropped file becomes a task pointing at it.");
+Assert(DesktopMascotFeatures.TaskFromDrop("  ", null) is null, "Blank drops are ignored.");
+var petStart = new DateTime(2026, 11, 6, 12, 0, 0);
+var petSamples = Enumerable.Range(0, 12).Select(i => (petStart.AddMilliseconds(i * 80), i % 2 == 0 ? 10.0 : 40.0)).ToList();
+Assert(DesktopMascotFeatures.IsPetting(petSamples, petStart.AddMilliseconds(960)), "Quick back-and-forth strokes count as petting.");
+Assert(!DesktopMascotFeatures.IsPetting(Enumerable.Range(0, 12).Select(i => (petStart.AddMilliseconds(i * 80), i * 10.0)).ToList(),
+    petStart.AddMilliseconds(960)), "Moving across the mascot once is not petting.");
+Assert(DesktopMascotFeatures.SpriteSize(DesktopMascotSize.Small) < DesktopMascotFeatures.SpriteSize(DesktopMascotSize.Large),
+    "Mascot sizes must grow from small to large.");
+
 Assert(DesktopMascotLogic.ClampToArea(-500, 5000, 300, 360, 0, 0, 1920, 1080) == (0, 720),
     "The mascot must stay fully on screen.");
 
