@@ -388,6 +388,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         UpdateDockHeaderLayout();
         UpdateDockTaskArea();
         UpdateMascotAnimation(force: true);
+        NotifyDesktopMascotTheme();
         var personality = FruitPersonalities.Get(_currentTheme.Kind);
         SleepEyes = personality.Eyes;
         SleepMouth = personality.Mouth;
@@ -668,6 +669,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _globalQuickAddHotkey = null;
         _commandPaletteWindow?.Close();
         _commandPaletteWindow = null;
+        CloseDesktopMascot();
         base.OnClosed(e);
     }
 
@@ -1486,6 +1488,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         RestartSleepReminderRepeatTimer();
         SaveState();
         if (DoNotDisturbSettings.IsActive(CurrentDoNotDisturb, now)) return;
+        NotifyDesktopMascotReminder(dueTasks);
         var wasSleeping = _isSleeping;
         if (!IsVisible) Show();
         if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
@@ -1543,6 +1546,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _sleepReminderRepeatTimer.Stop();
         _alertingTasks.Clear();
         SnoozePanel.Visibility = Visibility.Collapsed;
+        NotifyDesktopMascotReminderResolved();
     }
 
     private void RestartSleepReminderRepeatTimer()

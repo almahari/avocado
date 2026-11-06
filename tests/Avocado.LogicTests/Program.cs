@@ -593,6 +593,43 @@ Assert(!TaskPaletteLogic.TryParseSchedule(
         "not a schedule", new DateTime(2026, 9, 26, 12, 0, 0), out _),
     "Palette rescheduling must reject text without a date or reminder time.");
 
+var mascotNow = new DateTime(2026, 11, 6, 12, 0, 0);
+Assert(DesktopMascotLogic.SpritePath(FruitThemeKind.Avocado, DesktopMascotPose.Wave) == "Assets/desktop-mascot/avocado-wave.png",
+    "Desktop mascot sprites must be named <theme>-<pose>.png.");
+var freshTask = new TodoItem { Text = "Fresh", CreatedAt = mascotNow.AddHours(-1) };
+var oldTask = new TodoItem { Text = "Old", CreatedAt = mascotNow.AddDays(-5) };
+var olderLowTask = new TodoItem { Text = "Older", CreatedAt = mascotNow.AddDays(-9) };
+var overdueTask = new TodoItem { Text = "Overdue", CreatedAt = mascotNow.AddHours(-2), DueAt = mascotNow.AddHours(-1) };
+Assert(DesktopMascotLogic.FindNag([freshTask], mascotNow) is null, "Fresh tasks must not trigger a mascot nag.");
+Assert(DesktopMascotLogic.FindNag([freshTask, oldTask, overdueTask], mascotNow)!.Task == overdueTask,
+    "Overdue tasks must be nagged before merely old ones.");
+Assert(DesktopMascotLogic.FindNag([freshTask, oldTask, olderLowTask], mascotNow)!.Task == olderLowTask,
+    "The oldest stale task must be nagged first.");
+oldTask.Priority = TaskPriority.High;
+Assert(DesktopMascotLogic.FindNag([oldTask, olderLowTask], mascotNow)!.Task == oldTask,
+    "High priority stale tasks must be nagged before lower priority ones.");
+Assert(DesktopMascotLogic.FindNag([oldTask], mascotNow, new Dictionary<Guid, DateTime> { [oldTask.Id] = mascotNow.AddHours(-1) }) is null,
+    "A recently nagged task must not be nagged again right away.");
+var snoozedOld = new TodoItem { Text = "Snoozed", CreatedAt = mascotNow.AddDays(-4), SnoozedUntil = mascotNow.AddHours(1) };
+Assert(DesktopMascotLogic.FindNag([snoozedOld], mascotNow) is null, "Snoozed tasks must not be nagged.");
+Assert(DesktopMascotLogic.DescribeAge(TimeSpan.FromDays(3.4)) == "3 days" && DesktopMascotLogic.DescribeAge(TimeSpan.FromMinutes(1)) == "1 minute",
+    "Mascot ages must read naturally.");
+var reminderSummary = DesktopMascotLogic.ReminderSummary(
+    [new TodoItem { Text = "A" }, new TodoItem { Text = "B", Priority = TaskPriority.High }, new TodoItem { Text = "C" }, new TodoItem { Text = "D" }]);
+Assert(reminderSummary.Contains("• !!! B") && reminderSummary.EndsWith("+1 more"), "Reminder bubbles must summarise tasks with overflow.");
+Assert(DesktopMascotLogic.ReminderTitle(1) == "Reminder!" && DesktopMascotLogic.ReminderTitle(3) == "3 reminders!",
+    "Reminder bubble titles must reflect the task count.");
+var mascotRandom = new Random(4);
+for (var i = 0; i < 50; i++)
+{
+    var first = DesktopMascotLogic.PickIdleAction(mascotRandom, null);
+    Assert(DesktopMascotLogic.PickIdleAction(new Random(i), first) != first, "The mascot must not repeat the same trick twice in a row.");
+    var delay = DesktopMascotLogic.NextIdleDelay(mascotRandom);
+    Assert(delay >= TimeSpan.FromSeconds(10) && delay < TimeSpan.FromSeconds(25), "Idle tricks must happen every few seconds.");
+}
+Assert(DesktopMascotLogic.ClampToArea(-500, 5000, 300, 360, 0, 0, 1920, 1080) == (0, 720),
+    "The mascot must stay fully on screen.");
+
 Console.WriteLine("All Avocado logic checks passed.");
 return;
 

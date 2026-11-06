@@ -28,6 +28,9 @@ public sealed class AppState
     public ArchiveRetentionOption ArchiveRetention { get; set; } = ArchiveRetentionSettings.Default;
     public bool AdaptivePersonalityEnabled { get; set; } = true;
     public bool MascotAnimationsEnabled { get; set; } = true;
+    public bool DesktopMascotEnabled { get; set; }
+    public double? DesktopMascotLeft { get; set; }
+    public double? DesktopMascotTop { get; set; }
     public FruitThemeKind Theme { get; set; } = FruitThemeKind.Avocado;
     public SeasonalSkinKind SeasonalSkin { get; set; } = SeasonalSkinKind.None;
     public GlobalShortcutGesture QuickAddShortcut { get; set; } = GlobalShortcutSettings.QuickAddDefault;

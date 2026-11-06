@@ -1,0 +1,1521 @@
+{
+  "tool": "Built-in image_gen",
+  "expected": 72,
+  "verified": 72,
+  "failed": [],
+  "totalPngBytes": 13207556,
+  "files": [
+    {
+      "file": "Assets/desktop-mascot/avocado-idle.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "bytes": 174689
+    },
+    {
+      "file": "Assets/desktop-mascot/avocado-wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "bytes": 179455
+    },
+    {
+      "file": "Assets/desktop-mascot/avocado-play.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        64,
+        46,
+        447,
+        486
+      ],
+      "bytes": 189831
+    },
+    {
+      "file": "Assets/desktop-mascot/avocado-sleep.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "bytes": 177909
+    },
+    {
+      "file": "Assets/desktop-mascot/strawberry-idle.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "bytes": 180222
+    },
+    {
+      "file": "Assets/desktop-mascot/strawberry-wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "bytes": 187394
+    },
+    {
+      "file": "Assets/desktop-mascot/strawberry-play.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        61,
+        46,
+        451,
+        486
+      ],
+      "bytes": 191069
+    },
+    {
+      "file": "Assets/desktop-mascot/strawberry-sleep.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "bytes": 177799
+    },
+    {
+      "file": "Assets/desktop-mascot/orange-idle.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        430,
+        486
+      ],
+      "bytes": 176649
+    },
+    {
+      "file": "Assets/desktop-mascot/orange-wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        61,
+        46,
+        450,
+        486
+      ],
+      "bytes": 178837
+    },
+    {
+      "file": "Assets/desktop-mascot/orange-play.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        61,
+        46,
+        451,
+        486
+      ],
+      "bytes": 187384
+    },
+    {
+      "file": "Assets/desktop-mascot/orange-sleep.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "bytes": 175874
+    },
+    {
+      "file": "Assets/desktop-mascot/blueberry-idle.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "bytes": 180515
+    },
+    {
+      "file": "Assets/desktop-mascot/blueberry-wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "bytes": 183497
+    },
+    {
+      "file": "Assets/desktop-mascot/blueberry-play.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        63,
+        46,
+        449,
+        486
+      ],
+      "bytes": 192040
+    },
+    {
+      "file": "Assets/desktop-mascot/blueberry-sleep.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "bytes": 178103
+    },
+    {
+      "file": "Assets/desktop-mascot/watermelon-idle.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "bytes": 180207
+    },
+    {
+      "file": "Assets/desktop-mascot/watermelon-wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "bytes": 182617
+    },
+    {
+      "file": "Assets/desktop-mascot/watermelon-play.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        66,
+        46,
+        445,
+        486
+      ],
+      "bytes": 193249
+    },
+    {
+      "file": "Assets/desktop-mascot/watermelon-sleep.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        85,
+        46,
+        427,
+        486
+      ],
+      "bytes": 177906
+    },
+    {
+      "file": "Assets/desktop-mascot/kiwi-idle.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "bytes": 179734
+    },
+    {
+      "file": "Assets/desktop-mascot/kiwi-wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "bytes": 185681
+    },
+    {
+      "file": "Assets/desktop-mascot/kiwi-play.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        69,
+        46,
+        443,
+        486
+      ],
+      "bytes": 190110
+    },
+    {
+      "file": "Assets/desktop-mascot/kiwi-sleep.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "bytes": 181054
+    },
+    {
+      "file": "Assets/desktop-mascot/papaya-idle.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "bytes": 179801
+    },
+    {
+      "file": "Assets/desktop-mascot/papaya-wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "bytes": 182427
+    },
+    {
+      "file": "Assets/desktop-mascot/papaya-play.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        62,
+        46,
+        449,
+        486
+      ],
+      "bytes": 190566
+    },
+    {
+      "file": "Assets/desktop-mascot/papaya-sleep.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "bytes": 176914
+    },
+    {
+      "file": "Assets/desktop-mascot/apple-idle.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "bytes": 177248
+    },
+    {
+      "file": "Assets/desktop-mascot/apple-wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "bytes": 182721
+    },
+    {
+      "file": "Assets/desktop-mascot/apple-play.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        67,
+        46,
+        444,
+        486
+      ],
+      "bytes": 189142
+    },
+    {
+      "file": "Assets/desktop-mascot/apple-sleep.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "bytes": 174693
+    },
+    {
+      "file": "Assets/desktop-mascot/mango-idle.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "bytes": 179990
+    },
+    {
+      "file": "Assets/desktop-mascot/mango-wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        84,
+        46,
+        428,
+        486
+      ],
+      "bytes": 184022
+    },
+    {
+      "file": "Assets/desktop-mascot/mango-play.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        64,
+        46,
+        448,
+        486
+      ],
+      "bytes": 189731
+    },
+    {
+      "file": "Assets/desktop-mascot/mango-sleep.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "bytes": 177153
+    },
+    {
+      "file": "Assets/desktop-mascot/lemon-idle.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "bytes": 177453
+    },
+    {
+      "file": "Assets/desktop-mascot/lemon-wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "bytes": 181797
+    },
+    {
+      "file": "Assets/desktop-mascot/lemon-play.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        65,
+        46,
+        446,
+        486
+      ],
+      "bytes": 188774
+    },
+    {
+      "file": "Assets/desktop-mascot/lemon-sleep.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "bytes": 178607
+    },
+    {
+      "file": "Assets/desktop-mascot/tomato-idle.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "bytes": 173557
+    },
+    {
+      "file": "Assets/desktop-mascot/tomato-wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "bytes": 179049
+    },
+    {
+      "file": "Assets/desktop-mascot/tomato-play.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        55,
+        46,
+        456,
+        486
+      ],
+      "bytes": 188224
+    },
+    {
+      "file": "Assets/desktop-mascot/tomato-sleep.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "bytes": 174610
+    },
+    {
+      "file": "Assets/desktop-mascot/pumpkin-idle.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "bytes": 177651
+    },
+    {
+      "file": "Assets/desktop-mascot/pumpkin-wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "bytes": 180007
+    },
+    {
+      "file": "Assets/desktop-mascot/pumpkin-play.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        63,
+        46,
+        448,
+        486
+      ],
+      "bytes": 187258
+    },
+    {
+      "file": "Assets/desktop-mascot/pumpkin-sleep.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "bytes": 173926
+    },
+    {
+      "file": "Assets/desktop-mascot/potato-idle.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "bytes": 177030
+    },
+    {
+      "file": "Assets/desktop-mascot/potato-wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        428,
+        486
+      ],
+      "bytes": 183977
+    },
+    {
+      "file": "Assets/desktop-mascot/potato-play.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        63,
+        46,
+        448,
+        486
+      ],
+      "bytes": 191528
+    },
+    {
+      "file": "Assets/desktop-mascot/potato-sleep.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "bytes": 178506
+    },
+    {
+      "file": "Assets/desktop-mascot/onion-idle.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        82,
+        46,
+        429,
+        486
+      ],
+      "bytes": 180832
+    },
+    {
+      "file": "Assets/desktop-mascot/onion-wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "bytes": 184439
+    },
+    {
+      "file": "Assets/desktop-mascot/onion-play.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        64,
+        46,
+        447,
+        486
+      ],
+      "bytes": 192413
+    },
+    {
+      "file": "Assets/desktop-mascot/onion-sleep.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        83,
+        46,
+        429,
+        486
+      ],
+      "bytes": 179289
+    },
+    {
+      "file": "Assets/desktop-mascot/cat-idle.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        101,
+        46,
+        410,
+        486
+      ],
+      "bytes": 179988
+    },
+    {
+      "file": "Assets/desktop-mascot/cat-wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        101,
+        46,
+        410,
+        486
+      ],
+      "bytes": 181679
+    },
+    {
+      "file": "Assets/desktop-mascot/cat-play.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        77,
+        46,
+        435,
+        486
+      ],
+      "bytes": 188973
+    },
+    {
+      "file": "Assets/desktop-mascot/cat-sleep.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        101,
+        46,
+        410,
+        486
+      ],
+      "bytes": 180354
+    },
+    {
+      "file": "Assets/desktop-mascot/lion-idle.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        46,
+        431,
+        486
+      ],
+      "bytes": 188859
+    },
+    {
+      "file": "Assets/desktop-mascot/lion-wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        46,
+        430,
+        486
+      ],
+      "bytes": 192281
+    },
+    {
+      "file": "Assets/desktop-mascot/lion-play.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        77,
+        46,
+        435,
+        486
+      ],
+      "bytes": 202821
+    },
+    {
+      "file": "Assets/desktop-mascot/lion-sleep.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        81,
+        46,
+        431,
+        486
+      ],
+      "bytes": 187877
+    },
+    {
+      "file": "Assets/desktop-mascot/giraffe-idle.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        96,
+        46,
+        416,
+        486
+      ],
+      "bytes": 170930
+    },
+    {
+      "file": "Assets/desktop-mascot/giraffe-wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        95,
+        46,
+        416,
+        486
+      ],
+      "bytes": 175509
+    },
+    {
+      "file": "Assets/desktop-mascot/giraffe-play.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        92,
+        46,
+        420,
+        486
+      ],
+      "bytes": 183869
+    },
+    {
+      "file": "Assets/desktop-mascot/giraffe-sleep.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        96,
+        46,
+        416,
+        486
+      ],
+      "bytes": 171952
+    },
+    {
+      "file": "Assets/desktop-mascot/elephant-idle.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        45,
+        46,
+        466,
+        486
+      ],
+      "bytes": 199669
+    },
+    {
+      "file": "Assets/desktop-mascot/elephant-wave.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        46,
+        46,
+        466,
+        486
+      ],
+      "bytes": 198894
+    },
+    {
+      "file": "Assets/desktop-mascot/elephant-play.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        46,
+        46,
+        466,
+        486
+      ],
+      "bytes": 209170
+    },
+    {
+      "file": "Assets/desktop-mascot/elephant-sleep.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "contentBounds": [
+        46,
+        46,
+        466,
+        486
+      ],
+      "bytes": 199571
+    }
+  ]
+}

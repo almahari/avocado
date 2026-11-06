@@ -1,0 +1,366 @@
+{
+  "tool": "Built-in image_gen",
+  "transparentBackground": true,
+  "images": [
+    {
+      "file": "Assets/desktop-mascot/avocado-idle.png",
+      "prompt": "Use case: identity-preserve. Create a square transparent desktop mascot sprite matching the reference red panda EXACTLY in character design and sticker style: big head, small body, thick almost-black outlines, flat cel shading, shiny round eyes, tiny smile, striped tail, hoodie drawstrings and pocket. Single full-body front-facing red panda standing relaxed, green hoodie #4F872D, tiny avocado patch on pocket. Remove the reference background completely: true transparent alpha, no ground or shadows or scene. Center horizontally with head at 8% from top and feet 5% from bottom, entire tail visible. No text, letters, numbers, watermark, frame, or other characters. This is the idle pose.",
+      "reference": "Assets/desktop-mascot/reference-red-panda.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/strawberry-idle.png",
+      "prompt": "Use case: identity-preserve. Create ONE square transparent desktop mascot idle sprite based on reference image. Same cute red panda identity, face markings, orange fur, striped tail, big head small body chibi proportions, thick dark outlines, FLAT CEL SHADING, sticker-like illustration, big round shiny eyes, small relaxed smile. Standing upright front facing. Hoodie with drawstrings and front pocket in #C92850, tiny strawberry patch on pocket. Match reference visual style exactly. Single full body centered horizontally, top margin 8%, feet bottom margin 5%, full tail visible. TRUE transparent alpha background, no ground, no shadow plate, no scenery. No text, letters, numbers, watermark, frame, or additional characters.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/orange-idle.png",
+      "prompt": "Use case: identity-preserve. Create ONE square transparent desktop mascot idle sprite based on reference image. Same cute red panda identity, face markings, orange fur, striped tail, big head small body chibi proportions, thick dark outlines, FLAT CEL SHADING, sticker-like illustration, big round shiny eyes, small relaxed smile. Standing upright front facing. Hoodie with drawstrings and front pocket in #D95C08, tiny orange-slice patch on pocket. Match reference visual style exactly. Single full body centered horizontally, top margin 8%, feet bottom margin 5%, full tail visible. TRUE transparent alpha background, no ground, no shadow plate, no scenery. No text, letters, numbers, watermark, frame, or additional characters.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/blueberry-idle.png",
+      "prompt": "Use case: identity-preserve. Create ONE square transparent desktop mascot idle sprite based on reference image. Same cute red panda identity, face markings, orange fur, striped tail, big head small body chibi proportions, thick dark outlines, FLAT CEL SHADING, sticker-like illustration, big round shiny eyes, small relaxed smile. Standing upright front facing. Hoodie with drawstrings and front pocket in #3C48A0, tiny blueberry patch on pocket. Match reference visual style exactly. Single full body centered horizontally, top margin 8%, feet bottom margin 5%, full tail visible. TRUE transparent alpha background, no ground, no shadow plate, no scenery. No text, letters, numbers, watermark, frame, or additional characters.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/watermelon-idle.png",
+      "prompt": "Use case: identity-preserve. Create ONE square transparent desktop mascot idle sprite based on reference image. Same cute red panda identity, face markings, orange fur, striped tail, big head small body chibi proportions, thick dark outlines, FLAT CEL SHADING, sticker-like illustration, big round shiny eyes, small relaxed smile. Standing upright front facing. Hoodie with drawstrings and front pocket in #59A447, inner hood pink #EE5A68, tiny watermelon-slice patch on pocket. Match reference visual style exactly. Single full body centered horizontally, top margin 8%, feet bottom margin 5%, full tail visible. TRUE transparent alpha background, no ground, no shadow plate, no scenery. No text, letters, numbers, watermark, frame, or additional characters.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/kiwi-idle.png",
+      "prompt": "Use case: identity-preserve. Create ONE square transparent desktop mascot idle sprite based on reference image. Same cute red panda identity, face markings, orange fur, striped tail, big head small body chibi proportions, thick dark outlines, FLAT CEL SHADING, sticker-like illustration, big round shiny eyes, small relaxed smile. Standing upright front facing. Hoodie with drawstrings and front pocket in #8FC34A, tiny kiwi-slice patch on pocket. Match reference visual style exactly. Single full body centered horizontally, top margin 8%, feet bottom margin 5%, full tail visible. TRUE transparent alpha background, no ground, no shadow plate, no scenery. No text, letters, numbers, watermark, frame, or additional characters.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/papaya-idle.png",
+      "prompt": "Use case: identity-preserve. Create ONE square transparent desktop mascot idle sprite based on reference image. Same cute red panda identity, face markings, orange fur, striped tail, big head small body chibi proportions, thick dark outlines, FLAT CEL SHADING, sticker-like illustration, big round shiny eyes, small relaxed smile. Standing upright front facing. Hoodie with drawstrings and front pocket in #E57922, tiny papaya patch on pocket. Match reference visual style exactly. Single full body centered horizontally, top margin 8%, feet bottom margin 5%, full tail visible. TRUE transparent alpha background, no ground, no shadow plate, no scenery. No text, letters, numbers, watermark, frame, or additional characters.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/apple-idle.png",
+      "prompt": "Use case: identity-preserve. Create ONE square transparent desktop mascot idle sprite based on reference image. Same cute red panda identity, face markings, orange fur, striped tail, big head small body chibi proportions, thick dark outlines, FLAT CEL SHADING, sticker-like illustration, big round shiny eyes, small relaxed smile. Standing upright front facing. Hoodie with drawstrings and front pocket in #B92839, tiny apple patch on pocket. Match reference visual style exactly. Single full body centered horizontally, top margin 8%, feet bottom margin 5%, full tail visible. TRUE transparent alpha background, no ground, no shadow plate, no scenery. No text, letters, numbers, watermark, frame, or additional characters.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/mango-idle.png",
+      "prompt": "Use case: identity-preserve. Create ONE square transparent desktop mascot idle sprite based on reference image. Same cute red panda identity, face markings, orange fur, striped tail, big head small body chibi proportions, thick dark outlines, FLAT CEL SHADING, sticker-like illustration, big round shiny eyes, small relaxed smile. Standing upright front facing. Hoodie with drawstrings and front pocket in #E88414, tiny mango patch on pocket. Match reference visual style exactly. Single full body centered horizontally, top margin 8%, feet bottom margin 5%, full tail visible. TRUE transparent alpha background, no ground, no shadow plate, no scenery. No text, letters, numbers, watermark, frame, or additional characters.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/lemon-idle.png",
+      "prompt": "Use case: identity-preserve. Create ONE square transparent desktop mascot idle sprite based on reference image. Same cute red panda identity, face markings, orange fur, striped tail, big head small body chibi proportions, thick dark outlines, FLAT CEL SHADING, sticker-like illustration, big round shiny eyes, small relaxed smile. Standing upright front facing. Hoodie with drawstrings and front pocket in #E8D82D, tiny lemon patch on pocket. Match reference visual style exactly. Single full body centered horizontally, top margin 8%, feet bottom margin 5%, full tail visible. TRUE transparent alpha background, no ground, no shadow plate, no scenery. No text, letters, numbers, watermark, frame, or additional characters.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/tomato-idle.png",
+      "prompt": "Use case: identity-preserve. Create ONE square transparent desktop mascot idle sprite based on reference image. Same cute red panda identity, face markings, orange fur, striped tail, big head small body chibi proportions, thick dark outlines, FLAT CEL SHADING, sticker-like illustration, big round shiny eyes, small relaxed smile. Standing upright front facing. Hoodie with drawstrings and front pocket in #BD2930, tiny tomato patch on pocket. Match reference visual style exactly. Single full body centered horizontally, top margin 8%, feet bottom margin 5%, full tail visible. TRUE transparent alpha background, no ground, no shadow plate, no scenery. No text, letters, numbers, watermark, frame, or additional characters.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/pumpkin-idle.png",
+      "prompt": "Use case: identity-preserve. Create ONE square transparent desktop mascot idle sprite based on reference image. Keep the same cute red panda identity, orange fur, cream face markings and striped tail. Big head small body chibi proportions, thick dark outlines, FLAT CEL SHADING, sticker-like illustration, big round shiny eyes, small relaxed smile. Standing upright front facing. Hoodie with drawstrings and front pocket in #C75B0B, tiny pumpkin patch on pocket. Match reference visual style exactly. Single full body centered horizontally, top margin 8%, feet bottom margin 5%, full tail visible. TRUE transparent alpha background, no ground, no shadow plate, no scenery. No text, letters, numbers, watermark, frame, or additional characters.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/potato-idle.png",
+      "prompt": "Use case: identity-preserve. Create ONE square transparent desktop mascot idle sprite based on reference image. Keep the same cute red panda identity, orange fur, cream face markings and striped tail. Big head small body chibi proportions, thick dark outlines, FLAT CEL SHADING, sticker-like illustration, big round shiny eyes, small relaxed smile. Standing upright front facing. Hoodie with drawstrings and front pocket in #8C6840, tiny potato patch on pocket. Match reference visual style exactly. Single full body centered horizontally, top margin 8%, feet bottom margin 5%, full tail visible. TRUE transparent alpha background, no ground, no shadow plate, no scenery. No text, letters, numbers, watermark, frame, or additional characters.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/onion-idle.png",
+      "prompt": "Use case: identity-preserve. Create ONE square transparent desktop mascot idle sprite based on reference image. Keep the same cute red panda identity, orange fur, cream face markings and striped tail. Big head small body chibi proportions, thick dark outlines, FLAT CEL SHADING, sticker-like illustration, big round shiny eyes, small relaxed smile. Standing upright front facing. Hoodie with drawstrings and front pocket in #944F96, tiny onion patch on pocket. Match reference visual style exactly. Single full body centered horizontally, top margin 8%, feet bottom margin 5%, full tail visible. TRUE transparent alpha background, no ground, no shadow plate, no scenery. No text, letters, numbers, watermark, frame, or additional characters.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/cat-idle.png",
+      "prompt": "Use case: style-transfer. Create ONE square transparent desktop mascot idle sprite based on reference image. Replace the red panda species with a cute ginger/cream CAT; unmistakable cat animal features, species-appropriate tail, no red panda face markings. Big head small body chibi proportions, thick dark outlines, FLAT CEL SHADING, sticker-like illustration, big round shiny eyes, small relaxed smile. Standing upright front facing. Hoodie with drawstrings and front pocket in #E4B76A. Match reference visual style exactly. Single full body centered horizontally, top margin 8%, feet bottom margin 5%, full tail visible. TRUE transparent alpha background, no ground, no shadow plate, no scenery. No text, letters, numbers, watermark, frame, or additional characters.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/lion-idle.png",
+      "prompt": "Use case: style-transfer. Create ONE square transparent desktop mascot idle sprite based on reference image. Replace the red panda species with a cute LION cub with fluffy mane; unmistakable lion animal features, species-appropriate tail, no red panda face markings. Big head small body chibi proportions, thick dark outlines, FLAT CEL SHADING, sticker-like illustration, big round shiny eyes, small relaxed smile. Standing upright front facing. Hoodie with drawstrings and front pocket in #D4A151. Match reference visual style exactly. Single full body centered horizontally, top margin 8%, feet bottom margin 5%, full tail visible. TRUE transparent alpha background, no ground, no shadow plate, no scenery. No text, letters, numbers, watermark, frame, or additional characters.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/giraffe-idle.png",
+      "prompt": "Use case: style-transfer. Create ONE square transparent desktop mascot idle sprite based on reference image. Replace the red panda species with a cute GIRAFFE calf with ossicones and spots; unmistakable giraffe animal features, species-appropriate tail, no red panda face markings. Big head small body chibi proportions, thick dark outlines, FLAT CEL SHADING, sticker-like illustration, big round shiny eyes, small relaxed smile. Standing upright front facing. Hoodie with drawstrings and front pocket in #D4AC62. Match reference visual style exactly. Single full body centered horizontally, top margin 8%, feet bottom margin 5%, full tail visible. TRUE transparent alpha background, no ground, no shadow plate, no scenery. No text, letters, numbers, watermark, frame, or additional characters.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/elephant-idle.png",
+      "prompt": "Use case: style-transfer. Create ONE square transparent desktop mascot idle sprite based on reference image. Replace the red panda species with a cute baby ELEPHANT with big ears and short trunk; unmistakable elephant animal features, species-appropriate tail, no red panda face markings. Big head small body chibi proportions, thick dark outlines, FLAT CEL SHADING, sticker-like illustration, big round shiny eyes, small relaxed smile. Standing upright front facing. Hoodie with drawstrings and front pocket in #B7BBD1. Match reference visual style exactly. Single full body centered horizontally, top margin 8%, feet bottom margin 5%, full tail visible. TRUE transparent alpha background, no ground, no shadow plate, no scenery. No text, letters, numbers, watermark, frame, or additional characters.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/avocado-wave.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference avocado mascot into its WAVE pose. Raise one paw beside head waving happily, open cheerful smiling mouth. Other paw relaxed. Preserve EXACT same identity, face and fur markings, tail, hoodie #4F872D, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/avocado-play.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference avocado mascot into its PLAY pose. Joyful silly dance: both arms out and slightly raised, knees bent in funny dancing stance, cheerful open smile. Keep both feet at the original baseline and head at original height; no props. Preserve EXACT same identity, face and fur markings, tail, hoodie #4F872D, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/avocado-sleep.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference avocado mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #4F872D, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign.",
+      "reference": "Assets/desktop-mascot/avocado-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/strawberry-wave.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference strawberry mascot into its WAVE pose. Raise one paw beside head waving happily, open cheerful smiling mouth. Other paw relaxed. Preserve EXACT same identity, face and fur markings, tail, hoodie #C92850, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign.",
+      "reference": "Assets/desktop-mascot/strawberry-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/strawberry-play.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference strawberry mascot into its PLAY pose. Joyful silly dance: both arms out and slightly raised, knees bent in funny dancing stance, cheerful open smile. Keep both feet at the original baseline and head at original height; no props. Preserve EXACT same identity, face and fur markings, tail, hoodie #C92850, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign.",
+      "reference": "Assets/desktop-mascot/strawberry-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/strawberry-sleep.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference strawberry mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #C92850, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign.",
+      "reference": "Assets/desktop-mascot/strawberry-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/orange-wave.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference orange mascot into its WAVE pose. Raise one paw beside head waving happily, open cheerful smiling mouth. Other paw relaxed. Preserve EXACT same identity, face and fur markings, tail, hoodie #D95C08, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign.",
+      "reference": "Assets/desktop-mascot/orange-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/orange-play.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference orange mascot into its PLAY pose. Joyful silly dance: both arms out and slightly raised, knees bent in funny dancing stance, cheerful open smile. Keep both feet at the original baseline and head at original height; no props. Preserve EXACT same identity, face and fur markings, tail, hoodie #D95C08, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign.",
+      "reference": "Assets/desktop-mascot/orange-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/orange-sleep.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference orange mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #D95C08, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign.",
+      "reference": "Assets/desktop-mascot/orange-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/blueberry-wave.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference blueberry mascot into its WAVE pose. Raise one paw beside head waving happily, open cheerful smiling mouth. Other paw relaxed. Preserve EXACT same identity, face and fur markings, tail, hoodie #3C48A0, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/blueberry-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/blueberry-play.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference blueberry mascot into its PLAY pose. Joyful silly dance: both arms out and slightly raised, knees bent in funny dancing stance, cheerful open smile. Keep both feet at the original baseline and head at original height; no props. Preserve EXACT same identity, face and fur markings, tail, hoodie #3C48A0, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/blueberry-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/blueberry-sleep.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference blueberry mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #3C48A0, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/blueberry-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/watermelon-wave.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference watermelon mascot into its WAVE pose. Raise one paw beside head waving happily, open cheerful smiling mouth. Other paw relaxed. Preserve EXACT same identity, face and fur markings, tail, hoodie #59A447, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/watermelon-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/watermelon-play.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference watermelon mascot into its PLAY pose. Joyful silly dance: both arms out and slightly raised, knees bent in funny dancing stance, cheerful open smile. Keep both feet at the original baseline and head at original height; no props. Preserve EXACT same identity, face and fur markings, tail, hoodie #59A447, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/watermelon-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/watermelon-sleep.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference watermelon mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #59A447, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/watermelon-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/kiwi-wave.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference kiwi mascot into its WAVE pose. Raise one paw beside head waving happily, open cheerful smiling mouth. Other paw relaxed. Preserve EXACT same identity, face and fur markings, tail, hoodie #8FC34A, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/kiwi-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/kiwi-play.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference kiwi mascot into its PLAY pose. Joyful silly dance: both arms out and slightly raised, knees bent in funny dancing stance, cheerful open smile. Keep both feet at the original baseline and head at original height; no props. Preserve EXACT same identity, face and fur markings, tail, hoodie #8FC34A, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/kiwi-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/kiwi-sleep.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference kiwi mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #8FC34A, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/kiwi-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/papaya-wave.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference papaya mascot into its WAVE pose. Raise one paw beside head waving happily, open cheerful smiling mouth. Other paw relaxed. Preserve EXACT same identity, face and fur markings, tail, hoodie #E57922, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/papaya-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/papaya-play.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference papaya mascot into its PLAY pose. Joyful silly dance: both arms out and slightly raised, knees bent in funny dancing stance, cheerful open smile. Keep both feet at the original baseline and head at original height; no props. Preserve EXACT same identity, face and fur markings, tail, hoodie #E57922, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/papaya-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/papaya-sleep.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference papaya mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #E57922, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/papaya-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/apple-wave.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference apple mascot into its WAVE pose. Raise one paw beside head waving happily, open cheerful smiling mouth. Other paw relaxed. Preserve EXACT same identity, face and fur markings, tail, hoodie #B92839, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/apple-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/apple-play.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference apple mascot into its PLAY pose. Joyful silly dance: both arms out and slightly raised, knees bent in funny dancing stance, cheerful open smile. Keep both feet at the original baseline and head at original height; no props. Preserve EXACT same identity, face and fur markings, tail, hoodie #B92839, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/apple-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/apple-sleep.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference apple mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #B92839, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/apple-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/mango-wave.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference mango mascot into its WAVE pose. Raise one paw beside head waving happily, open cheerful smiling mouth. Other paw relaxed. Preserve EXACT same identity, face and fur markings, tail, hoodie #E88414, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/mango-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/mango-play.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference mango mascot into its PLAY pose. Joyful silly dance: both arms out and slightly raised, knees bent in funny dancing stance, cheerful open smile. Keep both feet at the original baseline and head at original height; no props. Preserve EXACT same identity, face and fur markings, tail, hoodie #E88414, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/mango-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/mango-sleep.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference mango mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #E88414, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/mango-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/lemon-wave.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference lemon mascot into its WAVE pose. Raise one paw beside head waving happily, open cheerful smiling mouth. Other paw relaxed. Preserve EXACT same identity, face and fur markings, tail, hoodie #E8D82D, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/lemon-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/lemon-play.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference lemon mascot into its PLAY pose. Joyful silly dance: both arms out and slightly raised, knees bent in funny dancing stance, cheerful open smile. Keep both feet at the original baseline and head at original height; no props. Preserve EXACT same identity, face and fur markings, tail, hoodie #E8D82D, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/lemon-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/lemon-sleep.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference lemon mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #E8D82D, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/lemon-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/tomato-wave.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference tomato mascot into its WAVE pose. Raise one paw beside head waving happily, open cheerful smiling mouth. Other paw relaxed. Preserve EXACT same identity, face and fur markings, tail, hoodie #BD2930, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/tomato-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/tomato-play.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference tomato mascot into its PLAY pose. Joyful silly dance: both arms out and slightly raised, knees bent in funny dancing stance, cheerful open smile. Keep both feet at the original baseline and head at original height; no props. Preserve EXACT same identity, face and fur markings, tail, hoodie #BD2930, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/tomato-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/tomato-sleep.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference tomato mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #BD2930, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/tomato-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/pumpkin-wave.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference pumpkin mascot into its WAVE pose. Raise one paw beside head waving happily, open cheerful smiling mouth. Other paw relaxed. Preserve EXACT same identity, face and fur markings, tail, hoodie #C75B0B, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/pumpkin-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/pumpkin-play.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference pumpkin mascot into its PLAY pose. Joyful silly dance: both arms out and slightly raised, knees bent in funny dancing stance, cheerful open smile. Keep both feet at the original baseline and head at original height; no props. Preserve EXACT same identity, face and fur markings, tail, hoodie #C75B0B, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/pumpkin-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/pumpkin-sleep.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference pumpkin mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #C75B0B, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/pumpkin-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/potato-wave.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference potato mascot into its WAVE pose. Raise one paw beside head waving happily, open cheerful smiling mouth. Other paw relaxed. Preserve EXACT same identity, face and fur markings, tail, hoodie #8C6840, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/potato-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/potato-play.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference potato mascot into its PLAY pose. Joyful silly dance: both arms out and slightly raised, knees bent in funny dancing stance, cheerful open smile. Keep both feet at the original baseline and head at original height; no props. Preserve EXACT same identity, face and fur markings, tail, hoodie #8C6840, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/potato-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/potato-sleep.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference potato mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #8C6840, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/potato-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/onion-wave.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference onion mascot into its WAVE pose. Raise one paw beside head waving happily, open cheerful smiling mouth. Other paw relaxed. Preserve EXACT same identity, face and fur markings, tail, hoodie #944F96, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/onion-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/onion-play.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference onion mascot into its PLAY pose. Joyful silly dance: both arms out and slightly raised, knees bent in funny dancing stance, cheerful open smile. Keep both feet at the original baseline and head at original height; no props. Preserve EXACT same identity, face and fur markings, tail, hoodie #944F96, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/onion-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/onion-sleep.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference onion mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #944F96, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/onion-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/cat-wave.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference cat mascot into its WAVE pose. Raise one paw beside head waving happily, open cheerful smiling mouth. Other paw relaxed. Preserve EXACT same identity, face and fur markings, tail, hoodie #E4B76A, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/cat-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/cat-play.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference cat mascot into its PLAY pose. Joyful silly dance: both arms out and slightly raised, knees bent in funny dancing stance, cheerful open smile. Keep both feet at the original baseline and head at original height; no props. Preserve EXACT same identity, face and fur markings, tail, hoodie #E4B76A, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/cat-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/cat-sleep.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference cat mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #E4B76A, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks.",
+      "reference": "Assets/desktop-mascot/cat-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/lion-wave.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference lion mascot into its WAVE pose. Raise one paw beside head waving happily, open cheerful smiling mouth. Other paw relaxed. Preserve EXACT same identity, face and fur markings, tail, hoodie #D4A151, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks. Preserve the species-specific animal anatomy exactly.",
+      "reference": "Assets/desktop-mascot/lion-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/lion-play.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference lion mascot into its PLAY pose. Joyful silly dance: both arms out and slightly raised, knees bent in funny dancing stance, cheerful open smile. Keep both feet at the original baseline and head at original height; no props. Preserve EXACT same identity, face and fur markings, tail, hoodie #D4A151, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks. Preserve the species-specific animal anatomy exactly.",
+      "reference": "Assets/desktop-mascot/lion-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/lion-sleep.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference lion mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #D4A151, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks. Preserve the species-specific animal anatomy exactly.",
+      "reference": "Assets/desktop-mascot/lion-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/giraffe-wave.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference giraffe mascot into its WAVE pose. Raise one paw beside head waving happily, open cheerful smiling mouth. Other paw relaxed. Preserve EXACT same identity, face and fur markings, tail, hoodie #D4AC62, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks. Preserve the species-specific animal anatomy exactly.",
+      "reference": "Assets/desktop-mascot/giraffe-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/giraffe-play.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference giraffe mascot into its PLAY pose. Joyful silly dance: both arms out and slightly raised, knees bent in funny dancing stance, cheerful open smile. Keep both feet at the original baseline and head at original height; no props. Preserve EXACT same identity, face and fur markings, tail, hoodie #D4AC62, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks. Preserve the species-specific animal anatomy exactly.",
+      "reference": "Assets/desktop-mascot/giraffe-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/giraffe-sleep.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference giraffe mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #D4AC62, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks. Preserve the species-specific animal anatomy exactly.",
+      "reference": "Assets/desktop-mascot/giraffe-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/elephant-wave.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference elephant mascot into its WAVE pose. Raise one paw beside head waving happily, open cheerful smiling mouth. Other paw relaxed. Preserve EXACT same identity, face and fur markings, tail, hoodie #B7BBD1, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks. Preserve the species-specific animal anatomy exactly.",
+      "reference": "Assets/desktop-mascot/elephant-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/elephant-play.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference elephant mascot into its PLAY pose. Joyful silly dance: both arms out and slightly raised, knees bent in funny dancing stance, cheerful open smile. Keep both feet at the original baseline and head at original height; no props. Preserve EXACT same identity, face and fur markings, tail, hoodie #B7BBD1, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks. Preserve the species-specific animal anatomy exactly.",
+      "reference": "Assets/desktop-mascot/elephant-idle.png"
+    },
+    {
+      "file": "Assets/desktop-mascot/elephant-sleep.png",
+      "prompt": "Use case: identity-preserve. Edit the exact reference elephant mascot into its SLEEP pose. Standing sleepy peacefully, both eyes CLOSED curved arcs, tiny peaceful smile, paws relaxed down. Keep body upright and feet in original positions. No Z symbols. Preserve EXACT same identity, face and fur markings, tail, hoodie #B7BBD1, pocket patch, drawstrings, proportions, head size, scale, centered horizontal placement, foot baseline (5% bottom margin), head top margin (8%). Same thick dark outlines, flat cel shading, sticker-like chibi style. Single full-body character only. Square TRUE transparent alpha background, no ground, shadows, scenery, text, letters, numbers, frame, watermark, extra characters. This is an animation state, not a redesign. No decorative floating marks. Preserve the species-specific animal anatomy exactly.",
+      "reference": "Assets/desktop-mascot/elephant-idle.png"
+    }
+  ]
+}

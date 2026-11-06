@@ -20,6 +20,7 @@ public partial class App : System.Windows.Application
     private Forms.ToolStripMenuItem? _openOnStartupItem;
     private Forms.ToolStripMenuItem? _adaptivePersonalityItem;
     private Forms.ToolStripMenuItem? _mascotAnimationsItem;
+    private Forms.ToolStripMenuItem? _desktopMascotItem;
     private Forms.ToolStripMenuItem? _quickAddShortcutItem;
     private Forms.ToolStripMenuItem? _clipboardTaskShortcutItem;
     private Forms.ToolStripMenuItem? _sleepNowShortcutItem;
@@ -49,6 +50,11 @@ public partial class App : System.Windows.Application
         _window = new MainWindow();
         MainWindow = _window;
         _window.HideRequested += (_, _) => HideWindow();
+        _window.ShowRequested += (_, _) => ShowWindow();
+        _window.DesktopMascotChanged += (_, _) =>
+        {
+            if (_desktopMascotItem is not null) _desktopMascotItem.Checked = _window.IsDesktopMascotEnabled;
+        };
         CreateTrayIcon();
         SetWindowMode(_window.IsAlwaysOnTop, persist: false);
         SetSizeMode(_window.IsSmallSize, persist: false);
@@ -65,6 +71,7 @@ public partial class App : System.Windows.Application
         SetTheme(_window.CurrentTheme, persist: false);
         SetSeasonalSkin(_window.CurrentSeasonalSkin, persist: false);
         ShowWindow();
+        if (_window.IsDesktopMascotEnabled) _window.SetDesktopMascot(true, persist: false);
         if (_window.IsMcpServerEnabled)
             _mcpTransition = SetMcpServerEnabledAsync(true);
     }
@@ -204,6 +211,9 @@ public partial class App : System.Windows.Application
             _window!.SetMascotAnimations(!_window.IsMascotAnimationsEnabled);
             _mascotAnimationsItem!.Checked = _window.IsMascotAnimationsEnabled;
         }) { Checked = _window!.IsMascotAnimationsEnabled };
+        _desktopMascotItem = new Forms.ToolStripMenuItem("Desktop mascot", null,
+            (_, _) => _window!.SetDesktopMascot(!_window.IsDesktopMascotEnabled))
+        { Checked = _window.IsDesktopMascotEnabled };
         _openOnStartupItem = new Forms.ToolStripMenuItem(
             "Open on Windows startup", null,
             (_, _) => SetOpenOnStartup(!_startupRegistration.IsEnabled()))
@@ -259,6 +269,7 @@ public partial class App : System.Windows.Application
         menu.Items.Add(seasonalSkinsItem);
         menu.Items.Add(_adaptivePersonalityItem);
         menu.Items.Add(_mascotAnimationsItem);
+        menu.Items.Add(_desktopMascotItem);
         menu.Items.Add(new Forms.ToolStripSeparator());
         menu.Items.Add(reminderSoundItem);
         menu.Items.Add(doNotDisturbItem);
