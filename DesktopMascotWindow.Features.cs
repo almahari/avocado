@@ -36,6 +36,10 @@ public sealed partial class DesktopMascotWindow
     private readonly DispatcherTimer _friendTimer = new();
     private readonly DispatcherTimer _escalationTimer = new() { Interval = TimeSpan.FromSeconds(20) };
     private readonly DispatcherTimer _moodTimer = new() { Interval = TimeSpan.FromSeconds(7) };
+    private readonly DispatcherTimer _weatherTimer = new() { Interval = DesktopMascotWeather.RefreshEvery };
+    private DesktopMascotWeatherReading? _weather;
+    private string? _lastWeatherMood;
+    private bool _weatherFetching;
     private readonly Queue<(ImageSource? Source, int BlendMs, int HoldMs)> _frameQueue = new();
     private readonly HashSet<Guid> _headsUpWarned = [];
     private readonly List<(DateTime At, double X)> _petSamples = [];
@@ -74,6 +78,7 @@ public sealed partial class DesktopMascotWindow
         _friendTimer.Tick += (_, _) => FriendTick();
         _escalationTimer.Tick += (_, _) => EscalationTick();
         _moodTimer.Tick += (_, _) => { if (_mood == DesktopMascotMood.Worried && !_sleeping) SweatDrop(); };
+        _weatherTimer.Tick += (_, _) => RefreshWeather(announce: false);
         _featureTimer.Start();
         ScheduleFriend(first: true);
         ApplySettings();
@@ -85,7 +90,7 @@ public sealed partial class DesktopMascotWindow
 
     private void StopFeatures()
     {
-        foreach (var timer in new[] { _featureTimer, _screenTimer, _frameTimer, _frameLoopTimer, _friendTimer, _escalationTimer, _moodTimer })
+        foreach (var timer in new[] { _featureTimer, _screenTimer, _frameTimer, _frameLoopTimer, _friendTimer, _escalationTimer, _moodTimer, _weatherTimer })
             timer.Stop();
     }
 
@@ -117,6 +122,7 @@ public sealed partial class DesktopMascotWindow
         else if (!_friendTimer.IsEnabled) ScheduleFriend(first: false);
         ApplySeeThrough(hovered: _spriteHost.IsMouseOver);
         UpdateMood();
+        ApplyWeatherSetting();
     }
 
     private void ApplySize(double size)
@@ -512,9 +518,13 @@ public sealed partial class DesktopMascotWindow
         _outfit.HorizontalAlignment = HorizontalAlignment.Left;
         _outfit.VerticalAlignment = VerticalAlignment.Top;
         _outfit.RenderTransform = new ScaleTransform(_spriteSize / 100, _spriteSize / 100);
-        if (!Feature(DesktopMascotFeature.SeasonalOutfits)) return;
+        // Weather (when on and known) wins; otherwise fall back to the seasonal outfit.
+        var outfit = CurrentWeather is DesktopMascotWeatherReading weather ? DesktopMascotWeather.OutfitFor(weather) : null;
+        if (outfit is null && Feature(DesktopMascotFeature.SeasonalOutfits))
+            outfit = DesktopMascotFeatures.OutfitFor(DateTime.Now, _host.MascotSeasonalSkin);
+        if (outfit is null) return;
         var ink = BrushFrom(_host.MascotTheme.Ink);
-        switch (DesktopMascotFeatures.OutfitFor(DateTime.Now, _host.MascotSeasonalSkin))
+        switch (outfit.Value)
         {
             case DesktopMascotOutfit.SantaHat:
                 AddShape("M 31,15 C 36,4 50,-2 62,2 C 70,5 76,10 80,4 L 82,8 C 78,16 72,13 69,15 Z", "#D93A3A", ink);
@@ -522,9 +532,18 @@ public sealed partial class DesktopMascotWindow
                 AddShape("M 77,1 A 4,4 0 1 1 85,1 A 4,4 0 1 1 77,1 Z", "#FFFFFF", ink);
                 break;
             case DesktopMascotOutfit.WinterScarf:
-                AddShape("M 31,47 C 42,51 58,51 69,47 L 70,54 C 58,58 42,58 30,54 Z", "#D9534F", ink);
-                AddShape("M 56,53 L 64,53 L 66,68 L 57,68 Z", "#D9534F", ink);
-                AddShape("M 36,49 L 38,55 M 44,51 L 45,57 M 52,51 L 52,57 M 60,50 L 59,56", null, BrushFrom("#FFFFFF"), 1.2);
+                AddScarf(ink);
+                break;
+            case DesktopMascotOutfit.SnowGear:
+                // Knitted beanie with a pom-pom, plus the scarf.
+                AddShape("M 30,17 C 31,3 69,3 70,17 Z", "#4C7BD9", ink);
+                AddShape("M 28,14 C 40,11 60,11 72,14 L 72,20 C 60,17 40,17 28,20 Z", "#FFFFFF", ink);
+                AddShape("M 46,1 A 4,4 0 1 1 54,1 A 4,4 0 1 1 46,1 Z", "#FFFFFF", ink);
+                AddShape("M 40,6 L 40,12 M 50,5 L 50,12 M 60,6 L 60,12", null, BrushFrom("#A9C1F2"), 1.2);
+                AddScarf(ink);
+                break;
+            case DesktopMascotOutfit.Umbrella:
+                AddUmbrella(ink);
                 break;
             case DesktopMascotOutfit.FlowerCrown:
                 string[] petals = ["#FF9EC4", "#FFE066", "#FFFFFF", "#C9A7FF", "#FF9EC4"];
@@ -550,6 +569,105 @@ public sealed partial class DesktopMascotWindow
                 break;
         }
     }
+
+    private void AddScarf(Brush ink)
+    {
+        AddShape("M 31,47 C 42,51 58,51 69,47 L 70,54 C 58,58 42,58 30,54 Z", "#D9534F", ink);
+        AddShape("M 56,53 L 64,53 L 66,68 L 57,68 Z", "#D9534F", ink);
+        AddShape("M 36,49 L 38,55 M 44,51 L 45,57 M 52,51 L 52,57 M 60,50 L 59,56", null, BrushFrom("#FFFFFF"), 1.2);
+    }
+
+    /// <summary>A tilted umbrella held in the right paw, in the theme's colour, with a few raindrops.</summary>
+    private void AddUmbrella(Brush ink)
+    {
+        var theme = _host.MascotTheme;
+        var umbrella = new Canvas { IsHitTestVisible = false };
+        // Drawn upright around the shaft (0,0 = canopy centre), then tilted over the head.
+        umbrella.Children.Add(OutfitPath("M 0,-1 L 0,48 C 0,54 -7,54 -7,49", null, ink, 2.2));
+        umbrella.Children.Add(OutfitPath("M -36,0 C -34,-24 34,-24 36,0 C 30,-5 24,-5 18,0 C 12,-5 6,-5 0,0 C -6,-5 -12,-5 -18,0 C -24,-5 -30,-5 -36,0 Z",
+            theme.Outer, ink, 1.4));
+        umbrella.Children.Add(OutfitPath("M -18,0 C -14,-12 -8,-18 0,-19 M 18,0 C 14,-12 8,-18 0,-19", null, BrushFrom(theme.Cream), 1));
+        umbrella.Children.Add(OutfitPath("M -1.6,-19 L 0,-25 L 1.6,-19 Z", theme.Ink, null, 0));
+        umbrella.RenderTransform = new TransformGroup
+        {
+            Children = { new RotateTransform(-22), new TranslateTransform(60, 0) }
+        };
+        _outfit.Children.Add(umbrella);
+        foreach (var (x, y) in new[] { (12.0, 20.0), (5.0, 36.0), (9.0, 52.0), (98.0, -8.0), (104.0, 12.0) })
+            AddShape($"M {x},{y - 4} C {x + 2.4},{y - 0.5} {x + 2.4},{y + 2} {x},{y + 2} C {x - 2.4},{y + 2} {x - 2.4},{y - 0.5} {x},{y - 4} Z",
+                "#7FB8F0", null, 0);
+    }
+
+    // ---------- Weather outfits ----------
+
+    private DesktopMascotWeatherReading? CurrentWeather =>
+        Feature(DesktopMascotFeature.WeatherOutfits) && DesktopMascotWeather.IsFresh(_weather, DateTime.Now) ? _weather : null;
+
+    private void ApplyWeatherSetting()
+    {
+        if (!Feature(DesktopMascotFeature.WeatherOutfits))
+        {
+            _weatherTimer.Stop();
+            _lastWeatherMood = null;
+            return;
+        }
+        if (!_weatherTimer.IsEnabled) _weatherTimer.Start();
+        if (CurrentWeather is null) RefreshWeather(announce: false);
+    }
+
+    private void ShowWeather()
+    {
+        if (CurrentWeather is DesktopMascotWeatherReading weather)
+        {
+            ShowBubble(DesktopMascotWeather.Summary(weather), DesktopMascotWeather.Comment(weather), [], reminder: false, seconds: 6);
+            Hop(1);
+        }
+        else
+        {
+            ShowBubble(string.Empty, "Let me check the sky…", [], reminder: false, seconds: 3);
+            RefreshWeather(announce: true);
+        }
+    }
+
+    private async void RefreshWeather(bool announce)
+    {
+        if (_weatherFetching || _closing) return;
+        _weatherFetching = true;
+        DesktopMascotWeatherReading? reading;
+        try
+        {
+            reading = await DesktopMascotWeatherService.FetchAsync(_host.MascotSettings);
+        }
+        finally
+        {
+            _weatherFetching = false;
+        }
+        if (_closing || !Feature(DesktopMascotFeature.WeatherOutfits)) return;
+        if (reading is null)
+        {
+            if (announce) ShowBubble(string.Empty, "I couldn't reach the weather service. I'll try again later.", [], reminder: false, seconds: 4);
+            return;
+        }
+        _weather = reading;
+        _host.SaveMascotSettings();
+        UpdateOutfit();
+
+        // Comment when the weather changes enough to swap outfits (or when asked).
+        var mood = DesktopMascotWeather.Mood(reading);
+        var changed = mood != _lastWeatherMood;
+        _lastWeatherMood = mood;
+        if (announce || changed && !_host.IsMascotQuiet && !_sleeping && _bubble.Visibility != Visibility.Visible)
+        {
+            ShowBubble(DesktopMascotWeather.Summary(reading), DesktopMascotWeather.Comment(reading), [], reminder: false, seconds: 6);
+            Hop(1);
+        }
+    }
+
+    private Path OutfitPath(string data, string? fill, Brush? stroke, double thickness) => new()
+    {
+        Data = Geometry.Parse(data), Fill = fill is null ? null : BrushFrom(fill), Stroke = stroke,
+        StrokeThickness = thickness, StrokeLineJoin = PenLineJoin.Round, StrokeStartLineCap = PenLineCap.Round, StrokeEndLineCap = PenLineCap.Round
+    };
 
     private void AddShape(string data, string? fill, Brush? stroke, double thickness = 1.4) =>
         _outfit.Children.Add(new Path

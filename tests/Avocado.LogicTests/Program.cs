@@ -713,6 +713,37 @@ Assert(DesktopMascotFeatures.SpriteSize(DesktopMascotSize.Small) < DesktopMascot
 Assert(DesktopMascotLogic.ClampToArea(-500, 5000, 300, 360, 0, 0, 1920, 1080) == (0, 720),
     "The mascot must stay fully on screen.");
 
+// Weather outfits.
+var weatherAt = new DateTime(2026, 11, 6, 12, 0, 0);
+Assert(!DesktopMascotFeatures.Get(DesktopMascotFeature.WeatherOutfits).DefaultEnabled, "Weather outfits use the internet, so they are off by default.");
+Assert(DesktopMascotWeather.Classify(0) == DesktopMascotWeatherKind.Clear && DesktopMascotWeather.Classify(3) == DesktopMascotWeatherKind.Cloudy &&
+       DesktopMascotWeather.Classify(45) == DesktopMascotWeatherKind.Fog && DesktopMascotWeather.Classify(53) == DesktopMascotWeatherKind.Drizzle &&
+       DesktopMascotWeather.Classify(63) == DesktopMascotWeatherKind.Rain && DesktopMascotWeather.Classify(81) == DesktopMascotWeatherKind.Rain &&
+       DesktopMascotWeather.Classify(73) == DesktopMascotWeatherKind.Snow && DesktopMascotWeather.Classify(86) == DesktopMascotWeatherKind.Snow &&
+       DesktopMascotWeather.Classify(95) == DesktopMascotWeatherKind.Storm, "WMO weather codes map to simple kinds.");
+Assert(DesktopMascotWeather.OutfitFor(new(18, 61, true, weatherAt)) == DesktopMascotOutfit.Umbrella, "Rain brings the umbrella.");
+Assert(DesktopMascotWeather.OutfitFor(new(18, 96, false, weatherAt)) == DesktopMascotOutfit.Umbrella, "Storms bring the umbrella.");
+Assert(DesktopMascotWeather.OutfitFor(new(-2, 71, true, weatherAt)) == DesktopMascotOutfit.SnowGear, "Snow brings the beanie and scarf.");
+Assert(DesktopMascotWeather.OutfitFor(new(6, 3, true, weatherAt)) == DesktopMascotOutfit.WinterScarf, "Cold weather brings the scarf.");
+Assert(DesktopMascotWeather.OutfitFor(new(27, 0, true, weatherAt)) == DesktopMascotOutfit.Sunglasses, "A sunny warm day brings sunglasses.");
+Assert(DesktopMascotWeather.OutfitFor(new(34, 2, true, weatherAt)) == DesktopMascotOutfit.Sunglasses, "Hot days bring sunglasses even when partly cloudy.");
+Assert(DesktopMascotWeather.OutfitFor(new(27, 0, false, weatherAt)) is null, "No sunglasses at night.");
+Assert(DesktopMascotWeather.OutfitFor(new(20, 3, true, weatherAt)) is null, "Mild cloudy weather needs no outfit.");
+Assert(DesktopMascotWeather.IsFresh(new(20, 0, true, weatherAt), weatherAt.AddHours(2)) &&
+       !DesktopMascotWeather.IsFresh(new(20, 0, true, weatherAt), weatherAt.AddHours(4)) &&
+       !DesktopMascotWeather.IsFresh(null, weatherAt), "Old weather readings are ignored.");
+Assert(DesktopMascotWeather.Summary(new(30.6, 0, true, weatherAt)) == "☀️ 31°C, sunny", "The weather summary is short and rounded.");
+var parsedWeather = DesktopMascotWeather.ParseOpenMeteo("""{"current":{"time":"2026-11-06T12:00","temperature_2m":28.4,"weather_code":61,"is_day":1}}""", weatherAt);
+Assert(parsedWeather is { TemperatureC: 28.4, Code: 61, IsDay: true } && parsedWeather.Kind == DesktopMascotWeatherKind.Rain, "Open-Meteo current weather is parsed.");
+Assert(DesktopMascotWeather.ParseOpenMeteo("""{"error":true}""", weatherAt) is null && DesktopMascotWeather.ParseOpenMeteo("not json", weatherAt) is null,
+    "Bad weather responses are ignored.");
+Assert(DesktopMascotWeather.ParseLocation("""{"success":true,"latitude":26.2235,"longitude":50.5876}""") == (26.2235, 50.5876) &&
+       DesktopMascotWeather.ParseLocation("""{"latitude":"26.22","longitude":"50.58"}""") == (26.22, 50.58), "Approximate locations are parsed.");
+Assert(DesktopMascotWeather.ParseLocation("""{"success":false}""") is null && DesktopMascotWeather.ParseLocation("""{"latitude":0,"longitude":0}""") is null,
+    "Failed location lookups are ignored.");
+Assert(DesktopMascotWeather.ForecastUrl(26.22, 50.58).Contains("latitude=26.22&longitude=50.58") &&
+       DesktopMascotWeather.ForecastUrl(26.22, 50.58).Contains("current=temperature_2m,weather_code,is_day"), "The forecast URL uses invariant numbers.");
+
 Console.WriteLine("All Avocado logic checks passed.");
 return;
 

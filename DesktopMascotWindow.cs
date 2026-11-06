@@ -258,8 +258,9 @@ public sealed partial class DesktopMascotWindow : Window
         }
         (_spriteFront, _spriteBack) = (_spriteBack, _spriteFront);
         _spriteFront.Source = source;
+        // Keep the outfit layer on top of both sprite layers.
         _actor.Children.Remove(_spriteFront);
-        _actor.Children.Add(_spriteFront);
+        _actor.Children.Insert(_actor.Children.IndexOf(_outfit), _spriteFront);
         var blend = TimeSpan.FromMilliseconds(blendMs);
         var ease = new SineEase { EasingMode = EasingMode.EaseInOut };
         _spriteFront.BeginAnimation(OpacityProperty, new DoubleAnimation(0, 1, blend) { EasingFunction = ease });
@@ -788,6 +789,12 @@ public sealed partial class DesktopMascotWindow : Window
             FontFamily = new FontFamily("Segoe UI")
         };
         titleStack.Children.Add(_digestDateText);
+        if (CurrentWeather is DesktopMascotWeatherReading weather)
+            titleStack.Children.Add(new TextBlock
+            {
+                Text = DesktopMascotWeather.Summary(weather), FontSize = 13, Foreground = muted,
+                FontFamily = new FontFamily("Segoe UI Emoji, Segoe UI"), Margin = new Thickness(0, 2, 0, 0)
+            });
         header.Children.Add(titleStack);
         root.Children.Add(header);
 
@@ -1048,6 +1055,7 @@ public sealed partial class DesktopMascotWindow : Window
         if (Feature(DesktopMascotFeature.DayWrapUp)) menu.Items.Add(MenuEntry("Day wrap-up", ShowWrapUp));
         menu.Items.Add(MenuEntry("Open Avocado", () => _host.ShowMainFromMascot()));
         menu.Items.Add(MenuEntry("Play!", Dance));
+        if (Feature(DesktopMascotFeature.WeatherOutfits)) menu.Items.Add(MenuEntry("Weather", ShowWeather));
         menu.Items.Add(MenuEntry(_sleeping ? "Wake up" : "Take a nap", () =>
         {
             _sleeping = !_sleeping;

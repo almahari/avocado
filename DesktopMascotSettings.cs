@@ -21,14 +21,15 @@ public enum DesktopMascotFeature
     HealthNudges,
     FrameAnimation,
     SoundEffects,
-    SeeThrough
+    SeeThrough,
+    WeatherOutfits
 }
 
 public enum DesktopMascotSize { Small, Medium, Large }
 
 public enum DesktopMascotMood { Happy, Content, Worried }
 
-public enum DesktopMascotOutfit { None, SantaHat, WinterScarf, FlowerCrown, Sunglasses, PumpkinHat }
+public enum DesktopMascotOutfit { None, SantaHat, WinterScarf, FlowerCrown, Sunglasses, PumpkinHat, Umbrella, SnowGear }
 
 public enum DesktopMascotNudge { Stretch, Water, EyeRest }
 
@@ -42,6 +43,9 @@ public sealed class DesktopMascotSettings
     public DateOnly? LastBriefingDate { get; set; }
     public DateOnly? LastWrapUpDate { get; set; }
     public int WrapUpHour { get; set; } = 18;
+    public double? WeatherLatitude { get; set; }
+    public double? WeatherLongitude { get; set; }
+    public DateTime? WeatherLocationAt { get; set; }
 
     public bool IsEnabled(DesktopMascotFeature feature) =>
         Features.TryGetValue(feature, out var enabled) ? enabled : DesktopMascotFeatures.Get(feature).DefaultEnabled;
@@ -66,7 +70,8 @@ public static partial class DesktopMascotFeatures
         new(DesktopMascotFeature.HealthNudges, "Break && health nudges", true),
         new(DesktopMascotFeature.FrameAnimation, "Frame-by-frame animation", true),
         new(DesktopMascotFeature.SoundEffects, "Sound effects", false),
-        new(DesktopMascotFeature.SeeThrough, "See-through when not hovered", false)
+        new(DesktopMascotFeature.SeeThrough, "See-through when not hovered", false),
+        new(DesktopMascotFeature.WeatherOutfits, "Weather outfits (uses internet)", false)
     ];
 
     public static DesktopMascotFeatureInfo Get(DesktopMascotFeature feature) => All.First(info => info.Feature == feature);
