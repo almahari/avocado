@@ -21,6 +21,7 @@
     <Compile Include="..\..\DesktopMascotLogic.cs" Link="DesktopMascotLogic.cs" />
     <Compile Include="..\..\DesktopMascotSettings.cs" Link="DesktopMascotSettings.cs" />
     <Compile Include="..\..\DesktopMascotWeather.cs" Link="DesktopMascotWeather.cs" />
+    <Compile Include="..\..\DesktopMascotWalk.cs" Link="DesktopMascotWalk.cs" />
     <Compile Include="..\..\SeasonalSkins.cs" Link="SeasonalSkins.cs" />
     <Compile Include="..\..\TaskReminderLogic.cs" Link="TaskReminderLogic.cs" />
     <Compile Include="..\..\StartupRegistration.cs" Link="StartupRegistration.cs" />

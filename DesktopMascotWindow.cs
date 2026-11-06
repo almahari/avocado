@@ -330,7 +330,7 @@ public sealed partial class DesktopMascotWindow : Window
     private void PerformIdleAction()
     {
         ScheduleIdle();
-        if (_isDragging || _sleeping || _bubble.Visibility == Visibility.Visible || !IsVisible) return;
+        if (_walking || _isDragging || _sleeping || _bubble.Visibility == Visibility.Visible || !IsVisible) return;
         if (TryFeatureIdleAction()) return;
         var action = DesktopMascotLogic.PickIdleAction(_random, _lastAction);
         _lastAction = action;
@@ -672,6 +672,7 @@ public sealed partial class DesktopMascotWindow : Window
     /// <summary>Shows any content in the speech bubble; large bubbles grow the window upward.</summary>
     private void PresentBubble(UIElement content, bool sticky, int seconds, bool large)
     {
+        StopWalk(returnHome: true);
         _digestClock.Stop();
         SetLarge(large);
         _bubble.Child = content;
@@ -1017,6 +1018,7 @@ public sealed partial class DesktopMascotWindow : Window
     private void Sprite_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         if (e.ClickCount == 2) { _host.ShowMainFromMascot(); e.Handled = true; return; }
+        StopWalk(returnHome: false);
         var startLeft = Left;
         var startTop = Top;
         BeginAnimation(LeftProperty, null);
@@ -1056,8 +1058,11 @@ public sealed partial class DesktopMascotWindow : Window
         menu.Items.Add(MenuEntry("Open Avocado", () => _host.ShowMainFromMascot()));
         menu.Items.Add(MenuEntry("Play!", Dance));
         if (Feature(DesktopMascotFeature.WeatherOutfits)) menu.Items.Add(MenuEntry("Weather", ShowWeather));
+        if (Feature(DesktopMascotFeature.TaskbarWalks) && !_sleeping)
+            menu.Items.Add(_walking ? MenuEntry("Stop walking", () => StopWalk(returnHome: true)) : MenuEntry("Go for a little walk", () => StartWalk(manual: true)));
         menu.Items.Add(MenuEntry(_sleeping ? "Wake up" : "Take a nap", () =>
         {
+            StopWalk(returnHome: true);
             _sleeping = !_sleeping;
             SetPose(_sleeping ? DesktopMascotPose.Sleep : DesktopMascotPose.Idle);
             StartBreathing();

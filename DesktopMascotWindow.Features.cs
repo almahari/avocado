@@ -79,6 +79,7 @@ public sealed partial class DesktopMascotWindow
         _escalationTimer.Tick += (_, _) => EscalationTick();
         _moodTimer.Tick += (_, _) => { if (_mood == DesktopMascotMood.Worried && !_sleeping) SweatDrop(); };
         _weatherTimer.Tick += (_, _) => RefreshWeather(announce: false);
+        _walkTimer.Tick += (_, _) => WalkTimerTick();
         _featureTimer.Start();
         ScheduleFriend(first: true);
         ApplySettings();
@@ -90,7 +91,8 @@ public sealed partial class DesktopMascotWindow
 
     private void StopFeatures()
     {
-        foreach (var timer in new[] { _featureTimer, _screenTimer, _frameTimer, _frameLoopTimer, _friendTimer, _escalationTimer, _moodTimer, _weatherTimer })
+        StopWalk(returnHome: false);
+        foreach (var timer in new[] { _featureTimer, _screenTimer, _frameTimer, _frameLoopTimer, _friendTimer, _escalationTimer, _moodTimer, _weatherTimer, _walkTimer })
             timer.Stop();
     }
 
@@ -123,6 +125,7 @@ public sealed partial class DesktopMascotWindow
         ApplySeeThrough(hovered: _spriteHost.IsMouseOver);
         UpdateMood();
         ApplyWeatherSetting();
+        ApplyWalkSetting();
     }
 
     private void ApplySize(double size)
@@ -711,7 +714,7 @@ public sealed partial class DesktopMascotWindow
                     rect.Bottom - rect.Top == _lastForegroundRect.Bottom - _lastForegroundRect.Top;
         _lastForeground = foreground;
         _lastForegroundRect = rect;
-        if (!moved || DateTime.Now - _lastDodge < TimeSpan.FromSeconds(2.5) || _isLarge || HasStickyBubble) return;
+        if (!moved || _walking || DateTime.Now - _lastDodge < TimeSpan.FromSeconds(2.5) || _isLarge || HasStickyBubble) return;
 
         var fromDevice = source.CompositionTarget!.TransformFromDevice;
         var topLeft = fromDevice.Transform(new Point(rect.Left, rect.Top));

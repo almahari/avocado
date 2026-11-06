@@ -22,7 +22,8 @@ public enum DesktopMascotFeature
     FrameAnimation,
     SoundEffects,
     SeeThrough,
-    WeatherOutfits
+    WeatherOutfits,
+    TaskbarWalks
 }
 
 public enum DesktopMascotSize { Small, Medium, Large }
@@ -71,7 +72,8 @@ public static partial class DesktopMascotFeatures
         new(DesktopMascotFeature.FrameAnimation, "Frame-by-frame animation", true),
         new(DesktopMascotFeature.SoundEffects, "Sound effects", false),
         new(DesktopMascotFeature.SeeThrough, "See-through when not hovered", false),
-        new(DesktopMascotFeature.WeatherOutfits, "Weather outfits (uses internet)", false)
+        new(DesktopMascotFeature.WeatherOutfits, "Weather outfits (uses internet)", false),
+        new(DesktopMascotFeature.TaskbarWalks, "Little walks", true)
     ];
 
     public static DesktopMascotFeatureInfo Get(DesktopMascotFeature feature) => All.First(info => info.Feature == feature);

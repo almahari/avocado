@@ -744,6 +744,39 @@ Assert(DesktopMascotWeather.ParseLocation("""{"success":false}""") is null && De
 Assert(DesktopMascotWeather.ForecastUrl(26.22, 50.58).Contains("latitude=26.22&longitude=50.58") &&
        DesktopMascotWeather.ForecastUrl(26.22, 50.58).Contains("current=temperature_2m,weather_code,is_day"), "The forecast URL uses invariant numbers.");
 
+// Little walks: a few steps to one side, then back home.
+var oneScreen = new List<DesktopMascotWalkArea> { new(0, 1920, 0, 1032) };
+var twoScreens = new List<DesktopMascotWalkArea> { new(0, 1920, 0, 1032), new(1920, 3840, 0, 1040) };
+Assert(DesktopMascotFeatures.Get(DesktopMascotFeature.TaskbarWalks).DefaultEnabled, "Little walks are on by default.");
+Assert(DesktopMascotWalk.AreaAt(twoScreens, 100) == 0 && DesktopMascotWalk.AreaAt(twoScreens, 2000) == 1 &&
+       DesktopMascotWalk.AreaAt(twoScreens, 5000) == 1 && DesktopMascotWalk.AreaAt(twoScreens, -50) == 0, "The screen under the mascot is found (or the nearest one).");
+var walkRandom = new Random(7);
+var wentLeft = 0;
+var wentRight = 0;
+for (var i = 0; i < 300; i++)
+{
+    var home = 200 + walkRandom.NextDouble() * 1500;
+    var turn = DesktopMascotWalk.PlanStroll(oneScreen, home, 75, walkRandom);
+    Assert(turn is double, "There is room for a stroll in the middle of the screen.");
+    var distance = Math.Abs(turn!.Value - home);
+    Assert(distance >= DesktopMascotWalk.MinimumDistance - 0.001 && distance <= DesktopMascotWalk.MaximumDistance + 0.001, "A stroll is only a few steps.");
+    if (turn.Value < home) wentLeft++; else wentRight++;
+}
+Assert(wentLeft > 90 && wentRight > 90, "Strolls go left or right.");
+for (var i = 0; i < 50; i++)
+{
+    Assert(DesktopMascotWalk.PlanStroll(oneScreen, 100, 75, walkRandom) is double nearLeft && nearLeft > 100, "Near the left edge it strolls right.");
+    Assert(DesktopMascotWalk.PlanStroll(oneScreen, 1820, 75, walkRandom) is double nearRight && nearRight < 1820, "Near the right edge it strolls left.");
+    Assert(DesktopMascotWalk.PlanStroll(twoScreens, 1880, 75, walkRandom) is double edge && edge <= 1920 - 75, "A stroll never crosses onto another screen.");
+}
+Assert(DesktopMascotWalk.PlanStroll(new List<DesktopMascotWalkArea> { new(0, 180, 0, 800) }, 90, 75, walkRandom) is null, "No stroll when there's no room.");
+Assert(DesktopMascotWalk.PlanStroll(new List<DesktopMascotWalkArea>(), 100, 75, walkRandom) is null, "No stroll without screens.");
+var walkDelay = DesktopMascotWalk.NextWalkDelay(walkRandom);
+var walkPause = DesktopMascotWalk.PauseAtTurn(walkRandom);
+Assert(walkDelay >= TimeSpan.FromMinutes(3) && walkDelay < TimeSpan.FromMinutes(7), "Strolls happen every few minutes.");
+Assert(walkPause >= TimeSpan.FromMilliseconds(700) && walkPause < TimeSpan.FromMilliseconds(1500), "It pauses briefly before turning back.");
+Assert(DesktopMascotWalk.Gait(0) == (0, 0) && DesktopMascotWalk.Gait(Math.PI / 2).Bob < -3.9, "The gait bobs up on each step.");
+
 Console.WriteLine("All Avocado logic checks passed.");
 return;
 
