@@ -18,6 +18,8 @@ public sealed class TodoItem : INotifyPropertyChanged
     private DateOnly? _lastReminderDate;
     private DateTime? _snoozedUntil;
     private TaskRecurrence _recurrence;
+    private int? _monthDay;
+    private DateOnly? _missedOn;
     private TaskPriority _priority;
     private DateTime? _dueAt;
     private bool _isPinned;
@@ -67,6 +69,17 @@ public sealed class TodoItem : INotifyPropertyChanged
             OnPropertyChanged(nameof(ReminderLabel));
         }
     }
+    /// <summary>For monthly tasks: day of the month (1-31) or <see cref="TaskReminderLogic.LastDayOfMonth"/>.</summary>
+    public int? MonthDay
+    {
+        get => _monthDay;
+        set
+        {
+            _monthDay = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(ReminderLabel));
+        }
+    }
     public TaskPriority Priority
     {
         get => _priority;
@@ -110,7 +123,7 @@ public sealed class TodoItem : INotifyPropertyChanged
     public string ReminderLabel => DueAt is DateTime dueAt
         ? TaskReminderLogic.FormatDueLabel(dueAt)
         : ReminderTime is TimeSpan time
-            ? $"{TaskReminderLogic.Label(Recurrence)} {time:hh\\:mm}".TrimStart()
+            ? $"{(MissedOn is null ? string.Empty : "MISSED ")}{TaskReminderLogic.Label(Recurrence, MonthDay)} {time:hh\\:mm}".TrimStart()
             : string.Empty;
     [JsonIgnore]
     public string PinIcon => IsPinned ? "◆" : "◇";
@@ -126,6 +139,31 @@ public sealed class TodoItem : INotifyPropertyChanged
         get => _lastReminderDate;
         set => _lastReminderDate = value;
     }
+    /// <summary>A recurring task marked done is hidden until this date (its next occurrence).</summary>
+    public DateOnly? HiddenUntil { get; set; }
+    /// <summary>The last day a recurring task was ticked off.</summary>
+    public DateOnly? LastDoneDate { get; set; }
+    /// <summary>The day a recurring task was missed on (computed, not saved).</summary>
+    [JsonIgnore]
+    public DateOnly? MissedOn
+    {
+        get => _missedOn;
+        set
+        {
+            if (_missedOn == value) return;
+            _missedOn = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(IsMissed));
+            OnPropertyChanged(nameof(ReminderLabel));
+            OnPropertyChanged(nameof(ReminderToolTip));
+        }
+    }
+    [JsonIgnore]
+    public bool IsMissed => MissedOn is not null;
+    [JsonIgnore]
+    public string? ReminderToolTip => MissedOn is DateOnly missed
+        ? $"Missed on {missed.ToString("dddd, MMM d", CultureInfo.InvariantCulture)}. Tick it off, or it stays here until its next time."
+        : null;
     public DateTime? SnoozedUntil
     {
         get => _snoozedUntil;

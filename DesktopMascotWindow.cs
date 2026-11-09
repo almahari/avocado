@@ -27,6 +27,8 @@ namespace Avocado;
 public interface IDesktopMascotHost
 {
     IEnumerable<TodoItem> OpenTasks { get; }
+    /// <summary>Open tasks including recurring ones done for today (so the digest can list them for tomorrow).</summary>
+    IEnumerable<TodoItem> DigestTasks { get; }
     FruitThemePalette MascotTheme { get; }
     bool IsMascotQuiet { get; }
     void CompleteMascotTask(TodoItem task);
@@ -318,7 +320,7 @@ public sealed partial class DesktopMascotWindow : Window
     // Designed to feel hand-animated: the body is always gently alive (breathing, bob, sway),
     // poses blend into each other, and tricks use anticipation -> action -> settle easing.
 
-    private static bool MotionAllowed => SystemParameters.ClientAreaAnimation;
+    private bool MotionAllowed => SystemParameters.ClientAreaAnimation || Feature(DesktopMascotFeature.AlwaysAnimate);
 
     private void ScheduleIdle()
     {
@@ -739,7 +741,7 @@ public sealed partial class DesktopMascotWindow : Window
             StartBreathing();
             UpdateSleepBadge();
         }
-        var digest = DesktopMascotLogic.BuildDigest(_host.OpenTasks, DateTime.Now);
+        var digest = DesktopMascotLogic.BuildDigest(_host.DigestTasks, DateTime.Now);
         var content = BuildDigestContent(digest);
         if (_isLarge && _bubble.Visibility == Visibility.Visible && _digestClock.IsEnabled)
         {

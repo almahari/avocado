@@ -29,7 +29,9 @@ public partial class MainWindow : IDesktopMascotHost
         DesktopMascotChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    IEnumerable<TodoItem> IDesktopMascotHost.OpenTasks => _tasks.Where(task => !task.IsCompleted).ToList();
+    IEnumerable<TodoItem> IDesktopMascotHost.OpenTasks => _tasks.Where(task => !task.IsCompleted && !IsHiddenToday(task)).ToList();
+
+    IEnumerable<TodoItem> IDesktopMascotHost.DigestTasks => _tasks.Where(task => !task.IsCompleted).ToList();
 
     FruitThemePalette IDesktopMascotHost.MascotTheme => _currentTheme;
 

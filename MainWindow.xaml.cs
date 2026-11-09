@@ -58,6 +58,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private string _taskSearchText = string.Empty;
     private TaskFilterMode _taskFilterMode = TaskFilterMode.Active;
     private string _selectedCategoryFilter = "All";
+    private DateOnly _taskViewDate = DateOnly.MinValue; // first reminder tick refreshes (missed flags, hidden tasks)
+    // Reminders whose time falls after this moment (and up to now) are due; starting at midnight means
+    // reminders missed earlier today while Avocado was closed fire once at startup.
+    private DateTime _reminderWindowStart = DateTime.Today;
     private bool _refreshingCategoryFilters;
     private string _sleepEyes = "─";
     private string _sleepMouth = "ᴗ";
@@ -125,7 +129,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         get
         {
-            var count = _tasks.Count(task => !task.IsCompleted);
+            var count = _tasks.Count(task => !task.IsCompleted && !IsHiddenToday(task));
             return count.ToString();
         }
     }
@@ -195,7 +199,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _tasksView = CollectionViewSource.GetDefaultView(_tasks);
         _tasksView.Filter = item => item is TodoItem task &&
                                     TaskFilterLogic.Matches(task, _taskSearchText, _taskFilterMode,
-                                        _selectedCategoryFilter) && (_dockDateTaskIds is null || _dockDateTaskIds.Contains(task.Id));
+                                        _selectedCategoryFilter) && (_dockDateTaskIds is null ? !IsHiddenToday(task) : _dockDateTaskIds.Contains(task.Id));
         _locationSaveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(350) };
         _locationSaveTimer.Tick += (_, _) => SaveLocationNow();
         _inactivityTimer = new DispatcherTimer();
@@ -1118,6 +1122,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void RefreshTaskView()
     {
+        RefreshMissedTasks();
         RefreshCategoryFilters();
         RefreshDockDateFilter();
         _tasksView.Refresh();
@@ -1179,7 +1184,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         TaskInput.Text = task?.DueAt is DateTime dueAt
             ? $"{dueAt:yyyy-MM-dd HH:mm} {taskText}"
             : task?.ReminderTime is TimeSpan reminderTime
-                ? $"{TaskReminderLogic.Prefix(task.Recurrence)} {reminderTime:hh\\:mm} {taskText}".TrimStart()
+                ? $"{TaskReminderLogic.Prefix(task.Recurrence, task.MonthDay)} {reminderTime:hh\\:mm} {taskText}".TrimStart()
                 : taskText;
         AddPanel.Visibility = Visibility.Visible;
         TaskInput.Focus();
@@ -1207,6 +1212,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             editingTask.Text = parsed.Text;
             editingTask.ReminderTime = parsed.ReminderTime;
             editingTask.Recurrence = parsed.Recurrence;
+            editingTask.MonthDay = parsed.MonthDay;
             editingTask.Priority = parsed.Priority;
             editingTask.DueAt = parsed.DueAt;
             _editingTask = null;
@@ -1230,6 +1236,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 Text = parsed.Text,
                 ReminderTime = parsed.ReminderTime,
                 Recurrence = parsed.Recurrence,
+                MonthDay = parsed.MonthDay,
                 Priority = parsed.Priority,
                 DueAt = parsed.DueAt
             });
@@ -1245,7 +1252,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     }
 
     public IReadOnlyList<TodoItem> GetPaletteTasks() => _tasks
-        .Where(task => !task.IsCompleted)
+        .Where(task => !task.IsCompleted && !IsHiddenToday(task))
         .ToList();
 
     public bool CreatePaletteTask(string input) =>
@@ -1254,8 +1261,61 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     public void CompletePaletteTask(TodoItem task)
     {
         if (!_tasks.Contains(task)) return;
+        if (ShouldReturnNextTime(task)) { MarkRecurringDone(task); return; }
         task.IsCompleted = true;
         ArchiveCompletedTask(task);
+    }
+
+    // ---------- Recurring tasks: done until next time ----------
+
+    public bool IsRecurringDoneUntilNextTimeEnabled => _state.RecurringDoneUntilNextTime;
+
+    public void SetRecurringDoneUntilNextTime(bool enabled)
+    {
+        _state.RecurringDoneUntilNextTime = enabled;
+        SaveState();
+    }
+
+    /// <summary>Flags recurring tasks whose last day passed without being ticked off.</summary>
+    private void RefreshMissedTasks()
+    {
+        var today = DateOnly.FromDateTime(DateTime.Now);
+        foreach (var task in _tasks) task.MissedOn = TaskReminderLogic.MissedOccurrence(task, today);
+    }
+
+    private static bool IsHiddenToday(TodoItem task) =>
+        TaskReminderLogic.IsHiddenOn(task.HiddenUntil, DateOnly.FromDateTime(DateTime.Now));
+
+    private bool ShouldReturnNextTime(TodoItem task) =>
+        _state.RecurringDoneUntilNextTime && task.Recurrence != TaskRecurrence.None;
+
+    /// <summary>
+    /// Marks a recurring task done for this time: it hides until its next occurrence (tomorrow for daily tasks)
+    /// instead of being archived, and a completed copy goes to the archive as a record.
+    /// </summary>
+    private void MarkRecurringDone(TodoItem task)
+    {
+        if (ReferenceEquals(_activeTimerTask, task)) PauseActiveTimer(persist: false);
+        if (ReferenceEquals(_expandedTask, task)) _expandedTask = null;
+        var now = DateTime.Now;
+        var today = DateOnly.FromDateTime(now);
+        task.IsCompleted = false;
+        task.HiddenUntil = TaskReminderLogic.NextOccurrence(task, today);
+        task.SnoozedUntil = null;
+        task.LastReminderDate = today;
+        task.LastDoneDate = today;
+        _archivedTasks.Insert(0, new TodoItem
+        {
+            Text = task.Text, Priority = task.Priority, CreatedAt = now, IsCompleted = true, CompletedAt = now
+        });
+        _happyUntil = now.AddSeconds(4);
+        UpdateMascotAnimation(force: true);
+        ResolveAlertingTask(task);
+        RefreshTaskView();
+        OnPropertyChanged(nameof(SleepTaskCountText));
+        SaveState();
+        RefreshAdaptivePersonality();
+        NotifyDesktopMascotTaskCompleted();
     }
 
     public void SnoozePaletteTask(TodoItem task, int minutes)
@@ -1271,6 +1331,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (!_tasks.Contains(task)) return;
         task.ReminderTime = null;
         task.Recurrence = TaskRecurrence.None;
+        task.MonthDay = null;
         task.DueAt = null;
         task.SnoozedUntil = null;
         task.LastReminderDate = null;
@@ -1285,6 +1346,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             !TaskPaletteLogic.TryParseSchedule(input, DateTime.Now, out var schedule)) return false;
         task.ReminderTime = schedule.ReminderTime;
         task.Recurrence = schedule.Recurrence;
+        task.MonthDay = schedule.MonthDay;
         task.DueAt = schedule.DueAt;
         task.SnoozedUntil = null;
         task.LastReminderDate = null;
@@ -1304,7 +1366,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         if (sender is System.Windows.Controls.CheckBox { DataContext: TodoItem task, IsChecked: true })
         {
-            ArchiveCompletedTask(task);
+            if (ShouldReturnNextTime(task)) MarkRecurringDone(task);
+            else ArchiveCompletedTask(task);
             return;
         }
         SaveState();
@@ -1463,18 +1526,27 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     private void CheckTaskReminders()
     {
         var now = DateTime.Now;
+        var windowStart = _reminderWindowStart;
+        _reminderWindowStart = now;
         if (_lastArchiveCleanupDate != DateOnly.FromDateTime(now) && CleanupArchivedTasks(now) > 0)
             SaveState();
+        if (_taskViewDate != DateOnly.FromDateTime(now))
+        {
+            // A new day: recurring tasks marked done yesterday come back.
+            _taskViewDate = DateOnly.FromDateTime(now);
+            RefreshTaskView();
+            OnPropertyChanged(nameof(SleepTaskCountText));
+        }
         RefreshAdaptivePersonality();
         var dueTasks = _tasks
-            .Where(task => !task.IsCompleted &&
+            .Where(task => !task.IsCompleted && !IsHiddenToday(task) &&
                            (TaskReminderLogic.IsSnoozeDue(task.SnoozedUntil, now) ||
                             task.DueAt is DateTime dueAt &&
                             TaskReminderLogic.IsDue(dueAt, now, task.LastReminderDate) ||
                             task.ReminderTime is TimeSpan reminderTime &&
-                            TaskReminderLogic.MatchesDay(task.Recurrence, now.DayOfWeek) &&
+                            TaskReminderLogic.OccursOn(task, DateOnly.FromDateTime(now)) &&
                             TaskReminderLogic.IsDue(
-                                reminderTime, now, task.LastReminderDate, task.Recurrence)))
+                                reminderTime, windowStart, now, task.LastReminderDate, task.Recurrence, task.CreatedAt)))
             .ToList();
         if (dueTasks.Count == 0) return;
 
@@ -1487,7 +1559,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         _alertingTasks.Clear();
         _alertingTasks.AddRange(dueTasks);
         AlertTaskLabel = dueTasks.Count == 1
-            ? dueTasks[0].Text
+            ? dueTasks[0].ReminderTime is TimeSpan dueTime && now - (now.Date + dueTime) >= TimeSpan.FromMinutes(1) &&
+              dueTasks[0].DueAt is null && !TaskReminderLogic.IsSnoozeDue(dueTasks[0].SnoozedUntil, now)
+                ? $"{dueTasks[0].Text} (was due at {dueTime:hh\\:mm})"
+                : dueTasks[0].Text
             : $"{dueTasks.Count} tasks are due";
         SnoozePanel.Visibility = Visibility.Visible;
         RestartSleepReminderRepeatTimer();

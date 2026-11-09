@@ -15,6 +15,7 @@ public static class CalendarLogic
         var time = task.DueAt?.TimeOfDay ?? task.ReminderTime ?? TimeSpan.FromHours(9);
         task.ReminderTime = null;
         task.Recurrence = TaskRecurrence.None;
+        task.MonthDay = null;
         task.DueAt = date.ToDateTime(TimeOnly.FromTimeSpan(time));
         task.SnoozedUntil = null;
         task.LastReminderDate = null;
@@ -57,7 +58,8 @@ public static class CalendarLogic
             for (var offset = 0; offset < dayCount; offset++)
             {
                 var date = start.AddDays(offset);
-                if (TaskReminderLogic.MatchesDay(task.Recurrence, date.DayOfWeek))
+                if (TaskReminderLogic.OccursOn(task, date) &&
+                    !TaskReminderLogic.IsHiddenOn(task.HiddenUntil, date))
                     occurrences.Add(new CalendarOccurrence(
                         task, date.ToDateTime(TimeOnly.FromTimeSpan(reminderTime))));
             }

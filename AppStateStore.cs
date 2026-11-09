@@ -27,6 +27,7 @@ public sealed class AppState
     public DoNotDisturbMode DoNotDisturb { get; set; } = DoNotDisturbMode.Off;
     public ArchiveRetentionOption ArchiveRetention { get; set; } = ArchiveRetentionSettings.Default;
     public bool AdaptivePersonalityEnabled { get; set; } = true;
+    public bool RecurringDoneUntilNextTime { get; set; } = true;
     public bool MascotAnimationsEnabled { get; set; } = true;
     public bool DesktopMascotEnabled { get; set; }
     public double? DesktopMascotLeft { get; set; }

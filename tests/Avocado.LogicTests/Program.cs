@@ -643,12 +643,13 @@ Assert(digest.Date == "Friday, November 6, 2026" && digest.Time == "14:30", "The
 Assert(digest.Today.Select(entry => entry.Task.Text).SequenceEqual(["Standup notes", "Stretch", "Ship build", "Sketch logo"]),
     "Today must list today's scheduled tasks by time, then unscheduled new tasks.");
 Assert(digest.Today[0].IsLate && digest.Today[0].When.StartsWith("late"), "Tasks due earlier today must be flagged late.");
-Assert(digest.Old.Select(entry => entry.Task.Text).SequenceEqual(["Clean garage", "Pay invoice"]),
-    "Old tasks must list stale and overdue tasks, oldest first.");
+Assert(digest.Old.Select(entry => entry.Task.Text).SequenceEqual(["Clean garage", "Weekly review", "Pay invoice"]),
+    "Old tasks must list stale, missed recurring and overdue tasks, oldest first.");
 Assert(digest.Tomorrow.Select(entry => entry.Task.Text).SequenceEqual(["Dentist", "Stretch"]),
     "Tomorrow must include dated tasks and recurring reminders that match tomorrow.");
-Assert(digest.Today.Concat(digest.Old).Concat(digest.Tomorrow).All(entry => entry.Task != finished && entry.Task != mondayOnly),
-    "Completed tasks and reminders for other weekdays must not appear.");
+Assert(digest.Today.Concat(digest.Old).Concat(digest.Tomorrow).All(entry => entry.Task != finished) &&
+       digest.Today.Concat(digest.Tomorrow).All(entry => entry.Task != mondayOnly),
+    "Completed tasks and reminders for other weekdays must not appear (a missed Monday task is listed only as old).");
 Assert(DesktopMascotLogic.DigestGreeting(new DateTime(2026, 11, 6, 8, 0, 0)).StartsWith("Good morning"),
     "The digest greeting must match the time of day.");
 // ---------- Mascot feature logic ----------
@@ -776,6 +777,144 @@ var walkPause = DesktopMascotWalk.PauseAtTurn(walkRandom);
 Assert(walkDelay >= TimeSpan.FromMinutes(3) && walkDelay < TimeSpan.FromMinutes(7), "Strolls happen every few minutes.");
 Assert(walkPause >= TimeSpan.FromMilliseconds(700) && walkPause < TimeSpan.FromMilliseconds(1500), "It pauses briefly before turning back.");
 Assert(DesktopMascotWalk.Gait(0) == (0, 0) && DesktopMascotWalk.Gait(Math.PI / 2).Bob < -3.9, "The gait bobs up on each step.");
+
+// Recurring tasks: done until next time.
+var friday = new DateOnly(2026, 11, 6);
+Assert(TaskReminderLogic.NextOccurrence(TaskRecurrence.Daily, friday) == friday.AddDays(1), "A done daily task comes back tomorrow.");
+Assert(TaskReminderLogic.NextOccurrence(TaskRecurrence.Monday, friday) == new DateOnly(2026, 11, 9), "A done Monday task comes back next Monday.");
+Assert(TaskReminderLogic.NextOccurrence(TaskRecurrence.Friday, friday) == new DateOnly(2026, 11, 13), "A done weekly task comes back a week later.");
+Assert(TaskReminderLogic.IsHiddenOn(friday.AddDays(1), friday) && !TaskReminderLogic.IsHiddenOn(friday.AddDays(1), friday.AddDays(1)) &&
+       !TaskReminderLogic.IsHiddenOn(null, friday), "A done recurring task is hidden only until its next day.");
+var doneDaily = new TodoItem { Text = "Daily standup", ReminderTime = TimeSpan.FromHours(9), Recurrence = TaskRecurrence.Daily, HiddenUntil = friday.AddDays(1) };
+var openDaily = new TodoItem { Text = "Daily water", ReminderTime = TimeSpan.FromHours(10), Recurrence = TaskRecurrence.Daily };
+var recurringDigest = DesktopMascotLogic.BuildDigest([doneDaily, openDaily], new DateTime(2026, 11, 6, 8, 0, 0));
+Assert(recurringDigest.Today.All(entry => entry.Task != doneDaily) && recurringDigest.Today.Any(entry => entry.Task == openDaily),
+    "A recurring task done today is not listed for today.");
+Assert(recurringDigest.Tomorrow.Any(entry => entry.Task == doneDaily), "A recurring task done today is still listed for tomorrow.");
+var recurringCalendar = CalendarLogic.GetOccurrences([doneDaily], friday, 3, new DateTime(2026, 11, 6, 8, 0, 0));
+Assert(recurringCalendar.Count == 2 && recurringCalendar.All(item => DateOnly.FromDateTime(item.At) > friday),
+    "The calendar skips the day a recurring task was already done.");
+var savedRecurring = System.Text.Json.JsonSerializer.Deserialize<TodoItem>(System.Text.Json.JsonSerializer.Serialize(doneDaily))!;
+Assert(savedRecurring.HiddenUntil == friday.AddDays(1), "The hidden-until date is saved.");
+Assert(new AppState().RecurringDoneUntilNextTime, "Done recurring tasks come back next time by default.");
+Assert(!DesktopMascotFeatures.Get(DesktopMascotFeature.AlwaysAnimate).DefaultEnabled, "Always animate is off by default (Windows setting is respected).");
+
+// Monthly recurring tasks.
+var monthlyRent = TaskReminderLogic.Parse("monthly 1 09:00 Pay rent");
+Assert(monthlyRent is { Text: "Pay rent", Recurrence: TaskRecurrence.Monthly, MonthDay: 1 } && monthlyRent.ReminderTime == TimeSpan.FromHours(9),
+    "monthly 1 09:00 creates a task on the 1st of every month.");
+var monthlyInvoice = TaskReminderLogic.Parse("Monthly 15th 2:30pm !! Send invoice");
+Assert(monthlyInvoice is { Text: "Send invoice", Recurrence: TaskRecurrence.Monthly, MonthDay: 15, Priority: TaskPriority.Medium } &&
+       monthlyInvoice.ReminderTime == new TimeSpan(14, 30, 0), "Monthly accepts ordinals, 12-hour times and priority marks.");
+var monthlyLast = TaskReminderLogic.Parse("monthly last 17:00 Close the books");
+Assert(monthlyLast is { Text: "Close the books", Recurrence: TaskRecurrence.Monthly, MonthDay: TaskReminderLogic.LastDayOfMonth },
+    "monthly last creates a task on the last day of every month.");
+var monthlyDefault = TaskReminderLogic.Parse("monthly 08:00 Review budget");
+Assert(monthlyDefault is { Text: "Review budget", Recurrence: TaskRecurrence.Monthly, MonthDay: 1 }, "monthly without a day means the 1st.");
+Assert(TaskReminderLogic.Parse("monthly 2nd 9am Pay phone bill") is { MonthDay: 2, Text: "Pay phone bill" } &&
+       TaskReminderLogic.Parse("monthly 23rd 10:00 Water plants") is { MonthDay: 23 } &&
+       TaskReminderLogic.Parse("monthly 31 10:00 Backup") is { MonthDay: 31 }, "Day numbers 1-31 with ordinal suffixes parse.");
+Assert(TaskReminderLogic.Parse("monthly 32 10:00 Nope").Recurrence == TaskRecurrence.None, "Day 32 is not a monthly task.");
+Assert(TaskReminderLogic.Parse("monthly report draft").Recurrence == TaskRecurrence.None, "Monthly without a time stays a plain task.");
+Assert(TaskReminderLogic.ParseMany("monthly 1 09:00 Rent; monday 10:00 Plan").Select(item => item.Recurrence)
+       .SequenceEqual([TaskRecurrence.Monthly, TaskRecurrence.Monday]), "Monthly works inside multi-task input.");
+Assert(TaskReminderLogic.OccursOn(TaskRecurrence.Monthly, 1, new DateOnly(2026, 12, 1)) &&
+       !TaskReminderLogic.OccursOn(TaskRecurrence.Monthly, 1, new DateOnly(2026, 12, 2)), "Monthly tasks happen only on their day.");
+Assert(TaskReminderLogic.OccursOn(TaskRecurrence.Monthly, 31, new DateOnly(2026, 4, 30)) &&
+       TaskReminderLogic.OccursOn(TaskRecurrence.Monthly, 30, new DateOnly(2027, 2, 28)) &&
+       TaskReminderLogic.OccursOn(TaskRecurrence.Monthly, 30, new DateOnly(2028, 2, 29)), "Days a month doesn't have fall on its last day.");
+Assert(TaskReminderLogic.OccursOn(TaskRecurrence.Monthly, TaskReminderLogic.LastDayOfMonth, new DateOnly(2026, 11, 30)) &&
+       !TaskReminderLogic.OccursOn(TaskRecurrence.Monthly, TaskReminderLogic.LastDayOfMonth, new DateOnly(2026, 11, 29)), "Last means the month's last day.");
+Assert(TaskReminderLogic.OccursOn(TaskRecurrence.Monday, null, new DateOnly(2026, 11, 9)) &&
+       !TaskReminderLogic.OccursOn(TaskRecurrence.Monday, null, new DateOnly(2026, 11, 10)) &&
+       TaskReminderLogic.OccursOn(TaskRecurrence.Daily, null, new DateOnly(2026, 11, 10)), "Weekly and daily tasks still work.");
+Assert(TaskReminderLogic.NextOccurrence(TaskRecurrence.Monthly, new DateOnly(2026, 11, 1), 1) == new DateOnly(2026, 12, 1) &&
+       TaskReminderLogic.NextOccurrence(TaskRecurrence.Monthly, new DateOnly(2027, 1, 31), 31) == new DateOnly(2027, 2, 28) &&
+       TaskReminderLogic.NextOccurrence(TaskRecurrence.Monthly, new DateOnly(2026, 11, 30), TaskReminderLogic.LastDayOfMonth) == new DateOnly(2026, 12, 31),
+    "A done monthly task comes back next month.");
+Assert(TaskReminderLogic.Label(TaskRecurrence.Monthly, 1) == "M1" && TaskReminderLogic.Label(TaskRecurrence.Monthly, TaskReminderLogic.LastDayOfMonth) == "M-LAST" &&
+       TaskReminderLogic.Prefix(TaskRecurrence.Monthly, 15) == "monthly 15" && TaskReminderLogic.Prefix(TaskRecurrence.Monthly, TaskReminderLogic.LastDayOfMonth) == "monthly last",
+    "Monthly tasks have a short label and an editable prefix.");
+var monthlyItem = new TodoItem { Text = "Pay rent", ReminderTime = TimeSpan.FromHours(9), Recurrence = TaskRecurrence.Monthly, MonthDay = 1 };
+Assert(monthlyItem.ReminderLabel == "M1 09:00", "The task row shows monthly tasks as M1 09:00.");
+var reparsed = TaskReminderLogic.Parse($"{TaskReminderLogic.Prefix(monthlyItem.Recurrence, monthlyItem.MonthDay)} {monthlyItem.ReminderTime:hh\\:mm} {monthlyItem.Text}");
+Assert(reparsed is { Recurrence: TaskRecurrence.Monthly, MonthDay: 1, Text: "Pay rent" }, "Editing a monthly task round-trips.");
+Assert(TaskReminderLogic.MonthDayName(1) == "1st" && TaskReminderLogic.MonthDayName(2) == "2nd" && TaskReminderLogic.MonthDayName(3) == "3rd" &&
+       TaskReminderLogic.MonthDayName(11) == "11th" && TaskReminderLogic.MonthDayName(22) == "22nd" && TaskReminderLogic.MonthDayName(TaskReminderLogic.LastDayOfMonth) == "last",
+    "Month days read naturally.");
+Assert(TaskReminderLogic.Describe(TaskRecurrence.Monthly, 1) == "monthly on the 1st" && TaskReminderLogic.Describe(TaskRecurrence.Monday) == "every Monday",
+    "Recurrences are described in plain words.");
+var monthlyCalendar = CalendarLogic.GetOccurrences([monthlyItem], new DateOnly(2026, 11, 25), 14, new DateTime(2026, 11, 25, 8, 0, 0));
+Assert(monthlyCalendar.Count == 1 && monthlyCalendar[0].At == new DateTime(2026, 12, 1, 9, 0, 0), "The calendar shows monthly tasks on their day.");
+var monthlyDigest = DesktopMascotLogic.BuildDigest([monthlyItem], new DateTime(2026, 11, 30, 8, 0, 0));
+Assert(monthlyDigest.Today.Count == 0 && monthlyDigest.Tomorrow.Any(entry => entry.Task == monthlyItem && entry.When.Contains("monthly")),
+    "What's up! lists a monthly task the day before.");
+var savedMonthly = System.Text.Json.JsonSerializer.Deserialize<TodoItem>(System.Text.Json.JsonSerializer.Serialize(monthlyItem))!;
+Assert(savedMonthly is { Recurrence: TaskRecurrence.Monthly, MonthDay: 1 }, "Monthly tasks are saved.");
+Assert(TodoListLogic.Duplicate(monthlyItem) is { Recurrence: TaskRecurrence.Monthly, MonthDay: 1 }, "Duplicating keeps the month day.");
+Assert(TaskPaletteLogic.TryParseSchedule("monthly last 18:00", DateTime.Now, out var monthlySchedule) &&
+       monthlySchedule is { Recurrence: TaskRecurrence.Monthly, MonthDay: TaskReminderLogic.LastDayOfMonth }, "Rescheduling accepts monthly.");
+
+// Missed recurring tasks and catch-up reminders.
+var mondayNov9 = new DateOnly(2026, 11, 9);
+var tuesdayNov10 = new DateOnly(2026, 11, 10);
+var gym = new TodoItem { Text = "Gym", ReminderTime = TimeSpan.FromHours(18), Recurrence = TaskRecurrence.Monday, CreatedAt = new DateTime(2026, 11, 1, 8, 0, 0) };
+Assert(TaskReminderLogic.MissedOccurrence(gym, tuesdayNov10) == mondayNov9, "A Monday task not ticked off on Monday is missed on Tuesday.");
+Assert(TaskReminderLogic.MissedOccurrence(gym, new DateOnly(2026, 11, 15)) == mondayNov9, "It stays missed for the rest of the week.");
+Assert(TaskReminderLogic.MissedOccurrence(gym, new DateOnly(2026, 11, 16)) is null, "On its next Monday it is simply due again.");
+Assert(TaskReminderLogic.MissedOccurrence(gym, mondayNov9) is null, "It is not missed on its own day.");
+gym.LastDoneDate = mondayNov9;
+Assert(TaskReminderLogic.MissedOccurrence(gym, tuesdayNov10) is null, "Ticking it off on Monday means it wasn't missed.");
+gym.LastDoneDate = new DateOnly(2026, 11, 2);
+Assert(TaskReminderLogic.MissedOccurrence(gym, tuesdayNov10) == mondayNov9, "Ticking it off last week doesn't cover this week.");
+gym.LastDoneDate = tuesdayNov10;
+Assert(TaskReminderLogic.MissedOccurrence(gym, new DateOnly(2026, 11, 11)) is null, "Ticking it off late (Tuesday) clears the missed flag.");
+gym.LastDoneDate = null;
+gym.HiddenUntil = new DateOnly(2026, 11, 16);
+Assert(TaskReminderLogic.MissedOccurrence(gym, tuesdayNov10) is null, "A task done for this time is not missed.");
+gym.HiddenUntil = null;
+var newGym = new TodoItem { Text = "Gym", ReminderTime = TimeSpan.FromHours(18), Recurrence = TaskRecurrence.Monday, CreatedAt = new DateTime(2026, 11, 9, 19, 0, 0) };
+Assert(TaskReminderLogic.MissedOccurrence(newGym, tuesdayNov10) is null, "A task created after its time on Monday wasn't missed.");
+var dailyWater = new TodoItem { Text = "Water", ReminderTime = TimeSpan.FromHours(9), Recurrence = TaskRecurrence.Daily, CreatedAt = new DateTime(2026, 11, 1) };
+Assert(TaskReminderLogic.MissedOccurrence(dailyWater, tuesdayNov10) is null, "Daily tasks are never 'missed' (today is their day again).");
+var rentMissed = new TodoItem { Text = "Rent", ReminderTime = TimeSpan.FromHours(9), Recurrence = TaskRecurrence.Monthly, MonthDay = 1, CreatedAt = new DateTime(2026, 10, 1) };
+Assert(TaskReminderLogic.MissedOccurrence(rentMissed, tuesdayNov10) == new DateOnly(2026, 11, 1), "Monthly tasks can be missed too.");
+Assert(TaskReminderLogic.MissedOccurrence(new TodoItem { Text = "Plain", CreatedAt = new DateTime(2026, 11, 1) }, tuesdayNov10) is null, "Plain tasks are never missed.");
+Assert(TaskReminderLogic.MissedDayName(mondayNov9, tuesdayNov10) == "Monday" && TaskReminderLogic.MissedDayName(new DateOnly(2026, 10, 1), tuesdayNov10) == "Oct 1",
+    "Missed days read naturally.");
+gym.MissedOn = mondayNov9;
+Assert(gym.IsMissed && gym.ReminderLabel == "MISSED MON 18:00" && gym.ReminderToolTip!.Contains("Monday, Nov 9"), "The task row shows MISSED in the label.");
+gym.MissedOn = null;
+Assert(gym.ReminderLabel == "MON 18:00" && gym.ReminderToolTip is null, "The label is normal once it is no longer missed.");
+
+var nine = TimeSpan.FromHours(9);
+var startOfDay = new DateTime(2026, 11, 10);
+Assert(TaskReminderLogic.IsDue(nine, startOfDay, new DateTime(2026, 11, 10, 10, 30, 0), null, TaskRecurrence.Daily, new DateTime(2026, 11, 1)),
+    "A reminder missed earlier today while Avocado was closed fires at startup.");
+Assert(!TaskReminderLogic.IsDue(nine, startOfDay, new DateTime(2026, 11, 10, 10, 30, 0), tuesdayNov10, TaskRecurrence.Daily, new DateTime(2026, 11, 1)),
+    "A reminder already shown today doesn't fire again.");
+Assert(!TaskReminderLogic.IsDue(nine, new DateTime(2026, 11, 10, 10, 29, 59), new DateTime(2026, 11, 10, 10, 30, 0), null, TaskRecurrence.Daily, new DateTime(2026, 11, 1)),
+    "While running, only reminders in the last tick (or the exact minute) fire, so editing to an earlier time doesn't fire.");
+Assert(TaskReminderLogic.IsDue(nine, new DateTime(2026, 11, 10, 8, 50, 0), new DateTime(2026, 11, 10, 9, 20, 0), null, TaskRecurrence.Daily, new DateTime(2026, 11, 1)),
+    "A reminder that fell while the PC was asleep fires on wake.");
+Assert(!TaskReminderLogic.IsDue(nine, startOfDay, new DateTime(2026, 11, 10, 10, 30, 0), null, TaskRecurrence.Daily, new DateTime(2026, 11, 10, 10, 0, 0)),
+    "A task created after its reminder time doesn't fire retroactively.");
+Assert(TaskReminderLogic.IsDue(nine, new DateTime(2026, 11, 10, 9, 0, 30), new DateTime(2026, 11, 10, 9, 0, 31), null, TaskRecurrence.Daily, new DateTime(2026, 11, 1)),
+    "The exact minute still fires.");
+Assert(!TaskReminderLogic.IsDue(nine, startOfDay, new DateTime(2026, 11, 10, 8, 0, 0), null, TaskRecurrence.Daily, new DateTime(2026, 11, 1)),
+    "Reminders later today don't fire early.");
+Assert(TaskReminderLogic.IsDue(nine, startOfDay, new DateTime(2026, 11, 10, 10, 0, 0), null, TaskRecurrence.None, new DateTime(2026, 11, 9)) &&
+       !TaskReminderLogic.IsDue(nine, startOfDay, new DateTime(2026, 11, 10, 10, 0, 0), mondayNov9, TaskRecurrence.None, new DateTime(2026, 11, 8)),
+    "One-time time reminders catch up once, and never repeat.");
+
+var missedNag = DesktopMascotLogic.FindNag([gym], new DateTime(2026, 11, 10, 9, 0, 0));
+Assert(missedNag is { Title: "Missed one!" } && missedNag.Task == gym && missedNag.Summary.Contains("Monday at 18:00"), "The mascot reminds about missed recurring tasks.");
+Assert(DesktopMascotLogic.FindNag([dailyWater], new DateTime(2026, 11, 10, 9, 0, 0)) is null, "Recurring tasks never count as stale.");
+var missedDigest = DesktopMascotLogic.BuildDigest([gym], new DateTime(2026, 11, 10, 9, 0, 0));
+Assert(missedDigest.Old.Any(entry => entry.Task == gym && entry.IsLate && entry.When.StartsWith("missed Monday")) && missedDigest.Today.Count == 0,
+    "What's up! lists missed recurring tasks with the old ones.");
+var savedDone = System.Text.Json.JsonSerializer.Deserialize<TodoItem>(System.Text.Json.JsonSerializer.Serialize(new TodoItem { Text = "x", LastDoneDate = mondayNov9, MissedOn = mondayNov9 }))!;
+Assert(savedDone.LastDoneDate == mondayNov9 && savedDone.MissedOn is null, "The last-done date is saved; the missed flag is recomputed.");
 
 Console.WriteLine("All Avocado logic checks passed.");
 return;

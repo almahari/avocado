@@ -35,6 +35,7 @@ public static class TodoListLogic
         Text = source.Text,
         ReminderTime = source.ReminderTime,
         Recurrence = source.Recurrence,
+        MonthDay = source.MonthDay,
         Priority = source.Priority,
         DueAt = source.DueAt,
         IsPinned = source.IsPinned

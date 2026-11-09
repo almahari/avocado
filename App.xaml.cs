@@ -20,6 +20,7 @@ public partial class App : System.Windows.Application
     private Forms.ToolStripMenuItem? _openOnStartupItem;
     private Forms.ToolStripMenuItem? _adaptivePersonalityItem;
     private Forms.ToolStripMenuItem? _mascotAnimationsItem;
+    private Forms.ToolStripMenuItem? _recurringNextTimeItem;
     private Forms.ToolStripMenuItem? _desktopMascotItem;
     private readonly Dictionary<DesktopMascotFeature, Forms.ToolStripMenuItem> _mascotFeatureItems = [];
     private readonly Dictionary<DesktopMascotSize, Forms.ToolStripMenuItem> _mascotSizeItems = [];
@@ -271,6 +272,12 @@ public partial class App : System.Windows.Application
         menu.Items.Add(seasonalSkinsItem);
         menu.Items.Add(_adaptivePersonalityItem);
         menu.Items.Add(_mascotAnimationsItem);
+        _recurringNextTimeItem = new Forms.ToolStripMenuItem("Done recurring tasks come back next time", null, (_, _) =>
+        {
+            _window!.SetRecurringDoneUntilNextTime(!_window.IsRecurringDoneUntilNextTimeEnabled);
+            _recurringNextTimeItem!.Checked = _window.IsRecurringDoneUntilNextTimeEnabled;
+        }) { Checked = _window!.IsRecurringDoneUntilNextTimeEnabled };
+        menu.Items.Add(_recurringNextTimeItem);
         menu.Items.Add(_desktopMascotItem);
         menu.Items.Add(CreateMascotFeaturesMenu());
         menu.Items.Add(new Forms.ToolStripSeparator());

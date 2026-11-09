@@ -25,7 +25,7 @@ public partial class MainWindow : IMcpTaskStore
             if (parsed.Text.Length == 0) throw new ArgumentException("Task text must be nonempty.");
             var task = new TodoItem
             {
-                Text = parsed.Text, ReminderTime = parsed.ReminderTime, Recurrence = parsed.Recurrence,
+                Text = parsed.Text, ReminderTime = parsed.ReminderTime, Recurrence = parsed.Recurrence, MonthDay = parsed.MonthDay,
                 Priority = parsed.Priority, DueAt = parsed.DueAt, IsPinned = isPinned
             };
             if (isPinned) _tasks.Insert(0, task);
@@ -53,7 +53,7 @@ public partial class MainWindow : IMcpTaskStore
             ParsedTaskInput parsedSchedule = default;
             if (!string.IsNullOrWhiteSpace(schedule) &&
                 !TaskPaletteLogic.TryParseSchedule(schedule, DateTime.Now, out parsedSchedule))
-                throw new ArgumentException("Schedule must be a reminder expression such as 'tomorrow 9am' or 'daily 09:00'.");
+                throw new ArgumentException("Schedule must be a reminder expression such as 'tomorrow 9am', 'daily 09:00' or 'monthly 1 09:00'.");
 
             if (text is not null) task.Text = text.Trim();
             if (priority is not null) task.Priority = parsedPriority;
@@ -61,6 +61,7 @@ public partial class MainWindow : IMcpTaskStore
             {
                 task.ReminderTime = parsedSchedule.ReminderTime;
                 task.Recurrence = parsedSchedule.Recurrence;
+                task.MonthDay = parsedSchedule.MonthDay;
                 task.DueAt = parsedSchedule.DueAt;
                 task.SnoozedUntil = null;
                 task.LastReminderDate = null;

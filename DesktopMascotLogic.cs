@@ -69,7 +69,16 @@ public static class DesktopMascotLogic
             return new DesktopMascotNag(overdue, "Overdue task!",
                 $"{overdue.Text}\nWas due {DescribeAge(now - overdue.DueAt!.Value)} ago.");
 
-        var stale = open.Where(task => now - task.CreatedAt >= StaleTaskAge)
+        var today = DateOnly.FromDateTime(now);
+        var missed = open.Select(task => (Task: task, Day: TaskReminderLogic.MissedOccurrence(task, today)))
+            .Where(item => item.Day is not null)
+            .OrderBy(item => item.Day).ThenByDescending(item => item.Task.Priority).FirstOrDefault();
+        if (missed.Task is not null)
+            return new DesktopMascotNag(missed.Task, "Missed one!",
+                $"{missed.Task.Text}\nIt was due {TaskReminderLogic.MissedDayName(missed.Day!.Value, today)} at {missed.Task.ReminderTime:hh\\:mm}.");
+
+        // Recurring tasks are expected to stay in the list, so they never count as stale.
+        var stale = open.Where(task => task.Recurrence == TaskRecurrence.None && now - task.CreatedAt >= StaleTaskAge)
             .OrderByDescending(task => task.Priority).ThenBy(task => task.CreatedAt).FirstOrDefault();
         return stale is null ? null : new DesktopMascotNag(stale, "Remember this one?",
             $"{stale.Text}\nWaiting for {DescribeAge(now - stale.CreatedAt)}.");
@@ -87,8 +96,13 @@ public static class DesktopMascotLogic
         var tomorrowItems = new List<(DesktopMascotDigestEntry Entry, TimeSpan Sort)>();
         var anytime = TimeSpan.FromDays(1);
 
+        var todayDate = DateOnly.FromDateTime(today);
+        var tomorrowDate = DateOnly.FromDateTime(tomorrow);
         foreach (var task in tasks.Where(task => !task.IsCompleted))
         {
+            var hiddenToday = TaskReminderLogic.IsHiddenOn(task.HiddenUntil, todayDate);
+            var hiddenTomorrow = TaskReminderLogic.IsHiddenOn(task.HiddenUntil, tomorrowDate);
+            if (hiddenToday && hiddenTomorrow) continue;
             if (task.DueAt is DateTime due)
             {
                 if (due.Date < today)
@@ -112,10 +126,18 @@ public static class DesktopMascotLogic
                         todayItems.Add((new(task, clock), time));
                     continue;
                 }
-                var label = task.Recurrence == TaskRecurrence.Daily ? "daily" : TaskReminderLogic.Label(task.Recurrence).ToLowerInvariant();
-                if (TaskReminderLogic.MatchesDay(task.Recurrence, today.DayOfWeek))
+                var label = task.Recurrence switch
+                {
+                    TaskRecurrence.Daily => "daily",
+                    TaskRecurrence.Monthly => task.MonthDay == TaskReminderLogic.LastDayOfMonth ? "monthly, last day" : $"monthly, {TaskReminderLogic.MonthDayName(task.MonthDay)}",
+                    _ => TaskReminderLogic.Label(task.Recurrence).ToLowerInvariant()
+                };
+                if (TaskReminderLogic.MissedOccurrence(task, todayDate) is DateOnly missedDay)
+                    oldItems.Add((new(task, $"missed {TaskReminderLogic.MissedDayName(missedDay, todayDate)} · {clock} · {label}", true),
+                        missedDay.ToDateTime(TimeOnly.FromTimeSpan(time))));
+                if (!hiddenToday && TaskReminderLogic.OccursOn(task, todayDate))
                     todayItems.Add((new(task, $"{clock} · {label}"), time));
-                if (TaskReminderLogic.MatchesDay(task.Recurrence, tomorrow.DayOfWeek))
+                if (!hiddenTomorrow && TaskReminderLogic.OccursOn(task, tomorrowDate))
                     tomorrowItems.Add((new(task, $"{clock} · {label}"), time));
                 continue;
             }

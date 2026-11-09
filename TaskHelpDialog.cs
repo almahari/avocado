@@ -20,9 +20,27 @@ public sealed class TaskHelpDialog : Forms.Form
         "  next Friday 14:30 Submit report\r\n\r\n" +
         "• Exact date\r\n" +
         "  2026-09-03 08:15 Release build\r\n\r\n" +
-        "• Recurring reminders\r\n" +
-        "  daily 09:00 Drink water\r\n" +
-        "  monday 18:00 Gym\r\n\r\n" +
+        "• Recurring reminders: daily\r\n" +
+        "  daily 09:00 Drink water\r\n\r\n" +
+        "• Recurring reminders: weekly (weekday name + time)\r\n" +
+        "  monday 18:00 Gym\r\n" +
+        "  friday 16:30 !! Send weekly summary\r\n" +
+        "  Works with monday, tuesday, wednesday, thursday, friday, saturday, sunday.\r\n" +
+        "  Without a time (Monday Gym) it is a one-time reminder, not weekly.\r\n" +
+        "  Daily and weekly need a 24-hour HH:mm time: monday 6pm Gym is one-time.\r\n\r\n" +
+        "• Recurring reminders: monthly (day 1-31 or last + time)\r\n" +
+        "  monthly 1 09:00 Pay rent            (1st of every month)\r\n" +
+        "  monthly 15th 2:30pm Send invoice    (15th of every month)\r\n" +
+        "  monthly last 17:00 Close the books  (last day of every month)\r\n" +
+        "  monthly 09:00 Review budget         (no day = the 1st)\r\n" +
+        "  A day the month doesn't have (e.g. 31) falls on its last day.\r\n\r\n" +
+        "• Ticking off a recurring task hides it until its next time\r\n" +
+        "  (tomorrow, next Monday, or next month) while 'Done recurring\r\n" +
+        "  tasks come back next time' is on in the tray menu.\r\n\r\n" +
+        "• Missed a weekly or monthly task? Its row shows MISSED in red until\r\n" +
+        "  you tick it off or its next day arrives.\r\n" +
+        "• Reminders that fell while Avocado was closed or the PC was asleep\r\n" +
+        "  fire once when it starts or wakes (same day only).\r\n\r\n" +
         "• Priority marks\r\n" +
         "  ! Read article\r\n" +
         "  !! Prepare notes\r\n" +

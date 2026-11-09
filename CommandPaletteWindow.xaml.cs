@@ -530,7 +530,7 @@ public partial class CommandPaletteWindow : Window
     private static string ScheduleLabel(ParsedTaskInput task) => task.DueAt is DateTime dueAt
         ? TaskReminderLogic.FormatDueLabel(dueAt)
         : task.ReminderTime is TimeSpan reminderTime
-            ? $"{TaskReminderLogic.Label(task.Recurrence)} {reminderTime:hh\\:mm}".TrimStart()
+            ? $"{TaskReminderLogic.Label(task.Recurrence, task.MonthDay)} {reminderTime:hh\\:mm}".TrimStart()
             : "No reminder";
 
     private void SetBrush(string key, string value, double opacity = 1)

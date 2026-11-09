@@ -23,7 +23,8 @@ public enum DesktopMascotFeature
     SoundEffects,
     SeeThrough,
     WeatherOutfits,
-    TaskbarWalks
+    TaskbarWalks,
+    AlwaysAnimate
 }
 
 public enum DesktopMascotSize { Small, Medium, Large }
@@ -73,7 +74,8 @@ public static partial class DesktopMascotFeatures
         new(DesktopMascotFeature.SoundEffects, "Sound effects", false),
         new(DesktopMascotFeature.SeeThrough, "See-through when not hovered", false),
         new(DesktopMascotFeature.WeatherOutfits, "Weather outfits (uses internet)", false),
-        new(DesktopMascotFeature.TaskbarWalks, "Little walks", true)
+        new(DesktopMascotFeature.TaskbarWalks, "Little walks", true),
+        new(DesktopMascotFeature.AlwaysAnimate, "Always animate (ignore Windows animation setting)", false)
     ];
 
     public static DesktopMascotFeatureInfo Get(DesktopMascotFeature feature) => All.First(info => info.Feature == feature);
@@ -137,7 +139,7 @@ public static partial class DesktopMascotFeatures
     {
         if (task.DueAt is DateTime due) return due;
         if (task.ReminderTime is not TimeSpan time) return null;
-        if (!TaskReminderLogic.MatchesDay(task.Recurrence, now.DayOfWeek)) return null;
+        if (!TaskReminderLogic.OccursOn(task, DateOnly.FromDateTime(now))) return null;
         return now.Date + time;
     }
 

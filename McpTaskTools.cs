@@ -11,7 +11,8 @@ public sealed record McpTask(
     public static McpTask From(TodoItem task) => new(
         task.Id, task.Text, task.IsCompleted, task.IsPinned, task.Priority.ToString(),
         task.CreatedAt, task.CompletedAt, task.DueAt,
-        task.ReminderTime?.ToString(@"hh\:mm"), task.Recurrence.ToString(),
+        task.ReminderTime?.ToString(@"hh\:mm"),
+        task.Recurrence == TaskRecurrence.Monthly ? $"Monthly ({TaskReminderLogic.MonthDayName(task.MonthDay)} day)" : task.Recurrence.ToString(),
         task.SnoozedUntil, task.ElapsedTicks);
 }
 

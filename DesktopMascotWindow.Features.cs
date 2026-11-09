@@ -40,6 +40,7 @@ public sealed partial class DesktopMascotWindow
     private DesktopMascotWeatherReading? _weather;
     private string? _lastWeatherMood;
     private bool _weatherFetching;
+    private bool? _lastMotionAllowed;
     private readonly Queue<(ImageSource? Source, int BlendMs, int HoldMs)> _frameQueue = new();
     private readonly HashSet<Guid> _headsUpWarned = [];
     private readonly List<(DateTime At, double X)> _petSamples = [];
@@ -101,6 +102,11 @@ public sealed partial class DesktopMascotWindow
     {
         var size = DesktopMascotFeatures.SpriteSize(_host.MascotSettings.Size);
         if (Math.Abs(size - _spriteSize) > 0.5) ApplySize(size);
+        if (_lastMotionAllowed != MotionAllowed)
+        {
+            _lastMotionAllowed = MotionAllowed;
+            StartBreathing();
+        }
         UpdateOutfit();
 
         if (Feature(DesktopMascotFeature.ScreenAwareness)) _screenTimer.Start();
@@ -241,7 +247,7 @@ public sealed partial class DesktopMascotWindow
     private void ShowWrapUp()
     {
         var now = DateTime.Now;
-        var digest = DesktopMascotLogic.BuildDigest(_host.OpenTasks, now);
+        var digest = DesktopMascotLogic.BuildDigest(_host.DigestTasks, now);
         var movable = digest.Today.Where(entry => entry.Task.Recurrence == TaskRecurrence.None && entry.When != "anytime")
             .Select(entry => entry.Task).ToList();
         var finished = _host.CompletedTodayCount;
@@ -401,7 +407,7 @@ public sealed partial class DesktopMascotWindow
             _spriteHost.ToolTip = "Drag me anywhere • double-click to open Avocado • right-click for options";
             return;
         }
-        var digest = DesktopMascotLogic.BuildDigest(_host.OpenTasks, DateTime.Now);
+        var digest = DesktopMascotLogic.BuildDigest(_host.DigestTasks, DateTime.Now);
         var overdue = digest.Old.Count(entry => entry.IsLate) + digest.Today.Count(entry => entry.IsLate);
         var stale = digest.Old.Count(entry => !entry.IsLate);
         var mood = DesktopMascotFeatures.GetMood(overdue, stale, _host.CompletedTodayCount);
